@@ -1,0 +1,3 @@
+<div id="revws-app">
+  Please wait...
+</div>
