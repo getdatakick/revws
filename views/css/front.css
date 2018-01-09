@@ -1,0 +1,142 @@
+/* grading shapes - star, heart,... */
+.revws-grading {
+  display: flex;
+  cursor: default;
+}
+a .revws-grading {
+  cursor: pointer;
+}
+
+.revws-grade {
+  margin: 0px 2px;
+}
+
+.revws-grade-off path {
+  fill: transparent;
+  stroke: #d5d5d5;
+}
+
+.revws-grade-on path {
+  fill: #ffd055;
+  stroke: #ffd055;
+}
+
+/* review layout */
+#revws-tab-content {
+  margin: 0 0 20px 0;
+}
+
+.revws-under-review {
+  color: red;
+  margin-top: -10px;
+}
+
+.revws-review {
+  margin: 10px 0px;
+  padding: 10px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.revws-review:first-child {
+  border-top: none;
+}
+
+@media (min-width: 768px) {
+  .revws-review-author {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #revws-tab-content .revws-grading {
+    margin: 20px 0px;
+  }
+}
+
+@media (max-width: 768px) {
+  .revws-review-author {
+    display: flex;
+    flex-direction: row;
+  }
+  #revws-tab-content .revws-grading {
+    margin: 0px 20px;
+  }
+}
+
+.revws-review-author-name {
+  color: #222;
+  font-size: 12px;
+}
+
+.revws-review-date {
+  color: #999;
+  font-size: 12px;
+}
+
+@media (min-width: 768px) {
+  .revws-review-details {
+    border-left: 1px solid #f5f5f5;
+    padding-left: 30px;
+  }
+}
+
+.revws-review-title {
+  color: #222;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.revws-review-content {
+  color: #666;
+  padding: 10px 0px;
+  font-size: 14px;
+}
+
+.revws-actions {
+  display: flex;
+  color: #999;
+  font-size: 12px;
+}
+
+.revws-actions .btn {
+  color: #999;
+  font-size: 12px;
+  padding: 3px 6px;
+}
+
+.revws-actions .btn:hover {
+  color: #222;
+  text-decoration: none;
+}
+
+.revws-actions .revws-report:first-child .btn,
+.revws-actions .revws-delete:first-child .btn {
+  padding-left: 0px;
+}
+
+.revws-action:not(:last-child) {
+  border-right: 1px solid #f5f5f5;
+  padding-right: 10px;
+  margin-right: 10px;
+}
+
+/* product extra - right panel */
+ #revws-product-extra, .revws-product-extra-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+
+#revws-product-extra b,
+.revws-product-list .revws-grading,
+.revws-comparison .revws-grading,
+.revws-product-extra-link .revws-grading {
+  margin-right: 10px;
+}
+
+.revws-product-list, .revws-comparison {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}

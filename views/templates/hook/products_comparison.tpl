@@ -15,6 +15,24 @@
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-<div id="revws-app">
-  Please wait...
-</div>
+<tr class="comparison_header active">
+  <td><b>{l s='Reviews' mod='productcomments'}</b></td>
+  {foreach from=$list_ids_product item=productId}
+    <td class='comparison_infos'>
+      <div class="revws-comparison">
+        {assign "grade" $averages[$productId][0]}
+        {assign "count" $averages[$productId][1]}
+        {if $count == 0}
+          {l s='no review' mod='revws'}
+        {else}
+          {include file='./grading.tpl' grade=$grade shape=$shape}
+          {if $count == 1}
+            {l s='one review' mod='revws'}
+          {else}
+            {l s='%1$d reviews' sprintf=[$count] mod='revws'}
+          {/if}
+        {/if}
+      </div>
+    </td>
+  {/foreach}
+</tr>

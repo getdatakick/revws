@@ -15,6 +15,15 @@
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-<div id="revws-app">
-  Please wait...
+<div class="revws-grading">
+  {section name="i" start=0 loop=5 step=1}
+    <svg
+      class="revws-grade revws-grade-{if $grade <= $smarty.section.i.index}off{else}on{/if}"
+      viewBox="{$shape.viewBox}"
+      width="{$shape.size}"
+      height="{$shape.size}"
+      style="stroke-width:{$shape.strokeWidth}">
+      <path d="{$shape.path}" />
+    </svg>
+  {/section}
 </div>

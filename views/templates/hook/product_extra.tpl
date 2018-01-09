@@ -15,6 +15,16 @@
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-<div id="revws-app">
-  Please wait...
+<div id="revws-product-extra">
+  <b>{l s='Rating' mod='revws'}:</b>
+    {if $reviewCount > 0}
+      <a class="revws-product-extra-link" href="#revws-tab-content">
+        {include file='./grading.tpl' grade=$grade shape=$shape}
+        {l s='(read %1$d reviews)' sprintf=[$reviewCount] mod='revws'}
+      </a>
+    {else}
+      <a class="revws-product-extra-link" href="#" data-revws-create-trigger="{$productId}">
+        {l s='Be the first to write review!' mod='revws'}
+      </a>
+    {/if}
 </div>

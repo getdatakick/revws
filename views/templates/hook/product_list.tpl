@@ -15,6 +15,11 @@
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-<div id="revws-app">
-  Please wait...
+<div class="revws-product-list">
+  {include file='./grading.tpl' grade=$grade shape=$shape}
+  {if $reviewCount == 1}
+  {l s='one review' mod='revws'}
+  {else}
+  {l s='%1$d reviews' sprintf=[$reviewCount] mod='revws'}
+  {/if}
 </div>

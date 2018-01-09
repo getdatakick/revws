@@ -13,12 +13,25 @@
 * to license@getdatakick.com so we can send you a copy immediately.
 *
 * @author    Petr Hucik <petr@getdatakick.com>
-* @copyright 2017 Petr Hucik
+* @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 */
+require_once __DIR__.'/classes/settings.php';
+require_once __DIR__.'/classes/visitor.php';
+require_once __DIR__.'/classes/permissions.php';
+require_once __DIR__.'/classes/review.php';
+require_once __DIR__.'/classes/shapes.php';
+
+use \Revws\Settings;
+use \Revws\Permissions;
+use \Revws\Visitor;
+use \Revws\Review;
+use \Revws\Shapes;
 
 class Revws extends Module {
-  protected $config_form = false;
+  private $settings;
+  private $permissions;
+  private $visitor;
 
   public function __construct() {
     $this->name = 'revws';
@@ -39,14 +52,17 @@ class Revws extends Module {
       parent::install() &&
       $this->installDb($createTables) &&
       $this->installTab() &&
-      $this->registerHooks()
+      $this->registerHooks() &&
+      $this->getSettings()->init()
     );
   }
 
   public function uninstall($dropTables=true) {
     return (
       $this->uninstallDb($dropTables) &&
+      $this->unregisterHooks() &&
       $this->removeTab() &&
+      $this->getSettings()->reset() &&
       parent::uninstall()
     );
   }
@@ -59,6 +75,25 @@ class Revws extends Module {
   }
 
   public function registerHooks() {
+    return (
+      $this->registerHook('productTab') &&
+      $this->registerHook('header') &&
+      $this->registerHook('productTabContent') &&
+      $this->registerHook('displayRightColumnProduct') &&
+      $this->registerHook('displayProductListReviews') &&
+      $this->registerHook('extraProductComparison') &&
+      $this->registerHook('productFooter')
+    );
+  }
+
+  public function unregisterHooks() {
+    $this->unregisterHook('productTab');
+    $this->unregisterHook('header');
+    $this->unregisterHook('productTabContent');
+    $this->unregisterHook('displayRightColumnProduct');
+    $this->unregisterHook('displayProductListReviews');
+    $this->unregisterHook('extraProductComparison');
+    $this->unregisterHook('productFooter');
     return true;
   }
 
@@ -99,7 +134,7 @@ class Revws extends Module {
   }
 
   public function getContent() {
-    Tools::redirectAdmin($this->context->link->getAdminLink('AdminRevwsBackend'));
+    Tools::redirectAdmin($this->context->link->getAdminLink('AdminRevwsBackend').'#/settings');
   }
 
   private function installTab() {
@@ -127,4 +162,125 @@ class Revws extends Module {
   private function getTabParent() {
     return 0;
   }
+
+  public function getSettings() {
+    if (! $this->settings) {
+      $this->settings = new Settings();
+    }
+    return $this->settings;
+  }
+
+  public function getVisitor() {
+    if (! $this->visitor) {
+      $this->visitor = new Visitor($this->context, $this->getSettings());
+    }
+    return $this->visitor;
+  }
+
+  public function getPermissions() {
+    if (! $this->permissions) {
+      $this->permissions = new Permissions($this->getSettings(), $this->getVisitor());
+    }
+    return $this->permissions;
+  }
+
+  private function assignReviewsData($productId) {
+    $visitor = $this->getVisitor();
+    $perms = $this->getPermissions();
+    $reviews = [];
+    foreach (Review::getByProduct($productId, $visitor) as $review) {
+      $reviews[] = $review->toJSData($perms);
+    }
+    $this->context->smarty->assign('reviewsData', [
+      'productId' => $productId,
+      'reviews' => $reviews,
+      'visitor' => [
+        'displayName' => $visitor->getDisplayName(),
+        'email' => $visitor->getEmail()
+      ],
+      'permissions' => [
+        'create' => $perms->canCreateReview()
+      ],
+      'api' => $this->context->link->getModuleLink('revws', 'api', [], true),
+      'appJsUrl' => $this->context->shop->getBaseURI() . "modules/{$this->name}/views/js/front_app.js",
+      'theme' => [
+        'shape' => $this->getShapeSettings()
+      ]
+    ]);
+  }
+
+  private function getShapeSettings() {
+    $shape = Shapes::getShape($this->getSettings()->getShape());
+    $size = $this->getSettings()->getShapeSize();
+    $shape['size'] = $size;
+    return $shape;
+  }
+
+  public function hookProductTab() {
+    if ($this->getSettings()->getPlacement() === 'tab') {
+      return $this->display(__FILE__, 'product_tab_header.tpl');
+    }
+  }
+
+  public function hookProductTabContent() {
+    if ($this->getSettings()->getPlacement() === 'tab') {
+      $this->context->controller->addJS($this->_path.'views/js/front_bootstrap.js');
+      $this->assignReviewsData((int)(Tools::getValue('id_product')));
+      return $this->display(__FILE__, 'product_tab_content.tpl');
+    }
+  }
+
+  public function hookProductFooter() {
+    if ($this->getSettings()->getPlacement() === 'block') {
+      $this->context->controller->addJS($this->_path.'views/js/front_bootstrap.js');
+      $this->assignReviewsData((int)(Tools::getValue('id_product')));
+      return $this->display(__FILE__, 'product_footer.tpl');
+    }
+  }
+
+  public function hookHeader() {
+    $this->context->controller->addCSS($this->_path.'views/css/front.css', 'all');
+  }
+
+
+  public function hookDisplayRightColumnProduct($params) {
+    if ($this->getSettings()->showAverageOnProductPage()) {
+      $productId = (int)(Tools::getValue('id_product'));
+      list($grade, $count) = Review::getAverageGrade($productId);
+      $this->context->smarty->assign('productId', $productId);
+      $this->context->smarty->assign('grade', $grade);
+      $this->context->smarty->assign('reviewCount', $count);
+      $this->context->smarty->assign('shape', $this->getShapeSettings());
+      return $this->display(__FILE__, 'product_extra.tpl');
+    }
+  }
+
+  public function hookDisplayProductListReviews($params) {
+    if ($this->getSettings()->showOnProductListing()) {
+      $productId = (int) $params['product']['id_product'];
+      list($grade, $count) = Review::getAverageGrade($productId);
+      if ($count > 0) {
+        $this->context->smarty->assign('productId', $productId);
+        $this->context->smarty->assign('grade', $grade);
+        $this->context->smarty->assign('reviewCount', $count);
+        $this->context->smarty->assign('shape', $this->getShapeSettings());
+        return $this->display(__FILE__, 'product_list.tpl');
+      }
+    }
+  }
+
+  public function hookExtraProductComparison($params) {
+    if ($this->getSettings()->showOnProductComparison()) {
+      $averages = [];
+      foreach ($params['list_ids_product'] as $idProduct) {
+        $productId = (int)$idProduct;
+        $averages[$productId] = Review::getAverageGrade($productId);
+      }
+      $this->context->smarty->assign('averages', $averages);
+      $this->context->smarty->assign('shape', $this->getShapeSettings());
+      $this->context->smarty->assign('list_ids_product', $params['list_ids_product']);
+      return $this->display(__FILE__, 'products_comparison.tpl');
+    }
+  }
+
 }

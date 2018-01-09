@@ -15,6 +15,7 @@
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-<div id="revws-app">
-  Please wait...
-</div>
+<section id="revws-section" class="page-product-box">
+  <h3 class="page-product-heading">{l s='Reviews' mod='revws'}</h3>
+  {include file='./product_tab_content.tpl' reviewsData=$reviewsData}
+</section>

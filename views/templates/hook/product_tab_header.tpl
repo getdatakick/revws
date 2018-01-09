@@ -15,6 +15,6 @@
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-<div id="revws-app">
-  Please wait...
-</div>
+<li>
+  <a href="#revws-tab-content" class="idTabHrefShort">{l s='Reviews' mod='revws'}</a>
+</li>
