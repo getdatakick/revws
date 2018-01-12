@@ -1,6 +1,6 @@
 // @flow
 import type { Action } from 'front/actions';
-import type { ReviewListType, ReviewType } from 'types';
+import type { ReviewListType, ReviewType } from 'common/types';
 import { assoc, findIndex, propEq, append, update, reject } from 'ramda';
 import Types from 'front/actions/types';
 

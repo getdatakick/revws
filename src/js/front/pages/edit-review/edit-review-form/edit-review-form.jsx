@@ -1,12 +1,13 @@
 // @flow
 import React from 'react';
 import classnames from 'classnames';
-import type { SettingsType, ReviewType, ReviewFormErrors } from 'types';
+import type { ReviewType, ReviewFormErrors } from 'common/types';
+import type { SettingsType } from 'front/types';
 import { map, propOr, assoc } from 'ramda';
-import Grading from 'components/grading/grading';
 import TextField from 'material-ui/TextField';
-import TextArea from 'components/text-area/text-area';
-import { isLoggedIn } from 'utils/settings';
+import Grading from 'common/components/grading/grading';
+import TextArea from 'common/components/text-area/text-area';
+import { isLoggedIn } from 'front/settings';
 import styles from './edit-review-form.less';
 
 

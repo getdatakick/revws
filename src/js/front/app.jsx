@@ -1,12 +1,12 @@
 // @flow
 
-import type { SettingsType } from 'types';
+import type { SettingsType } from 'front/types';
 import React from 'react';
 import ReviewList from 'front/pages/review-list';
 import CreateReview from 'front/pages/edit-review';
 import DeleteReview from 'front/pages/delete-review';
 import Snackbar from 'front/pages/snackbar';
-import AppTheme from 'components/theme/theme';
+import AppTheme from 'common/components/theme/theme';
 
 type Props = {
   settings: SettingsType

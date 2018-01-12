@@ -1,12 +1,14 @@
 // @flow
 import React from 'react';
-import type { ReviewType, ReviewListType, SettingsType } from 'types';
 import { map } from 'ramda';
-import ReviewListItem from 'components/review-list-item/review-list-item';
+import type { GradingShapeType, ReviewType, ReviewListType } from 'common/types';
+import ReviewListItem from 'common/components/review-list-item/review-list-item';
 
 type Props = {
-  settings: SettingsType,
+  shape: GradingShapeType,
+  shapeSize: number,
   reviews: ReviewListType,
+  canCreate: boolean,
   onEdit: (ReviewType)=>void,
   onCreate: ()=>void,
   onDelete: (ReviewType)=>void,
@@ -18,9 +20,8 @@ class ReviewList extends React.PureComponent<Props> {
   static displayName = 'ReviewList';
 
   render() {
-    const { settings, reviews } = this.props;
+    const { reviews, canCreate } = this.props;
     const isEmpty = reviews.length == 0;
-    const canCreate = settings.permissions.create;
     return isEmpty ? this.renderEmptyState(canCreate) : this.renderReviews(canCreate);
   }
 
@@ -40,11 +41,12 @@ class ReviewList extends React.PureComponent<Props> {
   }
 
   renderReview = (review: ReviewType) => {
-    const { settings, onReport, onVote, onEdit, onDelete } = this.props;
+    const { shape, shapeSize, onReport, onVote, onEdit, onDelete } = this.props;
     return (
       <ReviewListItem
-        settings={settings}
         key={review.id}
+        shape={shape}
+        shapeSize={shapeSize}
         onEdit={onEdit}
         onDelete={onDelete}
         onVote={onVote}

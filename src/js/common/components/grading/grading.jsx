@@ -2,8 +2,8 @@
 import React from 'react';
 import classnames from 'classnames';
 import { range, map } from 'ramda';
-import type { GradingShapeType } from 'types';
-import GradingShape from 'components/grading-shape/grading-shape';
+import type { GradingShapeType } from 'common/types';
+import GradingShape from 'common/components/grading-shape/grading-shape';
 
 type Props = {
   className?: string,

@@ -1,6 +1,7 @@
 // @flow
 
-import type { SettingsType, ReviewListType } from 'types';
+import type { ReviewListType } from 'common/types';
+import type { SettingsType } from 'front/types';
 import { combineReducers } from 'redux';
 import createEditReview from './edit-review';
 import createReviewList from './review-list';

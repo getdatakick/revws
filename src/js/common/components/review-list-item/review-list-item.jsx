@@ -1,12 +1,13 @@
 // @flow
 import React from 'react';
-import type { ReviewType, SettingsType } from 'types';
+import type { GradingShapeType, ReviewType } from 'common/types';
 import { reduce, add, values } from 'ramda';
 import moment from 'moment';
-import Grading from 'components/grading/grading';
+import Grading from 'common/components/grading/grading';
 
 type Props = {
-  settings: SettingsType,
+  shape: GradingShapeType,
+  shapeSize: number,
   review: ReviewType,
   onEdit: (ReviewType)=>void,
   onDelete: (ReviewType)=>void,
@@ -18,7 +19,7 @@ class ReviewListItem extends React.PureComponent<Props> {
   static displayName = 'ReviewListItem';
 
   render() {
-    const { onReport, onEdit, onDelete, onVote, review, settings } = this.props;
+    const { shape, shapeSize, onReport, onEdit, onDelete, onVote, review } = this.props;
     const { displayName, date, title, underReview, content, canVote, canReport, canEdit, canDelete, grades } = review;
     return (
       <div className="revws-review row no-gutter">
@@ -27,8 +28,8 @@ class ReviewListItem extends React.PureComponent<Props> {
             <div className="revws-review-author-name">{ displayName }</div>
             <Grading
               grade={averageGrade(grades)}
-              shape={settings.shape}
-              size={settings.shapeSize.product}
+              shape={shape}
+              size={shapeSize}
             />
             <div className="revws-review-date">{formatDate(date)}</div>
           </div>

@@ -1,14 +1,14 @@
 // @flow
-import type { SettingsType, ReviewType, ReviewFormErrors } from 'types';
-import { isEmpty, isObject, notNil } from 'utils/ramda';
+import type { ReviewType, ReviewFormErrors } from 'common/types';
+import { isEmpty, isObject, notNil } from 'common/utils/ramda';
 import { curry, pipe, defaultTo, values, map, reduce, or } from 'ramda';
 import validator from 'validator';
 
-export const validateReview = (settings: SettingsType, review: ReviewType): ReviewFormErrors => ({
+export const validateReview = (allowEmptyReviews: boolean, review: ReviewType): ReviewFormErrors => ({
   email: validateReviewEmail(review.email),
   displayName: validateDisplayName(review.displayName),
   title: validateTitle(review.title),
-  content: validateContent(settings, review.content)
+  content: validateContent(allowEmptyReviews, review.content)
 });
 
 
@@ -26,8 +26,8 @@ export const validateDisplayName = notEmpty("Please provide your name");
 
 export const validateTitle = notEmpty("Review title must be set");
 
-export const validateContent = (settings: SettingsType, content: ?string) => {
-  if (settings.preferences.allowEmptyReviews) {
+export const validateContent = (allowEmptyReviews: boolean, content: ?string) => {
+  if (allowEmptyReviews) {
     return null;
   }
   return notEmpty("Review content must be set", content);

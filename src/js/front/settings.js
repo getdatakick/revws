@@ -1,7 +1,8 @@
 // @flow
-import type { SettingsType, ReviewType, ReviewListType } from 'types';
+import type { ReviewType, ReviewListType } from 'common/types';
+import type { SettingsType } from 'front/types';
 import { assoc, map, has, prop, indexBy } from 'ramda';
-import { isObject, isString, isArray } from 'utils/ramda';
+import { isObject, isString, isArray } from 'common/utils/ramda';
 
 export const getSettings = (input: any): SettingsType => {
   if (! isObject(input)) {

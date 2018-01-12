@@ -3,7 +3,8 @@ var webpack = require('webpack');
 
 module.exports = function(prod) {
   var plugins = [];
-  var entry = [ "./js/front-app" ];
+  var front = [ "./js/front" ];
+  var back = [ "./js/back" ];
 
   if (! prod) {
     plugins.push(new webpack.DefinePlugin({
@@ -45,7 +46,8 @@ module.exports = function(prod) {
     },
 
     entry: {
-      app: entry
+      'front_app': front,
+      back: back
     },
 
     resolve: {
@@ -54,7 +56,7 @@ module.exports = function(prod) {
     },
 
     output: {
-      filename: 'front_app.js',
+      filename: '[name].js',
       path: path.resolve('./build/'),
       publicPath: '/'
     },

@@ -1,6 +1,6 @@
 // @flow
 
-import type { ReviewType } from 'types';
+import type { ReviewType } from 'common/types';
 import type {
   CloseEditReviewAction,
   SaveReviewAction,

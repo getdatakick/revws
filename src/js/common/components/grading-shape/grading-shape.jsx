@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import classnames from 'classnames';
-import type { GradingShapeType } from 'types';
+import type { GradingShapeType } from 'common/types';
 
 type Props = {
   shape: GradingShapeType,

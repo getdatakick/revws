@@ -1,10 +1,10 @@
 
 // @flow
 import type { ComponentType } from 'react';
-import type { SettingsType } from 'types';
-import EditReview from 'components/edit-review-dialog/edit-review-dialog';
+import type { SettingsType } from 'front/types';
+import EditReview from './edit-review-dialog/edit-review-dialog';
 import { connect } from 'react-redux';
-import { mapObject } from 'utils/redux';
+import { mapObject } from 'common/utils/redux';
 import { getStage, getReview } from 'front/selectors/edit-review';
 import { closeEditReview, saveReview, updateReviewDetails } from 'front/actions/creators';
 

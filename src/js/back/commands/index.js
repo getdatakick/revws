@@ -1,21 +1,13 @@
 // @flow
 
-import type { Command } from 'common/types';
-import type { SettingsType } from 'front/types';
-import type { Action } from 'front/actions';
 import { merge, prop } from 'ramda';
+import type { SettingsType } from 'back/types';
+import type { Command } from 'common/types';
+import type { Action } from 'back/actions';
 import { fixUrl } from 'common/utils/url';
-import Types from 'front/actions/types';
-import { saveReview } from './save-review';
-import { deleteReview } from './delete-review';
-import { voteReview } from './vote-review';
-import { reportAbuse } from './report-review';
+//import Types from 'back/actions/types';
 
 const commands = {
-  [ Types.saveReview ]: saveReview,
-  [ Types.deleteReview ]: deleteReview,
-  [ Types.triggerVote]: voteReview,
-  [ Types.triggerReportReview]: reportAbuse
 };
 
 export default (settings: SettingsType) => {

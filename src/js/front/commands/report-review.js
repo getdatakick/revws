@@ -1,6 +1,6 @@
 // @flow
 
-import type { Api } from 'types';
+import type { Api } from 'common/types';
 import type { TriggerReportReviewAction } from 'front/actions';
 import { setSnackbar } from 'front/actions/creators';
 

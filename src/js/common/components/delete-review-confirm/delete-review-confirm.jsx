@@ -5,7 +5,7 @@ import type { ComponentType } from 'react';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, withMobileDialog } from 'material-ui/Dialog';
 import Question from 'material-ui-icons/HelpOutline';
-import styles from '../edit-review-dialog/edit-review-dialog.less';
+import styles from './delete-review-confirm.less';
 
 type InputProps = {
   reviewId: ?number,

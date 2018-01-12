@@ -2,17 +2,19 @@
 
 import React from 'react';
 import type { ComponentType } from 'react';
-import type { EditStage, CriterionType, SettingsType, ReviewType, ReviewFormErrors, ProductInfoType } from 'types';
-import Grading from 'components/grading/grading';
+import type { EditStage, CriterionType, ReviewType, ReviewFormErrors } from 'common/types';
+import type { SettingsType, ProductInfoType } from 'front/types';
+import Grading from 'common/components/grading/grading';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle, withMobileDialog } from 'material-ui/Dialog';
-import EditReviewForm from 'components/edit-review-form/edit-review-form';
+import EditReviewForm from '../edit-review-form/edit-review-form';
 import Grid from 'material-ui/Grid';
 import Check from 'material-ui-icons/Check';
 import ErrorOutline from 'material-ui-icons/ErrorOutline';
 import { CircularProgress } from 'material-ui/Progress';
-import { fixUrl } from 'utils/url';
-import { validateReview, hasErrors } from 'utils/validation';
+import { fixUrl } from 'common/utils/url';
+import { validateReview, hasErrors } from 'common/utils/validation';
+import { isLoggedIn } from 'front/settings';
 import { find, assoc } from 'ramda';
 import styles from './edit-review-dialog.less';
 
@@ -53,7 +55,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
   renderDialog = (product: ProductInfoType, review: ReviewType) => {
     const { onClose, onSave, settings, stage } = this.props;
     const { name } = product;
-    const errors = validateReview(settings, review);
+    const errors = validateReview(isLoggedIn(settings), review);
     const withErrors = hasErrors(errors);
     const saving = stage === 'saving';
     const saved = stage === 'saved' || stage === 'failed';

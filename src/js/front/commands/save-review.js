@@ -1,9 +1,9 @@
 // @flow
 
-import type { Api } from 'types';
+import type { Api } from 'common/types';
 import type { SaveReviewAction } from 'front/actions';
 import { saveReviewCompleted, setSnackbar, closeEditReview, setReview } from 'front/actions/creators';
-import { fixReview } from 'utils/settings';
+import { fixReview } from 'front/settings';
 
 export const saveReview = (action: SaveReviewAction, store: any, api: Api) => {
   const review = action.review;

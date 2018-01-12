@@ -5,21 +5,28 @@ import Snackbar from 'material-ui/Snackbar';
 
 type Props = {
   message: ?string,
-  setSnackbar: (?string) => void
+  setSnackbar: (?string) => void,
+  anchorOrigin: {
+    vertical: string,
+    horizontal: string
+  },
 };
 
 class AppSnackbar extends React.PureComponent<Props> {
   static displayName = 'AppSnackbar';
 
+  static defaultProps = {
+    anchorOrigin: {
+      vertical: 'bottom',
+      horizontal: 'left'
+    }
+  }
 
   render() {
-    const { message } = this.props;
+    const { anchorOrigin, message } = this.props;
     return (
       <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
+        anchorOrigin={anchorOrigin}
         open={!!message}
         autoHideDuration={3000}
         onClose={this.onClose}

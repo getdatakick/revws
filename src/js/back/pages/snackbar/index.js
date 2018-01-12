@@ -4,8 +4,8 @@ import type { ComponentType } from 'react';
 import Snackbar from 'common/components/snackbar/snackbar';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
-import { getMessage } from 'front/selectors/snackbar';
-import { setSnackbar } from 'front/actions/creators';
+import { getMessage } from 'back/selectors/snackbar';
+import { setSnackbar } from 'back/actions/creators';
 
 const mapStateToProps = mapObject({
   message: getMessage,
