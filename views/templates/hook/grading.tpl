@@ -16,14 +16,17 @@
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
 <div class="revws-grading">
+  {assign "pad" $size/8}
   {section name="i" start=0 loop=5 step=1}
-    <svg
-      class="revws-grade revws-grade-{if $grade <= $smarty.section.i.index}off{else}on{/if}"
-      viewBox="{$shape.viewBox}"
-      width="{$shape.size}"
-      height="{$shape.size}"
-      style="stroke-width:{$shape.strokeWidth}">
-      <path d="{$shape.path}" />
-    </svg>
+    <div style='padding-left:{$pad}px;padding-right:{$pad}px'>
+      <svg
+        class="revws-grade revws-grade-{if $grade <= $smarty.section.i.index}off{else}on{/if}"
+        viewBox="{$shape.viewBox}"
+        width="{$size}"
+        height="{$size}"
+        style="stroke-width:{$shape.strokeWidth}">
+        <path d="{$shape.path}" />
+      </svg>
+    </div>
   {/section}
 </div>

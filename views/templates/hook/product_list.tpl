@@ -16,7 +16,7 @@
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
 <div class="revws-product-list">
-  {include file='./grading.tpl' grade=$grade shape=$shape}
+  {include file='./grading.tpl' grade=$grade shape=$shape size=$shapeSize}
   {if $reviewCount == 1}
   {l s='one review' mod='revws'}
   {else}

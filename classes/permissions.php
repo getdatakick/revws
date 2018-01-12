@@ -28,24 +28,11 @@ class Permissions {
     $this->visitor = $visitor;
   }
 
-  public function canPerform($type) {
-    switch ($type) {
-      case 'create':
-        return $this->canCreateReview();
-      case 'report':
-        return $this->canReportAbuse();
-      case 'vote':
-        return $this->canVote();
-      case 'delete':
-        return $this->canDelete();
-    }
-    return false;
-  }
-
-  public function canCreateReview() {
+  public function canCreateReview($productId) {
     if ($this->visitor->isGuest()) {
       return $this->settings->allowGuestReviews();
     }
+    // TODO: check product id
     return true;
   }
 

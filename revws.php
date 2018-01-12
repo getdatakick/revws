@@ -20,6 +20,7 @@ require_once __DIR__.'/classes/settings.php';
 require_once __DIR__.'/classes/visitor.php';
 require_once __DIR__.'/classes/permissions.php';
 require_once __DIR__.'/classes/review.php';
+require_once __DIR__.'/classes/criterion.php';
 require_once __DIR__.'/classes/shapes.php';
 
 use \Revws\Settings;
@@ -27,6 +28,7 @@ use \Revws\Permissions;
 use \Revws\Visitor;
 use \Revws\Review;
 use \Revws\Shapes;
+use \Revws\Criterion;
 
 class Revws extends Module {
   private $settings;
@@ -184,36 +186,66 @@ class Revws extends Module {
     return $this->permissions;
   }
 
+  private function getProductData($productId) {
+    $product = new \Product($productId);
+    $lang = $this->context->language->id;
+    $productName = $product->getProductName($product->id);
+    $link = $this->context->link;
+    $res = $product->getCover($lang);
+    $image = null;
+    if ($res) {
+      $imageId = (int)$res['id_image'];
+      $rewrite = $product->link_rewrite[$lang];
+      $image = $link->getImageLink($rewrite, $imageId, ImageType::getFormatedName('home'));
+    }
+    return [
+      'id' => $productId,
+      'name' => $productName,
+      'url' => $product->getLink(),
+      'image' => $image,
+      'criteria' => Criterion::getByProduct($productId),
+    ];
+  }
+
   private function assignReviewsData($productId) {
     $visitor = $this->getVisitor();
     $perms = $this->getPermissions();
+    $set = $this->getSettings();
     $reviews = [];
     foreach (Review::getByProduct($productId, $visitor) as $review) {
       $reviews[] = $review->toJSData($perms);
     }
-    $this->context->smarty->assign('reviewsData', [
-      'productId' => $productId,
+    $reviewsData = [
+      'product' => $this->getProductData($productId),
       'reviews' => $reviews,
       'visitor' => [
+        'type' => $visitor->getType(),
         'displayName' => $visitor->getDisplayName(),
         'email' => $visitor->getEmail()
       ],
       'permissions' => [
-        'create' => $perms->canCreateReview()
+        'create' => $perms->canCreateReview($productId)
       ],
       'api' => $this->context->link->getModuleLink('revws', 'api', [], true),
-      'appJsUrl' => $this->context->shop->getBaseURI() . "modules/{$this->name}/views/js/front_app.js",
+      'appJsUrl' => $set->getAppUrl($this->context, $this->name),
       'theme' => [
-        'shape' => $this->getShapeSettings()
+        'shape' => $this->getShapeSettings(),
+        'shapeSize' => [
+          'product' => $set->getShapeSize(),
+          'list' => $set->getShapeSize(),
+          'create' => $set->getShapeSize() * 5
+        ]
+      ],
+      'criteria' => Criterion::getCriteria($this->context->language->id_lang),
+      'preferences' => [
+        'allowEmptyReviews' => $set->allowEmptyReviews()
       ]
-    ]);
+    ];
+    $this->context->smarty->assign('reviewsData', $reviewsData);
   }
 
   private function getShapeSettings() {
-    $shape = Shapes::getShape($this->getSettings()->getShape());
-    $size = $this->getSettings()->getShapeSize();
-    $shape['size'] = $size;
-    return $shape;
+    return Shapes::getShape($this->getSettings()->getShape());
   }
 
   public function hookProductTab() {
@@ -240,6 +272,7 @@ class Revws extends Module {
 
   public function hookHeader() {
     $this->context->controller->addCSS($this->_path.'views/css/front.css', 'all');
+    $this->context->controller->addCSS('https://fonts.googleapis.com/css?family=Roboto:300,400,500', 'all');
   }
 
 
@@ -251,6 +284,7 @@ class Revws extends Module {
       $this->context->smarty->assign('grade', $grade);
       $this->context->smarty->assign('reviewCount', $count);
       $this->context->smarty->assign('shape', $this->getShapeSettings());
+      $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
       return $this->display(__FILE__, 'product_extra.tpl');
     }
   }
@@ -264,6 +298,7 @@ class Revws extends Module {
         $this->context->smarty->assign('grade', $grade);
         $this->context->smarty->assign('reviewCount', $count);
         $this->context->smarty->assign('shape', $this->getShapeSettings());
+        $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
         return $this->display(__FILE__, 'product_list.tpl');
       }
     }
@@ -278,6 +313,7 @@ class Revws extends Module {
       }
       $this->context->smarty->assign('averages', $averages);
       $this->context->smarty->assign('shape', $this->getShapeSettings());
+      $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
       $this->context->smarty->assign('list_ids_product', $params['list_ids_product']);
       return $this->display(__FILE__, 'products_comparison.tpl');
     }

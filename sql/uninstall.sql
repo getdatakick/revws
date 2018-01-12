@@ -16,4 +16,9 @@
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 */
 
+DROP TABLE IF EXISTS `PREFIX_revws_criterion`;
+DROP TABLE IF EXISTS `PREFIX_revws_criterion_lang`;
+DROP TABLE IF EXISTS `PREFIX_revws_criterion_category`;
+DROP TABLE IF EXISTS `PREFIX_revws_criterion_product`;
 DROP TABLE IF EXISTS `PREFIX_revws_review`;
+DROP TABLE IF EXISTS `PREFIX_revws_review_grade`;

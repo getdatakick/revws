@@ -21,6 +21,7 @@ namespace Revws;
 use \Configuration;
 
 class Settings {
+  const APP_URL = 'REVWS_APP_URL';
   const PLACEMENT = 'REVWS_PLACEMENT';
   const ALLOW_GUEST_REVIEWS = 'REVWS_ALLOW_GUEST_REVIEWS';
   const DISPLAY_NAME_PREFERENCE = 'REVWS_DISPLAY_NAME_PREFERENCE';
@@ -33,6 +34,7 @@ class Settings {
   const SHOW_ON_PRODUCT_COMPARISON = 'REVWS_SHOW_ON_PRODUCT_COMPARISON';
   const SHAPE_PREFERENCE = 'REVWS_SHAPE';
   const SHAPE_SIZE = 'REVWS_SHAPE_SIZE';
+  const ALLOW_EMPTY_REVIEWS = 'REVWS_ALLOW_EMPTY_REVIEWS';
 
   public function init() {
     $this->setPlacement('block');
@@ -45,6 +47,7 @@ class Settings {
     $this->setShowAverageOnProductPage(true);
     $this->setShowOnProductListing(true);
     $this->setShowOnProductComparison(true);
+    $this->setAllowEmptyReviews(true);
     $this->setShape(Shapes::getDefaultShape());
     $this->setShapeSize(16);
     return true;
@@ -63,7 +66,16 @@ class Settings {
     $this->remove(self::SHOW_ON_PRODUCT_COMPARISON);
     $this->remove(self::SHAPE_PREFERENCE);
     $this->remove(self::SHAPE_SIZE);
+    $this->remove(self::ALLOW_EMPTY_REVIEWS);
     return true;
+  }
+
+  public function getAppUrl($context, $moduleName) {
+    $url = $this->get(self::APP_URL);
+    if (! $url) {
+      $url = $context->shop->getBaseURI() . "modules/{$moduleName}/views/js/front_app.js";
+    }
+    return $url;
   }
 
   public function getPlacement() {
@@ -128,6 +140,14 @@ class Settings {
 
   public function setShowOnProductListing($allow) {
     return $this->set(self::SHOW_ON_PRODUCT_LISTING, $allow ? 1 : 0);
+  }
+
+  public function allowEmptyReviews() {
+    return $this->toBool($this->get(self::ALLOW_EMPTY_REVIEWS));
+  }
+
+  public function setAllowEmptyReviews($allow) {
+    return $this->set(self::ALLOW_EMPTY_REVIEWS, $allow ? 1 : 0);
   }
 
   public function showOnProductComparison() {

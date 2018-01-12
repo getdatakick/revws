@@ -16,6 +16,33 @@
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 */
 
+
+CREATE TABLE IF NOT EXISTS `PREFIX_revws_criterion` (
+  `id_criterion`    INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `global`          TINYINT(1) NOT NULL DEFAULT 0,
+  `active`          TINYINT(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id_criterion`)
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
+
+CREATE TABLE IF NOT EXISTS `PREFIX_revws_criterion_lang` (
+  `id_criterion`    INT(11) UNSIGNED NOT NULL,
+  `id_lang`         INT(11) UNSIGNED NOT NULL,
+  `label`           VARCHAR(128) NOT NULL,
+  PRIMARY KEY (`id_criterion`, `id_lang`)
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
+
+CREATE TABLE IF NOT EXISTS `PREFIX_revws_criterion_category` (
+  `id_criterion`    INT(11) UNSIGNED NOT NULL,
+  `id_category`     INT(11) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id_criterion`, `id_category`)
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
+
+CREATE TABLE IF NOT EXISTS `PREFIX_revws_criterion_product` (
+  `id_criterion`    INT(11) UNSIGNED NOT NULL,
+  `id_product`     INT(11) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id_criterion`, `id_product`)
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
+
 CREATE TABLE IF NOT EXISTS `PREFIX_revws_review` (
   `id_review`    INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `id_product`   INT(11) UNSIGNED NOT NULL,
@@ -25,7 +52,6 @@ CREATE TABLE IF NOT EXISTS `PREFIX_revws_review` (
   `display_name` VARCHAR(255) NOT NULL,
   `title`        VARCHAR(127) NOT NULL,
   `content`      TEXT NULL,
-  `grade`        DECIMAL(6,2) NOT NULL,
   `validated`    TINYINT(1) NOT NULL DEFAULT 0,
   `hidden`       TINYINT(1) NOT NULL DEFAULT 0,
   `deleted`      TINYINT(1) NOT NULL DEFAULT 0,
@@ -36,3 +62,13 @@ CREATE TABLE IF NOT EXISTS `PREFIX_revws_review` (
   KEY `id_customer` (`id_customer`),
   KEY `id_guest` (`id_guest`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
+
+CREATE TABLE IF NOT EXISTS `PREFIX_revws_review_grade` (
+  `id_review`    INT(11) UNSIGNED NOT NULL,
+  `id_criterion` INT(11) UNSIGNED NOT NULL,
+  `grade`        DECIMAL(5,2) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id_review`, `id_criterion`)
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
+
+INSERT IGNORE INTO `PREFIX_revws_criterion`(`id_criterion`, `global`) VALUES (1, 1);
+INSERT IGNORE INTO `PREFIX_revws_criterion_lang`(`id_criterion`, `id_lang`, `label`) SELECT 1, `l`.`id_lang`, 'Quality' FROM `PREFIX_lang` `l`;

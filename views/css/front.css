@@ -8,7 +8,11 @@ a .revws-grading {
 }
 
 .revws-grade {
-  margin: 0px 2px;
+  transition: all 200ms linear;
+}
+
+.revws-grade path {
+  transition: all 250ms ease;
 }
 
 .revws-grade-off path {
@@ -19,6 +23,11 @@ a .revws-grading {
 .revws-grade-on path {
   fill: #ffd055;
   stroke: #ffd055;
+}
+
+.revws-grade-highlight path {
+  fill: #ffe066;
+  stroke: #ffe066;
 }
 
 /* review layout */
@@ -83,6 +92,7 @@ a .revws-grading {
   color: #222;
   font-weight: bold;
   font-size: 16px;
+  cursor: pointer;
 }
 
 .revws-review-content {
