@@ -1,6 +1,7 @@
 // @flow
 import 'es6-shim';
 import React from 'react';
+import { values, has, contains } from 'ramda';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -9,6 +10,8 @@ import createReducer from 'front/reducer';
 import createCommands from 'front/commands';
 import App from 'front/app';
 import { getSettings, getReviews } from 'front/settings';
+import { isObject } from 'common/utils/ramda';
+import Types from 'front/actions/types';
 
 if (window.revwsData) {
   const dev = process.env.NODE_ENV !== 'production';
@@ -33,4 +36,13 @@ if (window.revwsData) {
       <App settings={settings}/>
     </Provider>
   ), node);
+
+  window.revws = (action: any) => {
+    if (action && isObject(action) && has('type', action) && contains(action.type, values(Types))) {
+      store.dispatch(action);
+      return true;
+    } else {
+      return false;
+    }
+  };
 }

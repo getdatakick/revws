@@ -189,7 +189,7 @@ class Settings {
       if (isset($value[$key])) {
         $value = $value[$key];
       } else {
-        throw new Exception('Setting not found: '.implode($path, '>'));
+        die('Revws: setting not found: '.implode($path, '>'));
       }
     }
     return $value;
