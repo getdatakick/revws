@@ -18,3 +18,6 @@
 <div id="revws-app">
   Please wait...
 </div>
+<script>
+ startRevws({$revws|json_encode});
+</script>

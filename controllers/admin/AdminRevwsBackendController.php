@@ -18,18 +18,26 @@
 */
 
 class AdminRevwsBackendController extends ModuleAdminController {
+  public $module;
 
   public function __construct() {
     parent::__construct();
     $this->display = 'view';
     $this->bootstrap = true;
     $this->addCSS($this->getPath('views/css/back.css'));
-    $this->addJs($this->getPath('views/js/back.js'));
+    $this->addJs($this->module->getSettings()->getBackendAppUrl($this->module->name));
   }
 
   public function display() {
-    $this->context->smarty->assign('help_link', null);
-    $this->context->smarty->assign('title', $this->l('Product reviews'));
+    $settings = $this->module->getSettings();
+    $this->context->smarty->assign([
+      'help_link' => null,
+      'title' => $this->l('Product reviews'),
+      'revws' => [
+        'api' => $this->context->link->getAdminLink('AdminRevwsBackendController'),
+        'settings' => $settings->get()
+      ]
+    ]);
     return parent::display();
   }
 
@@ -42,8 +50,12 @@ class AdminRevwsBackendController extends ModuleAdminController {
     ];
   }
 
-  public function renderView() {
-    return "<div id='revws-app'>please wait...</div>";
+  public function createTemplate($tpl_name) {
+    if ($this->viewAccess() && $tpl_name === 'content.tpl') {
+      $path = $this->getPath('views/templates/admin/backend.tpl');
+      return $this->context->smarty->createTemplate($path, $this->context->smarty);
+    }
+    return parent::createTemplate($tpl_name);
   }
 
   private function getPath($path) {

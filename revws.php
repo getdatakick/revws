@@ -64,7 +64,7 @@ class Revws extends Module {
       $this->uninstallDb($dropTables) &&
       $this->unregisterHooks() &&
       $this->removeTab() &&
-      $this->getSettings()->reset() &&
+      $this->getSettings()->remove() &&
       parent::uninstall()
     );
   }

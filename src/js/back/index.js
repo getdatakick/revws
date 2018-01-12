@@ -29,7 +29,7 @@ window.startRevws = (settings: SettingsType) => {
 
   render((
     <Provider store={store}>
-      <App/>
+      <App settings={settings}/>
     </Provider>
   ), node);
 
