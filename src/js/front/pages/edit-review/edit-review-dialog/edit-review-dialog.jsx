@@ -14,7 +14,6 @@ import ErrorOutline from 'material-ui-icons/ErrorOutline';
 import { CircularProgress } from 'material-ui/Progress';
 import { fixUrl } from 'common/utils/url';
 import { validateReview, hasErrors } from 'common/utils/validation';
-import { isLoggedIn } from 'front/settings';
 import { find, assoc } from 'ramda';
 import styles from './edit-review-dialog.less';
 
@@ -55,7 +54,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
   renderDialog = (product: ProductInfoType, review: ReviewType) => {
     const { onClose, onSave, settings, stage } = this.props;
     const { name } = product;
-    const errors = validateReview(isLoggedIn(settings), review);
+    const errors = validateReview(settings.preferences.allowEmptyReviews, review);
     const withErrors = hasErrors(errors);
     const saving = stage === 'saving';
     const saved = stage === 'saved' || stage === 'failed';

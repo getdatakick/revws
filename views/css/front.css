@@ -12,7 +12,7 @@ a .revws-grading {
 }
 
 .revws-grade path {
-  transition: all 250ms ease;
+  transition: fill 250ms ease;
 }
 
 .revws-grade-off path {

@@ -17,24 +17,32 @@
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 */
 
+use \Revws\Shapes;
+
 class AdminRevwsBackendController extends ModuleAdminController {
   public $module;
 
   public function __construct() {
     parent::__construct();
     $this->display = 'view';
-    $this->bootstrap = true;
+    $this->bootstrap = false;
     $this->addCSS($this->getPath('views/css/back.css'));
+    $this->addCSS($this->getPath('views/css/front.css'));
+    $this->context->controller->addCSS('https://fonts.googleapis.com/css?family=Roboto:300,400,500', 'all');
     $this->addJs($this->module->getSettings()->getBackendAppUrl($this->module->name));
   }
 
   public function display() {
     $settings = $this->module->getSettings();
+    $this->display_footer = false;
     $this->context->smarty->assign([
       'help_link' => null,
       'title' => $this->l('Product reviews'),
       'revws' => [
-        'api' => $this->context->link->getAdminLink('AdminRevwsBackendController'),
+        'data' => [
+          'api' => $this->context->link->getAdminLink('AdminRevwsBackend'),
+          'shapes' => Shapes::getAvailableShapes(),
+        ],
         'settings' => $settings->get()
       ]
     ]);
@@ -62,7 +70,43 @@ class AdminRevwsBackendController extends ModuleAdminController {
     return _PS_MODULE_DIR_ . $this->module->name . '/' . $path;
   }
 
-  public function ajaxProcessRequest() {
+  public function ajaxProcessCommand() {
+    $moduleInstance = $this->module;
+    $error = null;
+    $result = null;
+    try {
+      $result = $this->dispatchCommand(Tools::getValue('cmd'));
+    } catch (Exception $e) {
+      $error = $e->getMessage();
+    }
+    ob_end_clean();
+    $this->reply($error, $result);
+  }
+
+  private function dispatchCommand($cmd) {
+    switch ($cmd) {
+      case 'saveSettings':
+        return $this->saveSettings();
+      default:
+        throw new Exception("Unknown command $cmd");
+    }
+  }
+
+  private function saveSettings() {
+    $settings = json_decode(Tools::getValue('settings'), true);
+    if (! $settings) {
+      throw new Exception("Failed to parse settings");
+    }
+    return !!$this->module->getSettings()->set($settings);
+  }
+
+  private function reply($error, $result) {
+    if ($error) {
+      echo json_encode(['success'=>false, 'error' => $error]);
+    } else {
+      echo json_encode(['success'=>true, 'result' => $result]);
+    }
+    die();
   }
 
 }

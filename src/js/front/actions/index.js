@@ -6,6 +6,11 @@ export type SetReviewAction = {
   review: ReviewType
 }
 
+export type ReviewRemovedAction = {
+  type: 'REVIEW_REMOVED',
+  id: number
+}
+
 export type TriggerCreateReviewAction = {
   type: 'TRIGGER_CREATE_REVIEW'
 };
@@ -74,6 +79,7 @@ export type Action = (
   TriggerEditReviewAction |
   TriggerDeleteReviewAction |
   DeleteReviewAction |
+  ReviewRemovedAction |
   CloseDeleteReviewAction |
   TriggerReportReviewAction |
   TriggerVoteAction |

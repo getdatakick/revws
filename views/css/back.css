@@ -1,0 +1,19 @@
+.nobootstrap {
+  background-color: inherit;
+}
+
+.nobootstrap label {
+  width: auto;
+  padding: initial;
+  text-align: initial;
+  font-weight: initial;
+  text-shadow: initial;
+  color: initial;
+  float: initial;
+}
+
+.revws-grading svg {
+  width: inherit;
+  height: inherit;
+  display: inherit;
+}

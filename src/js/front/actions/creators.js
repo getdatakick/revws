@@ -14,7 +14,8 @@ import type {
   TriggerEditReviewAction,
   SetReviewAction,
   TriggerVoteAction,
-  TriggerReportReviewAction
+  TriggerReportReviewAction,
+  ReviewRemovedAction
 } from './index';
 import Types from './types';
 
@@ -33,3 +34,4 @@ export const setReview = (review: ReviewType): SetReviewAction => ({ type: Types
 export const triggerDeleteReview = (review: ReviewType): TriggerDeleteReviewAction => ({ type: Types.triggerDeleteReview, review });
 export const deleteReview = (id: number): DeleteReviewAction => ({ type: Types.deleteReview, id });
 export const closeDeleteReview = (): CloseDeleteReviewAction => ({ type: Types.closeDeleteReview });
+export const reviewRemoved = (id: number): ReviewRemovedAction => ({ type: Types.reviewRemoved, id });

@@ -1,25 +1,28 @@
 // @flow
 import React from 'react';
-import type { SettingsType } from 'back/types';
+import type { GlobalDataType } from 'back/types';
 import Snackbar from 'back/pages/snackbar';
+import Settings from 'back/pages/settings';
+import styles from './app.less';
+import AppTheme from 'common/components/theme/theme';
 
 type Props = {
-  settings: SettingsType
+  data: GlobalDataType
 };
 
 class BackApp extends React.PureComponent<Props> {
   static displayName = 'BackApp';
 
   render() {
-    const { settings } = this.props;
-    const snackbarPosition = { vertical: 'top', horizontal: 'right' };
+    const { data } = this.props;
+    const snackbarPosition = { vertical: 'bottom', horizontal: 'right' };
     return (
-      <div>
-        <pre>
-          { JSON.stringify(settings, null, 2)}
-        </pre>
-        <Snackbar anchorOrigin={snackbarPosition} />
-      </div>
+      <AppTheme htmlFontSize={16}>
+        <div className={styles.app}>
+          <Settings data={data} />
+          <Snackbar anchorOrigin={snackbarPosition} />
+        </div>
+      </AppTheme>
     );
   }
 }

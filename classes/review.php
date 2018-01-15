@@ -103,12 +103,21 @@ class Review extends ObjectModel {
     return [];
   }
 
-  public function vote($up=true) {
+  public function setValidated($validated) {
+    $this->validated = $validated;
+  }
+
+  public function vote($up=true, Settings $settings) {
     // TODO
     return true;
   }
 
-  public function reportAbuse($reason) {
+  public function reportAbuse($reason, Settings $settings) {
+    // TODO
+    if ($settings->validateReportedReviews()) {
+      $this->setValidated(false);
+      $this->save();
+    }
     return true;
   }
 
@@ -237,8 +246,6 @@ class Review extends ObjectModel {
     $review->title = Tools::getValue('title');
     $review->content = Tools::getValue('content');
     $review->date_upd = new \DateTime();
-    $review->validated = false;
-    $review->hidden = false;
     $review->grades = [];
     foreach (Tools::getValue('grades') as $key => $value) {
       $review->grades[(int)$key] = (int)$value;

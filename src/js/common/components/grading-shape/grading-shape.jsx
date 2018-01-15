@@ -15,7 +15,7 @@ class GradingShape extends React.PureComponent<Props> {
 
   render() {
     const { shape, size, on, highlighted, ...rest } = this.props;
-    const { path, viewBox } = shape;
+    const { path, viewBox, strokeWidth } = shape;
     const className = classnames('revws-grade', {
       'revws-grade-on': on,
       'revws-grade-off': !on,
@@ -23,7 +23,7 @@ class GradingShape extends React.PureComponent<Props> {
     });
     return (
       <svg className={className} viewBox={viewBox} width={size} height={size} {...rest}>
-        <path d={path} />
+        <path d={path} style={{strokeWidth}}/>
       </svg>
     );
   }

@@ -1,16 +1,18 @@
 // @flow
 
 import { merge, prop } from 'ramda';
-import type { SettingsType } from 'back/types';
+import type { GlobalDataType } from 'back/types';
 import type { Command } from 'common/types';
 import type { Action } from 'back/actions';
 import { fixUrl } from 'common/utils/url';
-//import Types from 'back/actions/types';
+import Types from 'back/actions/types';
+import { saveSettings } from './save-settings';
 
 const commands = {
+  [ Types.setSettings ]: saveSettings
 };
 
-export default (settings: SettingsType) => {
+export default (settings: GlobalDataType) => {
   const api = (cmd: string, payload: any) => {
     return new Promise((resolve, reject) => {
       const success = (data) => {
@@ -26,6 +28,7 @@ export default (settings: SettingsType) => {
         type: 'POST',
         dataType: 'json',
         data: merge(payload, {
+          ajax: true,
           action: 'command',
           cmd: cmd,
         }),

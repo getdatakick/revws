@@ -16,6 +16,7 @@ export default {
   triggerDeleteReview: 'TRIGGER_DELETE_REVIEW',
   closeDeleteReview: 'CLOSE_DELETE_REVIEW',
   deleteReview: 'DELETE_REVIEW',
+  reviewRemoved: 'REVIEW_REMOVED',
 
   triggerReportReview: 'TRIGGER_REPORT_REVIEW',
   triggerVote: 'TRIGGER_VOTE',

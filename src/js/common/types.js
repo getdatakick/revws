@@ -18,7 +18,8 @@ export type Command = (any, any, Api) => void;
 
 export type GradingShapeType = {
   path: string,
-  viewBox: string
+  viewBox: string,
+  strokeWidth: number
 }
 
 export type ReviewType = {

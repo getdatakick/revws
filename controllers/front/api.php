@@ -58,7 +58,7 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
         return $this->deleteReview();
       case 'vote':
         return $this->vote();
-      case 'vote':
+      case 'report':
         return $this->reportAbuse();
       default:
         throw new Exception("Unknown command $cmd");
@@ -69,6 +69,7 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     $productId = (int)Tools::getValue('productId');
     $id = (int)Tools::getValue('id');
     $perms = $this->module->getPermissions();
+    $settings = $this->module->getSettings();
     if (! $perms->canCreateReview($productId)) {
       throw new Exception("Permission denied");
     }
@@ -76,6 +77,7 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
       throw new Exception("Invalid request");
     }
     $review = $this->getReviewPayload();
+    $review->setValidated(! $settings->validateNewReviews());
     if (! $review->save()) {
       throw new Exception('Failed to create review');
     }
@@ -85,12 +87,16 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
   private function updateReview() {
     $id = (int)Tools::getValue('id');
     $perms = $this->module->getPermissions();
+    $settings = $this->module->getSettings();
     if ($id <= 0) {
       throw new Exception("Invalid request");
     }
     $review = $this->getReviewPayload();
     if (! $perms->canEdit($review)) {
       throw new Exception("Permission denied");
+    }
+    if ($settings->validateUpdatedReviews()) {
+      $review->setValidated(false);
     }
     if (! $review->save()) {
       throw new Exception('Failed to update review');
@@ -108,23 +114,30 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
   }
 
   private function vote() {
+    $settings = $this->module->getSettings();
     $id = (int)Tools::getValue('id');
     $up = Tools::getValue('direction') === 'up';
     $review = $this->getReviewById($id);
     if (! $this->module->getPermissions()->canVote($review)) {
       throw new Exception("Permission denied");
     }
-    return $review->vote($up);
+    return $review->vote($up, $settings);
   }
 
   private function reportAbuse() {
     $id = (int)Tools::getValue('id');
     $reason = Tools::getValue('reason');
     $review = $this->getReviewById($id);
+    $settings = $this->module->getSettings();
     if (! $this->module->getPermissions()->canReportAbuse($review)) {
       throw new Exception("Permission denied");
     }
-    return $review->reportAbuse($reason);
+    if ($review->reportAbuse($reason, $settings)) {
+      return [
+        'hide' => $settings->validateReportedReviews()
+      ];
+    }
+    return false;
   }
 
   private function getReviewPayload() {

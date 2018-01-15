@@ -55,6 +55,10 @@ export default (initialReviews: ReviewListType) => {
       return {...state, reviews: deleteReview(action.id, state.reviews) };
     }
 
+    if (action.type === Types.reviewRemoved) {
+      return {...state, reviews: deleteReview(action.id, state.reviews) };
+    }
+
     if (action.type === Types.triggerVote) {
       return {...state, reviews: markVoted(action.review.id, state.reviews) };
     }

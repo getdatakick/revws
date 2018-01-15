@@ -49,15 +49,21 @@ class Settings {
         ]
       ],
       'moderation' => [
+        'enabled' => true,
+        'needApprove' => [
+          'create' => true,
+          'edit' => true,
+          'reported' => false,
+        ]
+      ],
+      'review' => [
+        'displayName' => 'fullName',
         'allowGuestReviews' => true,
-        'allowVoting' => true,
-        'allowReporting' => true,
+        'allowEmpty' => true,
         'allowDelete' => true,
         'allowEdit' => true,
-      ],
-      'authoring' => [
-        'displayName' => 'fullName',
-        'allowEmpty' => true,
+        'allowVoting' => true,
+        'allowReporting' => true,
       ]
     ];
   }
@@ -91,23 +97,23 @@ class Settings {
   }
 
   public function allowGuestReviews() {
-    return $this->toBool($this->get(['moderation', 'allowGuestReviews']));
+    return $this->toBool($this->get(['review', 'allowGuestReviews']));
   }
 
   public function isReportingAllowed() {
-    return $this->toBool($this->get(['moderation', 'allowReporting']));
+    return $this->toBool($this->get(['review', 'allowReporting']));
   }
 
   public function isVotingAllowed() {
-    return $this->toBool($this->get(['moderation', 'allowVoting']));
+    return $this->toBool($this->get(['review', 'allowVoting']));
   }
 
   public function isDeleteAllowed() {
-    return $this->toBool($this->get(['moderation', 'allowDelete']));
+    return $this->toBool($this->get(['review', 'allowDelete']));
   }
 
   public function isEditAllowed() {
-    return $this->toBool($this->get(['moderation', 'allowEdit']));
+    return $this->toBool($this->get(['review', 'allowEdit']));
   }
 
   public function showAverageOnProductPage() {
@@ -118,8 +124,24 @@ class Settings {
     return $this->toBool($this->get(['display', 'productList', 'show']));
   }
 
+  public function moderationEnabled() {
+    return $this->toBool($this->get(['moderation', 'enabled']));
+  }
+
+  public function validateNewReviews() {
+    return $this->moderationEnabled() && $this->toBool($this->get(['moderation', 'needApprove', 'create']));
+  }
+
+  public function validateUpdatedReviews() {
+    return $this->moderationEnabled() && $this->toBool($this->get(['moderation', 'needApprove', 'edit']));
+  }
+
+  public function validateReportedReviews() {
+    return $this->moderationEnabled() && $this->toBool($this->get(['moderation', 'needApprove', 'reported']));
+  }
+
   public function allowEmptyReviews() {
-    return $this->toBool($this->get(['authoring', 'allowEmpty']));
+    return $this->toBool($this->get(['review', 'allowEmpty']));
   }
 
   public function showOnProductComparison() {
@@ -127,7 +149,7 @@ class Settings {
   }
 
   public function getNamePreference() {
-    return $this->toNamePreference($this->get(['authoring', 'displayName']));
+    return $this->toNamePreference($this->get(['review', 'displayName']));
   }
 
   public function getShape() {
