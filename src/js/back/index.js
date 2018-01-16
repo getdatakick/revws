@@ -1,6 +1,6 @@
 // @flow
 import 'es6-shim';
-import type { SettingsType, GlobalDataType } from 'back/types';
+import type { FullCriteria, SettingsType, GlobalDataType } from 'back/types';
 import React from 'react';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
@@ -33,6 +33,10 @@ const watchElementSize = (node, store) => {
 };
 
 window.startRevws = (init: any) => {
+  const content = document.getElementById('content');
+  if (content) {
+    content.className = 'app-content';
+  }
   const dev = process.env.NODE_ENV !== 'production';
   const node = document.getElementById('revws-app');
   if (! node) {
@@ -41,6 +45,7 @@ window.startRevws = (init: any) => {
 
   const data: GlobalDataType = init.data;
   const settings: SettingsType = init.settings;
+  const criteria: FullCriteria = init.criteria;
 
   const commandsMiddleware = createCommands(data);
   const middlewares = [ commandsMiddleware ];
@@ -48,7 +53,7 @@ window.startRevws = (init: any) => {
     middlewares.push(logger);
   }
 
-  const reducer = createReducer(settings);
+  const reducer = createReducer(settings, criteria);
   const store = createStore(reducer, applyMiddleware(...middlewares));
 
   watchElementSize(node, store);

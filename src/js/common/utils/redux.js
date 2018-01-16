@@ -1,10 +1,11 @@
 // @flow
-import { map } from 'ramda';
+import { map, is } from 'ramda';
+const isFunction = is(Function);
 
 type Transformations = {
-  [ string ]: Function
+  [ string ]: Function | string
 };
 
 export const mapObject = (transformations: Transformations) => (object: {}) => {
-  return map(f => f(object), transformations);
+  return map(f => isFunction(f) ? f(object) : f, transformations);
 };

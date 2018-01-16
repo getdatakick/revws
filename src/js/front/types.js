@@ -21,7 +21,8 @@ export type SettingsType = {
     create: boolean
   },
   preferences: {
-    allowEmptyReviews: boolean
+    allowEmptyReviews: boolean,
+    allowReviewWithoutCriteria: boolean
   }
 }
 

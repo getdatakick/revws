@@ -1,5 +1,18 @@
 // @flow
 
+export type KeyValue = {
+  [ number ]: string
+}
+
+export type LanguagesType = {
+  [ number ]: {
+    code: string,
+    name: string
+  }
+}
+
+export type LangString = KeyValue;
+
 export type Success = {
   type: 'success',
   data: any

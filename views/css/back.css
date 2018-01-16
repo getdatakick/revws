@@ -1,19 +1,4 @@
-.nobootstrap {
-  background-color: inherit;
-}
-
-.nobootstrap label {
-  width: auto;
-  padding: initial;
-  text-align: initial;
-  font-weight: initial;
-  text-shadow: initial;
-  color: initial;
-  float: initial;
-}
-
-.revws-grading svg {
-  width: inherit;
-  height: inherit;
-  display: inherit;
+.app-content {
+  min-width: 1200px;
+  padding: 100px 30px;
 }

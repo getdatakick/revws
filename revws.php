@@ -16,6 +16,7 @@
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 */
+require_once __DIR__.'/classes/utils.php';
 require_once __DIR__.'/classes/settings.php';
 require_once __DIR__.'/classes/visitor.php';
 require_once __DIR__.'/classes/permissions.php';
@@ -236,9 +237,10 @@ class Revws extends Module {
           'create' => $set->getShapeSize() * 5
         ]
       ],
-      'criteria' => Criterion::getCriteria($this->context->language->id_lang),
+      'criteria' => Criterion::getCriteria($this->context->language->id),
       'preferences' => [
-        'allowEmptyReviews' => $set->allowEmptyReviews()
+        'allowEmptyReviews' => $set->allowEmptyReviews(),
+        'allowReviewWithoutCriteria' => $set->allowReviewWithoutCriteria()
       ]
     ];
     $this->context->smarty->assign('reviewsData', $reviewsData);

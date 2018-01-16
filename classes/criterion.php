@@ -20,32 +20,82 @@
 namespace Revws;
 use \Db;
 use \Shop;
+use \ObjectModel;
+use \Tools;
 
-class Criterion {
-  private $id;
-  private $label;
+class Criterion extends ObjectModel {
 
-  private function __construct($id, $label) {
-    $this->id = $id;
-    $this->label = $label;
-  }
+  public static $definition = [
+    'table'   => 'revws_criterion',
+    'primary' => 'id_criterion',
+    'multilang' => true,
+    'fields'  => [
+      'global'  => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
+      'active'  => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
+      // Lang fields
+      'label'   => ['type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'required' => true, 'size' => 128]
+    ],
+  ];
 
-  public static function getCriteria($idLang) {
+  public $global;
+  public $active;
+  public $label;
+  public $products = [];
+  public $categories = [];
+
+  public static function getCriteria($idLang, $activeOnly=true) {
     $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
     $id = (int)$idLang;
     $criterion = _DB_PREFIX_ . 'revws_criterion';
     $lang = _DB_PREFIX_ . 'revws_criterion_lang';
-    $query = "SELECT c.id_criterion, l.label FROM $criterion c INNER JOIN $lang l ON (c.id_criterion = l.id_criterion AND l.id_lang=$id)";
+    $query = "SELECT c.id_criterion, c.global, c.active, l.label FROM $criterion c INNER JOIN $lang l ON (c.id_criterion = l.id_criterion AND l.id_lang=$id)";
+    if ($activeOnly) {
+      $query .= " WHERE c.active = 1";
+    }
+    $query .= " ORDER BY c.id_criterion";
     $dbData = $conn->executeS($query);
     $criteria = [];
     if ($dbData) {
       foreach ($dbData as $row) {
-        $criteria[] = [
-          'id' => (int)$row['id_criterion'],
-          'label' => $row['label']
+        $id = (int)$row['id_criterion'];
+        $criteria[$id] = [
+          'id' => $id,
+          'global' => !!$row['global'],
+          'active' => !!$row['active'],
+          'label' => $row['label'],
         ];
       }
     }
+    return $criteria;
+  }
+
+  public static function getFullCriteria() {
+    $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
+    $criterion = _DB_PREFIX_ . 'revws_criterion';
+    $lang = _DB_PREFIX_ . 'revws_criterion_lang';
+    $query = "SELECT c.id_criterion, c.global, c.active, l.id_lang, l.label FROM $criterion c INNER JOIN $lang l ON (c.id_criterion = l.id_criterion)";
+    $dbData = $conn->executeS($query);
+    $criteria = [];
+    if ($dbData) {
+      foreach ($dbData as $row) {
+        $id = (int)$row['id_criterion'];
+        $label = $row['label'];
+        $lang = $row['id_lang'];
+        if (isset($criteria[$id])) {
+          $criteria[$id]->label[$lang] = $label;
+        } else {
+          $crit = new Criterion();
+          $crit->id = $id;
+          $crit->global = (bool)$row['global'];
+          $crit->active = (bool)$row['active'];
+          $crit->label = [ $lang => $label ];
+          $criteria[$id] = $crit;
+        }
+      }
+    }
+    // load product / category associations
+    self::addProductAssociations($criteria);
+    self::addCategoryAssociations($criteria);
     return $criteria;
   }
 
@@ -80,6 +130,138 @@ class Criterion {
       }
     }
     return $criterions;
+  }
+
+  public function delete() {
+    $ret = parent::delete();
+    $ret &= $this->deleteProductAssociation();
+    $ret &= $this->deleteCategoryAssociation();
+    $ret &= $this->deleteReviews();
+    return $ret;
+  }
+
+  public function save() {
+    $ret = parent::save();
+    $ret &= $this->saveProductAssociations();
+    $ret &= $this->saveCategoryAssociations();
+    return $ret;
+  }
+
+  public function saveProductAssociations() {
+    $this->deleteProductAssociation();
+    $id = (int)$this->id;
+    $conn = Db::getInstance();
+    foreach ($this->products as $productId) {
+      $conn->insert('revws_criterion_product', [
+        'id_criterion' => $id,
+        'id_product' => (int)$productId,
+      ]);
+    }
+    return true;
+  }
+
+  public function saveCategoryAssociations() {
+    $this->deleteCategoryAssociation();
+    $id = (int)$this->id;
+    $conn = Db::getInstance();
+    foreach ($this->categories as $categoryId) {
+      $conn->insert('revws_criterion_category', [
+        'id_criterion' => $id,
+        'id_category' => (int)$categoryId,
+      ]);
+    }
+    return true;
+  }
+
+  public function deleteProductAssociation($id=null) {
+    $id = (int)(is_null($id) ? $this->id : $id);
+    return Db::getInstance()->delete('revws_criterion_product', "id_criterion = $id");
+  }
+
+  public function deleteCategoryAssociation($id=null) {
+    $id = (int)(is_null($id) ? $this->id : $id);
+    return Db::getInstance()->delete('revws_criterion_category', "id_criterion = $id");
+  }
+
+  public function deleteReviews($id=null) {
+    $id = (int)(is_null($id) ? $this->id : $id);
+    return Db::getInstance()->delete('revws_review_grade', "id_criterion = $id");
+  }
+
+  public static function fromJson($json) {
+    $id = isset($json['id']) ? (int)$json['id'] : null;
+    if ($id === -1) {
+      $id = null;
+    }
+    $crit = new Criterion($id);
+    $crit->label = $json['label'];
+    $crit->active = (bool)$json['active'];
+    $crit->global = (bool)$json['global'];
+    $crit->products = isset($json['products']) ? $json['products'] : [];
+    $crit->categories = isset($json['categories']) ? $json['categories'] : [];
+    return $crit;
+  }
+
+  public function toJson() {
+    return self::toJSData($this);
+  }
+
+  public static function toJSData($crit) {
+    return [
+      'id' => (int)$crit->id,
+      'global' => (bool)$crit->global,
+      'active' => (bool)$crit->active,
+      'label' => Utils::toKeyValue($crit->label),
+      'products' => Utils::toIntArray($crit->products),
+      'categories' => Utils::toIntArray($crit->categories)
+    ];
+  }
+
+  private static function addProductAssociations($crits) {
+    $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
+    $shop = (int)Shop::getContextShopID();
+    $ps = _DB_PREFIX_ . 'product_shop';
+    $pl = _DB_PREFIX_ . 'product_lang';
+    $cp = _DB_PREFIX_ . 'revws_criterion_product';
+    $query = "
+      SELECT cp.id_criterion, ps.id_product
+        FROM $ps ps
+        INNER JOIN $cp cp ON (cp.id_product = ps.id_product)
+        WHERE ps.id_shop=$shop";
+    $dbData = $conn->executeS($query);
+    if ($dbData) {
+      foreach ($dbData as $row) {
+        $id = (int)$row['id_criterion'];
+        $productId = (int)$row['id_product'];
+        if (isset($crits[$id])) {
+          $crit = $crits[$id];
+          $crit->products[] = $productId;
+        }
+      }
+    }
+  }
+
+  private static function addCategoryAssociations($crits) {
+    $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
+    $shop = (int)Shop::getContextShopID();
+    $cs = _DB_PREFIX_ . 'category_shop';
+    $cc = _DB_PREFIX_ . 'revws_criterion_category';
+    $query = "
+      SELECT cc.id_criterion, cs.id_category
+        FROM $cs cs
+        INNER JOIN $cc cc ON (cc.id_category = cs.id_category)
+        WHERE cs.id_shop=$shop";
+    $dbData = $conn->executeS($query);
+    if ($dbData) {
+      foreach ($dbData as $row) {
+        $id = (int)$row['id_criterion'];
+        $catId = (int)$row['id_category'];
+        if (isset($crits[$id])) {
+          $crit = $crits[$id];
+          $crit->categories[] = $catId;
+        }
+      }
+    }
   }
 
 }

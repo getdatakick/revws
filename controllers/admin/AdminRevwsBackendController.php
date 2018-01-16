@@ -17,7 +17,9 @@
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 */
 
+use \Revws\Utils;
 use \Revws\Shapes;
+use \Revws\Criterion;
 
 class AdminRevwsBackendController extends ModuleAdminController {
   public $module;
@@ -35,6 +37,14 @@ class AdminRevwsBackendController extends ModuleAdminController {
   public function display() {
     $settings = $this->module->getSettings();
     $this->display_footer = false;
+    $languages = [];
+    foreach (Language::getLanguages() as $lang) {
+      $languages[(int)$lang['id_lang']] = [
+        'code' => $lang['iso_code'],
+        'name' => $lang['name']
+      ];
+    };
+    $lang = $this->context->language->id;
     $this->context->smarty->assign([
       'help_link' => null,
       'title' => $this->l('Product reviews'),
@@ -42,7 +52,10 @@ class AdminRevwsBackendController extends ModuleAdminController {
         'data' => [
           'api' => $this->context->link->getAdminLink('AdminRevwsBackend'),
           'shapes' => Shapes::getAvailableShapes(),
+          'languages' => $languages,
+          'language' => $lang,
         ],
+        'criteria' => array_map(array('\Revws\Criterion', 'toJSData'), Criterion::getFullCriteria()),
         'settings' => $settings->get()
       ]
     ]);
@@ -84,16 +97,58 @@ class AdminRevwsBackendController extends ModuleAdminController {
   }
 
   private function dispatchCommand($cmd) {
+    $payload = json_decode(Tools::getValue('payload'), true);
     switch ($cmd) {
+      case 'loadData':
+        return $this->loadData($payload);
       case 'saveSettings':
-        return $this->saveSettings();
+        return $this->saveSettings($payload);
+      case 'deleteCriterion':
+        return $this->deleteCriterion($payload);
+      case 'saveCriterion':
+        return $this->saveCriterion($payload);
       default:
         throw new Exception("Unknown command $cmd");
     }
   }
 
-  private function saveSettings() {
-    $settings = json_decode(Tools::getValue('settings'), true);
+  private function loadData($payload) {
+    $ret = [];
+    $types = $payload['types'];
+    if (in_array('products', $types)) {;
+      $ret['products'] = $this->getProducts();
+    }
+    if (in_array('categories', $types)) {
+      $ret['categories'] = $this->getCategories();
+    }
+    return $ret;
+  }
+
+  private function getProducts() {
+    return Utils::mapKeyValue('id_product', 'name', Product::getSimpleProducts($this->context->language->id));
+  }
+
+  private function getCategories() {
+    return Utils::mapKeyValue('id_category', 'name', Category::getAllCategoriesName(
+      null, $this->context->language->id, true, null, true, "AND `c`.`level_depth` > 0"
+    ));
+  }
+
+  private function deleteCriterion($payload) {
+    $crit = new Criterion((int)$payload['id']);
+    if (! Validate::isLoadedObject($crit)) {
+      throw new Exception('Criterion not found');
+    }
+    return $crit->delete();
+  }
+
+  private function saveCriterion($json) {
+    $crit = Criterion::fromJson($json);
+    $crit->save();
+    return $crit->toJson();
+  }
+
+  private function saveSettings($settings) {
     if (! $settings) {
       throw new Exception("Failed to parse settings");
     }

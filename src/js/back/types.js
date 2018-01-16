@@ -1,5 +1,5 @@
 // @flow
-import type { GradingShapeType } from 'common/types';
+import type { KeyValue, LangString, LanguagesType, GradingShapeType } from 'common/types';
 
 export type SettingsType = {
   theme: {
@@ -46,5 +46,19 @@ export type GlobalDataType = {
   shapes: {
     [ string ]: GradingShapeType
   },
+  language: number,
+  languages: LanguagesType
+}
 
+export type FullCriterion = {
+  id: number,
+  active: boolean,
+  global: boolean,
+  label: LangString,
+  products: Array<number>,
+  categories: Array<number>
+}
+
+export type FullCriteria = {
+  [ number ]: FullCriterion
 }

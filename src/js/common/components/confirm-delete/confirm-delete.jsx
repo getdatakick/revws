@@ -5,33 +5,34 @@ import type { ComponentType } from 'react';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, withMobileDialog } from 'material-ui/Dialog';
 import Question from 'material-ui-icons/HelpOutline';
-import styles from './delete-review-confirm.less';
+import styles from './confirm-delete.less';
 
-type InputProps = {
-  reviewId: ?number,
-  onConfirm: (number)=>void,
+type InputProps<T> = {
+  type: string,
+  payload: ?T,
+  onConfirm: (T)=>void,
   onClose: ()=>void
 }
 
-type Props = InputProps & {
+type Props<T> = InputProps<T> & {
   fullScreen: boolean
 }
 
-class DeleteReviewConfirm extends React.PureComponent<Props> {
+class DeleteReviewConfirm<T> extends React.PureComponent<Props<T>> {
   static displayName = 'DeleteReviewConfirm';
 
   render() {
-    const { onClose, reviewId, fullScreen } = this.props;
+    const { onClose, payload, fullScreen, type } = this.props;
     return (
       <Dialog
         fullScreen={fullScreen}
         fullWidth={true}
         maxWidth='md'
-        open={!! reviewId}
+        open={!! payload}
         onClose={onClose} >
         <DialogContent>
           <div className={styles.single}>
-            <h2>Are you sure you want to delete this review?</h2>
+            <h2>Are you sure you want to delete this { type }?</h2>
             <Question style={{width: 120, height: 120}} color='error' />
           </div>
         </DialogContent>
@@ -40,7 +41,7 @@ class DeleteReviewConfirm extends React.PureComponent<Props> {
             Cancel
           </Button>
           <Button onClick={this.onDelete} color="accent">
-            Delete review
+            Delete { type }
           </Button>
         </DialogActions>
       </Dialog>
@@ -48,9 +49,9 @@ class DeleteReviewConfirm extends React.PureComponent<Props> {
   }
 
   onDelete = () => {
-    const { onConfirm, reviewId } = this.props;
-    if (reviewId) {
-      onConfirm(reviewId);
+    const { onConfirm, payload } = this.props;
+    if (payload) {
+      onConfirm(payload);
     }
   }
 }
@@ -59,6 +60,6 @@ const makeResponsive = withMobileDialog({
   breakpoint: 'xs'
 });
 
-const Responsive: ComponentType<InputProps> = makeResponsive(DeleteReviewConfirm);
+const Responsive: ComponentType<InputProps<number>> = makeResponsive(DeleteReviewConfirm);
 
 export default Responsive;

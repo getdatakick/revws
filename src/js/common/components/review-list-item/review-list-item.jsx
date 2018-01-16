@@ -21,16 +21,19 @@ class ReviewListItem extends React.PureComponent<Props> {
   render() {
     const { shape, shapeSize, onReport, onEdit, onDelete, onVote, review } = this.props;
     const { displayName, date, title, underReview, content, canVote, canReport, canEdit, canDelete, grades } = review;
+    const vals = values(grades);
     return (
       <div className="revws-review row no-gutter">
         <div className="col-sm-3 col-md-2">
           <div className="revws-review-author">
             <div className="revws-review-author-name">{ displayName }</div>
-            <Grading
-              grade={averageGrade(grades)}
-              shape={shape}
-              size={shapeSize}
-            />
+            { vals.length > 0 ? (
+              <Grading
+                grade={averageGrade(vals)}
+                shape={shape}
+                size={shapeSize}
+              />
+            ) : undefined}
             <div className="revws-review-date">{formatDate(date)}</div>
           </div>
         </div>
@@ -109,8 +112,7 @@ const formatDate = (date: Date): string => {
   return moment(date).format('MM/DD/YYYY');
 };
 
-const averageGrade = (grades): number => {
-  const vals = values(grades);
+const averageGrade = (vals: Array<number>): number => {
   const cnt = vals.length;
   if (cnt) {
     const sum = reduce(add, 0, vals);

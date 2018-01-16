@@ -67,11 +67,21 @@ class Review extends ObjectModel {
   }
 
   public function save() {
-    $ok = parent::save();
-    if ($ok) {
-      $this->saveGrades();
-    }
-    return $ok;
+    $ret = parent::save();
+    $ret &= $this->saveGrades();
+    return $ret;
+  }
+
+  public function delete() {
+    $ret = parent::delete();
+    $ret &= $this->deleteGrades();
+    return $ret;
+  }
+
+  public function deleteGrades() {
+    $conn = Db::getInstance();
+    $id = (int)$this->id;
+    return $conn->delete('revws_review_grade', "id_review = $id ");
   }
 
   public static function getByProduct($productId, $visitor=null, $onlyValidated=true, $showHidden=false, $showDeleted=false) {
@@ -122,20 +132,23 @@ class Review extends ObjectModel {
   }
 
   private function saveGrades() {
-    $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
-    $id = (int)$this->id;
-    if ($id) {
-      $conn->delete('revws_review_grade', "id_review = $id ");
-      foreach ($this->grades as $key => $value) {
-        $conn->insert('revws_review_grade',
-          [
-            'id_review' => $id,
-            'id_criterion' => (int)$key,
-            'grade' => (int)$value
-          ]
-        );
+    if ($this->grades) {
+      $conn = Db::getInstance();
+      $id = (int)$this->id;
+      if ($id) {
+        $this->deleteGrades();
+        foreach ($this->grades as $key => $value) {
+          $conn->insert('revws_review_grade',
+            [
+              'id_review' => $id,
+              'id_criterion' => (int)$key,
+              'grade' => (int)$value
+            ]
+          );
+        }
       }
     }
+    return true;
   }
 
   public function loadGrades() {

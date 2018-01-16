@@ -59,6 +59,7 @@ class Settings {
       'review' => [
         'displayName' => 'fullName',
         'allowGuestReviews' => true,
+        'allowReviewWithoutCriteria' => false,
         'allowEmpty' => true,
         'allowDelete' => true,
         'allowEdit' => true,
@@ -98,6 +99,10 @@ class Settings {
 
   public function allowGuestReviews() {
     return $this->toBool($this->get(['review', 'allowGuestReviews']));
+  }
+
+  public function allowReviewWithoutCriteria() {
+    return $this->toBool($this->get(['review', 'allowReviewWithoutCriteria']));
   }
 
   public function isReportingAllowed() {

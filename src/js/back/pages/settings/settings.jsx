@@ -14,6 +14,7 @@ import Checkbox from 'material-ui/Checkbox';
 import Preview from './review-preview';
 import MenuItem from 'material-ui/Menu/MenuItem';
 import TextField from 'material-ui/TextField';
+import CriteriaSection from './criteria-section';
 import styles from './style.less';
 
 type Props = {
@@ -75,6 +76,11 @@ class Settings extends React.PureComponent<Props, State> {
         key: 'moderation',
         label: 'Review moderation',
         content: this.renderModeration()
+      },
+      {
+        key: 'criteria',
+        label: 'Review criteria',
+        content: this.renderCriteria()
       }
     ];
     const items = map(sectionKey, sections);
@@ -181,6 +187,15 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
+  renderCriteria = () => {
+    const { languages, language } = this.props.data;
+    return (
+      <CriteriaSection
+        language={language}
+        languages={languages}/>
+    );
+  }
+
   renderSwitch = (key: Array<string>) => (
     <Switch
       key={last(key)}
@@ -200,7 +215,11 @@ class Settings extends React.PureComponent<Props, State> {
       <FormGroup>
         <FormControlLabel
           control={this.renderSwitch(['review', 'allowEmpty'])}
-          label="Allow empty reviews"
+          label="Allow reviews without details"
+        />
+        <FormControlLabel
+          control={this.renderSwitch(['review', 'allowReviewWithoutCriteria'])}
+          label="Allow reviews for products without review criteria"
         />
         <FormControlLabel
           control={this.renderSwitch(['review', 'allowGuestReviews'])}

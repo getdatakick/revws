@@ -38,6 +38,7 @@
     "webpack-stream": "^4.0.0"
   },
   "dependencies": {
+    "autosuggest-highlight": "^3.1.1",
     "element-resize-detector": "^1.1.12",
     "es6-shim": "^0.35.3",
     "material-ui": "^1.0.0-beta.27",
@@ -45,9 +46,11 @@
     "moment": "^2.20.1",
     "ramda": "^0.25.0",
     "react": "^16.2.0",
+    "react-autosuggest": "^9.3.2",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "react-scrollspy": "^3.3.5",
+    "react-swipeable-views": "^0.12.12",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "validator": "^9.2.0"

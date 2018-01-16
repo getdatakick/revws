@@ -1,8 +1,9 @@
 // @flow
 import type { ReviewType, ReviewListType } from 'common/types';
 import type { SettingsType } from 'front/types';
-import { assoc, map, has, prop, indexBy } from 'ramda';
+import { assoc, map, has, prop } from 'ramda';
 import { isObject, isString, isArray } from 'common/utils/ramda';
+import { asObject } from 'common/utils/input';
 
 export const getSettings = (input: any): SettingsType => {
   if (! isObject(input)) {
@@ -16,7 +17,7 @@ export const getSettings = (input: any): SettingsType => {
   const preferences = get('preferences', isObject, input);
   const permissions = get('permissions', isObject, input);
   const product = get('product', isObject, input);
-  const criteria = indexBy(prop('id'), get('criteria', isArray, input));
+  const criteria = asObject(get('criteria', isObject, input));
   const api = get('api', isString, input);
 
   return {

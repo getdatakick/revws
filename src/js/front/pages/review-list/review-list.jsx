@@ -2,6 +2,7 @@
 import React from 'react';
 import type { ReviewListType, ReviewType } from 'common/types';
 import type { SettingsType } from 'front/types';
+import { values } from 'ramda';
 import ReviewList from 'common/components/review-list/review-list';
 
 type Props = {
@@ -21,12 +22,24 @@ class FrontAppReviewList extends React.PureComponent<Props> {
     const { settings, ...rest } = this.props;
     return (
       <ReviewList
-        canCreate={settings.permissions.create}
+        canCreate={this.canCreate()}
         shape={settings.shape}
         shapeSize={settings.shapeSize.product}
         {...rest}
       />
     );
+  }
+
+  canCreate = () => {
+    const settings = this.props.settings;
+    if (! settings.permissions.create) {
+      return false;
+    }
+    const hasCriteria = values(settings.criteria).length > 0;
+    if (hasCriteria) {
+      return true;
+    }
+    return settings.preferences.allowReviewWithoutCriteria;
   }
 }
 
