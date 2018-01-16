@@ -19,7 +19,6 @@
 
 use \Revws\Utils;
 use \Revws\Shapes;
-use \Revws\Criterion;
 
 class AdminRevwsBackendController extends ModuleAdminController {
   public $module;
@@ -135,7 +134,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
   }
 
   private function deleteCriterion($payload) {
-    $crit = new Criterion((int)$payload['id']);
+    $crit = new RevwsCriterion((int)$payload['id']);
     if (! Validate::isLoadedObject($crit)) {
       throw new Exception('Criterion not found');
     }
