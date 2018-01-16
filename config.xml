@@ -4,7 +4,7 @@
 	<displayName><![CDATA[Product Reviews]]></displayName>
 	<version><![CDATA[0.0.1]]></version>
 	<description><![CDATA[Product Reviews module]]></description>
-	<author><![CDATA[DataKick <petr@getdatakick.com>]]></author>
+	<author><![CDATA[DataKick &lt;petr@getdatakick.com&gt;]]></author>
 	<tab><![CDATA[administration]]></tab>
 	<confirmUninstall><![CDATA[Are you sure you want to uninstall the module? All its data will be lost!]]></confirmUninstall>
 	<is_configurable>1</is_configurable>

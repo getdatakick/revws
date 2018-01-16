@@ -88,7 +88,7 @@ class Settings {
   public function getBackendAppUrl($moduleName) {
     $url = Configuration::get(self::BACKEND_APP_URL);
     if (! $url) {
-      $url = _PS_MODULE_DIR_ . $moduleName . '/views/js/back.js';
+      $url = _PS_MODULE_DIR_ . $moduleName . '/views/js/back_app.js';
     }
     return $url;
   }

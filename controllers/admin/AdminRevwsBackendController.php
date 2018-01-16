@@ -55,7 +55,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
           'languages' => $languages,
           'language' => $lang,
         ],
-        'criteria' => array_map(array('\Revws\Criterion', 'toJSData'), Criterion::getFullCriteria()),
+        'criteria' => array_map(array('RevwsCriterion', 'toJSData'), RevwsCriterion::getFullCriteria()),
         'settings' => $settings->get()
       ]
     ]);
@@ -143,7 +143,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
   }
 
   private function saveCriterion($json) {
-    $crit = Criterion::fromJson($json);
+    $crit = RevwsCriterion::fromJson($json);
     $crit->save();
     return $crit->toJson();
   }

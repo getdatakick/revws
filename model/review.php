@@ -16,13 +16,11 @@
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 */
+use \Revws\Visitor;
+use \Revws\Settings;
+use \Revws\Permissions;
 
-namespace Revws;
-use \Db;
-use \Tools;
-use \ObjectModel;
-
-class Review extends ObjectModel {
+class RevwsReview extends ObjectModel {
 
   public static $definition = [
     'table'   => 'revws_review',
@@ -228,7 +226,7 @@ class Review extends ObjectModel {
   }
 
   private static function mapDbData($dbData) {
-    $review = new Review();
+    $review = new RevwsReview();
     $review->id = $dbData['id_review'];
     $review->id_guest = $dbData['id_guest'];
     $review->id_customer = $dbData['id_customer'];
@@ -250,7 +248,7 @@ class Review extends ObjectModel {
     if ($id === -1) {
       $id = null;
     }
-    $review = new Review($id);
+    $review = new RevwsReview($id);
     $review->id_guest = $visitor->isCustomer() ? 0 : $visitor->getId();
     $review->id_customer = $visitor->isCustomer() ? $visitor->getId() : 0;
     $review->id_product = (int)Tools::getValue('productId');
@@ -260,8 +258,11 @@ class Review extends ObjectModel {
     $review->content = Tools::getValue('content');
     $review->date_upd = new \DateTime();
     $review->grades = [];
-    foreach (Tools::getValue('grades') as $key => $value) {
-      $review->grades[(int)$key] = (int)$value;
+    $grades = Tools::getValue('grades');
+    if (is_array($grades)) {
+      foreach (Tools::getValue('grades') as $key => $value) {
+        $review->grades[(int)$key] = (int)$value;
+      }
     }
     return $review;
   }

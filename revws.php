@@ -18,18 +18,17 @@
 */
 require_once __DIR__.'/classes/utils.php';
 require_once __DIR__.'/classes/settings.php';
-require_once __DIR__.'/classes/visitor.php';
 require_once __DIR__.'/classes/permissions.php';
-require_once __DIR__.'/classes/review.php';
-require_once __DIR__.'/classes/criterion.php';
 require_once __DIR__.'/classes/shapes.php';
+require_once __DIR__.'/classes/visitor.php';
+
+require_once __DIR__.'/model/criterion.php';
+require_once __DIR__.'/model/review.php';
 
 use \Revws\Settings;
 use \Revws\Permissions;
 use \Revws\Visitor;
-use \Revws\Review;
 use \Revws\Shapes;
-use \Revws\Criterion;
 
 class Revws extends Module {
   private $settings;
@@ -204,7 +203,7 @@ class Revws extends Module {
       'name' => $productName,
       'url' => $product->getLink(),
       'image' => $image,
-      'criteria' => Criterion::getByProduct($productId),
+      'criteria' => RevwsCriterion::getByProduct($productId),
     ];
   }
 
@@ -213,7 +212,7 @@ class Revws extends Module {
     $perms = $this->getPermissions();
     $set = $this->getSettings();
     $reviews = [];
-    foreach (Review::getByProduct($productId, $visitor) as $review) {
+    foreach (RevwsReview::getByProduct($productId, $visitor) as $review) {
       $reviews[] = $review->toJSData($perms);
     }
     $reviewsData = [
@@ -237,7 +236,7 @@ class Revws extends Module {
           'create' => $set->getShapeSize() * 5
         ]
       ],
-      'criteria' => Criterion::getCriteria($this->context->language->id),
+      'criteria' => RevwsCriterion::getCriteria($this->context->language->id),
       'preferences' => [
         'allowEmptyReviews' => $set->allowEmptyReviews(),
         'allowReviewWithoutCriteria' => $set->allowReviewWithoutCriteria()
@@ -281,7 +280,7 @@ class Revws extends Module {
   public function hookDisplayRightColumnProduct($params) {
     if ($this->getSettings()->showAverageOnProductPage()) {
       $productId = (int)(Tools::getValue('id_product'));
-      list($grade, $count) = Review::getAverageGrade($productId);
+      list($grade, $count) = RevwsReview::getAverageGrade($productId);
       $this->context->smarty->assign('productId', $productId);
       $this->context->smarty->assign('grade', $grade);
       $this->context->smarty->assign('reviewCount', $count);
@@ -294,7 +293,7 @@ class Revws extends Module {
   public function hookDisplayProductListReviews($params) {
     if ($this->getSettings()->showOnProductListing()) {
       $productId = (int) $params['product']['id_product'];
-      list($grade, $count) = Review::getAverageGrade($productId);
+      list($grade, $count) = RevwsReview::getAverageGrade($productId);
       if ($count > 0) {
         $this->context->smarty->assign('productId', $productId);
         $this->context->smarty->assign('grade', $grade);
@@ -311,7 +310,7 @@ class Revws extends Module {
       $averages = [];
       foreach ($params['list_ids_product'] as $idProduct) {
         $productId = (int)$idProduct;
-        $averages[$productId] = Review::getAverageGrade($productId);
+        $averages[$productId] = RevwsReview::getAverageGrade($productId);
       }
       $this->context->smarty->assign('averages', $averages);
       $this->context->smarty->assign('shape', $this->getShapeSettings());

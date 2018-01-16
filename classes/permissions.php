@@ -19,6 +19,7 @@
 
 namespace Revws;
 use \Configuration;
+use \RevwsReview;
 
 class Permissions {
   private $settings;
@@ -36,7 +37,7 @@ class Permissions {
     return true;
   }
 
-  public function canReportAbuse(Review $review) {
+  public function canReportAbuse(RevwsReview $review) {
     if (! $this->settings->isReportingAllowed()) {
       return false;
     }
@@ -49,7 +50,7 @@ class Permissions {
     return true;
   }
 
-  public function canVote(Review $review) {
+  public function canVote(RevwsReview $review) {
     if (! $this->settings->isVotingAllowed()) {
       return false;
     }
@@ -62,14 +63,14 @@ class Permissions {
     return true;
   }
 
-  public function canDelete(Review $review) {
+  public function canDelete(RevwsReview $review) {
     if (! $this->settings->isDeleteAllowed()) {
       return false;
     }
     return $review->isOwner($this->visitor);
   }
 
-  public function canEdit(Review $review) {
+  public function canEdit(RevwsReview $review) {
     if (! $this->settings->isEditAllowed()) {
       return false;
     }

@@ -17,13 +17,9 @@
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 */
 
-namespace Revws;
-use \Db;
-use \Shop;
-use \ObjectModel;
-use \Tools;
+use \Revws\Utils;
 
-class Criterion extends ObjectModel {
+class RevwsCriterion extends ObjectModel {
 
   public static $definition = [
     'table'   => 'revws_criterion',
@@ -84,7 +80,7 @@ class Criterion extends ObjectModel {
         if (isset($criteria[$id])) {
           $criteria[$id]->label[$lang] = $label;
         } else {
-          $crit = new Criterion();
+          $crit = new RevwsCriterion();
           $crit->id = $id;
           $crit->global = (bool)$row['global'];
           $crit->active = (bool)$row['active'];
@@ -193,7 +189,7 @@ class Criterion extends ObjectModel {
     if ($id === -1) {
       $id = null;
     }
-    $crit = new Criterion($id);
+    $crit = new RevwsCriterion($id);
     $crit->label = $json['label'];
     $crit->active = (bool)$json['active'];
     $crit->global = (bool)$json['global'];

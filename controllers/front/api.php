@@ -141,11 +141,11 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
   }
 
   private function getReviewPayload() {
-    return Review::fromRequest($this->module->getVisitor());
+    return RevwsReview::fromRequest($this->module->getVisitor());
   }
 
   private function getReviewById($id) {
-    $review = new Review($id);
+    $review = new RevwsReview($id);
     if (! Validate::isLoadedObject($review)) {
       throw new Exception('Review not found');
     }
@@ -153,7 +153,7 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
   }
 
   private function returnReview($id){
-    $review = new Review($id);
+    $review = new RevwsReview($id);
     $review->loadGrades();
     return $review->toJSData($this->module->getPermissions());
   }
