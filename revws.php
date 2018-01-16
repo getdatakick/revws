@@ -187,11 +187,11 @@ class Revws extends Module {
   }
 
   private function getProductData($productId) {
-    $product = new \Product($productId);
+    $product = new Product($productId);
     $lang = $this->context->language->id;
     $productName = $product->getProductName($product->id);
     $link = $this->context->link;
-    $res = $product->getCover($lang);
+    $res = Product::getCover($productId, $this->context);
     $image = null;
     if ($res) {
       $imageId = (int)$res['id_image'];
