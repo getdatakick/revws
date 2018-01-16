@@ -1,5 +1,4 @@
 // @flow
-import 'es6-shim';
 import type { FullCriteria, SettingsType, GlobalDataType } from 'back/types';
 import React from 'react';
 import { render } from 'react-dom';

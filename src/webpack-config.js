@@ -1,10 +1,11 @@
 var path = require('path');
 var webpack = require('webpack');
+var Visualizer = require('webpack-visualizer-plugin');
 
 module.exports = function(prod) {
   var plugins = [];
-  var front = [ "./js/front" ];
-  var back = [ "./js/back" ];
+  var front = [ "babel-polyfill", "./js/front" ];
+  var back = [ "babel-polyfill", "./js/back" ];
 
   if (! prod) {
     plugins.push(new webpack.DefinePlugin({
@@ -16,6 +17,7 @@ module.exports = function(prod) {
     }));
     plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
     plugins.push(new webpack.optimize.UglifyJsPlugin({ sourceMap: true, }));
+    plugins.push(new Visualizer());
   }
 
   return {
@@ -47,7 +49,7 @@ module.exports = function(prod) {
 
     entry: {
       'front_app': front,
-      back: back
+      'back_app': back
     },
 
     resolve: {

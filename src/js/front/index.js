@@ -1,5 +1,4 @@
 // @flow
-import 'es6-shim';
 import React from 'react';
 import { values, has, contains } from 'ramda';
 import { render } from 'react-dom';

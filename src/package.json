@@ -35,12 +35,13 @@
     "webpack-dev-middleware": "^2.0.1",
     "webpack-dev-server": "^2.5.0",
     "webpack-hot-middleware": "^2.18.1",
-    "webpack-stream": "^4.0.0"
+    "webpack-stream": "^4.0.0",
+    "webpack-visualizer-plugin": "^0.1.11"
   },
   "dependencies": {
     "autosuggest-highlight": "^3.1.1",
+    "babel-polyfill": "^6.26.0",
     "element-resize-detector": "^1.1.12",
-    "es6-shim": "^0.35.3",
     "material-ui": "^1.0.0-beta.27",
     "material-ui-icons": "^1.0.0-beta.17",
     "moment": "^2.20.1",

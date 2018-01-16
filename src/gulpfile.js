@@ -47,6 +47,12 @@ gulp.task('build-javascript', function(done) {
     .on('end', done);
 });
 
-gulp.task('build', gulp.series('build-javascript'));
+gulp.task('copy-javascript', function(done) {
+  gulp.src('./build/*.js')
+    .pipe(gulp.dest('../views/js'))
+    .on('end', done);
+});
+
+gulp.task('build', gulp.series('build-javascript', 'copy-javascript'));
 
 gulp.task('default', gulp.series('devel'));

@@ -2,7 +2,6 @@
 import React from 'react';
 import type { GradingShapeType, ReviewType } from 'common/types';
 import { reduce, add, values } from 'ramda';
-import moment from 'moment';
 import Grading from 'common/components/grading/grading';
 
 type Props = {
@@ -109,8 +108,13 @@ class ReviewListItem extends React.PureComponent<Props> {
 }
 
 const formatDate = (date: Date): string => {
-  return moment(date).format('MM/DD/YYYY');
+  var month = pad(date.getMonth()+1);
+  var day = pad(date.getDate());
+  var year = date.getFullYear();
+  return month + "/" + day + "/" + year;
 };
+
+const pad = (value) => ('00'+value).substr(-2);
 
 const averageGrade = (vals: Array<number>): number => {
   const cnt = vals.length;
