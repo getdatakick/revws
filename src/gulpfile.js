@@ -6,8 +6,25 @@ var WebpackDevServer = require("webpack-dev-server");
 var config = require('./webpack-config');
 var del = require('del');
 var eslint = require('gulp-eslint');
+var zip = require('gulp-zip');
+var ramda = require('ramda');
+var fs = require('fs');
+var path = require('path');
+var merge = require('merge-stream');
+var { append, prepend, map, flatten } = ramda;
 
 var deployDir = "./build";
+
+function getFolders(dir) {
+  return flatten(fs
+    .readdirSync(dir)
+    .filter(file => fs.statSync(path.join(dir, file)).isDirectory())
+    .map(file => {
+      const subdirs = getFolders(dir+'/'+file);
+      return prepend(dir+'/'+file, subdirs);
+    })
+  );
+}
 
 gulp.task("devel", function() {
   gulp.src(['./index.html']).pipe(gulp.dest(deployDir));
@@ -53,6 +70,39 @@ gulp.task('copy-javascript', function(done) {
     .on('end', done);
 });
 
-gulp.task('build', gulp.series('build-javascript', 'copy-javascript'));
+gulp.task('create-zip', function(done) {
+  return gulp
+    .src('./build/staging/**/*')
+    .pipe(zip('revws.zip'))
+    .pipe(gulp.dest('./build'));
+});
+
+gulp.task('copy-files', function(done) {
+  const ext = ['php', 'tpl', 'css', 'js', 'xml', 'md', 'sql'];
+  const sources = append('!../src/**', map(e => '../**/*.'+e, ext));
+  return gulp
+    .src(sources)
+    .pipe(gulp.dest('./build/staging/revws'))
+    .on('end', done);
+});
+
+gulp.task('copy-build', function(done) {
+  return gulp
+    .src(['./build/front_app.js', './build/back_app.js'])
+    .pipe(gulp.dest('./build/staging/revws/views/js'))
+    .on('end', done);
+});
+
+gulp.task('create-index', function(done) {
+  var folders = getFolders('./build/staging/revws');
+  var tasks = folders.map(folder => gulp.src('../index.php').pipe(gulp.dest(folder)));
+  return merge(tasks);
+});
+
+gulp.task('stage', gulp.series('copy-files', 'copy-build', 'create-index'));
+
+gulp.task('build', gulp.series('clean', 'build-javascript', 'copy-javascript'));
+
+gulp.task('release', gulp.series('build', 'stage', 'create-zip'));
 
 gulp.task('default', gulp.series('devel'));
