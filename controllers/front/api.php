@@ -110,7 +110,7 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     if (! $this->module->getPermissions()->canDelete($review)) {
       throw new Exception("Permission denied");
     }
-    return $review->delete();
+    return $review->markDelete();
   }
 
   private function vote() {

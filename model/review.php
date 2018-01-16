@@ -76,6 +76,14 @@ class RevwsReview extends ObjectModel {
     return $ret;
   }
 
+  public function markDelete() {
+    $id = (int)$this->id;
+    return Db::getInstance()->update('revws_review', [
+      'deleted' => true,
+      'date_upd' => date('Y-m-d H:i:s')
+    ], "id_review = $id");
+  }
+
   public function deleteGrades() {
     $conn = Db::getInstance();
     $id = (int)$this->id;

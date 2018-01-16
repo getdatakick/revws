@@ -42,7 +42,7 @@ class Visitor {
       $this->lastName = $customer->lastname;
     } else {
       $this->type = self::GUEST;
-      $this->id = $context->cookie->id_guest || -1;
+      $this->id = $context->cookie->id_guest;
     }
   }
 
