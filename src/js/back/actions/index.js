@@ -1,5 +1,13 @@
 // @flow
 import type { SettingsType, FullCriterion } from 'back/types';
+import type { RoutingState } from 'back/routing';
+
+
+export type GoToAction = {
+  type: 'GO_TO',
+  routingState: RoutingState,
+  updateHistory: boolean
+};
 
 export type SetSnackbarAction = {
   type: 'SET_SNACKBAR',
@@ -48,6 +56,7 @@ export type SetDataAction = {
 }
 
 export type Action = (
+  GoToAction |
   LoadDataAction |
   SetDataAction |
   SetSettingsAction |

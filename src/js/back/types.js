@@ -1,5 +1,5 @@
 // @flow
-import type { KeyValue, LangString, LanguagesType, GradingShapeType } from 'common/types';
+import type { LangString, LanguagesType, GradingShapeType } from 'common/types';
 
 export type SettingsType = {
   theme: {
@@ -62,3 +62,13 @@ export type FullCriterion = {
 export type FullCriteria = {
   [ number ]: FullCriterion
 }
+
+// route definition
+export type RouteDefinition<T> = {
+  toUrl: (T) => string,
+  toState: (string) => ?T,
+  component: any,
+  setup?: (T, any)=>void,
+  update?: (T, T, any)=>void,
+  teardown?: (T, any)=>void
+};

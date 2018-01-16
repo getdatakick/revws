@@ -1,6 +1,8 @@
 // @flow
 
 export default {
+  goTo: 'GO_TO',
+  
   loadData: 'LOAD_DATA',
   setData: 'SET_DATA',
 

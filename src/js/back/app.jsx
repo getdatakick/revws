@@ -1,12 +1,19 @@
 // @flow
 import React from 'react';
+import type { RoutingState } from 'back/routing';
 import type { GlobalDataType } from 'back/types';
 import Snackbar from 'back/pages/snackbar';
-import Settings from 'back/pages/settings';
 import styles from './app.less';
 import AppTheme from 'common/components/theme/theme';
+import { getRoutingState } from 'back/selectors/routing-state';
+import { render } from 'back/routing';
+import { connect } from 'react-redux';
+import { mapObject } from 'common/utils/redux';
+import { goTo } from 'back/actions/creators';
 
 type Props = {
+  routingState: RoutingState,
+  goTo: (RoutingState)=>void,
   data: GlobalDataType
 };
 
@@ -14,12 +21,12 @@ class BackApp extends React.PureComponent<Props> {
   static displayName = 'BackApp';
 
   render() {
-    const { data } = this.props;
+    const { data, routingState } = this.props;
     const snackbarPosition = { vertical: 'bottom', horizontal: 'right' };
     return (
       <AppTheme htmlFontSize={16}>
         <div className={styles.app}>
-          <Settings data={data} />
+          { render(routingState, { routingState, data, goTo }) }
           <Snackbar anchorOrigin={snackbarPosition} />
         </div>
       </AppTheme>
@@ -27,4 +34,13 @@ class BackApp extends React.PureComponent<Props> {
   }
 }
 
-export default BackApp;
+const mapStateToProps = mapObject({
+  routingState: getRoutingState
+});
+
+const actions = { goTo };
+
+const connectRedux = connect(mapStateToProps, actions);
+const Connected = connectRedux(BackApp);
+
+export default Connected;

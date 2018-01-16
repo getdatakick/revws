@@ -45,6 +45,7 @@
     "babel-polyfill": "^6.26.0",
     "element-resize-detector": "^1.1.12",
     "gulp-rename": "^1.2.2",
+    "history": "^4.7.2",
     "material-ui": "^1.0.0-beta.27",
     "material-ui-icons": "^1.0.0-beta.17",
     "moment": "^2.20.1",
