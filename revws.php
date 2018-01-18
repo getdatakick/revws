@@ -19,14 +19,19 @@
 require_once __DIR__.'/classes/utils.php';
 require_once __DIR__.'/classes/settings.php';
 require_once __DIR__.'/classes/permissions.php';
+require_once __DIR__.'/classes/visitor-permissions.php';
+require_once __DIR__.'/classes/employee-permissions.php';
 require_once __DIR__.'/classes/shapes.php';
 require_once __DIR__.'/classes/visitor.php';
+require_once __DIR__.'/classes/review-query.php';
 
 require_once __DIR__.'/model/criterion.php';
 require_once __DIR__.'/model/review.php';
 
 use \Revws\Settings;
 use \Revws\Permissions;
+use \Revws\VisitorPermissions;
+use \Revws\EmployeePermissions;
 use \Revws\Visitor;
 use \Revws\Shapes;
 
@@ -181,7 +186,11 @@ class Revws extends Module {
 
   public function getPermissions() {
     if (! $this->permissions) {
-      $this->permissions = new Permissions($this->getSettings(), $this->getVisitor());
+      if (isset($this->context->employee) && $this->context->employee->id > 0) {
+        $this->permissions = new EmployeePermissions();
+      } else {
+        $this->permissions = new VisitorPermissions($this->getSettings(), $this->getVisitor());
+      }
     }
     return $this->permissions;
   }
@@ -211,10 +220,8 @@ class Revws extends Module {
     $visitor = $this->getVisitor();
     $perms = $this->getPermissions();
     $set = $this->getSettings();
-    $reviews = [];
-    foreach (RevwsReview::getByProduct($productId, $visitor) as $review) {
-      $reviews[] = $review->toJSData($perms);
-    }
+    $reviews = RevwsReview::getByProduct($productId, $visitor, $set->getReviewsPerPage(), 0, $set->getReviewOrder());
+    $reviews['reviews'] = RevwsReview::mapReviews($reviews['reviews'], $perms);
     $reviewsData = [
       'product' => $this->getProductData($productId),
       'reviews' => $reviews,

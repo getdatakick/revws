@@ -60,6 +60,8 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
         return $this->vote();
       case 'report':
         return $this->reportAbuse();
+      case 'loadReviews':
+        return $this->loadReviews();
       default:
         throw new Exception("Unknown command $cmd");
     }
@@ -138,6 +140,17 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
       ];
     }
     return false;
+  }
+
+  private function loadReviews() {
+    $productId = (int)Tools::getValue('productId');
+    $page = (int)Tools::getValue('page');
+    $set = $this->module->getSettings();
+    $visitor = $this->module->getVisitor();
+    $perms = $this->module->getPermissions();
+    $reviews = RevwsReview::getByProduct($productId, $visitor, $set->getReviewsPerPage(), $page, $set->getReviewOrder());
+    $reviews['reviews'] = RevwsReview::mapReviews($reviews['reviews'], $perms);
+    return $reviews;
   }
 
   private function getReviewPayload() {

@@ -20,10 +20,25 @@
 namespace Revws;
 use \RevwsReview;
 
-interface Permissions {
-  function canCreateReview($productId);
-  function canReportAbuse(RevwsReview $review);
-  function canVote(RevwsReview $review);
-  function canDelete(RevwsReview $review);
-  function canEdit(RevwsReview $review);
+class EmployeePermissions implements Permissions {
+
+  public function canCreateReview($productId) {
+    return true;
+  }
+
+  public function canReportAbuse(RevwsReview $review) {
+    return false;
+  }
+
+  public function canVote(RevwsReview $review) {
+    return false;
+  }
+
+  public function canDelete(RevwsReview $review) {
+    return true;
+  }
+
+  public function canEdit(RevwsReview $review) {
+    return true;
+  }
 }

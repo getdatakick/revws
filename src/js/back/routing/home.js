@@ -1,17 +1,17 @@
 // @flow
 import type { RouteDefinition } from 'back/types';
-import Home from 'back/pages/home/home';
+import Home from 'back/pages/home';
 
 export type HomePage = {
   type: 'home'
 }
 
 const toUrl = (home: HomePage) => {
-  return '/home';
+  return '/';
 };
 
 const toState = (url: string): ?HomePage => {
-  if (url === '/home') {
+  if (url === '/') {
     return homePage();
   }
 };

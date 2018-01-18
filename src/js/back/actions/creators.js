@@ -1,6 +1,6 @@
 // @flow
 
-import type { SettingsType, FullCriterion } from 'back/types';
+import type { Load, SettingsType, FullCriterion } from 'back/types';
 import type { RoutingState } from 'back/routing';
 import type {
   GoToAction,
@@ -12,7 +12,13 @@ import type {
   DeleteCriterionAction,
   CriterionDeletedAction,
   LoadDataAction,
-  SetDataAction
+  SetDataAction,
+  ApproveReviewAction,
+  ReviewApprovedAction,
+  DeleteReviewAction,
+  ReviewDeletedAction,
+  UndeleteReviewAction,
+  ReviewUndeletedAction,
 } from './index';
 import Types from './types';
 
@@ -25,5 +31,12 @@ export const criterionSaved = (criterion: FullCriterion): CriterionSavedAction =
 export const deleteCriterion = (id: number): DeleteCriterionAction => ({ type: Types.deleteCriterion, id });
 export const criterionDeleted = (id: number): CriterionDeletedAction => ({ type: Types.criterionDeleted, id });
 
-export const loadData = (types: Array<string>): LoadDataAction => ({ type: Types.loadData, types });
+export const loadData = (types: { [ string ]: Load }): LoadDataAction => ({ type: Types.loadData, types });
 export const setData = (payload: any): SetDataAction => ({ type: Types.setData, payload });
+
+export const approveReview = (id: number): ApproveReviewAction => ({ type: Types.approveReview, id });
+export const reviewApproved = (id: number): ReviewApprovedAction => ({ type: Types.reviewApproved, id });
+export const deleteReview = (id: number): DeleteReviewAction => ({ type: Types.deleteReview, id });
+export const reviewDeleted = (id: number): ReviewDeletedAction => ({ type: Types.reviewDeleted, id });
+export const undeleteReview = (id: number): UndeleteReviewAction => ({ type: Types.undeleteReview, id });
+export const reviewUndeleted = (id: number): ReviewUndeletedAction => ({ type: Types.reviewUndeleted, id });

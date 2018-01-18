@@ -1,33 +1,44 @@
 // @flow
 import type { Action } from 'back/actions';
 import Types from 'back/actions/types';
-import { assoc } from 'ramda';
-import { asObject } from 'common/utils/input';
+import { map, assoc, update, findIndex, propEq, merge } from 'ramda';
 
 type State = {
-  products: ?any,
-  categories: ?any
+  [ string ]: ?any
 }
 
 const defaultState = {
-  products: null,
-  categories: null
 };
 
-const mergePayload = (payload: any, state:State): State => {
-  if (payload.products) {
-    state = assoc('products', asObject(payload.products), state);
+const updateReviews = (reviewId, func, state) => map(data => {
+  if (data.reviews) {
+    const index = findIndex(propEq('id', reviewId), data.reviews);
+    if (index > -1) {
+      const reviews = update(index, func(data.reviews[index]), data.reviews);
+      return assoc('reviews', reviews, data);
+    }
   }
-  if (payload.categories) {
-    state = assoc('categories', asObject(payload.categories), state);
-  }
-  return state;
-};
+  return data;
+}, state);
+
+const markDeleted = deleted => review => merge(review, {
+  deleted,
+  underReview: true
+});
 
 export default (state?: State, action:Action): State => {
   state = state || defaultState;
   if (action.type === Types.setData) {
-    return mergePayload(action.payload, state);
+    return merge(state, action.payload);
+  }
+  if (action.type === Types.reviewApproved) {
+    return updateReviews(action.id, assoc('underReview', false), state);
+  }
+  if (action.type === Types.reviewDeleted) {
+    return updateReviews(action.id, markDeleted(true), state);
+  }
+  if (action.type === Types.reviewUndeleted) {
+    return updateReviews(action.id, markDeleted(false), state);
   }
   return state;
 };

@@ -4,7 +4,6 @@ import styles from './page-with-footer.less';
 import classnames from 'classnames';
 
 type Props = {
-  width: number,
   content: any,
   footer: any,
   showFooter: boolean
@@ -14,7 +13,7 @@ class PageWithFooter extends React.PureComponent<Props> {
   static displayName = 'PageWithFooter';
 
   render() {
-    const { content, footer, showFooter, width } = this.props;
+    const { content, footer, showFooter } = this.props;
     const clazz = classnames(styles.footer, {
       [ styles.open ]: showFooter
     });
@@ -23,8 +22,10 @@ class PageWithFooter extends React.PureComponent<Props> {
         <div className={styles.content}>
           { content }
         </div>
-        <div className={clazz} style={{width}}>
-          { footer }
+        <div className={clazz}>
+          <div className={styles.footerContent}>
+            { footer }
+          </div>
         </div>
       </div>
     );

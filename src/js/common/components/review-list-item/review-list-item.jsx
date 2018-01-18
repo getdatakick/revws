@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import type { GradingShapeType, ReviewType } from 'common/types';
-import { reduce, add, values } from 'ramda';
+import { hasRatings, averageGrade } from 'common/utils/reviews';
 import Grading from 'common/components/grading/grading';
 
 type Props = {
@@ -19,16 +19,15 @@ class ReviewListItem extends React.PureComponent<Props> {
 
   render() {
     const { shape, shapeSize, onReport, onEdit, onDelete, onVote, review } = this.props;
-    const { displayName, date, title, underReview, content, canVote, canReport, canEdit, canDelete, grades } = review;
-    const vals = values(grades);
+    const { displayName, date, title, underReview, content, canVote, canReport, canEdit, canDelete } = review;
     return (
       <div className="revws-review row no-gutter">
         <div className="col-sm-3 col-md-2">
           <div className="revws-review-author">
             <div className="revws-review-author-name">{ displayName }</div>
-            { vals.length > 0 ? (
+            { hasRatings(review) ? (
               <Grading
-                grade={averageGrade(vals)}
+                grade={averageGrade(review)}
                 shape={shape}
                 size={shapeSize}
               />
@@ -115,14 +114,5 @@ const formatDate = (date: Date): string => {
 };
 
 const pad = (value) => ('00'+value).substr(-2);
-
-const averageGrade = (vals: Array<number>): number => {
-  const cnt = vals.length;
-  if (cnt) {
-    const sum = reduce(add, 0, vals);
-    return sum / cnt;
-  }
-  return 0;
-};
 
 export default ReviewListItem;

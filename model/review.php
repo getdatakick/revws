@@ -19,6 +19,7 @@
 use \Revws\Visitor;
 use \Revws\Settings;
 use \Revws\Permissions;
+use \Revws\ReviewQuery;
 
 class RevwsReview extends ObjectModel {
 
@@ -34,7 +35,6 @@ class RevwsReview extends ObjectModel {
       'title'         => [ 'type' => self::TYPE_STRING, 'required' => true ],
       'content'       => [ 'type' => self::TYPE_STRING, 'size' => 65535],
       'validated'     => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
-      'hidden'        => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
       'deleted'       => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
       'date_add'      => [ 'type' => self::TYPE_DATE ],
       'date_upd'      => [ 'type' => self::TYPE_DATE ],
@@ -50,12 +50,13 @@ class RevwsReview extends ObjectModel {
   public $title;
   public $content;
   public $validated = 0;
-  public $hidden = 0;
   public $deleted = 0;
   public $date_add;
   public $date_upd;
 
   public $grades = [];
+  public $product;
+  public $customer;
 
   public function isOwner(Visitor $visitor) {
     if ($this->getAuthorType() != $visitor->getType()) {
@@ -90,33 +91,55 @@ class RevwsReview extends ObjectModel {
     return $conn->delete('revws_review_grade', "id_review = $id ");
   }
 
-  public static function getByProduct($productId, $visitor=null, $onlyValidated=true, $showHidden=false, $showDeleted=false) {
+  public static function findReviews($options, $lang=null, $shop=null) {
     $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
-    $id = (int)$productId;
-    $review = _DB_PREFIX_ . 'revws_review';
-    $grade = _DB_PREFIX_ . 'revws_review_grade';
-    $query = "
-      SELECT r.*, g.id_criterion, g.grade
-      FROM $review r
-      LEFT JOIN $grade g ON (r.id_review = g.id_review)
-      WHERE r.id_product = $id
-        AND ".self::getCondition('r', $onlyValidated, $showHidden, $showDeleted, $visitor);
-    $dbData = $conn->executeS($query);
-    if ($dbData) {
-      return array_reduce($dbData, function($ret, $item) {
-        $id = (int)$item['id_review'];
-        $crit = (int)$item['id_criterion'];
-        $value = (int)$item['grade'];
-        if (! isset($ret[$id])) {
-          $ret[$id] = self::mapDbData($item);
-        }
-        if ($crit) {
-          $ret[$id]->grades[$crit] = $value;
-        }
-        return $ret;
-      }, []);
+    $query = new ReviewQuery($options, $lang, $shop);
+
+    // load reviews
+    $reviews = [];
+    foreach ($conn->executeS($query->getSql()) as $item) {
+      $id = (int)$item['id_review'];
+      $reviews[$id] = self::mapDbData($item);
     }
-    return [];
+    $count = $conn->getRow('SELECT FOUND_ROWS() AS r')['r'];
+
+    // load ratings
+    if ($count) {
+      $keys = implode(array_keys($reviews), ', ');
+      $grade = _DB_PREFIX_ . 'revws_review_grade';
+      $sql = "SELECT id_review, id_criterion, grade FROM $grade WHERE id_review IN ($keys) ORDER by id_review, id_criterion";
+      foreach ($conn->executeS($sql) as $row) {
+        $id = (int)$row['id_review'];
+        $key = (int)$row['id_criterion'];
+        $value = (int)$row['grade'];
+        $reviews[$id]->grades[$key] = $value;
+      }
+    }
+
+    $page = $query->getPage();
+    $pageSize = $query->getPageSize();
+    return [
+      'total' => (int)$count,
+      'page' => $page,
+      'pages' => $pageSize > 0 ? ceil($count / $pageSize) : 1,
+      'pageSize' => $pageSize,
+      'reviews' => $reviews
+    ];
+  }
+
+  public static function getByProduct($productId, Visitor $visitor, $pageSize, $page, $order) {
+    return self::findReviews([
+      'product' => $productId,
+      'visitor' => $visitor,
+      'validated' => true,
+      'deleted' => false,
+      'pageSize' => $pageSize,
+      'page' => $page,
+      'order' => [
+        'field' => $order,
+        'direction' => 'desc'
+      ]
+    ]);
   }
 
   public function setValidated($validated) {
@@ -176,41 +199,16 @@ class RevwsReview extends ObjectModel {
   }
 
   public static function getAverageGrade($productId) {
-    $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
-    $id = (int)$productId;
-    $review = _DB_PREFIX_ . 'revws_review';
-    $rating = _DB_PREFIX_ . 'revws_review_grade';
-    $query = "SELECT (SUM(ra.grade) / COUNT(1)) AS grade, COUNT(distinct r.id_review) as cnt FROM $review r LEFT JOIN $rating ra ON (r.id_review = ra.id_review) WHERE r.id_product=$id AND ".self::getCondition('r', true, false, false);
-    $row = $conn->getRow($query);
+    $query = new ReviewQuery([
+      'product' => (int)$productId,
+      'validated' => true,
+      'deleted' => false
+    ]);
+    $row = Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow($query->getAverageGradeSql());
     if ($row) {
       return [$row['grade'], $row['cnt']];
     }
     return [0, 0];
-  }
-
-  private static function getCondition($alias, $onlyValidated, $showHidden, $showDeleted, $visitor=null) {
-    $cond = [];
-    if ($onlyValidated) {
-      if ($visitor) {
-        $ownerCond;
-        $id = (int)$visitor->getId();
-        if ($visitor->isCustomer()) {
-          $ownerCond = "$alias.id_customer=$id";
-        } else {
-          $ownerCond = "$alias.id_guest=$id";
-        }
-        $cond[] = "($alias.validated=1 OR $ownerCond)";
-      } else {
-        $cond[] = "$alias.validated=1";
-      }
-    }
-    if (! $showHidden) {
-      $cond[] = "$alias.hidden=0";
-    }
-    if (! $showDeleted) {
-      $cond[] = "$alias.deleted=0";
-    }
-    return $cond ? implode($cond, ' AND ') : '1';
   }
 
   public function toJSData(Permissions $permissions) {
@@ -218,6 +216,10 @@ class RevwsReview extends ObjectModel {
     return [
       'id' => (int)$this->id,
       'productId' => (int)$this->id_product,
+      'product' => $this->product,
+      'authorType' => $this->getAuthorType(),
+      'authorId' => $this->getAuthorId(),
+      'customer' => $this->customer,
       'displayName' => $this->display_name,
       'date' => $this->date_add,
       'email' => $canEdit ? $this->email : '',
@@ -226,6 +228,7 @@ class RevwsReview extends ObjectModel {
       'title' => $this->title,
       'content' => $this->content,
       'underReview' => !$this->validated,
+      'deleted' => !!$this->deleted,
       'canReport' => $permissions->canReportAbuse($this),
       'canVote' => $permissions->canVote($this),
       'canEdit' => $canEdit,
@@ -233,11 +236,19 @@ class RevwsReview extends ObjectModel {
     ];
   }
 
+  public static function mapReviews($reviews, Permissions $perm) {
+    $ret = [];
+    foreach ($reviews as $review) {
+      $ret[] = $review->toJSData($perm);
+    }
+    return $ret;
+  }
+
   private static function mapDbData($dbData) {
     $review = new RevwsReview();
-    $review->id = $dbData['id_review'];
-    $review->id_guest = $dbData['id_guest'];
-    $review->id_customer = $dbData['id_customer'];
+    $review->id = (int)$dbData['id_review'];
+    $review->id_guest = (int)$dbData['id_guest'];
+    $review->id_customer = (int)$dbData['id_customer'];
     $review->id_product = (int)$dbData['id_product'];
     $review->display_name = $dbData['display_name'];
     $review->email = $dbData['email'];
@@ -245,8 +256,14 @@ class RevwsReview extends ObjectModel {
     $review->content = $dbData['content'];
     $review->date_add = $dbData['date_add'];
     $review->date_upd = $dbData['date_add'];
-    $review->validated = $dbData['validated'];
-    $review->hidden = $dbData['hidden'];
+    $review->validated = !!$dbData['validated'];
+    $review->deleted = !!$dbData['deleted'];
+    if (isset($dbData['product'])) {
+      $review->product = $dbData['product'];
+    }
+    if (isset($dbData['customer'])) {
+      $review->customer = $dbData['customer'];
+    }
     $review->grades = [];
     return $review;
   }
@@ -292,6 +309,6 @@ class RevwsReview extends ObjectModel {
   }
 
   public function getAuthorId() {
-    return $this->isCustomer() ? $this->id_customer : $this->id_guest;
+    return (int)($this->isCustomer() ? $this->id_customer : $this->id_guest);
   }
 }

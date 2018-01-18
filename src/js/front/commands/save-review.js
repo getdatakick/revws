@@ -3,7 +3,7 @@
 import type { Api } from 'common/types';
 import type { SaveReviewAction } from 'front/actions';
 import { saveReviewCompleted, setSnackbar, closeEditReview, setReview } from 'front/actions/creators';
-import { fixReview } from 'front/settings';
+import { fixReview } from 'common/utils/reviews';
 
 export const saveReview = (action: SaveReviewAction, store: any, api: Api) => {
   const review = action.review;

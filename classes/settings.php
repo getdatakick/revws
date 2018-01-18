@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (C) 2017 Petr Hucik <petr@getdatakick.com>
 *
@@ -39,6 +40,8 @@ class Settings {
       'display' => [
         'product' => [
           'placement' => 'block',
+          'reviewsPerPage' => 5,
+          'orderBy' => 'date',
           'showAverage' => true,
         ],
         'productList' => [
@@ -125,6 +128,11 @@ class Settings {
     return $this->toBool($this->get(['display', 'product', 'showAverage']));
   }
 
+  public function getReviewsPerPage() {
+    $ret = (int)$this->get(['display', 'product', 'reviewsPerPage']);
+    return $ret === 0 ? 5 : $ret;
+  }
+
   public function showOnProductListing() {
     return $this->toBool($this->get(['display', 'productList', 'show']));
   }
@@ -157,6 +165,10 @@ class Settings {
     return $this->toNamePreference($this->get(['review', 'displayName']));
   }
 
+  public function getReviewOrder() {
+    return $this->toOrderByPreference($this->get(['display', 'product', 'orderBy']));
+  }
+
   public function getShape() {
     return $this->toShape($this->get(['theme', 'shape']));
   }
@@ -187,6 +199,13 @@ class Settings {
     return 'fullName';
   }
 
+  private function toOrderByPreference($pref) {
+    if (in_array($pref, ['date', 'grade'])) {
+      return $pref;
+    }
+    return 'date';
+  }
+
   private function validShapeSize($size) {
     $ret = (int)$size;
     if ($ret < 8) {
@@ -203,11 +222,13 @@ class Settings {
   }
 
   public function get($path=null) {
-    $value = Configuration::get(self::SETTINGS);
-    if ($value) {
-      $value = json_decode($value, true);
-    } else {
-      $value = self::getDefaultSettings();
+    $value = self::getDefaultSettings();
+    $stored = Configuration::get(self::SETTINGS);
+    if ($stored) {
+      $stored = json_decode($stored, true);
+      if ($stored) {
+        $value = self::mergeSettings($value, $stored);
+      }
     }
     if (is_null($path)) {
       return $value;
@@ -220,6 +241,21 @@ class Settings {
       }
     }
     return $value;
+  }
+
+  private static function mergeSettings($left, $right) {
+    $ret = [];
+    foreach ($left as $key => $value) {
+      if (isset($right[$key])) {
+        if (is_array($value)) {
+          $value = self::mergeSettings($value, $right[$key]);
+        } else {
+          $value = $right[$key];
+        }
+      }
+      $ret[$key] = $value;
+    }
+    return $ret;
   }
 
   public function set($value) {

@@ -3,12 +3,18 @@ import React from 'react';
 import { map } from 'ramda';
 import type { GradingShapeType, ReviewType, ReviewListType } from 'common/types';
 import ReviewListItem from 'common/components/review-list-item/review-list-item';
+import KeyboardArrowLeft from 'material-ui-icons/KeyboardArrowLeft';
+import KeyboardArrowRight from 'material-ui-icons/KeyboardArrowRight';
+import IconButton from 'material-ui/IconButton';
+import { CircularProgress } from 'material-ui/Progress';
 
 type Props = {
   shape: GradingShapeType,
   shapeSize: number,
   reviews: ReviewListType,
   canCreate: boolean,
+  loading: boolean,
+  loadPage: (number)=>void,
   onEdit: (ReviewType)=>void,
   onCreate: ()=>void,
   onDelete: (ReviewType)=>void,
@@ -21,13 +27,46 @@ class ReviewList extends React.PureComponent<Props> {
 
   render() {
     const { reviews, canCreate } = this.props;
-    const isEmpty = reviews.length == 0;
+    const isEmpty = reviews.total == 0;
     return isEmpty ? this.renderEmptyState(canCreate) : this.renderReviews(canCreate);
   }
 
   renderReviews = (canCreate: boolean) => {
-    const { reviews } = this.props;
-    const ret = map(this.renderReview, reviews);
+    const { loading, loadPage } = this.props;
+    const { page, pages, reviews } = this.props.reviews;
+
+    const reviewList = map(this.renderReview, reviews);
+    if (loading) {
+      reviewList.push(<div key="loading" className="revws-loading" />);
+      reviewList.push(
+        <div key="loading-spinner" className="revws-loading-spinner">
+          <CircularProgress size={100} />
+        </div>
+      );
+    }
+
+    const ret = [
+      <div key="list" className="revws-review-list">
+        { reviewList }
+      </div>
+    ];
+
+    if (pages > 1) {
+      ret.push(
+        <div key="paging" className="revws-paging">
+          <IconButton
+            onClick={() => loadPage(page - 1)}
+            disabled={loading || page === 0}>
+            <KeyboardArrowLeft />
+          </IconButton>
+          <IconButton
+            onClick={() => loadPage(page + 1)}
+            disabled={loading || page == pages - 1}>
+            <KeyboardArrowRight />
+          </IconButton>
+        </div>
+      );
+    }
     if (canCreate) {
       ret.push(
         <div key="write" className="form-group">

@@ -10,25 +10,31 @@ import { saveReview } from './save-review';
 import { deleteReview } from './delete-review';
 import { voteReview } from './vote-review';
 import { reportAbuse } from './report-review';
+import { loadPage } from './load-page';
 
 const commands = {
   [ Types.saveReview ]: saveReview,
   [ Types.deleteReview ]: deleteReview,
   [ Types.triggerVote]: voteReview,
-  [ Types.triggerReportReview]: reportAbuse
+  [ Types.triggerReportReview]: reportAbuse,
+  [ Types.loadPage]: loadPage
 };
 
 export default (settings: SettingsType) => {
   const api = (cmd: string, payload: any) => {
     return new Promise((resolve, reject) => {
+      const failure = (error: string) => {
+        console.error("API call error: "+cmd+": "+error);
+        resolve({ type: 'failed', error });
+      };
       const success = (data) => {
         if (data.success) {
           resolve({ type: 'success', data: data.result });
         } else {
-          resolve({ type: 'failed', error: data.error });
+          failure(data.error);
         }
       };
-      const error = (xhr, error) => resolve({ type: 'failed', error });
+      const error = (xhr, error) => failure(error);
       window.$.ajax({
         url: fixUrl(settings.api),
         type: 'POST',

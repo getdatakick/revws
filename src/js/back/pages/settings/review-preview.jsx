@@ -23,7 +23,11 @@ class ReviewPreview extends React.PureComponent<Props> {
     grades[2] = 3;
     const review: ReviewType = {
       id: 1,
+      authorType: 'customer',
+      authorId: 1,
       productId: 1,
+      product: null,
+      customer: null,
       displayName: 'John Doe',
       email: '',
       title: 'Amazing product!',
@@ -31,6 +35,7 @@ class ReviewPreview extends React.PureComponent<Props> {
       grades,
       date: new Date(),
       underReview: false,
+      deleted: false,
       canVote: canVote,
       canReport: canReport,
       canDelete: false,

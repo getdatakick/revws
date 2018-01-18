@@ -1,5 +1,5 @@
 // @flow
-import type { ReviewType } from 'common/types';
+import type { ReviewListType, ReviewType } from 'common/types';
 
 export type SetReviewAction = {
   type: 'SET_REVIEW',
@@ -69,6 +69,17 @@ export type SetSnackbarAction = {
   message: ?string
 }
 
+export type LoadPageAction = {
+  type: 'LOAD_PAGE',
+  productId: number,
+  page: number
+}
+
+export type SetReviewsAction = {
+  type: 'SET_REVIEWS',
+  reviews: ReviewListType
+}
+
 export type Action = (
   SetReviewAction |
   TriggerCreateReviewAction |
@@ -83,5 +94,7 @@ export type Action = (
   CloseDeleteReviewAction |
   TriggerReportReviewAction |
   TriggerVoteAction |
-  SetSnackbarAction
+  SetSnackbarAction |
+  LoadPageAction |
+  SetReviewsAction
 );

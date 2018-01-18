@@ -53,7 +53,6 @@ CREATE TABLE IF NOT EXISTS `PREFIX_revws_review` (
   `title`        VARCHAR(127) NOT NULL,
   `content`      TEXT NULL,
   `validated`    TINYINT(1) NOT NULL DEFAULT 0,
-  `hidden`       TINYINT(1) NOT NULL DEFAULT 0,
   `deleted`      TINYINT(1) NOT NULL DEFAULT 0,
   `date_add`     DATETIME NOT NULL,
   `date_upd`     DATETIME NOT NULL,

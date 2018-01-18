@@ -8,6 +8,8 @@ import ReviewList from 'common/components/review-list/review-list';
 type Props = {
   reviews: ReviewListType,
   settings: SettingsType,
+  loading: boolean,
+  loadPage: (number, number)=>void,
   onEdit: (ReviewType)=>void,
   onCreate: ()=>void,
   onDelete: (ReviewType)=>void,
@@ -19,12 +21,13 @@ class FrontAppReviewList extends React.PureComponent<Props> {
   static displayName = 'FrontAppReviewList';
 
   render() {
-    const { settings, ...rest } = this.props;
+    const { settings, loadPage, ...rest } = this.props;
     return (
       <ReviewList
         canCreate={this.canCreate()}
         shape={settings.shape}
         shapeSize={settings.shapeSize.product}
+        loadPage={page => loadPage(settings.product.id, page)}
         {...rest}
       />
     );

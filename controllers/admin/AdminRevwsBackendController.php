@@ -100,6 +100,12 @@ class AdminRevwsBackendController extends ModuleAdminController {
     switch ($cmd) {
       case 'loadData':
         return $this->loadData($payload);
+      case 'approveReview':
+        return $this->approveReview($payload);
+      case 'deleteReview':
+        return $this->deleteReview($payload, true);
+      case 'undeleteReview':
+        return $this->deleteReview($payload, false);
       case 'saveSettings':
         return $this->saveSettings($payload);
       case 'deleteCriterion':
@@ -111,26 +117,55 @@ class AdminRevwsBackendController extends ModuleAdminController {
     }
   }
 
-  private function loadData($payload) {
-    $ret = [];
-    $types = $payload['types'];
-    if (in_array('products', $types)) {;
-      $ret['products'] = $this->getProducts();
-    }
-    if (in_array('categories', $types)) {
-      $ret['categories'] = $this->getCategories();
-    }
-    return $ret;
+  private function approveReview($payload) {
+    $review = $this->getReviewById($payload['id']);
+    $review->validated = true;
+    return $review->save();
   }
 
-  private function getProducts() {
+  private function deleteReview($payload, $deleted) {
+    $review = $this->getReviewById($payload['id']);
+    $review->deleted = $deleted;
+    $review->validated = false;
+    return $review->save();
+  }
+
+  private function loadData($payload) {
+    $types = $payload['types'];
+    $ret = [];
+    if (is_array($types)) {
+      foreach ($types as $key => $def) {
+        $rec = $def['record'];
+        $options = $def['options'];
+        if ($rec == 'products') {
+          $ret[$key] = $this->getProducts($options);
+        }
+        if ($rec == 'categories') {
+          $ret[$key] = $this->getCategories($options);
+        }
+        if ($rec == 'reviews') {
+          $ret[$key] = $this->getReviews($options);
+        }
+      }
+    }
+    return $ret;;
+  }
+
+  private function getProducts($options) {
     return Utils::mapKeyValue('id_product', 'name', Product::getSimpleProducts($this->context->language->id));
   }
 
-  private function getCategories() {
+  private function getCategories($options) {
     return Utils::mapKeyValue('id_category', 'name', Category::getAllCategoriesName(
       null, $this->context->language->id, true, null, true, "AND `c`.`level_depth` > 0"
     ));
+  }
+
+  private function getReviews($options) {
+    $permissions = $this->module->getPermissions();
+    $ret = RevwsReview::findReviews($options);
+    $ret['reviews'] = RevwsReview::mapReviews($ret['reviews'], $permissions);
+    return $ret;
   }
 
   private function deleteCriterion($payload) {
@@ -161,6 +196,15 @@ class AdminRevwsBackendController extends ModuleAdminController {
       echo json_encode(['success'=>true, 'result' => $result]);
     }
     die();
+  }
+
+
+  private function getReviewById($id) {
+    $review = new RevwsReview((int)$id);
+    if (! Validate::isLoadedObject($review)) {
+      throw new Exception('Review not found');
+    }
+    return $review;
   }
 
 }

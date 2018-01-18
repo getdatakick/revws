@@ -2,7 +2,7 @@
 
 export default {
   goTo: 'GO_TO',
-  
+
   loadData: 'LOAD_DATA',
   setData: 'SET_DATA',
 
@@ -15,4 +15,10 @@ export default {
   deleteCriterion: 'DELETE_CRITERION',
   criterionDeleted: 'CRITERION_DELETED',
 
+  approveReview: 'APPROVE_REVIEW',
+  reviewApproved: 'REVIEW_APPROVED',
+  deleteReview: 'DELETE_REVIEW',
+  reviewDeleted: 'REVIEW_DELETED',
+  undeleteReview: 'UNDELETE_REVIEW',
+  reviewUndeleted: 'REVIEW_UNDELETED',
 };

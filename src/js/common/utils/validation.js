@@ -1,6 +1,6 @@
 // @flow
 import type { ReviewType, ReviewFormErrors } from 'common/types';
-import { isEmpty, isObject, notNil } from 'common/utils/ramda';
+import { isEmpty, isObject, notNil, isString, isNumber } from 'common/utils/ramda';
 import { curry, pipe, defaultTo, values, map, reduce, or } from 'ramda';
 import validator from 'validator';
 
@@ -38,4 +38,14 @@ export const validateReviewEmail = (email: ?string) => {
     return "Please provide valid email address";
   }
   return null;
+};
+
+export const validateIsNumber = (input: any): ?string => {
+  if (isNumber(input)) {
+    return null;
+  }
+  if (isString(input) && validator.isNumeric(input)) {
+    return null;
+  }
+  return "Invalid number";
 };

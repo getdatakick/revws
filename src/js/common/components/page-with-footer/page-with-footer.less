@@ -6,20 +6,23 @@
 
 .footer {
   position: fixed;
+  left: 0px;
+  width: 100%;
   line-height: 56px;
   bottom: -120px;
   transition: all 250ms linear;
-  width: inherit;
   height: 56px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px -4px 8px;
   background: #fff;
-  margin-left: -40px;
-  padding-left: 40px;
-  padding-right: 40px;
   opacity: 0;
+}
+
+.footerContent {
+  padding-right: 20px;
 }
 
 .open {
   bottom: 0px;
   opacity: 1;
+  z-index: 499;
 }

@@ -1,9 +1,10 @@
 // @flow
-import type { ReviewType, ReviewListType } from 'common/types';
+import type { ReviewListType } from 'common/types';
 import type { SettingsType } from 'front/types';
-import { assoc, map, has, prop } from 'ramda';
-import { isObject, isString, isArray } from 'common/utils/ramda';
+import {  has, prop } from 'ramda';
+import { isObject, isString, isArray, isNumber } from 'common/utils/ramda';
 import { asObject } from 'common/utils/input';
+import { fixReviews } from 'common/utils/reviews';
 
 export const getSettings = (input: any): SettingsType => {
   if (! isObject(input)) {
@@ -33,16 +34,19 @@ export const getSettings = (input: any): SettingsType => {
 };
 
 export const getReviews = (input: any): ReviewListType => {
-  const reviews = get('reviews', isArray, input);
-  return map(fixReview, reviews);
-};
-
-export const fixReview = (review: any): ReviewType => {
-  let ret = assoc('date', new Date(review.date), review);
-  if (isArray(ret.grades)) {
-    ret = assoc('grades', {}, ret);
-  }
-  return ret;
+  const envelope = get('reviews', isObject, input);
+  const reviews = get('reviews', isArray, envelope);
+  const total = get('total', isNumber, envelope);
+  const pages = get('pages', isNumber, envelope);
+  const page = get('page', isNumber, envelope);
+  const pageSize = get('pageSize', isNumber, envelope);
+  return {
+    total,
+    page,
+    pages,
+    pageSize,
+    reviews: fixReviews(reviews)
+  };
 };
 
 const get = (key, validator, obj) => {

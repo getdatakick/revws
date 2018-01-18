@@ -1,5 +1,5 @@
 // @flow
-import type { SettingsType, FullCriterion } from 'back/types';
+import type { Load, SettingsType, FullCriterion } from 'back/types';
 import type { RoutingState } from 'back/routing';
 
 
@@ -47,12 +47,44 @@ export type CriterionDeletedAction = {
 
 export type LoadDataAction = {
   type: 'LOAD_DATA',
-  types: Array<string>
+  types: {
+    [ string ]: Load
+  }
 }
 
 export type SetDataAction = {
   type: 'SET_DATA',
   payload: any
+}
+
+export type ApproveReviewAction = {
+  type: 'APPROVE_REVIEW',
+  id: number
+}
+
+export type ReviewApprovedAction = {
+  type: 'REVIEW_APPROVED',
+  id: number
+}
+
+export type DeleteReviewAction = {
+  type: 'DELETE_REVIEW',
+  id: number
+}
+
+export type ReviewDeletedAction = {
+  type: 'REVIEW_DELETED',
+  id: number
+}
+
+export type UndeleteReviewAction = {
+  type: 'UNDELETE_REVIEW',
+  id: number
+}
+
+export type ReviewUndeletedAction = {
+  type: 'REVIEW_UNDELETED',
+  id: number
 }
 
 export type Action = (
@@ -65,5 +97,11 @@ export type Action = (
   SaveCriterionAction |
   CriterionSavedAction |
   DeleteCriterionAction |
-  CriterionDeletedAction
+  CriterionDeletedAction |
+  ApproveReviewAction |
+  ReviewApprovedAction |
+  DeleteReviewAction |
+  ReviewDeletedAction |
+  UndeleteReviewAction |
+  ReviewUndeletedAction 
 );

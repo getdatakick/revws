@@ -5,11 +5,12 @@ import type { SettingsType } from 'front/types';
 import ReviewList from './review-list';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
-import { getReviews } from 'front/selectors/review-list';
-import { triggerVoteReview, triggerReportReview, triggerEditReview, triggerCreateReview, triggerDeleteReview } from 'front/actions/creators';
+import { getReviews, isLoading } from 'front/selectors/review-list';
+import { loadPage, triggerVoteReview, triggerReportReview, triggerEditReview, triggerCreateReview, triggerDeleteReview } from 'front/actions/creators';
 
 const mapStateToProps = mapObject({
-  reviews: getReviews
+  reviews: getReviews,
+  loading: isLoading,
 });
 
 const actions = {
@@ -17,7 +18,8 @@ const actions = {
   onCreate: triggerCreateReview,
   onDelete: triggerDeleteReview,
   onVote: triggerVoteReview,
-  onReport: triggerReportReview
+  onReport: triggerReportReview,
+  loadPage
 };
 
 const connectRedux = connect(mapStateToProps, actions);

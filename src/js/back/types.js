@@ -13,6 +13,8 @@ export type SettingsType = {
   display: {
     product: {
       placement: string,
+      orderBy: 'date' | 'grade',
+      reviewsPerPage: number | string,
       showAverage: boolean,
     },
     productList: {
@@ -71,4 +73,14 @@ export type RouteDefinition<T> = {
   setup?: (T, any)=>void,
   update?: (T, T, any)=>void,
   teardown?: (T, any)=>void
+};
+
+export type LoadOptions = 'all' | {
+  pageSize: number,
+  page: number
+}
+
+export type Load = {
+  record: string,
+  options: LoadOptions
 };

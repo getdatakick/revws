@@ -24,13 +24,16 @@
 *}
 {strip}
 <div id="revws-tab-content">
-  {if !empty($reviewsData.reviews)}
-    {foreach from=$reviewsData.reviews item=review}
+  {if $reviewsData.reviews.total > 0}
+    <div class="revws-review-list">
+    {foreach from=$reviewsData.reviews.reviews item=review}
       <div class="revws-review row no-gutter">
         <div class="col-sm-3 col-md-2">
           <div class="revws-review-author">
             <div class="revws-review-author-name">{$review.displayName|escape:'html':'UTF-8'}</div>
+            {if count($review.grades) > 0}
             {include file='./grading.tpl' grade=$review.grade shape=$reviewsData.theme.shape size=$reviewsData.theme.shapeSize.product}
+            {/if}
             <div class="revws-review-date">{dateFormat date=$review.date|escape:'html':'UTF-8' full=0}</div>
           </div>
         </div>
@@ -79,9 +82,23 @@
             </div>
           </div>
         </div>
-
       </div>
     {/foreach}
+    </div>
+    {if $reviewsData.reviews.pages > 1}
+    <div class="revws-paging">
+      <div class="revws-page-prev revws-disabled">
+        <svg width="24" height="24" focusable="false" viewBox="0 0 24 24">
+          <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"></path>
+        </svg>
+      </div>
+      <div class="revws-page-next">
+        <svg width="24" height="24" focusable="false" viewBox="0 0 24 24">
+          <path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
+        </svg>
+      </div>
+    </div>
+    {/if}
 
     {if $reviewsData.permissions.create}
       <div class="form-group">

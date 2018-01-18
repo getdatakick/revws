@@ -20,4 +20,7 @@ export default {
 
   triggerReportReview: 'TRIGGER_REPORT_REVIEW',
   triggerVote: 'TRIGGER_VOTE',
+
+  loadPage: 'LOAD_PAGE',
+  setReviews: 'SET_REVIEWS'
 };

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import type { LanguagesType, KeyValue } from 'common/types';
-import type { FullCriteria, FullCriterion } from 'back/types';
+import type { Load, FullCriteria, FullCriterion } from 'back/types';
 import { map, always, values, sortBy, prop } from 'ramda';
 import List, {
   ListItem,
@@ -25,7 +25,9 @@ type Props = {
   categories: ?KeyValue,
   language: number,
   languages: LanguagesType,
-  loadData: (Array<string>) => void,
+  loadData: ({
+    [ string ]: Load
+  }) => void,
   onSaveCriterion: (FullCriterion) => void,
   onDeleteCriterion: (number) => void,
 };
@@ -46,7 +48,16 @@ class CriteriaSection extends React.PureComponent<Props, State> {
   componentDidMount() {
     const { categories, products, loadData } = this.props;
     if (! categories || !products) {
-      loadData(['products', 'categories']);
+      loadData({
+        products: {
+          record: 'products',
+          options: 'all'
+        },
+        categories: {
+          record: 'categories',
+          options: 'all'
+        }
+      });
     }
   }
 

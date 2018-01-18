@@ -38,6 +38,10 @@ export type GradingShapeType = {
 export type ReviewType = {
   id: number,
   productId: number,
+  product: ?string,
+  customer: ?string,
+  authorType: 'guest' | 'customer',
+  authorId: number,
   displayName: string,
   email: string,
   title: string,
@@ -47,13 +51,20 @@ export type ReviewType = {
   },
   date: Date,
   underReview: boolean,
+  deleted: boolean,
   canVote: boolean,
   canEdit: boolean,
   canDelete: boolean,
   canReport: boolean
 }
 
-export type ReviewListType = Array<ReviewType>
+export type ReviewListType = {
+  pageSize: number,
+  page: number,
+  pages: number,
+  total: number,
+  reviews: Array<ReviewType>
+}
 
 export type ReviewFormErrors = {
   email: ?string,

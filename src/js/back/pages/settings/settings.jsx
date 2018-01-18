@@ -15,6 +15,7 @@ import Preview from './review-preview';
 import MenuItem from 'material-ui/Menu/MenuItem';
 import TextField from 'material-ui/TextField';
 import CriteriaSection from './criteria-section';
+import { hasErrors, validateIsNumber } from 'common/utils/validation';
 import styles from './style.less';
 
 type Props = {
@@ -45,17 +46,18 @@ class Settings extends React.PureComponent<Props, State> {
   isExpanded = (panel: string) => panel === this.state.expanded;
 
   render() {
+    const errors = this.validate();
     const changed = !equals(this.state.settings , this.props.settings);
     return (
       <PageWithFooter
         width={this.props.pageWidth}
         showFooter={changed}
-        content={this.renderContent()}
-        footer={this.renderFooter()} />
+        content={this.renderContent(errors)}
+        footer={this.renderFooter(errors)} />
     );
   }
 
-  renderContent = () => {
+  renderContent = (errors: any) => {
     const sections = [
       {
         key: 'reviews',
@@ -70,7 +72,7 @@ class Settings extends React.PureComponent<Props, State> {
       {
         key: 'placement',
         label: 'Display locations',
-        content: this.renderPlacements()
+        content: this.renderPlacements(errors)
       },
       {
         key: 'moderation',
@@ -86,7 +88,7 @@ class Settings extends React.PureComponent<Props, State> {
     const items = map(sectionKey, sections);
     return (
       <Grid container>
-        <Grid item sm={4}>
+        <Grid item md={4} hidden={{smDown: true}}>
           <div style={{position: 'fixed'}}>
             <h2>Settings</h2>
             <ScrollSpy items={items} className={styles.sectionList} currentClassName={styles.activeSection}>
@@ -98,7 +100,7 @@ class Settings extends React.PureComponent<Props, State> {
             </ScrollSpy>
           </div>
         </Grid>
-        <Grid item sm={8}>
+        <Grid item md={8} sm={12}>
           { sections.map((section, i) => (
             <Section key={i} id={sectionKey(section)} label={section.label}>
               { section.content }
@@ -109,13 +111,14 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderFooter = () => {
+  renderFooter = (errors: any) => {
+    const invalid = hasErrors(errors);
     return (
       <div className={styles.footerContent}>
         <Button onClick={this.onReset}>
           Cancel
         </Button>
-        <Button raised color="accent" onClick={this.onSaveSettings}>
+        <Button disabled={invalid} raised color="accent" onClick={this.onSaveSettings}>
           Save changes
         </Button>
       </div>
@@ -211,6 +214,7 @@ class Settings extends React.PureComponent<Props, State> {
   )
 
   renderReview = () => {
+    const settings = this.state.settings;
     return (
       <FormGroup>
         <FormControlLabel
@@ -241,11 +245,26 @@ class Settings extends React.PureComponent<Props, State> {
           control={this.renderSwitch(['review', 'allowReporting'])}
           label="Visitors can report abusive, fake, or incorrect reviews"
         />
+        <div className={styles.group}>
+          <div className={styles.space} />
+          <TextField
+            select
+            label="Default customer name format"
+            value={settings.review.displayName}
+            fullWidth
+            onChange={e => this.set(['review', 'displayName'], e.target.value)}>
+            <MenuItem value='fullName'>John Doe</MenuItem>
+            <MenuItem value='firstName'>John</MenuItem>
+            <MenuItem value='lastName'>Doe</MenuItem>
+            <MenuItem value='initials'>J.D.</MenuItem>
+            <MenuItem value='initialLastName'>John D.</MenuItem>
+          </TextField>
+        </div>
       </FormGroup>
     );
   }
 
-  renderPlacements = () => {
+  renderPlacements = (errors: any) => {
     const settings = this.state.settings;
     return (
       <FormGroup>
@@ -260,6 +279,24 @@ class Settings extends React.PureComponent<Props, State> {
             <MenuItem value='block'>Separate block</MenuItem>
             <MenuItem value='tab'>Tab</MenuItem>
           </TextField>
+          <div className={styles.space} />
+          <TextField
+            select
+            fullWidth
+            label="Order reviews by"
+            value={settings.display.product.orderBy}
+            onChange={e => this.set(['display', 'product', 'orderBy'], e.target.value)}>
+            <MenuItem value='date'>Date</MenuItem>
+            <MenuItem value='grade'>Ratings</MenuItem>
+          </TextField>
+          <div className={styles.space} />
+          <TextField
+            fullWidth
+            label="Reviews per page"
+            value={settings.display.product.reviewsPerPage}
+            error={!! errors.display.product.reviewsPerPage}
+            onChange={e => this.set(['display', 'product', 'reviewsPerPage'], e.target.value)} />
+          <div className={styles.space} />
         </div>
         <div className={styles.space} />
         <FormControlLabel
@@ -309,6 +346,17 @@ class Settings extends React.PureComponent<Props, State> {
     });
     this.set(['theme', 'shapeSize'], shapeSize);
   }
+
+  validate = () => {
+    const settings = this.state.settings;
+    return {
+      display: {
+        product: {
+          reviewsPerPage: validateIsNumber(settings.display.product.reviewsPerPage)
+        }
+      }
+    };
+  };
 
 }
 

@@ -1,6 +1,6 @@
 // @flow
 
-import type { ReviewType } from 'common/types';
+import type { ReviewListType, ReviewType } from 'common/types';
 import type {
   CloseEditReviewAction,
   SaveReviewAction,
@@ -15,7 +15,9 @@ import type {
   SetReviewAction,
   TriggerVoteAction,
   TriggerReportReviewAction,
-  ReviewRemovedAction
+  ReviewRemovedAction,
+  LoadPageAction,
+  SetReviewsAction
 } from './index';
 import Types from './types';
 
@@ -35,3 +37,6 @@ export const triggerDeleteReview = (review: ReviewType): TriggerDeleteReviewActi
 export const deleteReview = (id: number): DeleteReviewAction => ({ type: Types.deleteReview, id });
 export const closeDeleteReview = (): CloseDeleteReviewAction => ({ type: Types.closeDeleteReview });
 export const reviewRemoved = (id: number): ReviewRemovedAction => ({ type: Types.reviewRemoved, id });
+
+export const loadPage = (productId: number, page: number): LoadPageAction => ({ type: Types.loadPage, productId, page });
+export const setReviews = (reviews: ReviewListType): SetReviewsAction => ({ type: Types.setReviews, reviews });
