@@ -1,6 +1,7 @@
 // @flow
 
 import type { Load, SettingsType, FullCriterion } from 'back/types';
+import type { ReviewType } from 'common/types';
 import type { RoutingState } from 'back/routing';
 import type {
   GoToAction,
@@ -19,6 +20,8 @@ import type {
   ReviewDeletedAction,
   UndeleteReviewAction,
   ReviewUndeletedAction,
+  SaveReviewAction,
+  ReviewSavedAction
 } from './index';
 import Types from './types';
 
@@ -40,3 +43,6 @@ export const deleteReview = (id: number): DeleteReviewAction => ({ type: Types.d
 export const reviewDeleted = (id: number): ReviewDeletedAction => ({ type: Types.reviewDeleted, id });
 export const undeleteReview = (id: number): UndeleteReviewAction => ({ type: Types.undeleteReview, id });
 export const reviewUndeleted = (id: number): ReviewUndeletedAction => ({ type: Types.reviewUndeleted, id });
+
+export const saveReview = (review: ReviewType): SaveReviewAction => ({ type: Types.saveReview, review });
+export const reviewSaved = (review: ReviewType): ReviewSavedAction => ({ type: Types.reviewSaved, review });

@@ -21,4 +21,6 @@ export default {
   reviewDeleted: 'REVIEW_DELETED',
   undeleteReview: 'UNDELETE_REVIEW',
   reviewUndeleted: 'REVIEW_UNDELETED',
+  saveReview: 'SAVE_REVIEW',
+  reviewSaved: 'REVIEW_SAVED',
 };

@@ -3,6 +3,7 @@
 import type { ComponentType } from 'react';
 import type { GradingShapeType, ReviewType } from 'common/types';
 import React from 'react';
+import classnames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 import Table, {
   TableBody,
@@ -14,6 +15,8 @@ import Table, {
 import Typography from 'material-ui/Typography';
 import Tooltip from 'material-ui/Tooltip';
 import IconButton from 'material-ui/IconButton';
+import CustomerIcon from 'material-ui-icons/ShoppingCart';
+import GuestIcon from 'material-ui-icons/HelpOutline';
 import ApproveIcon from 'material-ui-icons/Check';
 import RejectButton from 'material-ui-icons/Delete';
 import UndeleteButton from 'material-ui-icons/Undo';
@@ -27,6 +30,8 @@ type InputProps = {
   onSetOrder: (orderBy: string, order: 'desc' | 'asc') => void,
   onChangePage: (number) => void,
   onChangeRowsPerPage: (number) => void,
+  onReviewClick: (number) => void,
+  onAuthorClick: ('customer' | 'guest', number, any) => void,
   approveReview: (id: number) => void,
   deleteReview: (id: number) => void,
   undeleteReview: (id: number) => void,
@@ -69,18 +74,40 @@ const styles = theme => ({
   tableWrapper: {
     overflowX: 'auto',
   },
+  row: {
+    cursor: 'pointer'
+  },
   underReview: {
-    backgroundColor: '#FFFEE1'
+    backgroundColor: '#FFFEE1',
+    '&:hover': {
+      backgroundColor: '#f2ee8a'
+    }
   },
   deleted: {
-    backgroundColor: '#FF8784'
+    backgroundColor: '#FF8784',
+    '&:hover': {
+      backgroundColor: '#ed625e'
+    }
   },
+  customer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  svg: {
+    width: 16,
+    height: 16,
+    fill: '#999',
+    marginRight: 10
+  }
 });
 
 class EnhancedTable extends React.Component<Props> {
 
   render() {
-    const { shape, emptyLabel, title, classes, total, data, order, orderBy, rowsPerPage, page, onChangePage, onChangeRowsPerPage } = this.props;
+    const {
+      shape, emptyLabel, title, classes, total, data, order, orderBy, rowsPerPage, page, onChangePage, onChangeRowsPerPage,
+      onAuthorClick, onReviewClick
+    } = this.props;
     return (
       <Paper className={classes.root}>
         <EnhancedTableToolbar title={title} total={total} />
@@ -95,16 +122,28 @@ class EnhancedTable extends React.Component<Props> {
             />
             <TableBody>
               {data.map((review: ReviewType) => {
-                const { id, product, title, content, customer, displayName  } = review;
+                const { id, product, title, content, customer, displayName, authorType, authorId  } = review;
                 const ratings = hasRatings(review) ;
                 const grade = averageGrade(review);
+                const Icon = authorType === 'customer' ? CustomerIcon : GuestIcon;
+                const type = authorType === 'customer' ? 'Customer' : 'Guest visitor';
                 return (
-                  <TableRow tabIndex={-1} key={id} className={this.getReviewRowClass(review)}>
+                  <TableRow
+                    tabIndex={-1}
+                    key={id}
+                    className={classnames(classes.row, this.getReviewRowClass(review))}
+                    onClick={e => onReviewClick(id)}
+                    hover>
                     <TableCell padding="dense">
                       { product }
                     </TableCell>
                     <TableCell padding="none">
-                      { customer || displayName}
+                      <Tooltip placement='bottom-start' title={type}>
+                        <div className={classes.customer} onClick={e => onAuthorClick(authorType, authorId, e)}>
+                          <Icon className={classes.svg} />
+                          { customer || displayName}
+                        </div>
+                      </Tooltip>
                     </TableCell>
                     <TableCell padding="dense" style={{width: 100}}>
                       { ratings ? (
@@ -157,7 +196,7 @@ class EnhancedTable extends React.Component<Props> {
     if (review.deleted) {
       actions.push(
         <Tooltip key="undelete" title={'Undelete'}>
-          <IconButton onClick={e => undeleteReview(review.id)}>
+          <IconButton onClick={e => { e.stopPropagation(); undeleteReview(review.id);}}>
             <UndeleteButton />
           </IconButton>
         </Tooltip>
@@ -166,7 +205,7 @@ class EnhancedTable extends React.Component<Props> {
       if (review.underReview) {
         actions.push(
           <Tooltip key="approve" title={'Approve'}>
-            <IconButton onClick={e => approveReview(review.id)}>
+            <IconButton onClick={e => { e.stopPropagation(); approveReview(review.id);}}>
               <ApproveIcon />
             </IconButton>
           </Tooltip>
@@ -174,7 +213,7 @@ class EnhancedTable extends React.Component<Props> {
       }
       actions.push(
         <Tooltip key="reject" title={'Delete'}>
-          <IconButton onClick={e => deleteReview(review.id)}>
+          <IconButton onClick={e => { e.stopPropagation(); deleteReview(review.id);}}>
             <RejectButton />
           </IconButton>
         </Tooltip>

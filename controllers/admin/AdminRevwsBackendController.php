@@ -111,6 +111,8 @@ class AdminRevwsBackendController extends ModuleAdminController {
         return $this->deleteCriterion($payload);
       case 'saveCriterion':
         return $this->saveCriterion($payload);
+      case 'saveReview':
+        return $this->saveReview($payload);
       default:
         throw new Exception("Unknown command $cmd");
     }
@@ -127,6 +129,14 @@ class AdminRevwsBackendController extends ModuleAdminController {
     $review->deleted = $deleted;
     $review->validated = false;
     return $review->save();
+  }
+
+  private function saveReview($json) {
+    $review = RevwsReview::fromJson($json);
+    if (! $review->save()) {
+      throw new Exception("Failed to save review");
+    }
+    return $review->toJSData($this->module->getPermissions());
   }
 
   private function loadData($payload) {

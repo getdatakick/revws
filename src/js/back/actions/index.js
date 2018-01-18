@@ -1,5 +1,6 @@
 // @flow
 import type { Load, SettingsType, FullCriterion } from 'back/types';
+import type { ReviewType } from 'common/types';
 import type { RoutingState } from 'back/routing';
 
 
@@ -87,6 +88,17 @@ export type ReviewUndeletedAction = {
   id: number
 }
 
+export type SaveReviewAction = {
+  type: 'SAVE_REVIEW',
+  review: ReviewType
+};
+
+export type ReviewSavedAction = {
+  type: 'REVIEW_SAVED',
+  review: ReviewType
+}
+
+
 export type Action = (
   GoToAction |
   LoadDataAction |
@@ -103,5 +115,7 @@ export type Action = (
   DeleteReviewAction |
   ReviewDeletedAction |
   UndeleteReviewAction |
-  ReviewUndeletedAction 
+  ReviewUndeletedAction |
+  SaveReviewAction |
+  ReviewSavedAction
 );

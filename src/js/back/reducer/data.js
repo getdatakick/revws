@@ -1,7 +1,7 @@
 // @flow
 import type { Action } from 'back/actions';
 import Types from 'back/actions/types';
-import { map, assoc, update, findIndex, propEq, merge } from 'ramda';
+import { always, map, assoc, update, findIndex, propEq, merge } from 'ramda';
 
 type State = {
   [ string ]: ?any
@@ -39,6 +39,9 @@ export default (state?: State, action:Action): State => {
   }
   if (action.type === Types.reviewUndeleted) {
     return updateReviews(action.id, markDeleted(false), state);
+  }
+  if (action.type === Types.reviewSaved) {
+    return updateReviews(action.review.id, always(action.review), state);
   }
   return state;
 };

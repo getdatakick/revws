@@ -3,7 +3,7 @@ import type { ComponentType } from 'react';
 import type { LoadOptions } from 'back/types';
 import type { InputProps } from './controller';
 import { connect } from 'react-redux';
-import { loadData, approveReview, deleteReview, undeleteReview } from 'back/actions/creators';
+import { saveReview, loadData, approveReview, deleteReview, undeleteReview } from 'back/actions/creators';
 import Controller from './controller';
 
 const mapStateToProps = (state) => ({
@@ -16,6 +16,7 @@ const actions = {
   approveReview,
   deleteReview,
   undeleteReview,
+  saveReview,
   loadData: (key: string, options: LoadOptions) => loadData({
     [ key ]: {
       record: 'reviews',

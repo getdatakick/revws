@@ -313,6 +313,25 @@ class RevwsReview extends ObjectModel {
     return $review;
   }
 
+  public static function fromJson($json) {
+    $id = (int)$json['id'];
+    if ($id === -1) {
+      $id = null;
+    }
+    $review = new RevwsReview($id);
+    $review->display_name = $json['displayName'];
+    $review->title = $json['title'];
+    $review->content = $json['content'];
+    $review->date_upd = new \DateTime();
+    $review->product = $json['product'];
+    $review->customer = $json['customer'];
+    $review->grades = [];
+    foreach ($json['grades'] as $key => $value) {
+      $review->grades[(int)$key] = (int)$value;
+    }
+    return $review;
+  }
+
   private function calculateAverage($grades) {
     $cnt = count($grades);
     if ($cnt) {

@@ -9,6 +9,7 @@ import Types from 'back/actions/types';
 import { saveSettings } from './save-settings';
 import { deleteCriterion } from './delete-criterion';
 import { saveCriterion } from './save-criterion';
+import { saveReview } from './save-review';
 import { loadData } from './load-data';
 import { approveReview } from './approve-review';
 import { deleteReview } from './delete-review';
@@ -18,6 +19,7 @@ const commands = {
   [ Types.setSettings ]: saveSettings,
   [ Types.deleteCriterion ]: deleteCriterion,
   [ Types.saveCriterion ]: saveCriterion,
+  [ Types.saveReview ]: saveReview,
   [ Types.loadData ]: loadData,
   [ Types.deleteReview ]: deleteReview,
   [ Types.undeleteReview ]: undeleteReview,

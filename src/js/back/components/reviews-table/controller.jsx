@@ -1,11 +1,12 @@
 // @flow
 
-import type { ReviewListType, GradingShapeType, ReviewType } from 'common/types';
+import type { ReviewListType, GradingShapeType, ReviewType, CriteriaType } from 'common/types';
 import type { LoadOptions } from 'back/types';
 import { notNil } from 'common/utils/ramda';
-import { reject, merge, equals, has } from 'ramda';
+import { find, propEq, reject, merge, equals, has } from 'ramda';
 import React from 'react';
 import ReviewsTable from 'back/components/reviews-table/reviews-table';
+import EditReviewDialog from 'back/components/edit-review/edit-review-dialog/edit-review-dialog';
 
 type Filters = {
   deleted?: boolean,
@@ -13,11 +14,13 @@ type Filters = {
 }
 
 export type InputProps = {
+  language: number,
+  criteria: CriteriaType,
   shape: GradingShapeType,
   uniqueId: string,
   title: string,
   emptyLabel?: string,
-  filters: Filters,
+  filters: Filters
 }
 
 type Props = InputProps & {
@@ -25,10 +28,12 @@ type Props = InputProps & {
   loadData: (string, LoadOptions) => void,
   approveReview: (id: number) => void,
   deleteReview: (id: number) => void,
-  undeleteReview: (id: number) => void
+  undeleteReview: (id: number) => void,
+  saveReview: (ReviewType) => void
 };
 
 type State = {
+  edit: ?number,
   page: number,
   pageSize: number,
   order: 'asc' | 'desc',
@@ -48,6 +53,7 @@ class Controller extends React.PureComponent<Props, State> {
   static displayName = 'Controller';
 
   state = {
+    edit: null,
     page: 0,
     pageSize: 10,
     orderBy: 'date',
@@ -105,35 +111,61 @@ class Controller extends React.PureComponent<Props, State> {
   }
 
   renderList(list: ReviewListType) {
-    const { emptyLabel, title, shape, approveReview, deleteReview, undeleteReview } = this.props;
-    const { page, pageSize, order, orderBy } = this.state;
+    const { criteria, emptyLabel, title, shape, approveReview, deleteReview, undeleteReview, language } = this.props;
+    const { edit, page, pageSize, order, orderBy } = this.state;
     const { total, reviews } = list;
     const filtered = this.filter(reviews);
     const diff = reviews.length - filtered.length;
+    const selectedReview = edit ? find(propEq('id', edit), reviews) : null;
 
     return (
-      <ReviewsTable
-        title={title}
-        shape={shape}
-        data={filtered}
-        total={total - diff}
-        page={page}
-        order={order}
-        orderBy={orderBy}
-        rowsPerPage={pageSize}
-        onSetOrder={(orderBy, order) => this.setState({ order, orderBy })}
-        onChangeRowsPerPage={pageSize => this.setState({ pageSize })}
-        onChangePage={page => this.setState({ page })}
-        approveReview={approveReview}
-        deleteReview={deleteReview}
-        undeleteReview={undeleteReview}
-        emptyLabel={emptyLabel || 'Nothing found'}
-      />
+      <div>
+        <ReviewsTable
+          title={title}
+          shape={shape}
+          data={filtered}
+          total={total - diff}
+          page={page}
+          order={order}
+          orderBy={orderBy}
+          rowsPerPage={pageSize}
+          onSetOrder={(orderBy, order) => this.setState({ order, orderBy })}
+          onChangeRowsPerPage={pageSize => this.setState({ pageSize })}
+          onChangePage={page => this.setState({ page })}
+          onReviewClick={this.onReviewClick}
+          onAuthorClick={this.onAuthorClick}
+          approveReview={approveReview}
+          deleteReview={deleteReview}
+          undeleteReview={undeleteReview}
+          emptyLabel={emptyLabel || 'Nothing found'}
+        />
+        <EditReviewDialog
+          language={language}
+          review={selectedReview}
+          allowEmptyReviews={true}
+          criteria={criteria}
+          shape={shape}
+          onSave={this.onSaveReview}
+          onClose={() => this.setState({ edit: null })}
+        />
+      </div>
     );
   }
 
   filter = (reviews: Array<ReviewType>) => {
     return reject(this.hiddenReview, reviews);
+  }
+
+  onAuthorClick = (authorType: 'guest' | 'customer', id: number) => {
+  }
+
+  onSaveReview = (review: ReviewType) => {
+    this.onReviewClick(null);
+    this.props.saveReview(review);
+  }
+
+  onReviewClick = (id: ?number) => {
+    this.setState({ edit: id });
   }
 
   hiddenReview = (review: ReviewType) => {
