@@ -69,5 +69,13 @@ CREATE TABLE IF NOT EXISTS `PREFIX_revws_review_grade` (
   PRIMARY KEY (`id_review`, `id_criterion`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
 
+CREATE TABLE IF NOT EXISTS `PREFIX_revws_review_reaction` (
+  `id_review`     INT(11) UNSIGNED NOT NULL,
+  `id_customer`   INT(11) UNSIGNED NOT NULL,
+  `id_guest`      INT(11) UNSIGNED NOT NULL,
+  `reaction_type` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id_review`, `id_customer`, `id_guest`, `reaction_type`)
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
+
 INSERT IGNORE INTO `PREFIX_revws_criterion`(`id_criterion`, `global`) VALUES (1, 1);
 INSERT IGNORE INTO `PREFIX_revws_criterion_lang`(`id_criterion`, `id_lang`, `label`) SELECT 1, `l`.`id_lang`, 'Quality' FROM `PREFIX_lang` `l`;

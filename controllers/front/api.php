@@ -123,7 +123,7 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     if (! $this->module->getPermissions()->canVote($review)) {
       throw new Exception("Permission denied");
     }
-    return $review->vote($up, $settings);
+    return $review->vote($up, $settings, $this->module->getVisitor());
   }
 
   private function reportAbuse() {
@@ -134,7 +134,7 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     if (! $this->module->getPermissions()->canReportAbuse($review)) {
       throw new Exception("Permission denied");
     }
-    if ($review->reportAbuse($reason, $settings)) {
+    if ($review->reportAbuse($reason, $settings, $this->module->getVisitor())) {
       return [
         'hide' => $settings->validateReportedReviews()
       ];

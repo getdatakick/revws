@@ -74,6 +74,7 @@ class RevwsReview extends ObjectModel {
   public function delete() {
     $ret = parent::delete();
     $ret &= $this->deleteGrades();
+    $ret &= $this->deleteReactions();
     return $ret;
   }
 
@@ -89,6 +90,12 @@ class RevwsReview extends ObjectModel {
     $conn = Db::getInstance();
     $id = (int)$this->id;
     return $conn->delete('revws_review_grade', "id_review = $id ");
+  }
+
+  public function deleteReactions() {
+    $conn = Db::getInstance();
+    $id = (int)$this->id;
+    return $conn->delete('revws_review_reaction', "id_review = $id ");
   }
 
   public static function findReviews($options, $lang=null, $shop=null) {
@@ -146,18 +153,32 @@ class RevwsReview extends ObjectModel {
     $this->validated = $validated;
   }
 
-  public function vote($up=true, Settings $settings) {
-    // TODO
-    return true;
+  public function vote($up=true, Settings $settings, Visitor $visitor) {
+    $conn = Db::getInstance();
+    return $conn->insert('revws_review_reaction',
+      [
+        'id_review' => (int)$this->id,
+        'id_customer' => (int)$visitor->getCustomerId(),
+        'id_guest' => (int)$visitor->getGuestId(),
+        'reaction_type' => $up ? 'vote_up' : 'vote_down'
+      ]
+    );
   }
 
-  public function reportAbuse($reason, Settings $settings) {
-    // TODO
+  public function reportAbuse($reason, Settings $settings, Visitor $visitor) {
     if ($settings->validateReportedReviews()) {
       $this->setValidated(false);
       $this->save();
     }
-    return true;
+    $conn = Db::getInstance();
+    return $conn->insert('revws_review_reaction',
+      [
+        'id_review' => (int)$this->id,
+        'id_customer' => (int)$visitor->getCustomerId(),
+        'id_guest' => (int)$visitor->getGuestId(),
+        'reaction_type' => 'report_abuse'
+      ]
+    );
   }
 
   private function saveGrades() {
@@ -274,8 +295,8 @@ class RevwsReview extends ObjectModel {
       $id = null;
     }
     $review = new RevwsReview($id);
-    $review->id_guest = $visitor->isCustomer() ? 0 : $visitor->getId();
-    $review->id_customer = $visitor->isCustomer() ? $visitor->getId() : 0;
+    $review->id_guest = $visitor->getGuestId();
+    $review->id_customer = $visitor->getCustomerId();
     $review->id_product = (int)Tools::getValue('productId');
     $review->display_name = Tools::getValue('displayName');
     $review->email = Tools::getValue('email');

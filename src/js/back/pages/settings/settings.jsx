@@ -288,6 +288,7 @@ class Settings extends React.PureComponent<Props, State> {
             onChange={e => this.set(['display', 'product', 'orderBy'], e.target.value)}>
             <MenuItem value='date'>Date</MenuItem>
             <MenuItem value='grade'>Ratings</MenuItem>
+            <MenuItem value='usefulness'>Votes</MenuItem>
           </TextField>
           <div className={styles.space} />
           <TextField

@@ -29,11 +29,18 @@ class VisitorPermissions implements Permissions {
   }
 
   public function canCreateReview($productId) {
-    if ($this->visitor->isGuest()) {
-      return $this->settings->allowGuestReviews();
+    $visitor = $this->visitor;
+    if ($visitor->isGuest() && !$this->settings->allowGuestReviews()) {
+      return false;
     }
-    // TODO: check product id
-    return true;
+    $visitorType = $visitor->getType();
+    $visitorId = $visitor->getId();
+    $reviews = RevwsReview::findReviews([
+      'deleted' => false,
+      'product' => (int)$productId,
+      $visitorType => (int)$visitorId,
+    ]);
+    return $reviews['total'] === 0;
   }
 
   public function canReportAbuse(RevwsReview $review) {
@@ -77,12 +84,10 @@ class VisitorPermissions implements Permissions {
   }
 
   private function reportedBy($review, $visitor) {
-    // TODO
-    return false;
+    return $visitor->hasReacted($review->id, 'report_abuse');
   }
 
   private function hasVoted($review, $visitor) {
-    // TODO
-    return false;
+    return $visitor->hasReacted($review->id, 'vote_up') || $visitor->hasReacted($review->id, 'vote_down');
   }
 }

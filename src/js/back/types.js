@@ -13,7 +13,7 @@ export type SettingsType = {
   display: {
     product: {
       placement: string,
-      orderBy: 'date' | 'grade',
+      orderBy: 'date' | 'grade' | 'usefulness',
       reviewsPerPage: number | string,
       showAverage: boolean,
     },

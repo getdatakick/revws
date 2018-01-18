@@ -19,6 +19,7 @@
 
 namespace Revws;
 use \Customer;
+use \Db;
 
 class Visitor {
   const GUEST = 'guest';
@@ -30,6 +31,7 @@ class Visitor {
   private $firstName='';
   private $lastName='';
   private $email='';
+  private $reactions = null;
 
   public function __construct($context, Settings $settings) {
     $this->settings = $settings;
@@ -86,6 +88,33 @@ class Visitor {
 
   public function getEmail() {
     return trim($this->email);
+  }
+
+  public function hasReacted($reviewId, $reactionType) {
+    $this->loadReactions();
+    return isset($this->reactions[(int)$reviewId][$reactionType]);
+  }
+
+  public function getCustomerId() {
+    return $this->isCustomer() ? (int)$this->id : 0;
+  }
+
+  public function getGuestId() {
+    return $this->isGuest() ? (int)$this->id : 0;
+  }
+
+  private function loadReactions() {
+    if (is_null($this->reactions)) {
+      $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
+      $table = _DB_PREFIX_ . 'revws_review_reaction';
+      $this->reactions = [];
+      $query = "SELECT * FROM $table WHERE id_customer = {$this->getCustomerId()} AND id_guest = {$this->getGuestId()}";
+      foreach ($conn->executeS($query) as $row) {
+        $review = (int)$row['id_review'];
+        $type = $row['reaction_type'];
+        $this->reactions[$review][$type] = true;
+      }
+    }
   }
 
 }

@@ -200,7 +200,7 @@ class Settings {
   }
 
   private function toOrderByPreference($pref) {
-    if (in_array($pref, ['date', 'grade'])) {
+    if (in_array($pref, ['date', 'grade', 'usefulness'])) {
       return $pref;
     }
     return 'date';

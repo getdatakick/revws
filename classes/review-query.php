@@ -137,6 +137,9 @@ class ReviewQuery {
       $dir = $order['direction'] === 'asc' ? 'ASC' : 'DESC';
       $field = $this->getOrderByField($order['field']);
     }
+    if ($field != 'r.id_review') {
+      return "$field $dir, r.id_review DESC";
+    }
     return "$field $dir";
   }
 
@@ -144,6 +147,8 @@ class ReviewQuery {
     switch ($order) {
       case 'date':
         return 'r.date_add';
+      case 'usefulness':
+        return $this->getUsefulnessSubselect();
       case 'author':
         return $this->includeCustomerInfo() ? "(CASE WHEN r.id_customer != 0 THEN TRIM(CONCAT(cust.firstname,' ', cust.lastname)) ELSE r.display_name END)" : 'r.display_name';
       case 'product':
@@ -162,6 +167,16 @@ class ReviewQuery {
   private function getAverageGradeSubselect() {
     return "(SELECT (SUM(ra.grade) / COUNT(1)) FROM " . _DB_PREFIX_ . "revws_review_grade ra WHERE ra.id_review = r.id_review)";
   }
+
+  private function getUsefulnessSubselect() {
+    return "(
+      SELECT (SUM(CASE WHEN react.reaction_type = 'vote_up' THEN 1 ELSE 0 END) - SUM(CASE WHEN react.reaction_type = 'vote_down' THEN 1 ELSE 0 END))
+        FROM " . _DB_PREFIX_ . "revws_review_reaction react
+        WHERE react.id_review = r.id_review
+          AND react.reaction_type IN ('vote_up', 'vote_down')
+    )";
+  }
+
 
   private function getLimit() {
     if ($this->hasOption('pageSize') && $this->hasOption('page')) {

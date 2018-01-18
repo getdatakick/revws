@@ -22,3 +22,4 @@ DROP TABLE IF EXISTS `PREFIX_revws_criterion_category`;
 DROP TABLE IF EXISTS `PREFIX_revws_criterion_product`;
 DROP TABLE IF EXISTS `PREFIX_revws_review`;
 DROP TABLE IF EXISTS `PREFIX_revws_review_grade`;
+DROP TABLE IF EXISTS `PREFIX_revws_review_reaction`;
