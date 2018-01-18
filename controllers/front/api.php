@@ -44,7 +44,6 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     } catch (Exception $e) {
       $error = $e->getMessage();
     }
-    ob_end_clean();
     $this->reply($error, $result);
   }
 
