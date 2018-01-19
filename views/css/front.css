@@ -60,7 +60,6 @@ a .revws-grading {
   justify-content: center
 }
 
-
 .revws-under-review {
   color: red;
   margin-top: -10px;
@@ -197,4 +196,11 @@ a .revws-grading {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+.revws-replies {
+  width: 100%;
+  padding: 20px;
+  background-color: #EBF3F8;
+  margin-top: 10px;
 }

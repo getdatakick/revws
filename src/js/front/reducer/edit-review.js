@@ -24,6 +24,7 @@ const defaultReview = (settings: SettingsType, product: ProductInfoType):ReviewT
   product: null,
   email: settings.visitor.email,
   grades: zipObj(product.criteria, repeat(0, product.criteria.length)),
+  reply: null,
   displayName: settings.visitor.displayName,
   title: '',
   content: null,

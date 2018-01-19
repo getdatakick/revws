@@ -60,6 +60,7 @@ class ReviewQuery {
       'email' => 'r.email',
       'title' => 'r.title',
       'content' => 'r.content',
+      'reply' => 'r.reply',
       'date_add' => 'r.date_add',
       'date_upd' => 'r.date_upd',
       'validated' => 'r.validated',

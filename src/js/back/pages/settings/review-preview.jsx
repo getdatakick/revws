@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import { F } from 'ramda';
 import type { GradingShapeType, ReviewType } from 'common/types';
 import styles from './style.less';
 import Bootstrap from 'common/components/bootstrap/bootstrap';
@@ -33,6 +32,7 @@ class ReviewPreview extends React.PureComponent<Props> {
       title: 'Amazing product!',
       content: "I have bough this product and it rocks!\nIf only the shipping was cheaper...",
       grades,
+      reply: null,
       date: new Date(),
       underReview: false,
       deleted: false,
@@ -49,10 +49,6 @@ class ReviewPreview extends React.PureComponent<Props> {
             shape={shape}
             shapeSize={size}
             review={review}
-            onVote={F}
-            onReport={F}
-            onEdit={F}
-            onDelete={F}
           />
         </div>
       </Bootstrap>

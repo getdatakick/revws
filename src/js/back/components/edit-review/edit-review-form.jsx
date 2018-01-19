@@ -3,6 +3,7 @@ import React from 'react';
 import type { ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType } from 'common/types';
 import { values, mapObjIndexed, assoc } from 'ramda';
 import TextField from 'material-ui/TextField';
+import Grid from 'material-ui/Grid';
 import Grading from 'common/components/grading/grading';
 import TextArea from 'common/components/text-area/text-area';
 import styles from './edit-review-form.less';
@@ -25,27 +26,33 @@ class EditReviewForm extends React.PureComponent<Props> {
     const { title, content, grades } = review;
     return (
       <div className={styles.root}>
-        { values(mapObjIndexed(this.renderCriterion, grades)) }
-        <TextField
-          key="author"
-          id="author"
-          className={styles.input}
-          label="Reviewer name"
-          placeholder="Please enter customer name"
-          value={review.displayName}
-          onChange={this.update('displayName')}
-          error={!! errors.displayName}
-          fullWidth />
-        <TextField
-          key="email"
-          id="email"
-          className={styles.input}
-          label="Reviewer email"
-          placeholder="Please enter reviewer email"
-          value={review.email}
-          onChange={this.update('email')}
-          error={!! errors.email}
-          fullWidth />
+        <Grid container spacing={40}>
+          <Grid item md={6}>
+            <TextField
+              key="author"
+              id="author"
+              label="Reviewer name"
+              placeholder="Please enter customer name"
+              value={review.displayName}
+              onChange={this.update('displayName')}
+              error={!! errors.displayName}
+              fullWidth />
+            <TextField
+              key="email"
+              id="email"
+              className={styles.input}
+              label="Reviewer email"
+              placeholder="Please enter reviewer email"
+              value={review.email}
+              onChange={this.update('email')}
+              error={!! errors.email}
+              fullWidth />
+          </Grid>
+          <Grid item md={6}>
+            <h3>Ratings</h3>
+            { values(mapObjIndexed(this.renderCriterion, grades)) }
+          </Grid>
+        </Grid>
         <TextField
           id="title"
           label="Review title"
@@ -74,13 +81,13 @@ class EditReviewForm extends React.PureComponent<Props> {
     if (criterion) {
       return (
         <div key={critKey} className={styles.criterion}>
-          <span className={styles.criterionLabel}>{criterion.label[language]}</span>
           <Grading
             className={styles.grading}
             shape={shape}
-            size={18}
+            size={25}
             grade={grade}
             onSetGrade={(grade) => this.onSetGrade(critKey, grade)} />
+          <span className={styles.criterionLabel}>{criterion.label[language]}</span>
         </div>
       );
     }

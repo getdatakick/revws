@@ -49,7 +49,7 @@ export default (settings: GlobalDataType) => {
           ajax: true,
           action: 'command',
           cmd: cmd,
-          payload: JSON.stringify(payload)
+          payload: JSON.stringify(payload).replace(/\\n/g, "\\\\n")
         },
         success,
         error

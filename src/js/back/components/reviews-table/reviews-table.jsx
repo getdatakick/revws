@@ -19,7 +19,7 @@ import CustomerIcon from 'material-ui-icons/ShoppingCart';
 import GuestIcon from 'material-ui-icons/HelpOutline';
 import ApproveIcon from 'material-ui-icons/Check';
 import RejectButton from 'material-ui-icons/Delete';
-import UndeleteButton from 'material-ui-icons/Undo';
+import UndeleteButton from 'material-ui-icons/Refresh';
 import Paper from 'material-ui/Paper';
 import EnhancedTableHead from './table-head';
 import EnhancedTableToolbar from './table-toolbar';
@@ -98,6 +98,9 @@ const styles = theme => ({
     height: 16,
     fill: '#999',
     marginRight: 10
+  },
+  icon: {
+    width: 28
   }
 });
 
@@ -191,12 +194,13 @@ class EnhancedTable extends React.Component<Props> {
   }
 
   renderActions = (review: ReviewType) => {
-    const { approveReview, deleteReview, undeleteReview } = this.props;
+    const { classes, approveReview, deleteReview, undeleteReview } = this.props;
+    const iconClass = classes.icon;
     const actions = [];
     if (review.deleted) {
       actions.push(
         <Tooltip key="undelete" title={'Undelete'}>
-          <IconButton onClick={e => { e.stopPropagation(); undeleteReview(review.id);}}>
+          <IconButton className={iconClass} onClick={e => { e.stopPropagation(); undeleteReview(review.id);}}>
             <UndeleteButton />
           </IconButton>
         </Tooltip>
@@ -205,7 +209,7 @@ class EnhancedTable extends React.Component<Props> {
       if (review.underReview) {
         actions.push(
           <Tooltip key="approve" title={'Approve'}>
-            <IconButton onClick={e => { e.stopPropagation(); approveReview(review.id);}}>
+            <IconButton className={iconClass} onClick={e => { e.stopPropagation(); approveReview(review.id);}}>
               <ApproveIcon />
             </IconButton>
           </Tooltip>
@@ -213,7 +217,7 @@ class EnhancedTable extends React.Component<Props> {
       }
       actions.push(
         <Tooltip key="reject" title={'Delete'}>
-          <IconButton onClick={e => { e.stopPropagation(); deleteReview(review.id);}}>
+          <IconButton className={iconClass} onClick={e => { e.stopPropagation(); deleteReview(review.id);}}>
             <RejectButton />
           </IconButton>
         </Tooltip>

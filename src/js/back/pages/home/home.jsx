@@ -24,6 +24,7 @@ class HomePage extends React.PureComponent<Props> {
           title={'Unapproved reviews'}
           emptyLabel={'Nothing to approve'}
           shape={shape}
+          shapeSize={settings.theme.shapeSize.product}
           criteria={criteria}
           filters={{
             validated: false,
@@ -36,6 +37,7 @@ class HomePage extends React.PureComponent<Props> {
           title={'All reviews'}
           emptyLabel={'No reviews'}
           shape={shape}
+          shapeSize={settings.theme.shapeSize.product}
           criteria={criteria}
           filters={{}}
           uniqueId={'allReviews'} />

@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_revws_review` (
   `display_name` VARCHAR(255) NOT NULL,
   `title`        VARCHAR(127) NOT NULL,
   `content`      TEXT NULL,
+  `reply`        TEXT NULL,
   `validated`    TINYINT(1) NOT NULL DEFAULT 0,
   `deleted`      TINYINT(1) NOT NULL DEFAULT 0,
   `date_add`     DATETIME NOT NULL,
@@ -66,7 +67,8 @@ CREATE TABLE IF NOT EXISTS `PREFIX_revws_review_grade` (
   `id_review`    INT(11) UNSIGNED NOT NULL,
   `id_criterion` INT(11) UNSIGNED NOT NULL,
   `grade`        DECIMAL(5,2) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id_review`, `id_criterion`)
+  PRIMARY KEY (`id_review`, `id_criterion`),
+  KEY `id_review` (`id_review`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
 
 CREATE TABLE IF NOT EXISTS `PREFIX_revws_review_reaction` (
@@ -74,7 +76,8 @@ CREATE TABLE IF NOT EXISTS `PREFIX_revws_review_reaction` (
   `id_customer`   INT(11) UNSIGNED NOT NULL,
   `id_guest`      INT(11) UNSIGNED NOT NULL,
   `reaction_type` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`id_review`, `id_customer`, `id_guest`, `reaction_type`)
+  PRIMARY KEY (`id_review`, `id_customer`, `id_guest`, `reaction_type`),
+  KEY `id_review` (`id_review`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
 
 INSERT IGNORE INTO `PREFIX_revws_criterion`(`id_criterion`, `global`) VALUES (1, 1);

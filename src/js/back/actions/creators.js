@@ -21,7 +21,7 @@ import type {
   UndeleteReviewAction,
   ReviewUndeletedAction,
   SaveReviewAction,
-  ReviewSavedAction
+  ReviewSavedAction,
 } from './index';
 import Types from './types';
 

@@ -6,7 +6,7 @@ import { notNil } from 'common/utils/ramda';
 import { find, propEq, reject, merge, equals, has } from 'ramda';
 import React from 'react';
 import ReviewsTable from 'back/components/reviews-table/reviews-table';
-import EditReviewDialog from 'back/components/edit-review/edit-review-dialog/edit-review-dialog';
+import EditReviewDialog from 'back/components/edit-review/edit-review-dialog';
 
 type Filters = {
   deleted?: boolean,
@@ -17,6 +17,7 @@ export type InputProps = {
   language: number,
   criteria: CriteriaType,
   shape: GradingShapeType,
+  shapeSize: number,
   uniqueId: string,
   title: string,
   emptyLabel?: string,
@@ -111,7 +112,7 @@ class Controller extends React.PureComponent<Props, State> {
   }
 
   renderList(list: ReviewListType) {
-    const { criteria, emptyLabel, title, shape, approveReview, deleteReview, undeleteReview, language } = this.props;
+    const { criteria, emptyLabel, title, shape, approveReview, deleteReview, undeleteReview, language, shapeSize } = this.props;
     const { edit, page, pageSize, order, orderBy } = this.state;
     const { total, reviews } = list;
     const filtered = this.filter(reviews);
@@ -145,6 +146,7 @@ class Controller extends React.PureComponent<Props, State> {
           allowEmptyReviews={true}
           criteria={criteria}
           shape={shape}
+          shapeSize={shapeSize}
           onSave={this.onSaveReview}
           onClose={() => this.setState({ edit: null })}
         />
@@ -160,7 +162,6 @@ class Controller extends React.PureComponent<Props, State> {
   }
 
   onSaveReview = (review: ReviewType) => {
-    this.onReviewClick(null);
     this.props.saveReview(review);
   }
 

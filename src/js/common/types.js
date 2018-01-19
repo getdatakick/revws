@@ -46,6 +46,7 @@ export type ReviewType = {
   email: string,
   title: string,
   content: ?string,
+  reply: ?string,
   grades: {
     [ number ]: number
   },

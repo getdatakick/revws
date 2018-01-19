@@ -80,6 +80,15 @@
                 </div>
               {/if}
             </div>
+            {if $review.reply}
+              <div class="revws-replies">
+                <div class="revws-reply">
+                  <div class="revws-reply-content">
+                    {$review.reply|escape:'html':'UTF-8'|nl2br}
+                  </div>
+                </div>
+              </div>
+            {/if}
           </div>
         </div>
       </div>

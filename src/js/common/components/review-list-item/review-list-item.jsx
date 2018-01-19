@@ -1,21 +1,50 @@
 // @flow
+
 import React from 'react';
+import classnames from 'classnames';
 import type { GradingShapeType, ReviewType } from 'common/types';
+import { F, isNil } from 'ramda';
 import { hasRatings, averageGrade } from 'common/utils/reviews';
 import Grading from 'common/components/grading/grading';
+import ReplyIcon from 'material-ui-icons/Reply';
+import styles from './review-list-item.less';
+import Textarea from 'common/components/text-area/text-area';
+import Button from 'material-ui/button';
 
 type Props = {
   shape: GradingShapeType,
   shapeSize: number,
   review: ReviewType,
   onEdit: (ReviewType)=>void,
+  onSaveReply?: (?string)=>void,
   onDelete: (ReviewType)=>void,
   onVote: (ReviewType, 'up' | 'down')=>void,
   onReport: (ReviewType)=>void
 };
 
-class ReviewListItem extends React.PureComponent<Props> {
+type State = {
+  editReply: ?string
+}
+
+class ReviewListItem extends React.PureComponent<Props, State> {
   static displayName = 'ReviewListItem';
+
+  static defaultProps = {
+    onEdit: F,
+    onDelete: F,
+    onVote: F,
+    onReport: F
+  }
+
+  state = {
+    editReply: null
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (this.state.editReply && this.props.review.reply != nextProps.review.reply) {
+      this.stopEditReply();
+    }
+  }
 
   render() {
     const { shape, shapeSize, onReport, onEdit, onDelete, onVote, review } = this.props;
@@ -79,10 +108,92 @@ class ReviewListItem extends React.PureComponent<Props> {
                 </div>
               )}
             </div>
+            { this.renderReplies() }
           </div>
         </div>
       </div>
     );
+  }
+
+  renderReplies = () => {
+    const { review, onSaveReply } = this.props;
+    const { editReply } = this.state;
+    if (! isNil(editReply)) {
+      return this.renderEditReply(editReply || '');
+    }
+    if (review.reply) {
+      return this.renderReply(review.reply);
+    }
+    if (onSaveReply) {
+      return this.renderReplyPlaceholder();
+    }
+    return null;
+  }
+
+  renderReply = (reply: string) => {
+    const canEdit = !!this.props.onSaveReply;
+    const clazz = classnames("revws-reply", {
+      [ styles.editable ]: canEdit
+    });
+    const onClick = canEdit ? this.startEditReply : null;
+    return (
+      <div className="revws-replies">
+        <div className={clazz} onClick={onClick}>
+          <div className="revws-reply-content">
+            { this.renderContent(reply) }
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderEditReply = (reply: string) => {
+    return (
+      <div className="revws-replies">
+        <Textarea
+          value={reply}
+          label={'Your anwser'}
+          placeholder={'Write your answer'}
+          onChange={e => this.setState({ editReply: e.target.value })} />
+        <div className={styles.margin}>
+          <Button onClick={this.stopEditReply}>
+            Cancel
+          </Button>
+          <Button color='accent' onClick={this.saveReply}>
+            Save
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  renderReplyPlaceholder = () => {
+    return (
+      <div className="revws-replies">
+        <div className={styles.reply} onClick={this.startEditReply}>
+          <ReplyIcon />
+          {'Click here to reply'}
+        </div>
+      </div>
+    );
+  }
+
+  startEditReply = () => {
+    const review = this.props.review;
+    this.setState({ editReply: review.reply || '' });
+  }
+
+  stopEditReply = () => {
+    this.setState({ editReply: null });
+  }
+
+  saveReply = () => {
+    const { onSaveReply } = this.props;
+    if (onSaveReply) {
+      const reply = this.state.editReply || null;
+      this.stopEditReply();
+      onSaveReply(reply);
+    }
   }
 
   renderContent = (content: ?string) => {

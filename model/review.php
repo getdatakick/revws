@@ -34,6 +34,7 @@ class RevwsReview extends ObjectModel {
       'display_name'  => [ 'type' => self::TYPE_STRING, 'required' => true ],
       'title'         => [ 'type' => self::TYPE_STRING, 'required' => true ],
       'content'       => [ 'type' => self::TYPE_STRING, 'size' => 65535],
+      'reply'         => [ 'type' => self::TYPE_STRING, 'size' => 65535],
       'validated'     => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
       'deleted'       => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
       'date_add'      => [ 'type' => self::TYPE_DATE ],
@@ -53,6 +54,7 @@ class RevwsReview extends ObjectModel {
   public $deleted = 0;
   public $date_add;
   public $date_upd;
+  public $reply;
 
   public $grades = [];
   public $product;
@@ -110,9 +112,10 @@ class RevwsReview extends ObjectModel {
     }
     $count = $conn->getRow('SELECT FOUND_ROWS() AS r')['r'];
 
-    // load ratings
     if ($count) {
       $keys = implode(array_keys($reviews), ', ');
+
+      // load ratings
       $grade = _DB_PREFIX_ . 'revws_review_grade';
       $sql = "SELECT id_review, id_criterion, grade FROM $grade WHERE id_review IN ($keys) ORDER by id_review, id_criterion";
       foreach ($conn->executeS($sql) as $row) {
@@ -249,6 +252,7 @@ class RevwsReview extends ObjectModel {
       'title' => $this->title,
       'content' => $this->content,
       'underReview' => !$this->validated,
+      'reply' => $this->reply ? $this->reply : null,
       'deleted' => !!$this->deleted,
       'canReport' => $permissions->canReportAbuse($this),
       'canVote' => $permissions->canVote($this),
@@ -279,6 +283,7 @@ class RevwsReview extends ObjectModel {
     $review->date_upd = $dbData['date_add'];
     $review->validated = !!$dbData['validated'];
     $review->deleted = !!$dbData['deleted'];
+    $review->reply = $dbData['reply'];
     if (isset($dbData['product'])) {
       $review->product = $dbData['product'];
     }
@@ -325,6 +330,10 @@ class RevwsReview extends ObjectModel {
     $review->date_upd = new \DateTime();
     $review->product = $json['product'];
     $review->customer = $json['customer'];
+    $review->email = $json['email'];
+    $review->reply = $json['reply'] ? str_replace('\\', '\\\\', $json['reply']) : null;
+    $review->validated = !$json['underReview'];
+    $review->deleted = $json['deleted'];
     $review->grades = [];
     foreach ($json['grades'] as $key => $value) {
       $review->grades[(int)$key] = (int)$value;
