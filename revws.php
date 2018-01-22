@@ -207,7 +207,9 @@ class Revws extends Module {
       'reviews' => $reviews,
       'visitor' => [
         'type' => $visitor->getType(),
-        'displayName' => $visitor->getDisplayName(),
+        'firstName' => $visitor->getFirstName(),
+        'lastName' => $visitor->getLastName(),
+        'nameFormat' => $set->getNamePreference(),
         'email' => $visitor->getEmail()
       ],
       'permissions' => [

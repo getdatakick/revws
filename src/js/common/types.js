@@ -84,3 +84,5 @@ export type CriteriaType = {
 }
 
 export type EditStage = 'edit' | 'saving' | 'saved' | 'failed';
+
+export type NameFormatType = 'fullName' | 'firstName' | 'lastName' | 'initials' | 'initialLastName' | 'custom';

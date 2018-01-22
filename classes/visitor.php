@@ -64,26 +64,12 @@ class Visitor {
     return $this->type;
   }
 
-  public function getDisplayName() {
-    if ($this->firstName || $this->lastName) {
-      $firstName = $this->firstName ? $this->firstName : '';
-      $lastName = $this->lastName ? $this->lastName : '';
-      switch ($this->settings->getNamePreference()) {
-        case 'firstName':
-          return trim($firstName);
-        case 'lastName':
-          return trim($lastName);
-        case 'initials':
-          return trim(strtoupper(substr($firstName, 0, 1) . '.' . substr($lastName, 0, 1) . '.'));
-        case 'initialLastName':
-          return trim($firstName. ' ' . substr($lastName, 0, 1) . '.');
-        case 'fullName':
-          // fall trough
-        default:
-          return trim($firstName . ' ' . $lastName);
-      }
-    }
-    return '';
+  public function getFirstName() {
+    return $this->firstName;
+  }
+
+  public function getLastName() {
+    return $this->lastName;
   }
 
   public function getEmail() {

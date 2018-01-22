@@ -1,6 +1,6 @@
 // @flow
 
-import type { CriteriaType, GradingShapeType } from 'common/types';
+import type { CriteriaType, GradingShapeType, NameFormatType } from 'common/types';
 
 export type SettingsType = {
   api: string,
@@ -14,7 +14,9 @@ export type SettingsType = {
   },
   visitor: {
     type: 'customer' | 'guest',
-    displayName: string,
+    firstName: ?string,
+    lastName: ?string,
+    nameFormat: NameFormatType,
     email: string,
   },
   permissions: {

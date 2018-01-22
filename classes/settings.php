@@ -270,7 +270,7 @@ class Settings {
   }
 
   private function toNamePreference($pref) {
-    if (in_array($pref, ['fullName', 'firstName', 'lastName', 'initials', 'initialLastName'])) {
+    if (in_array($pref, ['fullName', 'firstName', 'lastName', 'initials', 'initialLastName', 'custom'])) {
       return $pref;
     }
     return 'fullName';

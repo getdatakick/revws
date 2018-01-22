@@ -301,6 +301,7 @@ class Settings extends React.PureComponent<Props, State> {
 
   renderReview = () => {
     const settings = this.state.settings;
+    const func = "function revwsFormatName(firstname, lastname) {\n  // implement your custom logic\n  return 'fuzzy '+firstname;\n}";
     return (
       <FormGroup>
         <FormControlLabel
@@ -344,8 +345,15 @@ class Settings extends React.PureComponent<Props, State> {
             <MenuItem value='lastName'>Doe</MenuItem>
             <MenuItem value='initials'>J.D.</MenuItem>
             <MenuItem value='initialLastName'>John D.</MenuItem>
+            <MenuItem value='custom'>Custom</MenuItem>
           </TextField>
         </div>
+        {settings.review.displayName === 'custom' && (
+          <div className={styles.note}>
+            please create javascript function named <strong>revwsFormatName</strong> and include it to product page. For example
+            <pre>{ func }</pre>
+          </div>
+        )}
       </FormGroup>
     );
   }

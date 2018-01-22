@@ -2,6 +2,7 @@
 import type { Action } from 'front/actions';
 import type { EditStage, ReviewType } from 'common/types';
 import type { SettingsType, ProductInfoType } from 'front/types';
+import { formatName } from 'common/utils/format';
 import { zipObj, repeat } from 'ramda';
 import Types from 'front/actions/types';
 
@@ -15,27 +16,31 @@ const defaultState: State = {
   stage: 'edit'
 };
 
-const defaultReview = (settings: SettingsType, product: ProductInfoType):ReviewType => ({
-  id: -1,
-  productId: product.id,
-  authorType: settings.visitor.type,
-  authorId: -1,
-  customer: null,
-  product: null,
-  email: settings.visitor.email,
-  grades: zipObj(product.criteria, repeat(0, product.criteria.length)),
-  reply: null,
-  displayName: settings.visitor.displayName,
-  title: '',
-  content: null,
-  underReview: true,
-  deleted: false,
-  date: new Date(),
-  canVote: false,
-  canReport: false,
-  canDelete: true,
-  canEdit: true
-});
+const defaultReview = (settings: SettingsType, product: ProductInfoType):ReviewType => {
+  const { email, firstName, lastName, nameFormat } = settings.visitor;
+
+  return {
+    id: -1,
+    productId: product.id,
+    authorType: settings.visitor.type,
+    authorId: -1,
+    customer: null,
+    product: null,
+    email,
+    grades: zipObj(product.criteria, repeat(0, product.criteria.length)),
+    reply: null,
+    displayName: formatName(firstName, lastName, nameFormat),
+    title: '',
+    content: null,
+    underReview: true,
+    deleted: false,
+    date: new Date(),
+    canVote: false,
+    canReport: false,
+    canDelete: true,
+    canEdit: true
+  };
+};
 
 export default (settings: SettingsType) => {
   return (state?: State, action:Action): State => {
