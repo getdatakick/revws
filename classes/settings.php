@@ -27,6 +27,27 @@ class Settings {
   const BACKEND_APP_URL = 'REVWS_BACK_APP_URL';
   const SETTINGS = 'REVWS_SETTINGS';
 
+  private static $instance;
+  private $data;
+
+  private function __construct() {
+    $this->data = self::getDefaultSettings();
+    $stored = Configuration::get(self::SETTINGS);
+    if ($stored) {
+      $stored = json_decode($stored, true);
+      if ($stored) {
+        $this->data = self::mergeSettings($this->data, $stored);
+      }
+    }
+  }
+
+  public static function getInstance() {
+    if (! self::$instance) {
+      self::$instance = new Settings();
+    }
+    return self::$instance;
+  }
+
   private static function getDefaultSettings() {
     return [
       'theme' => [
@@ -68,6 +89,22 @@ class Settings {
         'allowEdit' => true,
         'allowVoting' => true,
         'allowReporting' => true,
+      ],
+      'notifications' => [
+        'admin' => [
+          'email' => Configuration::get('PS_SHOP_EMAIL'),
+          'language' => (int)Configuration::get('PS_LANG_DEFAULT'),
+          'reviewCreated' => false,
+          'reviewUpdated' => false,
+          'reviewDeleted' => false,
+          'needApprove' => true,
+        ],
+        'author' => [
+          'thankYou' => true,
+          'reviewApproved' => true,
+          'reviewDeleted' => true,
+          'reply' => true
+        ]
       ]
     ];
   }
@@ -177,6 +214,46 @@ class Settings {
     return $this->validShapeSize($this->get(['theme', 'shapeSize', $type]));
   }
 
+  public function getAdminEmailLanguage() {
+    return (int)$this->get(['notifications', 'admin', 'language']);
+  }
+
+  public function getAdminEmail() {
+    return $this->get(['notifications', 'admin', 'email']);
+  }
+
+  public function emailAdminReviewNeedsApproval() {
+    return $this->get(['notifications', 'admin', 'needApprove']);
+  }
+
+  public function emailAdminReviewCreated() {
+    return $this->get(['notifications', 'admin', 'reviewCreated']);
+  }
+
+  public function emailAdminReviewUpdated() {
+    return $this->get(['notifications', 'admin', 'reviewUpdated']);
+  }
+
+  public function emailAdminReviewDeleted() {
+    return $this->get(['notifications', 'admin', 'reviewDeleted']);
+  }
+
+  public function emailAuthorThankYou() {
+    return $this->get(['notifications', 'author', 'thankYou']);
+  }
+
+  public function emailAuthorReviewApproved() {
+    return $this->get(['notifications', 'author', 'reviewApproved']);
+  }
+
+  public function emailAuthorReviewDeleted() {
+    return $this->get(['notifications', 'author', 'reviewDeleted']);
+  }
+
+  public function emailAuthorNotifyOnReply() {
+    return $this->get(['notifications', 'author', 'reply']);
+  }
+
   private function toBool($val) {
     return !!$val;
   }
@@ -218,18 +295,12 @@ class Settings {
   }
 
   public function remove() {
+    $this->data = null;
     return Configuration::deleteByName(self::SETTINGS);
   }
 
   public function get($path=null) {
-    $value = self::getDefaultSettings();
-    $stored = Configuration::get(self::SETTINGS);
-    if ($stored) {
-      $stored = json_decode($stored, true);
-      if ($stored) {
-        $value = self::mergeSettings($value, $stored);
-      }
-    }
+    $value = $this->data;
     if (is_null($path)) {
       return $value;
     }
@@ -259,6 +330,7 @@ class Settings {
   }
 
   public function set($value) {
+    $this->data = $value;
     return Configuration::updateValue(self::SETTINGS, json_encode($value));
   }
 }

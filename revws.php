@@ -16,6 +16,8 @@
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 */
+define('REVWS_MODULE_DIR', dirname(__FILE__));
+
 require_once __DIR__.'/classes/utils.php';
 require_once __DIR__.'/classes/settings.php';
 require_once __DIR__.'/classes/permissions.php';
@@ -24,6 +26,7 @@ require_once __DIR__.'/classes/employee-permissions.php';
 require_once __DIR__.'/classes/shapes.php';
 require_once __DIR__.'/classes/visitor.php';
 require_once __DIR__.'/classes/review-query.php';
+require_once __DIR__.'/classes/notifications.php';
 
 require_once __DIR__.'/model/criterion.php';
 require_once __DIR__.'/model/review.php';
@@ -34,9 +37,10 @@ use \Revws\VisitorPermissions;
 use \Revws\EmployeePermissions;
 use \Revws\Visitor;
 use \Revws\Shapes;
+use \Revws\Utils;
+
 
 class Revws extends Module {
-  private $settings;
   private $permissions;
   private $visitor;
 
@@ -171,10 +175,7 @@ class Revws extends Module {
   }
 
   public function getSettings() {
-    if (! $this->settings) {
-      $this->settings = new Settings();
-    }
-    return $this->settings;
+    return Settings::getInstance();
   }
 
   public function getVisitor() {
@@ -195,27 +196,6 @@ class Revws extends Module {
     return $this->permissions;
   }
 
-  private function getProductData($productId) {
-    $product = new Product($productId);
-    $lang = $this->context->language->id;
-    $productName = $product->getProductName($product->id);
-    $link = $this->context->link;
-    $res = Product::getCover($productId, $this->context);
-    $image = null;
-    if ($res) {
-      $imageId = (int)$res['id_image'];
-      $rewrite = $product->link_rewrite[$lang];
-      $image = $link->getImageLink($rewrite, $imageId, ImageType::getFormatedName('home'));
-    }
-    return [
-      'id' => $productId,
-      'name' => $productName,
-      'url' => $product->getLink(),
-      'image' => $image,
-      'criteria' => RevwsCriterion::getByProduct($productId),
-    ];
-  }
-
   private function assignReviewsData($productId) {
     $visitor = $this->getVisitor();
     $perms = $this->getPermissions();
@@ -223,7 +203,7 @@ class Revws extends Module {
     $reviews = RevwsReview::getByProduct($productId, $visitor, $set->getReviewsPerPage(), 0, $set->getReviewOrder());
     $reviews['reviews'] = RevwsReview::mapReviews($reviews['reviews'], $perms);
     $reviewsData = [
-      'product' => $this->getProductData($productId),
+      'product' => Utils::getProductData($productId, $this->context->language->id),
       'reviews' => $reviews,
       'visitor' => [
         'type' => $visitor->getType(),

@@ -9,7 +9,7 @@ import Grading from 'common/components/grading/grading';
 import ReplyIcon from 'material-ui-icons/Reply';
 import styles from './review-list-item.less';
 import Textarea from 'common/components/text-area/text-area';
-import Button from 'material-ui/button';
+import Button from 'material-ui/Button';
 
 type Props = {
   shape: GradingShapeType,

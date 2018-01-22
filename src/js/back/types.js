@@ -40,6 +40,22 @@ export type SettingsType = {
     allowReporting: boolean,
     allowDelete: boolean,
     allowEdit: boolean,
+  },
+  notifications: {
+    admin: {
+      email: string,
+      language: number | string,
+      reviewCreated: boolean,
+      reviewUpdated: boolean,
+      reviewDeleted: boolean,
+      needApprove: boolean,
+    },
+    author: {
+      thankYou: boolean,
+      reviewApproved: boolean,
+      reviewDeleted: boolean,
+      reply: boolean,
+    }
   }
 }
 

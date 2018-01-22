@@ -16,7 +16,7 @@
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 */
-
+use \Revws\Notifications;
 use \Revws\Utils;
 use \Revws\Shapes;
 
@@ -121,14 +121,24 @@ class AdminRevwsBackendController extends ModuleAdminController {
   private function approveReview($payload) {
     $review = $this->getReviewById($payload['id']);
     $review->validated = true;
-    return $review->save();
+    if (! $review->save()) {
+      throw new Exception("Failed to save review");
+    }
+    return $this->returnReview($review);
   }
 
   private function deleteReview($payload, $deleted) {
     $review = $this->getReviewById($payload['id']);
     $review->deleted = $deleted;
-    $review->validated = false;
-    return $review->save();
+    if (! $deleted && !$this->module->getSettings()->moderationEnabled()) {
+      $review->validated = true;
+    } else {
+      $review->validated = false;
+    }
+    if (! $review->save()) {
+      throw new Exception("Failed to save review");
+    }
+    return $this->returnReview($review);
   }
 
   private function saveReview($json) {
@@ -136,7 +146,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
     if (! $review->save()) {
       throw new Exception("Failed to save review");
     }
-    return $review->toJSData($this->module->getPermissions());
+    return $this->returnReview($review);
   }
 
   private function loadData($payload) {
@@ -204,7 +214,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
     } else {
       echo json_encode(['success'=>true, 'result' => $result]);
     }
-    die();
+    Notifications::getInstance()->closeConnectionAndProcess();
   }
 
 
@@ -214,6 +224,20 @@ class AdminRevwsBackendController extends ModuleAdminController {
       throw new Exception('Review not found');
     }
     return $review;
+  }
+
+  private function returnReview($review) {
+    $id = (int)$review->id;
+    $records = RevwsReview::findReviews([
+      'id' => $id,
+      'productInfo' => true,
+      'customerInfo' => true,
+    ]);
+    if (isset($records['reviews'][$id])) {
+      $rev = $records['reviews'][$id];
+      return $rev->toJSData($this->module->getPermissions());
+    }
+    throw new Exception("Review does not exists");
   }
 
 }

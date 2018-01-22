@@ -34,7 +34,6 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    console.log(nextProps.review);
     if (! equals(this.props.review, nextProps.review)) {
       this.setState({
         review: nextProps.review,

@@ -18,6 +18,12 @@
 */
 
 namespace Revws;
+use \Product;
+use \Validate;
+use \Exception;
+use \ImageType;
+use \Context;
+use \RevwsCriterion;
 
 class Utils {
 
@@ -46,5 +52,43 @@ class Utils {
 
   public static function toIntArray($arr) {
     return array_map('intval', $arr);
+  }
+
+  public static function getMailsDirectory() {
+    return REVWS_MODULE_DIR . DIRECTORY_SEPARATOR . 'mails' . DIRECTORY_SEPARATOR;
+  }
+
+  public static function calculateAverage($grades) {
+    $cnt = count($grades);
+    if ($cnt) {
+      return array_sum($grades) / $cnt;
+    }
+    return 0;
+  }
+
+  public static function getProductData($productId, $lang) {
+    $productId = (int)$productId;
+    $lang = (int)$lang;
+    $context = Context::getContext();
+    $product = new Product($productId);
+    if (! Validate::isLoadedObject($product)) {
+      throw new Exception("Product $productId not found");
+    }
+    $productName = $product->name[$lang];
+    $link = $context->link;
+    $res = Product::getCover($productId, $context);
+    $image = null;
+    if ($res) {
+      $imageId = (int)$res['id_image'];
+      $rewrite = $product->link_rewrite[$lang];
+      $image = $link->getImageLink($rewrite, $imageId, ImageType::getFormatedName('home'));
+    }
+    return [
+      'id' => $productId,
+      'name' => $productName,
+      'url' => $product->getLink(),
+      'image' => $image,
+      'criteria' => RevwsCriterion::getByProduct($productId)
+    ];
   }
 }

@@ -20,6 +20,8 @@ use \Revws\Visitor;
 use \Revws\Settings;
 use \Revws\Permissions;
 use \Revws\ReviewQuery;
+use \Revws\Notifications;
+use \Revws\Utils;
 
 class RevwsReview extends ObjectModel {
 
@@ -30,6 +32,7 @@ class RevwsReview extends ObjectModel {
       'id_product'    => [ 'type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true],
       'id_customer'   => [ 'type' => self::TYPE_INT ],
       'id_guest'      => [ 'type' => self::TYPE_INT ],
+      'id_lang'       => [ 'type' => self::TYPE_INT],
       'email'         => [ 'type' => self::TYPE_STRING, 'required' => true ],
       'display_name'  => [ 'type' => self::TYPE_STRING, 'required' => true ],
       'title'         => [ 'type' => self::TYPE_STRING, 'required' => true ],
@@ -46,6 +49,7 @@ class RevwsReview extends ObjectModel {
   public $id_product;
   public $id_customer;
   public $id_guest;
+  public $id_lang;
   public $email;
   public $display_name;
   public $title;
@@ -60,6 +64,17 @@ class RevwsReview extends ObjectModel {
   public $product;
   public $customer;
 
+  private $deletedOrig;
+  private $validatedOrig;
+  private $replyOrig;
+
+  public function __construct($id = null, $idLang = null, $idShop = null) {
+    parent::__construct($id, $idLang, $idShop);
+    $this->deletedOrig = $this->deleted;
+    $this->validatedOrig = $this->validated;
+    $this->replyOrig = $this->reply;
+  }
+
   public function isOwner(Visitor $visitor) {
     if ($this->getAuthorType() != $visitor->getType()) {
       return false;
@@ -67,9 +82,50 @@ class RevwsReview extends ObjectModel {
     return $this->getAuthorId() == $visitor->getId();
   }
 
-  public function save() {
-    $ret = parent::save();
+  public function save($nullValues = false, $autoDate = true) {
+    $ret = parent::save($nullValues, $autoDate);
     $ret &= $this->saveGrades();
+    return $ret;
+  }
+
+  public function add($autoDate = true, $nullValues = false) {
+    $ret = parent::add($autoDate, $nullValues);
+    if ($ret) {
+      $id = (int)$this->id;
+      $actor = $this->getActor();
+      $notif = Notifications::getInstance();
+      $notif->reviewCreated($id, $actor);
+      $this->validated ? $notif->reviewApproved($id, $actor) : $notif->needsApproval($id, $actor);
+    }
+    return $ret;
+  }
+
+  public function update($nullValues = false) {
+    $ret = parent::update($nullValues);
+    if ($ret) {
+      $id = (int)$this->id;
+      $actor = $this->getActor();
+      $notif = Notifications::getInstance();
+      $deleted = !!$this->deleted;
+      $delOrig = !!$this->deletedOrig;
+      $validated = !!$this->validated;
+      $valOrig = !!$this->validatedOrig;
+      if ($deleted) {
+        if (! $delOrig) {
+          $notif->reviewDeleted($id, $actor);
+        } else {
+          $notif->reviewUpdated($id, $actor);
+        }
+      } else {
+        $notif->reviewUpdated($id, $actor);
+        if ($validated != $valOrig) {
+          $validated ? $notif->reviewApproved($id, $actor) : $notif->needsApproval($id, $actor);
+        }
+        if ($this->reply && !$this->replyOrig) {
+          $notif->replied($id, $actor);
+        }
+      }
+    }
     return $ret;
   }
 
@@ -81,11 +137,12 @@ class RevwsReview extends ObjectModel {
   }
 
   public function markDelete() {
-    $id = (int)$this->id;
-    return Db::getInstance()->update('revws_review', [
-      'deleted' => true,
-      'date_upd' => date('Y-m-d H:i:s')
-    ], "id_review = $id");
+    if ($this->id) {
+      $this->deleted = true;
+      $this->validated = false;
+      return $this->save();
+    }
+    return false;
   }
 
   public function deleteGrades() {
@@ -248,7 +305,7 @@ class RevwsReview extends ObjectModel {
       'date' => $this->date_add,
       'email' => $canEdit ? $this->email : '',
       'grades' => $this->grades,
-      'grade' => self::calculateAverage($this->grades),
+      'grade' => Utils::calculateAverage($this->grades),
       'title' => $this->title,
       'content' => $this->content,
       'underReview' => !$this->validated,
@@ -275,6 +332,7 @@ class RevwsReview extends ObjectModel {
     $review->id_guest = (int)$dbData['id_guest'];
     $review->id_customer = (int)$dbData['id_customer'];
     $review->id_product = (int)$dbData['id_product'];
+    $review->id_lang = (int)$dbData['id_lang'];
     $review->display_name = $dbData['display_name'];
     $review->email = $dbData['email'];
     $review->title = $dbData['title'];
@@ -303,6 +361,7 @@ class RevwsReview extends ObjectModel {
     $review->id_guest = $visitor->getGuestId();
     $review->id_customer = $visitor->getCustomerId();
     $review->id_product = (int)Tools::getValue('productId');
+    $review->id_lang = (int)Context::getContext()->language->id;
     $review->display_name = Tools::getValue('displayName');
     $review->email = Tools::getValue('email');
     $review->title = Tools::getValue('title');
@@ -319,6 +378,7 @@ class RevwsReview extends ObjectModel {
   }
 
   public static function fromJson($json) {
+    $moderation = Settings::getInstance()->moderationEnabled();
     $id = (int)$json['id'];
     if ($id === -1) {
       $id = null;
@@ -338,15 +398,10 @@ class RevwsReview extends ObjectModel {
     foreach ($json['grades'] as $key => $value) {
       $review->grades[(int)$key] = (int)$value;
     }
-    return $review;
-  }
-
-  private function calculateAverage($grades) {
-    $cnt = count($grades);
-    if ($cnt) {
-      return array_sum($grades) / $cnt;
+    if (! $id) {
+      $review->id_lang = (int)Context::getContext()->language->id;
     }
-    return 0;
+    return $review;
   }
 
   public function isCustomer() {
@@ -359,5 +414,18 @@ class RevwsReview extends ObjectModel {
 
   public function getAuthorId() {
     return (int)($this->isCustomer() ? $this->id_customer : $this->id_guest);
+  }
+
+  public function getLanguage() {
+    return (int)$this->id_lang;
+  }
+
+  private function getActor() {
+    $context = Context::getContext();
+    if ($context->employee && $context->employee->id) {
+      return 'employee';
+    } else {
+      return 'visitor';
+    }
   }
 }

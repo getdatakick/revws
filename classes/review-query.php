@@ -56,6 +56,7 @@ class ReviewQuery {
       'id_guest' => 'r.id_guest',
       'id_customer' => 'r.id_customer',
       'id_product' => 'r.id_product',
+      'id_lang' => 'r.id_lang',
       'display_name' => 'r.display_name',
       'email' => 'r.email',
       'title' => 'r.title',
@@ -93,6 +94,9 @@ class ReviewQuery {
 
   private function getConditions() {
     $cond = [];
+    if ($this->hasOption('id')) {
+      $cond[] = "r.id_review = " . $this->getInt('id');
+    }
     if ($this->hasOption('product')) {
       $cond[] = "r.id_product = " . $this->getInt('product');
     }

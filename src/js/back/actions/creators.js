@@ -15,13 +15,10 @@ import type {
   LoadDataAction,
   SetDataAction,
   ApproveReviewAction,
-  ReviewApprovedAction,
   DeleteReviewAction,
-  ReviewDeletedAction,
   UndeleteReviewAction,
-  ReviewUndeletedAction,
   SaveReviewAction,
-  ReviewSavedAction,
+  ReviewUpdatedAction,
 } from './index';
 import Types from './types';
 
@@ -38,11 +35,8 @@ export const loadData = (types: { [ string ]: Load }): LoadDataAction => ({ type
 export const setData = (payload: any): SetDataAction => ({ type: Types.setData, payload });
 
 export const approveReview = (id: number): ApproveReviewAction => ({ type: Types.approveReview, id });
-export const reviewApproved = (id: number): ReviewApprovedAction => ({ type: Types.reviewApproved, id });
 export const deleteReview = (id: number): DeleteReviewAction => ({ type: Types.deleteReview, id });
-export const reviewDeleted = (id: number): ReviewDeletedAction => ({ type: Types.reviewDeleted, id });
 export const undeleteReview = (id: number): UndeleteReviewAction => ({ type: Types.undeleteReview, id });
-export const reviewUndeleted = (id: number): ReviewUndeletedAction => ({ type: Types.reviewUndeleted, id });
 
 export const saveReview = (review: ReviewType): SaveReviewAction => ({ type: Types.saveReview, review });
-export const reviewSaved = (review: ReviewType): ReviewSavedAction => ({ type: Types.reviewSaved, review });
+export const reviewUpdated = (review: ReviewType): ReviewUpdatedAction => ({ type: Types.reviewUpdated, review });

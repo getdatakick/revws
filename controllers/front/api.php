@@ -18,6 +18,7 @@
 */
 
 use \Revws\Review;
+use \Revws\Notifications;
 
 class RevwsApiModuleFrontController extends ModuleFrontController {
   public $module;
@@ -176,6 +177,6 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     } else {
       echo json_encode(['success'=>true, 'result' => $result]);
     }
-    die();
+    Notifications::getInstance()->closeConnectionAndProcess();
   }
 }

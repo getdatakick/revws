@@ -63,18 +63,8 @@ export type ApproveReviewAction = {
   id: number
 }
 
-export type ReviewApprovedAction = {
-  type: 'REVIEW_APPROVED',
-  id: number
-}
-
 export type DeleteReviewAction = {
   type: 'DELETE_REVIEW',
-  id: number
-}
-
-export type ReviewDeletedAction = {
-  type: 'REVIEW_DELETED',
   id: number
 }
 
@@ -83,18 +73,13 @@ export type UndeleteReviewAction = {
   id: number
 }
 
-export type ReviewUndeletedAction = {
-  type: 'REVIEW_UNDELETED',
-  id: number
-}
-
 export type SaveReviewAction = {
   type: 'SAVE_REVIEW',
   review: ReviewType
 };
 
-export type ReviewSavedAction = {
-  type: 'REVIEW_SAVED',
+export type ReviewUpdatedAction = {
+  type: 'REVIEW_UPDATED',
   review: ReviewType
 }
 
@@ -111,11 +96,8 @@ export type Action = (
   DeleteCriterionAction |
   CriterionDeletedAction |
   ApproveReviewAction |
-  ReviewApprovedAction |
   DeleteReviewAction |
-  ReviewDeletedAction |
   UndeleteReviewAction |
-  ReviewUndeletedAction |
   SaveReviewAction |
-  ReviewSavedAction
+  ReviewUpdatedAction
 );

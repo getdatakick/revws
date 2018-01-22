@@ -2,7 +2,7 @@
 import React from 'react';
 import type { SettingsType, GlobalDataType } from 'back/types';
 import ScrollSpy from 'react-scrollspy';
-import { path, last, merge, range, map, curry, equals, assocPath } from 'ramda';
+import { toPairs, path, last, merge, range, map, curry, equals, assocPath } from 'ramda';
 import Section from './section';
 import ShapeSelect from './shape-select';
 import Grid from 'material-ui/Grid';
@@ -15,7 +15,7 @@ import Preview from './review-preview';
 import MenuItem from 'material-ui/Menu/MenuItem';
 import TextField from 'material-ui/TextField';
 import CriteriaSection from './criteria-section';
-import { hasErrors, validateIsNumber } from 'common/utils/validation';
+import { hasErrors, validateIsNumber, validateReviewEmail } from 'common/utils/validation';
 import styles from './style.less';
 
 type Props = {
@@ -78,6 +78,16 @@ class Settings extends React.PureComponent<Props, State> {
         key: 'moderation',
         label: 'Review moderation',
         content: this.renderModeration()
+      },
+      {
+        key: 'admin-notifications',
+        label: 'Admin notifications',
+        content: this.renderAdminNotifications(errors)
+      },
+      {
+        key: 'customer-notifications',
+        label: 'Customer notifications',
+        content: this.renderCustomerNotifications()
       },
       {
         key: 'criteria',
@@ -161,31 +171,106 @@ class Settings extends React.PureComponent<Props, State> {
 
   renderModeration = () => {
     const enabled = this.state.settings.moderation.enabled;
+    const disabled = !enabled;
     return (
       <FormGroup>
         <FormControlLabel
           control={this.renderSwitch(['moderation', 'enabled'])}
           label="All reviews must be approved"
         />
-        {enabled && (
-          <div>
-            <h3>What to approve</h3>
-            <div className={styles.subSection}>
-              <FormControlLabel
-                control={this.renderCheckbox(['moderation', 'needApprove', 'create'])}
-                label="new reviews must be approved"
-              />
-              <FormControlLabel
-                control={this.renderCheckbox(['moderation', 'needApprove', 'edit'])}
-                label="edits of already approved review must be validated"
-              />
-              <FormControlLabel
-                control={this.renderCheckbox(['moderation', 'needApprove', 'reported'])}
-                label="reviews reported as abusive must be re-approved"
-              />
-            </div>
+        <div>
+          <h3>What to approve</h3>
+          <div className={styles.subSection}>
+            <FormControlLabel
+              control={this.renderCheckbox(['moderation', 'needApprove', 'create'], disabled)}
+              disabled={disabled}
+              label="new reviews must be approved"
+            />
+            <FormControlLabel
+              control={this.renderCheckbox(['moderation', 'needApprove', 'edit'], disabled)}
+              label="edits of already approved review must be validated"
+              disabled={disabled}
+            />
+            <FormControlLabel
+              control={this.renderCheckbox(['moderation', 'needApprove', 'reported'], disabled)}
+              label="reviews reported as abusive must be re-approved"
+              disabled={disabled}
+            />
           </div>
-        )}
+        </div>
+      </FormGroup>
+    );
+  }
+
+  renderAdminNotifications = (errors: any) => {
+    const settings = this.state.settings;
+    const languages = toPairs(this.props.data.languages);
+    const moderationDisabled = !settings.moderation.enabled;
+    return (
+      <FormGroup>
+        <div className={styles.group}>
+          <TextField
+            fullWidth
+            label="Email address for notifications"
+            value={settings.notifications.admin.email}
+            onChange={e => this.set(['notifications', 'admin', 'email'], e.target.value)}
+            error={!! errors.notifications.admin.email} />
+          <div className={styles.space} />
+          <TextField
+            select
+            fullWidth
+            label="Email language"
+            value={settings.notifications.admin.language}
+            onChange={e => this.set(['notifications', 'admin', 'language'], e.target.value)}
+            error={!! errors.notifications.admin.email}>
+            { languages.map(pair => <MenuItem key={pair[0]} value={parseInt(pair[0], 10)}>{pair[1].name}</MenuItem>) }
+          </TextField>
+          <div className={styles.space} />
+        </div>
+        <h3>Send email when</h3>
+        <div className={styles.subSection}>
+          <FormControlLabel
+            control={this.renderCheckbox(['notifications', 'admin', 'needApprove'], moderationDisabled)}
+            disabled={moderationDisabled}
+            label="review needs approval" />
+          <FormControlLabel
+            control={this.renderCheckbox(['notifications', 'admin', 'reviewCreated'], false)}
+            label="visitor creates new review" />
+          <FormControlLabel
+            control={this.renderCheckbox(['notifications', 'admin', 'reviewUpdated'], !settings.review.allowEdit)}
+            disabled={!settings.review.allowEdit}
+            label="review author updates review" />
+          <FormControlLabel
+            control={this.renderCheckbox(['notifications', 'admin', 'reviewDeleted'], !settings.review.allowDelete)}
+            disabled={!settings.review.allowDelete}
+            label="review author deletes review" />
+        </div>
+      </FormGroup>
+    );
+  }
+
+  renderCustomerNotifications = () => {
+    const settings = this.state.settings;
+    const moderationDisabled = !settings.moderation.enabled;
+    return (
+      <FormGroup>
+        <FormControlLabel
+          control={this.renderSwitch(['notifications', 'author', 'thankYou'])}
+          label="Send thank you email"
+        />
+        <h3>Notify customer when</h3>
+        <div className={styles.subSection}>
+          <FormControlLabel
+            control={this.renderCheckbox(['notifications', 'author', 'reviewApproved'], moderationDisabled)}
+            disabled={moderationDisabled}
+            label="employee approves review" />
+          <FormControlLabel
+            control={this.renderCheckbox(['notifications', 'author', 'reviewDeleted'], false)}
+            label={ moderationDisabled ? "employee deletes review" : "employee rejects review" } />
+          <FormControlLabel
+            control={this.renderCheckbox(['notifications', 'author', 'reply'], false)}
+            label={ "employee replies to review" } />
+        </div>
       </FormGroup>
     );
   }
@@ -206,9 +291,10 @@ class Settings extends React.PureComponent<Props, State> {
       onChange={(event, checked) => this.set(key, checked)} />
   )
 
-  renderCheckbox = (key: Array<string>) => (
+  renderCheckbox = (key: Array<string>, indeterminate: boolean) => (
     <Checkbox
       key={last(key)}
+      indeterminate={indeterminate}
       checked={path(key, this.state.settings)}
       onChange={(event, checked) => this.set(key, checked)} />
   )
@@ -354,6 +440,11 @@ class Settings extends React.PureComponent<Props, State> {
       display: {
         product: {
           reviewsPerPage: validateIsNumber(settings.display.product.reviewsPerPage)
+        }
+      },
+      notifications: {
+        admin: {
+          email: validateReviewEmail(settings.notifications.admin.email)
         }
       }
     };

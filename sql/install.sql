@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_revws_review` (
   `id_product`   INT(11) UNSIGNED NOT NULL,
   `id_customer`  INT(11) UNSIGNED NULL,
   `id_guest`     INT(11) UNSIGNED NULL,
+  `id_lang`      INT(11) UNSIGNED NOT NULL,
   `email`        VARCHAR(255) NOT NULL,
   `display_name` VARCHAR(255) NOT NULL,
   `title`        VARCHAR(127) NOT NULL,
