@@ -78,7 +78,7 @@ class Notifications {
       try {
         call_user_func(array($this, $type), $id, $actor);
       } catch (Exception $e) {
-        Logger::addLog("Revws module: ".$e->getMessage());
+        self::log("failed to process $type: " . $e->getMessage());
       }
     }
   }
@@ -237,6 +237,7 @@ class Notifications {
       '{product_name}' => $productData['name'],
       '{product_image}' => $productData['image'],
       '{product_url}' => $productData['url'],
+      '{review_id}' => (int)$review->id,
       '{author_type}' => $review->getAuthorType(),
       '{author_email}' => $review->email,
       '{author_name}' => $authorName,
@@ -322,7 +323,11 @@ class Notifications {
 
   private static function emailError($template, $reviewId, $lang, $email) {
     $l = Language::getLanguage($lang)['iso_code'];
-    throw new Exception("failed to send email template $template in $l language");
+    self::log("failed to send email template $template in $l language");
+  }
+
+  private static function log($msg) {
+    Logger::addLog("Revws module: $msg");
   }
 
 }
