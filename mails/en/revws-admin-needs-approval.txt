@@ -1,1 +1,12 @@
-Review needs approval
+Subject: A review needs approval
+ - {shop_name}
+
+Hi!
+
+You got a review for {product_name}. 
+
+Review {review_id} with the rating {ratings} is now waiting for your approval before it's published. 
+
+Hurry on over to your site and check it out!
+
+Your DataKick Review Module
