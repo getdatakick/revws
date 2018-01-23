@@ -94,6 +94,7 @@ class Revws extends Module {
       $this->registerHook('displayRightColumnProduct') &&
       $this->registerHook('displayProductListReviews') &&
       $this->registerHook('extraProductComparison') &&
+      $this->registerHook('customerAccount') &&
       $this->registerHook('productFooter')
     );
   }
@@ -105,6 +106,7 @@ class Revws extends Module {
     $this->unregisterHook('displayRightColumnProduct');
     $this->unregisterHook('displayProductListReviews');
     $this->unregisterHook('extraProductComparison');
+    $this->unregisterHook('customerAccount');
     $this->unregisterHook('productFooter');
     return true;
   }
@@ -308,6 +310,10 @@ class Revws extends Module {
       $this->context->smarty->assign('list_ids_product', $params['list_ids_product']);
       return $this->display(__FILE__, 'products_comparison.tpl');
     }
+  }
+
+  public function hookCustomerAccount($params) {
+    return $this->display(__FILE__, 'my-account.tpl');
   }
 
 }
