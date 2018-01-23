@@ -25,6 +25,7 @@ use \Exception;
 class Settings {
   const APP_URL = 'REVWS_APP_URL';
   const BACKEND_APP_URL = 'REVWS_BACK_APP_URL';
+  const SALT = 'REVWS_SALT';
   const SETTINGS = 'REVWS_SETTINGS';
 
   private static $instance;
@@ -131,6 +132,15 @@ class Settings {
       $url = _PS_MODULE_DIR_ . $moduleName . '/views/js/back_app.js';
     }
     return $url;
+  }
+
+  public function getSalt() {
+    $salt = Configuration::get(self::SALT);
+    if (! $salt) {
+      $salt = Utils::getRandomData();
+      Configuration::updateValue(self::SALT, $salt);
+    }
+    return $salt;
   }
 
   public function getPlacement() {

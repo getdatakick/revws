@@ -20,6 +20,7 @@
 namespace Revws;
 use \RevwsReview;
 use \RevwsCriterion;
+use \Context;
 use \Customer;
 use \Language;
 use \Configuration;
@@ -166,9 +167,12 @@ class Notifications {
     if ($actor === 'visitor') {
       $settings = $this->getSettings();
       if ($settings->moderationEnabled() && $settings->emailAdminReviewNeedsApproval()) {
+        $review = $this->getReview($id);
         $lang = $this->getAdminEmailLanguage();
         $email = $this->getAdminEmail();
-        $data = $this->getCommonData($this->getReview($id), $lang);
+        $data = $this->getCommonData($review, $lang);
+        $data['{approve_link}'] = $this->getApproveLink($review);
+        $data['{reject_link}'] = $this->getRejectLink($review);
         if (! Mail::Send($lang, 'revws-admin-needs-approval', Mail::l('Review needs approval', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory())) {
           self::emailError('revws-admin-needs-approval', $id, $lang, $email);
         }
@@ -321,6 +325,27 @@ class Notifications {
 
   private static function log($msg) {
     Logger::addLog("Revws module: $msg");
+  }
+
+
+  private function getActionLink($action, $data) {
+    $context = Context::getContext();
+    $data['action'] = $action;
+    return $context->link->getModuleLink('revws', 'EmailAction', $data, true);
+  }
+
+  private function getApproveLink(RevwsReview $review) {
+    return $this->getActionLink('approve', [
+      'review-id' => (int)$review->id,
+      'secret' => $review->getSecretHash('approve')
+    ]);
+  }
+
+  private function getRejectLink(RevwsReview $review) {
+    return $this->getActionLink('reject', [
+      'review-id' => (int)$review->id,
+      'secret' => $review->getSecretHash('reject')
+    ]);
   }
 
 }

@@ -27,6 +27,7 @@ require_once __DIR__.'/classes/shapes.php';
 require_once __DIR__.'/classes/visitor.php';
 require_once __DIR__.'/classes/review-query.php';
 require_once __DIR__.'/classes/notifications.php';
+require_once __DIR__.'/classes/actor.php';
 
 require_once __DIR__.'/model/criterion.php';
 require_once __DIR__.'/model/review.php';

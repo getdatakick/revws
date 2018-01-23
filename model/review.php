@@ -22,6 +22,7 @@ use \Revws\Permissions;
 use \Revws\ReviewQuery;
 use \Revws\Notifications;
 use \Revws\Utils;
+use \Revws\Actor;
 
 class RevwsReview extends ObjectModel {
 
@@ -92,7 +93,7 @@ class RevwsReview extends ObjectModel {
     $ret = parent::add($autoDate, $nullValues);
     if ($ret) {
       $id = (int)$this->id;
-      $actor = $this->getActor();
+      $actor = Actor::getActor();
       $notif = Notifications::getInstance();
       $notif->reviewCreated($id, $actor);
       $this->validated ? $notif->reviewApproved($id, $actor) : $notif->needsApproval($id, $actor);
@@ -104,7 +105,7 @@ class RevwsReview extends ObjectModel {
     $ret = parent::update($nullValues);
     if ($ret) {
       $id = (int)$this->id;
-      $actor = $this->getActor();
+      $actor = Actor::getActor();
       $notif = Notifications::getInstance();
       $deleted = !!$this->deleted;
       $delOrig = !!$this->deletedOrig;
@@ -420,12 +421,26 @@ class RevwsReview extends ObjectModel {
     return (int)$this->id_lang;
   }
 
-  private function getActor() {
-    $context = Context::getContext();
-    if ($context->employee && $context->employee->id) {
-      return 'employee';
-    } else {
-      return 'visitor';
-    }
+  private function getSignature($action) {
+    $salt = Settings::getInstance()->getSalt();
+    return (
+      (int)$this->id .
+      $action .
+      $this->display_name .
+      (int)$this->deleted .
+      $this->title .
+      $salt .
+      Utils::calculateAverage($this->grades) .
+      $this->content .
+      (int)$this->validated
+    );
+  }
+
+  public function getSecretHash($action) {
+    return md5($this->getSignature($action));
+  }
+
+  public function verifySecretHash($action, $hash) {
+    return $this->getSecretHash($action) === $hash;
   }
 }
