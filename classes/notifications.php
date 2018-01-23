@@ -225,12 +225,6 @@ class Notifications {
       $customer = $this->getCustomer($review);
       $customeName = $customer->firstname . ' ' .$customer->lastname;
     }
-    $criteria = RevwsCriterion::getFullCriteria();
-    $ratings = [];
-    foreach ($review->grades as $key => $value) {
-      $name = $criteria[$key]->label[$lang];
-      $ratings[$name] = $value;
-    }
 
     return [
       '{product_id}' => $productData['id'],
@@ -244,8 +238,7 @@ class Notifications {
       '{display_name}' => $review->display_name,
       '{title}' => $review->title,
       '{content}' => $review->content,
-      '{ratings}' => $ratings,
-      '{average}' => Utils::calculateAverage($review->grades),
+      '{ratings}' => Utils::calculateAverage($review->grades),
       '{reply}' => $review->reply,
       '{validated}' => $review->validated,
       '{deleted}' => $review->deleted
