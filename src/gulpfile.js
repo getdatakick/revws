@@ -78,7 +78,7 @@ gulp.task('create-zip', function(done) {
 });
 
 gulp.task('copy-files', function(done) {
-  const ext = ['php', 'tpl', 'css', 'js', 'xml', 'md', 'sql'];
+  const ext = ['php', 'tpl', 'css', 'js', 'xml', 'md', 'sql', 'html', 'txt'];
   const sources = append('!../src/**', map(e => '../**/*.'+e, ext));
   return gulp
     .src(sources)
