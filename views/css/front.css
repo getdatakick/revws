@@ -204,3 +204,19 @@ a .revws-grading {
   background-color: #EBF3F8;
   margin-top: 10px;
 }
+
+.revws-review-with-product {
+  display: flex;
+  margin-bottom: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.revws-review-with-product .revws-review-wrapper {
+  width: 100%;
+}
+
+.revws-review-with-product .revws-review {
+  margin-top: 30px;
+  border: 1px solid #f5f5f5;
+}

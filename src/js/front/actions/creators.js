@@ -23,7 +23,7 @@ import Types from './types';
 
 export const setSnackbar = (message: ?string): SetSnackbarAction => ({ type: Types.setSnackbar, message });
 
-export const triggerCreateReview = (): TriggerCreateReviewAction => ({ type: Types.triggerCreateReview });
+export const triggerCreateReview = (productId: number): TriggerCreateReviewAction => ({ type: Types.triggerCreateReview, productId });
 export const triggerEditReview = (review: ReviewType): TriggerEditReviewAction => ({ type: Types.triggerEditReview, review });
 export const triggerVoteReview = (review: ReviewType, direction: 'up' | 'down'): TriggerVoteAction => ({ type: Types.triggerVote, review, direction });
 export const triggerReportReview = (review: ReviewType): TriggerReportReviewAction => ({ type: Types.triggerReportReview, review });
@@ -38,5 +38,5 @@ export const deleteReview = (id: number): DeleteReviewAction => ({ type: Types.d
 export const closeDeleteReview = (): CloseDeleteReviewAction => ({ type: Types.closeDeleteReview });
 export const reviewRemoved = (id: number): ReviewRemovedAction => ({ type: Types.reviewRemoved, id });
 
-export const loadPage = (productId: number, page: number): LoadPageAction => ({ type: Types.loadPage, productId, page });
+export const loadPage = (entityType: 'product' | 'customer', entityId: number, page: number): LoadPageAction => ({ type: Types.loadPage, entityType, entityId, page });
 export const setReviews = (reviews: ReviewListType): SetReviewsAction => ({ type: Types.setReviews, reviews });

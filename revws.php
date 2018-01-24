@@ -28,6 +28,7 @@ require_once __DIR__.'/classes/visitor.php';
 require_once __DIR__.'/classes/review-query.php';
 require_once __DIR__.'/classes/notifications.php';
 require_once __DIR__.'/classes/actor.php';
+require_once __DIR__.'/classes/front-app.php';
 
 require_once __DIR__.'/model/criterion.php';
 require_once __DIR__.'/model/review.php';
@@ -39,6 +40,7 @@ use \Revws\EmployeePermissions;
 use \Revws\Visitor;
 use \Revws\Shapes;
 use \Revws\Utils;
+use \Revws\FrontApp;
 
 
 class Revws extends Module {
@@ -200,40 +202,8 @@ class Revws extends Module {
   }
 
   private function assignReviewsData($productId) {
-    $visitor = $this->getVisitor();
-    $perms = $this->getPermissions();
-    $set = $this->getSettings();
-    $reviews = RevwsReview::getByProduct($productId, $visitor, $set->getReviewsPerPage(), 0, $set->getReviewOrder());
-    $reviews['reviews'] = RevwsReview::mapReviews($reviews['reviews'], $perms);
-    $reviewsData = [
-      'product' => Utils::getProductData($productId, $this->context->language->id),
-      'reviews' => $reviews,
-      'visitor' => [
-        'type' => $visitor->getType(),
-        'firstName' => $visitor->getFirstName(),
-        'lastName' => $visitor->getLastName(),
-        'nameFormat' => $set->getNamePreference(),
-        'email' => $visitor->getEmail()
-      ],
-      'permissions' => [
-        'create' => $perms->canCreateReview($productId)
-      ],
-      'api' => $this->context->link->getModuleLink('revws', 'api', [], true),
-      'appJsUrl' => $set->getAppUrl($this->context, $this->name),
-      'theme' => [
-        'shape' => $this->getShapeSettings(),
-        'shapeSize' => [
-          'product' => $set->getShapeSize(),
-          'list' => $set->getShapeSize(),
-          'create' => $set->getShapeSize() * 5
-        ]
-      ],
-      'criteria' => RevwsCriterion::getCriteria($this->context->language->id),
-      'preferences' => [
-        'allowEmptyReviews' => $set->allowEmptyReviews(),
-        'allowReviewWithoutCriteria' => $set->allowReviewWithoutCriteria()
-      ]
-    ];
+    $frontApp = new FrontApp($this);
+    $reviewsData = $frontApp->getData('product', $productId);
     $this->context->smarty->assign('reviewsData', $reviewsData);
   }
 
@@ -278,6 +248,7 @@ class Revws extends Module {
       $this->context->smarty->assign('reviewCount', $count);
       $this->context->smarty->assign('shape', $this->getShapeSettings());
       $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
+      $this->context->smarty->assign('canCreate', $this->getPermissions()->canCreateReview($productId));
       return $this->display(__FILE__, 'product_extra.tpl');
     }
   }
@@ -314,6 +285,10 @@ class Revws extends Module {
 
   public function hookCustomerAccount($params) {
     return $this->display(__FILE__, 'my-account.tpl');
+  }
+
+  public function getContext() {
+    return $this->context;
   }
 
 }

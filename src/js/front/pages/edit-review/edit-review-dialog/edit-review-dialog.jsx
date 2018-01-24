@@ -15,6 +15,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import { fixUrl } from 'common/utils/url';
 import { validateReview, hasErrors } from 'common/utils/validation';
 import { find, assoc } from 'ramda';
+import { getProduct } from 'front/settings';
 import styles from './edit-review-dialog.less';
 
 type Grades = {
@@ -46,7 +47,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
         open={!! review}
         disableBackdropClick={true}
         onClose={onClose} >
-        { review ? this.renderDialog(settings.product, review) : '' }
+        { review ? this.renderDialog(getProduct(review.productId, settings), review) : '' }
       </Dialog>
     );
   }
@@ -172,7 +173,13 @@ class EditReviewDialog extends React.PureComponent<Props> {
       </div>
     );
   }
+
+  getProduct = (review: ReviewType): ProductInfoType => {
+    const { settings } = this.props;
+    return settings.products[review.productId];
+  }
 }
+
 
 const getSaveMessage = (isNew, success) => {
   if (isNew) {

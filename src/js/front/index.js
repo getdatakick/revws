@@ -12,15 +12,15 @@ import { getSettings, getReviews } from 'front/settings';
 import { isObject } from 'common/utils/ramda';
 import Types from 'front/actions/types';
 
-if (window.revwsData) {
+const startRevws = (init: any) => {
   const dev = process.env.NODE_ENV !== 'production';
-  const node = document.getElementById('revws-tab-content');
+  const node = document.getElementById('revws-app');
   if (! node) {
-    throw new Error('Element revws-tab-content not found');
+    throw new Error('Element revws-app not found');
   }
 
-  const settings = getSettings(window.revwsData);
-  const reviews = getReviews(window.revwsData);
+  const settings = getSettings(init);
+  const reviews = getReviews(init);
   const commandsMiddleware = createCommands(settings);
   const middlewares = [ commandsMiddleware ];
   if (dev) {
@@ -32,7 +32,10 @@ if (window.revwsData) {
 
   render((
     <Provider store={store}>
-      <App settings={settings}/>
+      <App
+        type={init.entityType}
+        id={init.entityId}
+        settings={settings}/>
     </Provider>
   ), node);
 
@@ -44,4 +47,14 @@ if (window.revwsData) {
       return false;
     }
   };
+};
+
+if (document.readyState === 'complete') {
+  startRevws(window.revwsData);
+} else {
+  document.addEventListener('readystatechange',  () => {
+    if (document.readyState === 'complete') {
+      startRevws(window.revwsData);
+    }
+  });
 }

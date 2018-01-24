@@ -2,7 +2,7 @@
 import type { ReviewListType } from 'common/types';
 import type { SettingsType } from 'front/types';
 import {  has, prop } from 'ramda';
-import { isObject, isString, isArray, isNumber } from 'common/utils/ramda';
+import { isObject, isString, isArray, isNumber, isBoolean } from 'common/utils/ramda';
 import { asObject } from 'common/utils/input';
 import { fixReviews } from 'common/utils/reviews';
 
@@ -16,20 +16,20 @@ export const getSettings = (input: any): SettingsType => {
   const shapeSize = get('shapeSize', isObject, theme);
   const visitor = get('visitor', isObject, input);
   const preferences = get('preferences', isObject, input);
-  const permissions = get('permissions', isObject, input);
-  const product = get('product', isObject, input);
+  const products = asObject(get('products', isObject, input));
   const criteria = asObject(get('criteria', isObject, input));
+  const canCreate = get('canCreate', isBoolean, input);
   const api = get('api', isString, input);
 
   return {
     api,
-    product,
+    products,
     criteria,
     shape,
     shapeSize,
     visitor,
-    permissions,
-    preferences
+    preferences,
+    canCreate
   };
 };
 
@@ -47,6 +47,10 @@ export const getReviews = (input: any): ReviewListType => {
     pageSize,
     reviews: fixReviews(reviews)
   };
+};
+
+export const getProduct = (productId: number, settings: SettingsType) => {
+  return settings.products[productId];
 };
 
 const get = (key, validator, obj) => {

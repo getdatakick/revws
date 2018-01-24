@@ -12,7 +12,8 @@ export type ReviewRemovedAction = {
 }
 
 export type TriggerCreateReviewAction = {
-  type: 'TRIGGER_CREATE_REVIEW'
+  type: 'TRIGGER_CREATE_REVIEW',
+  productId: number
 };
 
 export type CloseEditReviewAction = {
@@ -71,7 +72,8 @@ export type SetSnackbarAction = {
 
 export type LoadPageAction = {
   type: 'LOAD_PAGE',
-  productId: number,
+  entityType: 'product' | 'customer',
+  entityId: number,
   page: number
 }
 

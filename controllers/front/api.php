@@ -142,12 +142,19 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
   }
 
   private function loadReviews() {
-    $productId = (int)Tools::getValue('productId');
     $page = (int)Tools::getValue('page');
+    $entityType = Tools::getValue('entityType');
+    $entityId = (int)Tools::getValue('entityId');
     $set = $this->module->getSettings();
     $visitor = $this->module->getVisitor();
     $perms = $this->module->getPermissions();
-    $reviews = RevwsReview::getByProduct($productId, $visitor, $set->getReviewsPerPage(), $page, $set->getReviewOrder());
+    if ($entityType === 'product') {
+      $reviews = RevwsReview::getByProduct($entityId, $visitor, $set->getReviewsPerPage(), $page, $set->getReviewOrder());
+    } else if ($entityType === 'customer' && $visitor->isCustomer() && $visitor->getCustomerId() == $entityId) {
+      $reviews = RevwsReview::getByCustomer($entityId, $set->getCustomerReviewsPerPage(), $page);
+    } else {
+      throw new Exception('Invalid request');
+    }
     $reviews['reviews'] = RevwsReview::mapReviews($reviews['reviews'], $perms);
     return $reviews;
   }

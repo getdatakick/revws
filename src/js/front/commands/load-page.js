@@ -6,7 +6,7 @@ import { setSnackbar, setReviews } from 'front/actions/creators';
 import { getReviews } from 'front/settings';
 
 export const loadPage = (action: LoadPageAction, store: any, api: Api) => {
-  api('loadReviews', { productId: action.productId, page: action.page }).then(result => {
+  api('loadReviews', { entityType: action.entityType, entityId: action.entityId, page: action.page }).then(result => {
     if (result.type === 'success') {
       store.dispatch(setReviews(getReviews({ reviews: result.data })));
     } else {

@@ -14,6 +14,12 @@
   <h1 class="page-heading">{l s='My reviews' mod='revws'}</h1>
 </div>
 
+<div id="revws-tab-content">
+  <div id="revws-app">
+    {include file="./private_my_review_list.tpl" reviewsData=$reviewsData}
+  </div>
+</div>
+
 <nav>
   <ul class="pager">
     <li class="previous">
@@ -21,3 +27,5 @@
     </li>
   </ul>
 </nav>
+
+{addJsDef revwsData=$reviewsData}

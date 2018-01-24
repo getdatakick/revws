@@ -210,6 +210,15 @@ class RevwsReview extends ObjectModel {
     ]);
   }
 
+  public static function getByCustomer($customerId, $pageSize, $page) {
+    return self::findReviews([
+      'customer' => $customerId,
+      'deleted' => false,
+      'pageSize' => $pageSize,
+      'page' => $page,
+    ]);
+  }
+
   public function setValidated($validated) {
     $this->validated = $validated;
   }

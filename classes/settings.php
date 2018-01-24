@@ -224,6 +224,10 @@ class Settings {
     return $this->validShapeSize($this->get(['theme', 'shapeSize', $type]));
   }
 
+  public function getCustomerReviewsPerPage() {
+    return 5;
+  }
+
   public function getAdminEmailLanguage() {
     return (int)$this->get(['notifications', 'admin', 'language']);
   }

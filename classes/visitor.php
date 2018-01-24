@@ -20,6 +20,7 @@
 namespace Revws;
 use \Customer;
 use \Db;
+use \RevwsReview;
 
 class Visitor {
   const GUEST = 'guest';
@@ -32,6 +33,7 @@ class Visitor {
   private $lastName='';
   private $email='';
   private $reactions = null;
+  private $reviewedProducts = null;
 
   public function __construct($context, Settings $settings) {
     $this->settings = $settings;
@@ -89,6 +91,16 @@ class Visitor {
     return $this->isGuest() ? (int)$this->id : 0;
   }
 
+  public function hasWrittenReview($productId) {
+    $this->loadReviews();
+    return isset($this->reviewedProducts[$productId]);
+  }
+
+  public function getReviewedProducts() {
+    $this->loadReviews();
+    return array_keys($this->reviewedProducts);
+  }
+
   private function loadReactions() {
     if (is_null($this->reactions)) {
       $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
@@ -101,6 +113,26 @@ class Visitor {
         $this->reactions[$review][$type] = true;
       }
     }
+  }
+
+  private function loadReviews() {
+    if (is_null($this->reviewedProducts)) {
+      $this->reviewedProducts = [];
+      $visitorType = $this->getType();
+      $visitorId = $this->getId();
+      $reviews = RevwsReview::findReviews([
+        'deleted' => false,
+        $visitorType => (int)$visitorId
+      ]);
+      foreach($reviews['reviews'] as $rev) {
+        $this->reviewedProducts[(int)$rev->id_product] = true;
+      }
+    }
+  }
+
+  public function getProductsToReview() {
+    // TODO
+    return [];
   }
 
 }

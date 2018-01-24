@@ -2,7 +2,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import type { ReviewType, ReviewFormErrors } from 'common/types';
-import type { SettingsType } from 'front/types';
+import type { SettingsType, ProductInfoType } from 'front/types';
 import { map, propOr, assoc } from 'ramda';
 import TextField from 'material-ui/TextField';
 import Grading from 'common/components/grading/grading';
@@ -13,6 +13,7 @@ import styles from './edit-review-form.less';
 
 type Props = {
   settings: SettingsType,
+  product: ProductInfoType,
   errors: ReviewFormErrors,
   review: ReviewType,
   onUpdateReview: (ReviewType)=>void,
@@ -30,9 +31,8 @@ class EditReviewForm extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { review, errors, settings } = this.props;
+    const { review, errors, product } = this.props;
     const { title, content } = review;
-    const product = settings.product;
     return (
       <div className={styles.root}>
         { map(this.renderCriterion, product.criteria)}

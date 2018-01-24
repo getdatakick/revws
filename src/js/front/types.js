@@ -6,7 +6,9 @@ export type SettingsType = {
   api: string,
   criteria: CriteriaType,
   shape: GradingShapeType,
-  product: ProductInfoType,
+  products: {
+    [ number ]: ProductInfoType
+  },
   shapeSize: {
     product: number,
     list: number,
@@ -14,18 +16,18 @@ export type SettingsType = {
   },
   visitor: {
     type: 'customer' | 'guest',
+    id: number,
     firstName: ?string,
     lastName: ?string,
     nameFormat: NameFormatType,
     email: string,
   },
-  permissions: {
-    create: boolean
-  },
   preferences: {
     allowEmptyReviews: boolean,
+    allowGuestReviews: boolean,
     allowReviewWithoutCriteria: boolean
-  }
+  },
+  canCreate: boolean
 }
 
 export type ProductInfoType = {
@@ -33,5 +35,6 @@ export type ProductInfoType = {
   name: string,
   url: string,
   image: string,
-  criteria: Array<number>
+  criteria: Array<number>,
+  canCreate: boolean
 }

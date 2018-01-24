@@ -19,9 +19,11 @@
 
 namespace Revws;
 use \RevwsReview;
+use \RevwsCriterion;
 
 class VisitorPermissions implements Permissions {
   private $settings;
+  private $visitor;
 
   public function __construct(Settings $settings, Visitor $visitor) {
     $this->settings = $settings;
@@ -33,14 +35,18 @@ class VisitorPermissions implements Permissions {
     if ($visitor->isGuest() && !$this->settings->allowGuestReviews()) {
       return false;
     }
-    $visitorType = $visitor->getType();
-    $visitorId = $visitor->getId();
-    $reviews = RevwsReview::findReviews([
-      'deleted' => false,
-      'product' => (int)$productId,
-      $visitorType => (int)$visitorId,
-    ]);
-    return $reviews['total'] === 0;
+
+    if ($visitor->hasWrittenReview($productId)) {
+      return false;
+    }
+
+    if (! $this->settings->allowReviewWithoutCriteria()) {
+      $criteria = RevwsCriterion::getByProduct($productId);
+      if (count($criteria) === 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public function canReportAbuse(RevwsReview $review) {
@@ -90,4 +96,5 @@ class VisitorPermissions implements Permissions {
   private function hasVoted($review, $visitor) {
     return $visitor->hasReacted($review->id, 'vote_up') || $visitor->hasReacted($review->id, 'vote_down');
   }
+
 }

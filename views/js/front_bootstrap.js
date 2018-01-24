@@ -10,8 +10,10 @@
     $('[data-revws-create-trigger]').click(function(e) {
       e.preventDefault();
       if (window.revws) {
+        var productId = parseInt($(this).data('revws-create-trigger'), 10);
         window.revws({
-          type: 'TRIGGER_CREATE_REVIEW'
+          type: 'TRIGGER_CREATE_REVIEW',
+          productId: productId
         })
       }
     });

@@ -14,9 +14,18 @@
 * @author    Petr Hucik <petr@getdatakick.com>
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+*
+*
+*                             WARNING
+*
+*   do NOT MODIFY this template unless you modify javascript as well
+*
+*
 *}
-<div id="revws-tab-content">
-  <div id="revws-app">
-    {include file="./private_product_list.tpl" reviewsData=$reviewsData}
-  </div>
+{strip}
+<div class="revws-review-list">
+{foreach from=$reviewsData.reviews.reviews item=review}
+  {include file="./private_review_list_item.tpl" review=$review}
+{/foreach}
 </div>
+{/strip}

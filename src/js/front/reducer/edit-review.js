@@ -4,6 +4,7 @@ import type { EditStage, ReviewType } from 'common/types';
 import type { SettingsType, ProductInfoType } from 'front/types';
 import { formatName } from 'common/utils/format';
 import { zipObj, repeat } from 'ramda';
+import { getProduct } from 'front/settings';
 import Types from 'front/actions/types';
 
 type State = {
@@ -49,7 +50,7 @@ export default (settings: SettingsType) => {
     if (action.type === Types.triggerCreateReview) {
       return {
         ...state,
-        review: defaultReview(settings, settings.product),
+        review: defaultReview(settings, getProduct(action.productId, settings)),
       };
     }
 

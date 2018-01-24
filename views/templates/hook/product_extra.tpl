@@ -23,8 +23,12 @@
         {l s='(read %1$d reviews)' sprintf=[$reviewCount] mod='revws'}
       </a>
     {else}
-      <a class="revws-product-extra-link" href="#" data-revws-create-trigger="{$productId}">
-        {l s='Be the first to write review!' mod='revws'}
-      </a>
+      {if $canCreate}
+        <a class="revws-product-extra-link" href="#" data-revws-create-trigger="{$productId}">
+          {l s='Be the first to write review!' mod='revws'}
+        </a>
+      {else}
+        {l s='No customer reviews for the moment.' mod='revws'}
+      {/if}
     {/if}
 </div>

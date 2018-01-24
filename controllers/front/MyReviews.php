@@ -18,6 +18,7 @@
 */
 use \Revws\Settings;
 use \Revws\Visitor;
+use \Revws\FrontApp;
 
 class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
   public $module;
@@ -26,6 +27,8 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
     parent::__construct();
     $this->context = Context::getContext();
     $this->display_column_right = false;
+    $this->display_column_left = false;
+    $this->addJS($this->module->getSettings()->getAppUrl($this->context, $this->module->name));
   }
 
   public function initContent() {
@@ -38,6 +41,9 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
   }
 
   private function renderContent(Visitor $visitor) {
+    $frontApp = new FrontApp($this->module);
+    $reviewsData = $frontApp->getData('customer', $visitor->getCustomerId());
+    $this->context->smarty->assign('reviewsData', $reviewsData);
     $this->setTemplate('my-reviews.tpl');
   }
 
