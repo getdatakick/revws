@@ -70,9 +70,24 @@ class Settings extends React.PureComponent<Props, State> {
         content: this.renderTheme()
       },
       {
-        key: 'placement',
-        label: 'Display locations',
-        content: this.renderPlacements(errors)
+        key: 'product-detail',
+        label: 'Product detail page',
+        content: this.renderProductDetail(errors)
+      },
+      {
+        key: 'product-detail',
+        label: 'Product listing page',
+        content: this.renderProductList()
+      },
+      {
+        key: 'product-comparison',
+        label: 'Product comparison page',
+        content: this.renderProductComparison()
+      },
+      {
+        key: 'customer-account',
+        label: 'Customer account page',
+        content: this.renderCustomerAccount(errors)
       },
       {
         key: 'moderation',
@@ -358,11 +373,10 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderPlacements = (errors: any) => {
+  renderProductDetail = (errors: any) => {
     const settings = this.state.settings;
     return (
       <FormGroup>
-        <h3>Product detail</h3>
         <div className={styles.group}>
           <TextField
             select
@@ -393,18 +407,55 @@ class Settings extends React.PureComponent<Props, State> {
             onChange={e => this.set(['display', 'product', 'reviewsPerPage'], e.target.value)} />
           <div className={styles.space} />
         </div>
-        <div className={styles.space} />
         <FormControlLabel
           control={this.renderSwitch(['display', 'product', 'showAverage'])}
           label="Show average ratings on product page"
         />
-        <div className={styles.space} />
-        <h3>Product listing</h3>
+      </FormGroup>
+    );
+  }
+
+  renderProductList = () => {
+    return (
+      <FormGroup>
         <FormControlLabel
           control={this.renderSwitch(['display', 'productList', 'show'])}
           label="Show average ratings on product listing page"
         />
-        <div className={styles.space} />
+      </FormGroup>
+    );
+  }
+
+  renderCustomerAccount = (errors: any) => {
+    const settings = this.state.settings;
+    return (
+      <FormGroup>
+        <FormControlLabel
+          control={this.renderSwitch(['display', 'myReviews', 'show'])}
+          label="Show review section in customer account" />
+        <div className={styles.group}>
+          <TextField
+            fullWidth
+            label="Reviews per page"
+            value={settings.display.myReviews.reviewsPerPage}
+            error={!! errors.display.myReviews.reviewsPerPage}
+            onChange={e => this.set(['display', 'myReviews', 'reviewsPerPage'], e.target.value)} />
+          <div className={styles.space} />
+          <TextField
+            fullWidth
+            label="Max review requests"
+            value={settings.display.myReviews.maxRequests}
+            error={!! errors.display.myReviews.maxRequests}
+            onChange={e => this.set(['display', 'myReviews', 'maxRequests'], e.target.value)} />
+          <div className={styles.space} />
+        </div>
+      </FormGroup>
+    );
+  }
+
+  renderProductComparison = () => {
+    return (
+      <FormGroup>
         <h3>Product comparison</h3>
         <FormControlLabel
           control={this.renderSwitch(['display', 'productComparison', 'show'])}
@@ -448,6 +499,10 @@ class Settings extends React.PureComponent<Props, State> {
       display: {
         product: {
           reviewsPerPage: validateIsNumber(settings.display.product.reviewsPerPage)
+        },
+        myReviews: {
+          reviewsPerPage: validateIsNumber(settings.display.myReviews.reviewsPerPage),
+          maxRequests: validateIsNumber(settings.display.myReviews.maxRequests),
         }
       },
       notifications: {

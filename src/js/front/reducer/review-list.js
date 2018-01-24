@@ -77,11 +77,11 @@ export default (initialReviews: ReviewListType) => {
     }
 
     if (action.type === Types.deleteReview) {
-      return {loading, list: updateReviews(deleteReview(action.id), list) };
+      return {loading, list: updateReviews(deleteReview(action.review.id), list) };
     }
 
     if (action.type === Types.reviewRemoved) {
-      return {loading, list: updateReviews(deleteReview(action.id), list) };
+      return {loading, list: updateReviews(deleteReview(action.review.id), list) };
     }
 
     if (action.type === Types.triggerVote) {

@@ -7,10 +7,12 @@ import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
 import { getReviews, isLoading } from 'front/selectors/review-list';
 import { loadPage, triggerEditReview, triggerCreateReview, triggerDeleteReview } from 'front/actions/creators';
+import { productsToReview } from 'front/selectors/products-to-review';
 
 const mapStateToProps = mapObject({
   reviewList: getReviews,
   loading: isLoading,
+  productsToReview,
 });
 
 const actions = {

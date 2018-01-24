@@ -71,6 +71,11 @@ class Settings {
         ],
         'productComparison' => [
           'show' => true,
+        ],
+        'myReviews' => [
+          'show' => true,
+          'reviewsPerPage' => 5,
+          'maxRequests' => 3
         ]
       ],
       'moderation' => [
@@ -224,8 +229,18 @@ class Settings {
     return $this->validShapeSize($this->get(['theme', 'shapeSize', $type]));
   }
 
+  public function showOnCustomerAccount() {
+    return $this->toBool($this->get(['display', 'myReviews', 'show']));
+  }
+
   public function getCustomerReviewsPerPage() {
-    return 5;
+    $ret = (int)$this->get(['display', 'myReviews', 'reviewsPerPage']);
+    return $ret === 0 ? 5 : $ret;
+  }
+
+  public function getCustomerMaxRequests() {
+    $ret = (int)$this->get(['display', 'myReviews', 'maxRequests']);
+    return $ret === 0 ? 3 : $ret;
   }
 
   public function getAdminEmailLanguage() {

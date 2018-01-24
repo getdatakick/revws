@@ -22,6 +22,11 @@ export type SettingsType = {
     },
     productComparison: {
       show: boolean,
+    },
+    myReviews: {
+      show: boolean,
+      reviewsPerPage: number | string,
+      maxRequests: number | string,
     }
   },
   moderation: {

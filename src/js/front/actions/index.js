@@ -8,7 +8,7 @@ export type SetReviewAction = {
 
 export type ReviewRemovedAction = {
   type: 'REVIEW_REMOVED',
-  id: number
+  review: ReviewType
 }
 
 export type TriggerCreateReviewAction = {
@@ -47,7 +47,7 @@ export type TriggerDeleteReviewAction = {
 
 export type DeleteReviewAction = {
   type: 'DELETE_REVIEW',
-  id: number
+  review: ReviewType
 };
 
 export type CloseDeleteReviewAction = {

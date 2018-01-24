@@ -1,30 +1,31 @@
 // @flow
 import type { Action } from 'front/actions';
 import Types from 'front/actions/types';
+import type { ReviewType } from 'common/types';
 
 type State = {
-  reviewId: ?number
+  review: ?ReviewType
 }
 
 const defaultState: State = {
-  reviewId: null
+  review: null
 };
 
-const setReviewId = (reviewId: ?number) => ({ reviewId });
+const setReview = (review: ?ReviewType) => ({ review });
 
 export default (state?: State, action:Action): State => {
   state = state || defaultState;
 
   if (action.type === Types.triggerDeleteReview) {
-    return setReviewId(action.review.id);
+    return setReview(action.review);
   }
 
   if (action.type === Types.closeDeleteReview) {
-    return setReviewId(null);
+    return setReview(null);
   }
 
   if (action.type === Types.deleteReview) {
-    return setReviewId(null);
+    return setReview(null);
   }
 
   return state;

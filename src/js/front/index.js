@@ -27,7 +27,7 @@ const startRevws = (init: any) => {
     middlewares.push(logger);
   }
 
-  const reducer = createReducer(settings, reviews);
+  const reducer = createReducer(settings, reviews, init.productsToReview);
   const store = createStore(reducer, applyMiddleware(...middlewares));
 
   render((

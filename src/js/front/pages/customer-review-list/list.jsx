@@ -49,7 +49,7 @@ class CustomerReviewList extends React.PureComponent<Props> {
             shapeSize={settings.shapeSize.product}
             review={review}
             onEdit={onEdit}
-            ondelete={onDelete}
+            onDelete={onDelete}
             onVote={F}
             onReport={F}
           />

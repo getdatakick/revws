@@ -284,7 +284,9 @@ class Revws extends Module {
   }
 
   public function hookCustomerAccount($params) {
-    return $this->display(__FILE__, 'my-account.tpl');
+    if ($this->getSettings()->showOnCustomerAccount()) {
+      return $this->display(__FILE__, 'my-account.tpl');
+    }
   }
 
   public function getContext() {

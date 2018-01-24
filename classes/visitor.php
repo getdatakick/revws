@@ -20,6 +20,7 @@
 namespace Revws;
 use \Customer;
 use \Db;
+use \Shop;
 use \RevwsReview;
 
 class Visitor {
@@ -131,8 +132,31 @@ class Visitor {
   }
 
   public function getProductsToReview() {
-    // TODO
-    return [];
+    if ($this->isGuest()) {
+      return [];
+    }
+    $customer = (int)$this->getCustomerId();
+    $shop = (int)Shop::getContextShopID();
+    $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
+    $sql = ("
+      SELECT d.product_id, o.date_add
+        FROM "._DB_PREFIX_."orders o
+        INNER JOIN "._DB_PREFIX_."order_detail d ON (o.id_order = d.id_order AND o.id_shop=d.id_shop)
+        INNER JOIN "._DB_PREFIX_."product_shop p ON (p.id_product = d.product_id and p.id_shop = d.id_shop)
+        LEFT JOIN  "._DB_PREFIX_."revws_review r ON (r.id_product = p.id_product)
+        WHERE o.id_customer = $customer
+          AND o.id_shop = $shop
+          AND r.id_review IS NULL
+        ORDER BY o.date_add DESC
+    ");
+    $data = [];
+    foreach ($conn->executeS($sql) as $row) {
+      $productId = (int)$row['product_id'];
+      if (! isset($data[$productId])) {
+        $data[$productId] = true;
+      }
+    }
+    return array_keys($data);
   }
 
 }

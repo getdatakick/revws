@@ -34,9 +34,9 @@ export const updateReviewDetails = (review: ReviewType): UpdateReviewDetailsActi
 export const setReview = (review: ReviewType): SetReviewAction => ({ type: Types.setReview, review });
 
 export const triggerDeleteReview = (review: ReviewType): TriggerDeleteReviewAction => ({ type: Types.triggerDeleteReview, review });
-export const deleteReview = (id: number): DeleteReviewAction => ({ type: Types.deleteReview, id });
+export const deleteReview = (review: ReviewType): DeleteReviewAction => ({ type: Types.deleteReview, review });
 export const closeDeleteReview = (): CloseDeleteReviewAction => ({ type: Types.closeDeleteReview });
-export const reviewRemoved = (id: number): ReviewRemovedAction => ({ type: Types.reviewRemoved, id });
+export const reviewRemoved = (review: ReviewType): ReviewRemovedAction => ({ type: Types.reviewRemoved, review });
 
 export const loadPage = (entityType: 'product' | 'customer', entityId: number, page: number): LoadPageAction => ({ type: Types.loadPage, entityType, entityId, page });
 export const setReviews = (reviews: ReviewListType): SetReviewsAction => ({ type: Types.setReviews, reviews });

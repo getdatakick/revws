@@ -6,6 +6,7 @@ import List from './list';
 import Paging from 'common/components/review-list-paging/review-list-paging';
 
 type Props = {
+  canCreate: boolean,
   productId: number,
   reviewList: ReviewListType,
   settings: SettingsType,
@@ -22,8 +23,7 @@ class FrontAppReviewList extends React.PureComponent<Props> {
   static displayName = 'FrontAppReviewList';
 
   render() {
-    const { settings, reviewList, loading, onEdit, onDelete, onReport, onVote } = this.props;
-    const canCreate = settings.canCreate;
+    const { settings, reviewList, loading, onEdit, onDelete, onReport, onVote, canCreate } = this.props;
     const isEmpty = reviewList.total === 0;
     return isEmpty ? this.renderEmptyState(canCreate) : (
       <div>

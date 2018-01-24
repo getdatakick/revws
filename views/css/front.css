@@ -220,3 +220,27 @@ a .revws-grading {
   margin-top: 30px;
   border: 1px solid #f5f5f5;
 }
+
+.revws-review-requests {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  padding: 40px;
+}
+
+.revws-review-request {
+  padding: 20px;
+  cursor: pointer;
+  transition: all 350ms ease;
+  transform: scale(0.9);
+}
+
+.revws-review-request:hover {
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+  transform: scale(1);
+}
+
+.revws-review-request-name {
+  margin-top: 10px;
+  text-align: center;
+}

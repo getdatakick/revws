@@ -24,21 +24,44 @@
 *}
 {strip}
 <div class="revws-review-list">
-{foreach from=$reviewsData.reviews.reviews item=review}
-  {assign "product" $reviewsData.products[$review.productId]}
-  <div class="revws-review-with-product">
-    <div>
-      <a href="{$product.url}">
-        <img src="{$product.image}" alt="{$product.name|escape:'html':'UTF-8'}"></img>
-      </a>
+  {if $reviewsData.productsToReview}
+  <h1 class="page-heading">{l s='Could you review these products?' mod='revws'}</h1>
+  <div class='revws-review-requests'>
+  {foreach from=$reviewsData.productsToReview item=productId}
+    {if $productId@iteration <= $reviewsData.preferences.customerMaxRequests}
+    {assign "product" $reviewsData.products[$productId]}
+    <div class='revws-review-request'>
+      <img src="{$product.image}" />
+      <h3 class='revws-review-request-name'>
+        {$product.name|escape:'html':'UTF-8'}
+      </h3>
     </div>
-    <div class="revws-review-wrapper">
-      <h2>
-        <a href="{$product.url}">{$product.name|escape:'html':'UTF-8'}</a>
-      </h2>
-      {include file="../hook/private_review_list_item.tpl" review=$review}
-    </div>
+    {/if}
+  {/foreach}
   </div>
-{/foreach}
+  {/if}
+  <h1 class="page-heading">{l s='Your reviews' mod='revws'}</h1>
+  {if $reviewsData.reviews.reviews}
+  {foreach from=$reviewsData.reviews.reviews item=review}
+    {assign "product" $reviewsData.products[$review.productId]}
+    <div class="revws-review-with-product">
+      <div>
+        <a href="{$product.url}">
+          <img src="{$product.image}" alt="{$product.name|escape:'html':'UTF-8'}"></img>
+        </a>
+      </div>
+      <div class="revws-review-wrapper">
+        <h2>
+          <a href="{$product.url}">{$product.name|escape:'html':'UTF-8'}</a>
+        </h2>
+        {include file="../hook/private_review_list_item.tpl" review=$review}
+      </div>
+    </div>
+  {/foreach}
+  {else}
+    <div className="form-group">
+    {l s="You haven't written any review yet" mod='revws'}
+  </div>
+  {/if}
 </div>
 {/strip}

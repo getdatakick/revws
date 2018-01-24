@@ -46,30 +46,34 @@ class FrontApp {
       ];
       $reviews = $this->getProductReviews($entityId);
       $canCreate = $products[$entityId]['canCreate'];
+      $productsToReview = [];
+      if (! $visitor->hasWrittenReview($entityId)) {
+        $productsToReview[] = $entityId;
+      }
     } else {
       $products = [];
       $reviews = $this->getCustomerReviews($entityId);
       $canCreate = false;
-    }
-    $reviewedProducts = $visitor->getReviewedProducts();
-    foreach ($reviewedProducts as $productId) {
-      $productId = (int)$productId;
-      if (! isset($products[$productId])) {
-        $products[$productId] = self::getProductData($productId, $this->getLanguage(), $this->getPermissions());
+      $reviewedProducts = $visitor->getReviewedProducts();
+      foreach ($reviewedProducts as $productId) {
+        $productId = (int)$productId;
+        if (! isset($products[$productId])) {
+          $products[$productId] = self::getProductData($productId, $this->getLanguage(), $this->getPermissions());
+        }
+      }
+      $productsToReview = $visitor->getProductsToReview();
+      foreach ($productsToReview as $productId) {
+        $productId = (int)$productId;
+        if (! isset($products[$productId])) {
+          $products[$productId] = self::getProductData($productId, $this->getLanguage(), $this->getPermissions());
+        }
       }
     }
-    $productsToReview = $visitor->getProductsToReview();
-    foreach ($productsToReview as $productId) {
-      $productId = (int)$productId;
-      if (! isset($products[$productId])) {
-        $products[$productId] = self::getProductData($productId, $this->getLanguage(), $this->getPermissions());
-      }
-    }
+
     return [
       'entityType' => $entityType,
       'entityId' => $entityId,
       'products' => $products,
-      'reviewedProducts' => $reviewedProducts,
       'productsToReview' => $productsToReview,
       'reviews' => $reviews,
       'visitor' => [
@@ -94,7 +98,9 @@ class FrontApp {
       'preferences' => [
         'allowEmptyReviews' => $set->allowEmptyReviews(),
         'allowReviewWithoutCriteria' => $set->allowReviewWithoutCriteria(),
-        'allowGuestReviews' => $set->allowGuestReviews()
+        'allowGuestReviews' => $set->allowGuestReviews(),
+        'customerReviewsPerPage' => $set->getCustomerReviewsPerPage(),
+        'customerMaxRequests' => $set->getCustomerMaxRequests()
       ],
       'canCreate' => $canCreate
     ];
