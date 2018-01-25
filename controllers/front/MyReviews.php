@@ -28,7 +28,6 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
     $this->context = Context::getContext();
     $this->display_column_right = false;
     $this->display_column_left = false;
-    $this->addJS($this->module->getSettings()->getAppUrl($this->context, $this->module->name));
   }
 
   public function initContent() {
@@ -41,8 +40,20 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
   }
 
   private function renderContent(Visitor $visitor) {
+    $this->addJS($this->module->getPath('views/js/front_bootstrap.js'));
     $frontApp = new FrontApp($this->module);
-    $reviewsData = $frontApp->getData('customer', $visitor->getCustomerId());
+    $params = $this->getParams();
+    $reviewProduct = (isset($params['review-product'])) ? (int)$params['review-product'] : null;
+    $reviewsData = $frontApp->getData('customer', $visitor->getCustomerId(), $reviewProduct);
+    if ($reviewProduct && isset($reviewsData['products'][$reviewProduct])) {
+      $toReview = $reviewsData['products'][$reviewProduct];
+      if ($toReview['canCreate']) {
+        $reviewsData['initActions'] = [[
+          'type' => 'TRIGGER_CREATE_REVIEW',
+          'productId' => $reviewProduct
+        ]];
+      }
+    }
     $this->context->smarty->assign('reviewsData', $reviewsData);
     $this->setTemplate('my-reviews.tpl');
   }
@@ -52,7 +63,15 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
   }
 
   private function selfLink() {
-    return $this->context->link->getModuleLink('revws', 'MyReviews');
+    return $this->context->link->getModuleLink('revws', 'MyReviews', $this->getParams());
+  }
+
+  private function getParams() {
+    $params = [];
+    if (Tools::getValue('review-product')) {
+      $params['review-product'] = (int)Tools::getValue('review-product');
+    }
+    return $params;
   }
 
 }

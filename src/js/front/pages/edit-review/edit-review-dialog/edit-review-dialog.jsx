@@ -113,16 +113,29 @@ class EditReviewDialog extends React.PureComponent<Props> {
   }
 
   renderGrading = (criterion: CriterionType, review: ReviewType) => {
-    const { settings, onUpdateReview } = this.props;
+    const { width, settings, onUpdateReview } = this.props;
     const grades = review.grades;
+    const smallDevice = width === 'sm' || width == 'xs';
+    const size = settings.shapeSize.create / (smallDevice ? 2 : 1);
     return (
       <div className={styles.single}>
+        { this.renderProductImage(review) }
         <h2>{ criterion.label }</h2>
         <Grading
           shape={settings.shape}
-          size={settings.shapeSize.create}
+          size={size}
           grade={0}
           onSetGrade={grade => onUpdateReview({ ...review, grades: assoc(criterion.id, grade, grades)})} />
+      </div>
+    );
+  }
+
+  renderProductImage = (review: ReviewType) => {
+    const settings = this.props.settings;
+    const product = settings.products[review.productId];
+    return (
+      <div className={styles.productImage}>
+        <img src={fixUrl(product.image)} alt={product.name} />
       </div>
     );
   }
@@ -142,7 +155,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
     return (smallDevice || !image) ? form : (
       <Grid container spacing={8} className={styles.minHeight}>
         <Grid item sm={4}>
-          <img src={fixUrl(image)} />
+          { this.renderProductImage(review) }
         </Grid>
         <Grid item sm={8}>
           { form}

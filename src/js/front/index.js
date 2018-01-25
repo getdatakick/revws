@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { values, has, contains } from 'ramda';
+import { forEach, values, has, contains } from 'ramda';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -9,7 +9,7 @@ import createReducer from 'front/reducer';
 import createCommands from 'front/commands';
 import App from 'front/app';
 import { getSettings, getReviews } from 'front/settings';
-import { isObject } from 'common/utils/ramda';
+import { isObject, isArray } from 'common/utils/ramda';
 import Types from 'front/actions/types';
 
 const startRevws = (init: any) => {
@@ -29,6 +29,9 @@ const startRevws = (init: any) => {
 
   const reducer = createReducer(settings, reviews, init.productsToReview);
   const store = createStore(reducer, applyMiddleware(...middlewares));
+  const isAction = (action: any) => {
+    return (action && isObject(action) && has('type', action) && contains(action.type, values(Types)));
+  };
 
   render((
     <Provider store={store}>
@@ -40,13 +43,22 @@ const startRevws = (init: any) => {
   ), node);
 
   window.revws = (action: any) => {
-    if (action && isObject(action) && has('type', action) && contains(action.type, values(Types))) {
+    if (isAction(action)) {
       store.dispatch(action);
       return true;
     } else {
       return false;
     }
   };
+
+  const initActions = init.initActions;
+  if (initActions && isArray(initActions)) {
+    forEach(action => {
+      if (isAction(action)) {
+        store.dispatch(action);
+      }
+    }, initActions);
+  }
 };
 
 if (document.readyState === 'complete') {

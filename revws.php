@@ -293,4 +293,8 @@ class Revws extends Module {
     return $this->context;
   }
 
+  public function getPath($relative) {
+    return $this->_path . $relative;
+  }
+
 }

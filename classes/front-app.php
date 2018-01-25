@@ -34,7 +34,7 @@ class FrontApp {
     $this->module = $module;
   }
 
-  public function getData($entityType, $entityId) {
+  public function getData($entityType, $entityId, $reviewProduct=null) {
     $entityId = (int)$entityId;
     $context = $this->getContext();
     $visitor = $this->getVisitor();
@@ -66,6 +66,15 @@ class FrontApp {
         $productId = (int)$productId;
         if (! isset($products[$productId])) {
           $products[$productId] = self::getProductData($productId, $this->getLanguage(), $this->getPermissions());
+        }
+      }
+      if ($reviewProduct) {
+        $reviewProduct = (int)$reviewProduct;
+        if (! isset($products[$reviewProduct])) {
+          try {
+            $products[$reviewProduct] = self::getProductData($reviewProduct, $this->getLanguage(), $this->getPermissions());
+          } catch (Exception $ignore) {
+          }
         }
       }
     }
