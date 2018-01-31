@@ -42,7 +42,6 @@ use \Revws\Shapes;
 use \Revws\Utils;
 use \Revws\FrontApp;
 
-
 class Revws extends Module {
   private $permissions;
   private $visitor;
@@ -97,7 +96,9 @@ class Revws extends Module {
       $this->registerHook('displayProductListReviews') &&
       $this->registerHook('extraProductComparison') &&
       $this->registerHook('customerAccount') &&
-      $this->registerHook('productFooter')
+      $this->registerHook('productFooter') &&
+      $this->registerHook('discoverReviewModule') &&
+      $this->registerHook('datakickExtend')
     );
   }
 
@@ -110,6 +111,8 @@ class Revws extends Module {
     $this->unregisterHook('extraProductComparison');
     $this->unregisterHook('customerAccount');
     $this->unregisterHook('productFooter');
+    $this->unregisterHook('discoverReviewModule');
+    $this->unregisterHook('datakickExtend');
     return true;
   }
 
@@ -295,6 +298,23 @@ class Revws extends Module {
 
   public function getPath($relative) {
     return $this->_path . $relative;
+  }
+
+  public static function getReviewUrl($context, $productId) {
+    return $context->link->getModuleLink('revws', 'MyReviews', ['review-product' => (int)$productId ]);
+  }
+
+  public function hookDiscoverReviewModule() {
+    return [
+      'name' => $this->name,
+      'getReviewUrl' => ['Revws', 'getReviewUrl'],
+      'canReviewProductSqlFragment' => ['RevwsReview', 'canReviewProductSqlFragment'],
+    ];
+  }
+
+  public function hookDataKickExtend($params) {
+    require_once(__DIR__.'/classes/integration/datakick.php');
+    return \Revws\DatakickIntegration::integrate($params);
   }
 
 }
