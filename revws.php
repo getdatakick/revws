@@ -317,4 +317,8 @@ class Revws extends Module {
     return \Revws\DatakickIntegration::integrate($params);
   }
 
+  public function clearCache() {
+    $this->_clearCache('product-list.tpl');
+  }
+
 }

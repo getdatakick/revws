@@ -51,7 +51,7 @@ class Notifications {
 
   // close connection, flush output and continue
   // processing notifications on backend only
-  public function closeConnectionAndProcess() {
+  public function closeConnectionAndProcess($module) {
     if ($this->queue) {
       if (ob_get_length() > 0 ) {
         ob_end_flush();
@@ -61,7 +61,7 @@ class Notifications {
       if (function_exists('fastcgi_finish_request')) {
         fastcgi_finish_request();
       }
-      $this->process();
+      $this->process($module);
     }
     // end request
     die();
@@ -71,15 +71,18 @@ class Notifications {
   /**
    * process work items
    */
-  public function process() {
-    foreach ($this->queue as $workItem) {
-      $type = $workItem['type'];
-      $id = $workItem['id'];
-      $actor = $workItem['actor'];
-      try {
-        call_user_func(array($this, $type), $id, $actor);
-      } catch (Exception $e) {
-        self::log("failed to process $type: " . $e->getMessage());
+  public function process($module) {
+    if ($this->queue) {
+      $module->clearCache();
+      foreach ($this->queue as $workItem) {
+        $type = $workItem['type'];
+        $id = $workItem['id'];
+        $actor = $workItem['actor'];
+        try {
+          call_user_func(array($this, $type), $id, $actor);
+        } catch (Exception $e) {
+          self::log("failed to process $type: " . $e->getMessage());
+        }
       }
     }
   }

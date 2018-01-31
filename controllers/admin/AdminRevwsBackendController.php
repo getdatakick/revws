@@ -214,7 +214,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
     } else {
       echo json_encode(['success'=>true, 'result' => $result]);
     }
-    Notifications::getInstance()->closeConnectionAndProcess();
+    Notifications::getInstance()->closeConnectionAndProcess($this->module);
   }
 
 

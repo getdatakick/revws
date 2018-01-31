@@ -45,7 +45,7 @@ class RevwsEmailActionModuleFrontController extends ModuleFrontController {
       $this->context->smarty->assign('error', $e->getMessage());
       $this->setTemplate('email-action-error.tpl');
     } finally {
-      Notifications::getInstance()->process();
+      Notifications::getInstance()->process($this->module);
     }
   }
 
