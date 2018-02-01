@@ -25,8 +25,13 @@ class Grading extends React.PureComponent<Props, State> {
   };
 
   render() {
+    const { onSetGrade } = this.props;
     return (
-      <div className={classnames("revws-grading", this.props.className)}>
+      <div
+        className={classnames("revws-grading", this.props.className)}
+        onTouchMove={onSetGrade ? this.onTouchMove : undefined}
+        onTouchEnd={onSetGrade ? this.onTouchEnd : undefined}
+      >
         { map(this.renderShape, range(1, 6)) }
       </div>
     );
@@ -48,6 +53,7 @@ class Grading extends React.PureComponent<Props, State> {
           cursor: onSetGrade ? 'pointer' : 'default'
         }}>
         <GradingShape
+          data-grade-id={id}
           shape={shape}
           size={size}
           highlighted={grade >= id && !!this.state.grade}
@@ -73,6 +79,29 @@ class Grading extends React.PureComponent<Props, State> {
     this.setState({ grade: null });
     if (onSetGrade && grade != id) {
       onSetGrade(id);
+    }
+  }
+
+  onTouchMove = (e: any) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (e.changedTouches && e.changedTouches.length) {
+      let node = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+      while (node) {
+        if (node.dataset && node.dataset.gradeId) {
+          const grade = parseInt(node.dataset.gradeId);
+          this.setState({ grade });
+        }
+        node = node.parentNode;
+      }
+    }
+  }
+
+  onTouchEnd = (e: any) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (this.state.grade) {
+      this.onClick(this.state.grade);
     }
   }
 
