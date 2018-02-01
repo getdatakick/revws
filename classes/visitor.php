@@ -40,14 +40,14 @@ class Visitor {
     $this->settings = $settings;
     if ($context->customer->isLogged()) {
       $this->type = self::CUSTOMER;
-      $this->id = $context->customer->id;
+      $this->id = (int)$context->customer->id;
       $customer = new Customer($this->id);
       $this->email = $customer->email;
       $this->firstName = $customer->firstname;
       $this->lastName = $customer->lastname;
     } else {
       $this->type = self::GUEST;
-      $this->id = $context->cookie->id_guest;
+      $this->id = (int)$context->cookie->id_guest;
     }
   }
 
@@ -85,11 +85,11 @@ class Visitor {
   }
 
   public function getCustomerId() {
-    return $this->isCustomer() ? (int)$this->id : 0;
+    return $this->isCustomer() ? $this->id : 0;
   }
 
   public function getGuestId() {
-    return $this->isGuest() ? (int)$this->id : 0;
+    return $this->isGuest() ? $this->id : 0;
   }
 
   public function hasWrittenReview($productId) {
