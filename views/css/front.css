@@ -191,7 +191,7 @@ a .revws-grading {
   margin-right: 10px;
 }
 
-.revws-product-list, .revws-comparison {
+.revws-product-list, .revws-product-list a, .revws-comparison {
   display: flex;
   flex-direction: row;
   justify-content: center;

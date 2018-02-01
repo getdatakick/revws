@@ -266,6 +266,7 @@ class Revws extends Module {
         $this->context->smarty->assign('reviewCount', $count);
         $this->context->smarty->assign('shape', $this->getShapeSettings());
         $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
+        $this->context->smarty->assign('reviewsUrl', $this->context->link->getProductLink($productId).'#revws-tab-content');
         return $this->display(__FILE__, 'product_list.tpl');
       }
     }
