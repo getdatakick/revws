@@ -11,6 +11,10 @@ const firstCharUpperCase = (str: string) => {
   return '';
 };
 
+const getInitial = (name: string) => {
+  return name ? firstCharUpperCase(name) + '.' : '';
+};
+
 const customFormat = (firstName: string, lastName: string, functionName: string) => {
   if (functionName && has(functionName, window) && isFunction(window[functionName])) {
     return window[functionName](firstName, lastName);
@@ -22,19 +26,23 @@ const customFormat = (firstName: string, lastName: string, functionName: string)
 export const formatName = (firstName: ?string, lastName: ?string, nameFormat: NameFormatType): string => {
   firstName = (firstName || '').trim();
   lastName = (lastName || '').trim();
-  switch (nameFormat) {
-    case 'firstName':
-      return firstName;
-    case 'lastName':
-      return lastName;
-    case 'initials':
-      return (firstCharUpperCase(firstName) + '.' + firstCharUpperCase(lastName) + '.').trim();
-    case 'initialLastName':
-      return (firstName + ' '  + firstCharUpperCase(lastName) + '.').trim();
-    case 'custom':
-      return customFormat(firstName, lastName, 'revwsFormatName');
-    case 'fullName':
-    default:
-      return (firstName+' '+lastName).trim();
+  if (nameFormat === 'custom') {
+    return customFormat(firstName, lastName, 'revwsFormatName');
   }
+  if (firstName || lastName) {
+    switch (nameFormat) {
+      case 'firstName':
+        return firstName;
+      case 'lastName':
+        return lastName;
+      case 'initials':
+        return (getInitial(firstName) + getInitial(lastName)).trim();
+      case 'initialLastName':
+        return (firstName + ' '  + getInitial(lastName)).trim();
+      case 'fullName':
+      default:
+        return (firstName+' '+lastName).trim();
+    }
+  }
+  return '';
 };
