@@ -57,7 +57,7 @@ class Revws extends Module {
     $this->displayName = $this->l('Product Reviews');
     $this->description = $this->l('Product Reviews module');
     $this->confirmUninstall = $this->l('Are you sure you want to uninstall the module? All its data will be lost!');
-    $this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
+    $this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.999');
   }
 
   public function install($createTables=true) {
@@ -179,6 +179,10 @@ class Revws extends Module {
   }
 
   private function getTabParent() {
+    $catalog = Tab::getIdFromClassName('AdminCatalog');
+    if ($catalog !== false) {
+      return $catalog;
+    }
     return 0;
   }
 
