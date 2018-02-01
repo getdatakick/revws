@@ -211,9 +211,9 @@ class Revws extends Module {
   private function assignReviewsData($productId) {
     $frontApp = new FrontApp($this);
     $reviewsData = $frontApp->getData('product', $productId);
-    Media::addJsDef([
-      'revwsData' => $reviewsData
-    ]);
+    $this->context->smarty->assign('reviewsData', $reviewsData);
+    $this->context->smarty->assign('microdata', $this->getSettings()->emitRichSnippets());
+    Media::addJsDef([ 'revwsData' => $reviewsData ]);
   }
 
   private function getShapeSettings() {
@@ -258,6 +258,7 @@ class Revws extends Module {
       $this->context->smarty->assign('shape', $this->getShapeSettings());
       $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
       $this->context->smarty->assign('canCreate', $this->getPermissions()->canCreateReview($productId));
+      $this->context->smarty->assign('microdata', $this->getSettings()->emitRichSnippets());
       return $this->display(__FILE__, 'product_extra.tpl');
     }
   }

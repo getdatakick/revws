@@ -22,26 +22,33 @@
 *
 *
 *}
-<div class="revws-review row no-gutter">
+<div class="revws-review row no-gutter" {if $microdata}itemprop="review" itemscope itemtype="http://schema.org/Review"{/if}>
   <div class="col-sm-3 col-md-2">
     <div class="revws-review-author">
-      <div class="revws-review-author-name">{$review.displayName|escape:'html':'UTF-8'}</div>
+      <div class="revws-review-author-name" {if $microdata}itemprop="author"{/if}>{$review.displayName|escape:'html':'UTF-8'}</div>
       {if count($review.grades) > 0}
       {include file='./grading.tpl' grade=$review.grade shape=$reviewsData.theme.shape size=$reviewsData.theme.shapeSize.product}
+      {if $microdata}
+      <div style="display:none" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+        <meta itemprop="worstRating" content="1">
+        <meta itemprop="ratingValue" content="{$review.grade|string_format:"%.2f"}">
+        <meta itemprop="bestRating" content="5">
+      </div>
       {/if}
-      <div class="revws-review-date">{dateFormat date=$review.date|escape:'html':'UTF-8' full=0}</div>
+      {/if}
+      <div class="revws-review-date" {if $microdata}itemprop="datePublished" content="{$review.date|date_format:"%Y-%m-%d"}"{/if}>{dateFormat date=$review.date|escape:'html':'UTF-8' full=0}</div>
     </div>
   </div>
 
   <div class="col-sm-9 col-md-10">
     <div class="revws-review-details">
-      <p class="revws-review-title">
+      <p class="revws-review-title" {if $microdata}itemprop="name"{/if}>
         {$review.title}
       </p>
       {if $review.underReview}
       <div class="revws-under-review">{l s="This review hasn't been approved yet" mod='revws'}</div>
       {/if}
-      <p class="revws-review-content">{$review.content|escape:'html':'UTF-8'|nl2br}</p>
+      <p class="revws-review-content" {if $microdata}itemprop="description"{/if}>{$review.content|escape:'html':'UTF-8'|nl2br}</p>
       <div class="revws-actions">
         {if $review.canVote}
           <div class="revws-action revws-useful">{l s='Was this comment useful to you?' mod='revws'}

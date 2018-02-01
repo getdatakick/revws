@@ -54,9 +54,9 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
         ]];
       }
     }
-    Media::addJsDef([
-      'revwsData' => $reviewsData
-    ]);
+    $this->context->smarty->assign('reviewsData', $reviewsData);
+    $this->context->smarty->assign('microdata', $this->module->getSettings()->emitRichSnippets());
+    Media::addJsDef([ 'revwsData' => $reviewsData ]);
     $this->setTemplate('my-reviews.tpl');
   }
 

@@ -61,6 +61,9 @@ export type SettingsType = {
       reviewDeleted: boolean,
       reply: boolean,
     }
+  },
+  'richSnippets': {
+    enabled: boolean
   }
 }
 

@@ -90,6 +90,11 @@ class Settings extends React.PureComponent<Props, State> {
         content: this.renderCustomerAccount(errors)
       },
       {
+        key: 'rich-snippets',
+        label: 'Structured Data / Rich Snippets',
+        content: this.renderRichSnippets()
+      },
+      {
         key: 'moderation',
         label: 'Review moderation',
         content: this.renderModeration()
@@ -423,6 +428,22 @@ class Settings extends React.PureComponent<Props, State> {
           label="Show average ratings on product listing page"
         />
       </FormGroup>
+    );
+  }
+
+  renderRichSnippets = () => {
+    return (
+      <div>
+        <FormGroup>
+          <FormControlLabel
+            control={this.renderSwitch(['richSnippets', 'enabled'])}
+            label="Emit microdata / rich snippets"
+          />
+        </FormGroup>
+        <div className={styles.note2}>
+          You can use this <a href="https://search.google.com/structured-data/testing-tool/u/0/" target="_blank">tool to test structured data</a> on your page. Disable this option only if your theme does not support product microdata, or if you use alternate way to generate microdata, for example by using <a href="https://github.com/thirtybees/jsonmodule" target="_blank">thirtybees json module</a>.
+        </div>
+      </div>
     );
   }
 

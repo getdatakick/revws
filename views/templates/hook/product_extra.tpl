@@ -22,6 +22,12 @@
         {include file='./grading.tpl' grade=$grade shape=$shape size=$shapeSize}
         {l s='(read %1$d reviews)' sprintf=[$reviewCount] mod='revws'}
       </a>
+      {if $microdata}
+      <div style="display:none" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+        Rated <span itemprop="ratingValue">{$grade|string_format:"%.2f"}</span>/5
+        based on <span itemprop="reviewCount">{$reviewCount}</span> customer reviews
+      </div>
+      {/if}
     {else}
       {if $canCreate}
         <a class="revws-product-extra-link" href="#" data-revws-create-trigger="{$productId}">

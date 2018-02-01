@@ -111,6 +111,9 @@ class Settings {
           'reviewDeleted' => true,
           'reply' => true
         ]
+      ],
+      'richSnippets' => [
+        'enabled' => true
       ]
     ];
   }
@@ -281,6 +284,10 @@ class Settings {
 
   public function emailAuthorNotifyOnReply() {
     return $this->get(['notifications', 'author', 'reply']);
+  }
+
+  public function emitRichSnippets() {
+    return (bool)$this->get(['richSnippets', 'enabled']);
   }
 
   private function toBool($val) {
