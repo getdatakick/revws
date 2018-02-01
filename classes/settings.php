@@ -123,12 +123,12 @@ class Settings {
     return $this->remove && $this->init();
   }
 
-  public function getAppUrl($context, $moduleName) {
+  public function getAppUrl($context, $module) {
     $url = Configuration::get(self::APP_URL);
     if (! $url) {
-      $url = $context->shop->getBaseURI() . "modules/{$moduleName}/views/js/front_app.js";
+      $url = $context->shop->getBaseURI() . "modules/{$module->name}/views/js/front_app.js";
     }
-    return $url;
+    return $url . "?v=" . $module->version;
   }
 
   public function getBackendAppUrl($moduleName) {

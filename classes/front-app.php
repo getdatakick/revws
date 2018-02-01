@@ -94,7 +94,7 @@ class FrontApp {
         'email' => $visitor->getEmail()
       ],
       'api' => $context->link->getModuleLink('revws', 'api', [], true),
-      'appJsUrl' => $set->getAppUrl($context, $this->module->name),
+      'appJsUrl' => $set->getAppUrl($context, $this->module),
       'theme' => [
         'shape' => $this->getShapeSettings(),
         'shapeSize' => [
