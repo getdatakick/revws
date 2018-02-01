@@ -211,7 +211,9 @@ class Revws extends Module {
   private function assignReviewsData($productId) {
     $frontApp = new FrontApp($this);
     $reviewsData = $frontApp->getData('product', $productId);
-    $this->context->smarty->assign('reviewsData', $reviewsData);
+    Media::addJsDef([
+      'revwsData' => $reviewsData
+    ]);
   }
 
   private function getShapeSettings() {

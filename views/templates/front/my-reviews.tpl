@@ -25,5 +25,3 @@
     </li>
   </ul>
 </nav>
-
-{addJsDef revwsData=$reviewsData}

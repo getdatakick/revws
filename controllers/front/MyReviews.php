@@ -54,7 +54,9 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
         ]];
       }
     }
-    $this->context->smarty->assign('reviewsData', $reviewsData);
+    Media::addJsDef([
+      'revwsData' => $reviewsData
+    ]);
     $this->setTemplate('my-reviews.tpl');
   }
 

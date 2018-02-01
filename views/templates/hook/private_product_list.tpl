@@ -44,5 +44,4 @@
     <div class="form-group">{l s='No customer reviews for the moment.' mod='revws'}</div>
   {/if}
 {/if}
-{addJsDef revwsData=$reviewsData}
 {/strip}
