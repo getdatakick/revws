@@ -245,7 +245,7 @@ class Notifications {
       '{display_name}' => $review->display_name,
       '{title}' => $review->title,
       '{content}' => $review->content,
-      '{ratings}' => Utils::calculateAverage($review->grades),
+      '{ratings}' => round(Utils::calculateAverage($review->grades), 1),
       '{reply}' => $review->reply,
       '{validated}' => $review->validated,
       '{deleted}' => $review->deleted
