@@ -11,7 +11,7 @@ import createCommands from 'back/commands';
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { setSize, goTo } from 'back/actions/creators';
 import { transition, toState, fixUrl, toUrl } from 'back/routing';
-import { homePage } from 'back/routing/home';
+import { moderationPage } from 'back/routing/moderation';
 import { getRoutingState } from 'back/selectors/routing-state';
 import { createHashHistory } from 'history';
 import Types from 'back/actions/types';
@@ -89,8 +89,8 @@ window.startRevws = (init: any) => {
 
   let routingState = toState(fixUrl(history.location.pathname));
   if (! routingState) {
-    routingState = homePage();
-    history.replace('/');
+    routingState = moderationPage();
+    history.replace(toUrl(routingState));
   }
 
   const reducer = createReducer(routingState, settings, criteria);
@@ -107,7 +107,7 @@ window.startRevws = (init: any) => {
         history.replace(newUrl);
       } else {
         console.error("Failed to map '" + currentUrl + "' to state");
-        store.dispatch(goTo(homePage()));
+        store.dispatch(goTo(moderationPage()));
       }
     } else {
       if (! equals(routingState, currentState)) {

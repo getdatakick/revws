@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
 import { getSettings } from 'back/selectors/settings';
 import { getCriteria } from 'back/selectors/criteria';
-import Home from './home';
+import Moderation from './moderation';
 
 const mapStateToProps = mapObject({
   settings: getSettings,
@@ -16,6 +16,6 @@ const actions = {
 };
 
 const connectRedux = connect(mapStateToProps, actions);
-const ConnectedComponent: ComponentType<{data: GlobalDataType}> = connectRedux(Home);
+const ConnectedComponent: ComponentType<{data: GlobalDataType}> = connectRedux(Moderation);
 
 export default ConnectedComponent;

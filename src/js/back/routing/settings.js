@@ -3,7 +3,8 @@ import type { RouteDefinition } from 'back/types';
 import Settings from 'back/pages/settings';
 
 export type SettingsPage = {
-  type: 'settings'
+  type: 'settings',
+  showNavigation: boolean
 }
 
 const toUrl = (settings: SettingsPage) => {
@@ -17,7 +18,8 @@ const toState = (url: string): ?SettingsPage => {
 };
 
 const settingsPage = ():SettingsPage => ({
-  type: 'settings'
+  type: 'settings',
+  showNavigation: false
 });
 
 export const settingsRoute: RouteDefinition<SettingsPage> = {

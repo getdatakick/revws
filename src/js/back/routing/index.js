@@ -4,17 +4,26 @@ import React from 'react';
 import { equals, memoize } from 'ramda';
 import type { SettingsPage } from './settings';
 import { settingsRoute } from './settings';
-import type { HomePage } from './home';
-import { homeRoute } from './home';
+import type { ModerationPage } from './moderation';
+import { moderationRoute } from './moderation';
+export { moderationPage } from './moderation';
+import type { ReviewsPage } from './reviews';
+import { reviewsRoute } from './reviews';
+export { reviewsPage } from './reviews';
+
 
 export type RoutingState = (
   SettingsPage |
-  HomePage
+  ModerationPage |
+  ReviewsPage
 );
+
+export type GoTo = (RoutingState) => void;
 
 const routes = {
   settings: settingsRoute,
-  home: homeRoute
+  moderation: moderationRoute,
+  reviews: reviewsRoute,
 };
 
 

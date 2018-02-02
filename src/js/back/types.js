@@ -1,5 +1,6 @@
 // @flow
 import type { LangString, LanguagesType, GradingShapeType } from 'common/types';
+export type { RoutingState, GoTo } from 'back/routing';
 
 export type SettingsType = {
   theme: {

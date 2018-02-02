@@ -205,7 +205,11 @@ class AdminRevwsBackendController extends ModuleAdminController {
     if (! $settings) {
       throw new Exception("Failed to parse settings");
     }
-    return !!$this->module->getSettings()->set($settings);
+    if (!! $this->module->getSettings()->set($settings)) {
+      $this->module->clearCache();
+      return true;
+    }
+    return false;
   }
 
   private function reply($error, $result) {
