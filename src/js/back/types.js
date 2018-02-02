@@ -1,5 +1,5 @@
 // @flow
-import type { LangString, LanguagesType, GradingShapeType } from 'common/types';
+import type { NameFormatType, LangString, LanguagesType, GradingShapeType } from 'common/types';
 export type { RoutingState, GoTo } from 'back/routing';
 
 export type SettingsType = {
@@ -39,7 +39,7 @@ export type SettingsType = {
     }
   },
   review: {
-    displayName: string,
+    displayName: NameFormatType,
     allowGuestReviews: boolean,
     allowEmpty: boolean,
     allowVoting: boolean,

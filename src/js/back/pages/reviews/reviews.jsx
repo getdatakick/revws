@@ -1,32 +1,52 @@
 // @flow
 
-import type { SettingsType, GlobalDataType } from 'back/types';
-import type { CriteriaType } from 'common/types';
+import type { GoTo, SettingsType, GlobalDataType } from 'back/types';
+import type { CriteriaType, ReviewType } from 'common/types';
 import React from 'react';
 import ReviewsTable from 'back/components/reviews-table';
+import CreateReview from 'back/components/create-review/create-review-dialog';
+import { reviewsPage } from 'back/routing';
 
 type Props = {
+  goTo: GoTo,
   data: GlobalDataType,
   settings: SettingsType,
-  criteria: CriteriaType
+  criteria: CriteriaType,
+  saveReview: (ReviewType) => void,
+  createReview: boolean
 };
 
 class ModerationPage extends React.PureComponent<Props> {
   static displayName = 'ModerationPage';
 
   render() {
-    const { settings, data, criteria } = this.props;
+    const { settings, data, criteria, createReview, goTo, saveReview } = this.props;
     const shape = data.shapes[settings.theme.shape];
+    const shapeSize = settings.theme.shapeSize.product;
     return (
-      <ReviewsTable
-        language={data.language}
-        title={'All reviews'}
-        emptyLabel={'No reviews'}
-        shape={shape}
-        shapeSize={settings.theme.shapeSize.product}
-        criteria={criteria}
-        filters={{}}
-        uniqueId={'allReviews'} />
+      <div>
+        <ReviewsTable
+          language={data.language}
+          title={'All reviews'}
+          emptyLabel={'No reviews'}
+          shape={shape}
+          shapeSize={shapeSize}
+          criteria={criteria}
+          filters={{}}
+          uniqueId={'allReviews'} />
+        { createReview && (
+          <CreateReview
+            shape={shape}
+            shapeSize={shapeSize}
+            language={data.language}
+            criteria={criteria}
+            nameFormat={settings.review.displayName}
+            allowEmptyReview={settings.review.allowEmpty}
+            onClose={() => goTo(reviewsPage(false))}
+            onSave={saveReview}
+          />
+        )}
+      </div>
     );
   }
 }

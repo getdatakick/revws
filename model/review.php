@@ -417,6 +417,9 @@ class RevwsReview extends ObjectModel {
     }
     if (! $id) {
       $review->id_lang = (int)Context::getContext()->language->id;
+      $review->id_product = (int)$json['productId'];
+      $review->id_customer = (int)$json['authorId'];
+      $review->validated = true;
     }
     return $review;
   }

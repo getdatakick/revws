@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import type { ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType } from 'common/types';
-import { values, mapObjIndexed, assoc } from 'ramda';
+import { pathOr, assoc, keys } from 'ramda';
 import TextField from 'material-ui/TextField';
 import Grid from 'material-ui/Grid';
 import Grading from 'common/components/grading/grading';
@@ -13,6 +13,7 @@ type Props = {
   errors: ReviewFormErrors,
   language: number,
   criteria: CriteriaType,
+  usedCriteria: ?Array<number>,
   shape: GradingShapeType,
   review: ReviewType,
   onUpdateReview: (ReviewType)=>void,
@@ -22,8 +23,9 @@ class EditReviewForm extends React.PureComponent<Props> {
   static displayName = 'EditReviewForm';
 
   render() {
-    const { review, errors } = this.props;
-    const { title, content, grades } = review;
+    const { review, errors, usedCriteria } = this.props;
+    const { title, content } = review;
+    const criteria = usedCriteria || keys(review.grades);
     return (
       <div className={styles.root}>
         <Grid container spacing={40}>
@@ -50,7 +52,7 @@ class EditReviewForm extends React.PureComponent<Props> {
           </Grid>
           <Grid item md={6}>
             <h3>Ratings</h3>
-            { values(mapObjIndexed(this.renderCriterion, grades)) }
+            { criteria.map(this.renderCriterion) }
           </Grid>
         </Grid>
         <TextField
@@ -74,9 +76,9 @@ class EditReviewForm extends React.PureComponent<Props> {
     );
   }
 
-  renderCriterion = (grade: number, key: string) => {
-    const critKey = parseInt(key, 10);
-    const { criteria, shape, language } = this.props;
+  renderCriterion = (critKey: number) => {
+    const { criteria, shape, language, review } = this.props;
+    const grade = pathOr(0, ['grades', critKey], review);
     const criterion = criteria[critKey];
     if (criterion) {
       return (

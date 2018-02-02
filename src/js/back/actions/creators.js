@@ -19,6 +19,7 @@ import type {
   UndeleteReviewAction,
   SaveReviewAction,
   ReviewUpdatedAction,
+  ReviewCreatedAction
 } from './index';
 import Types from './types';
 
@@ -40,3 +41,4 @@ export const undeleteReview = (id: number): UndeleteReviewAction => ({ type: Typ
 
 export const saveReview = (review: ReviewType): SaveReviewAction => ({ type: Types.saveReview, review });
 export const reviewUpdated = (review: ReviewType): ReviewUpdatedAction => ({ type: Types.reviewUpdated, review });
+export const reviewCreated = (review: ReviewType): ReviewCreatedAction => ({ type: Types.reviewCreated, review });

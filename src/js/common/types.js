@@ -86,3 +86,20 @@ export type CriteriaType = {
 export type EditStage = 'edit' | 'saving' | 'saved' | 'failed';
 
 export type NameFormatType = 'fullName' | 'firstName' | 'lastName' | 'initials' | 'initialLastName' | 'custom';
+
+export type ProductInfoType = {
+  id: number,
+  name: string,
+  url: string,
+  image: string,
+  criteria: Array<number>,
+  canCreate: boolean
+}
+
+
+export type CustomerInfoType = {
+  id: number,
+  firstName: string,
+  lastName: string,
+  email: string,
+}

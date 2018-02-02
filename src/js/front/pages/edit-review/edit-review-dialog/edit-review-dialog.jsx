@@ -2,8 +2,8 @@
 
 import React from 'react';
 import type { ComponentType } from 'react';
-import type { EditStage, CriterionType, ReviewType, ReviewFormErrors } from 'common/types';
-import type { SettingsType, ProductInfoType } from 'front/types';
+import type { EditStage, CriterionType, ReviewType, ReviewFormErrors, ProductInfoType } from 'common/types';
+import type { SettingsType } from 'front/types';
 import Grading from 'common/components/grading/grading';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle, withMobileDialog } from 'material-ui/Dialog';

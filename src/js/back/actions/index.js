@@ -83,6 +83,11 @@ export type ReviewUpdatedAction = {
   review: ReviewType
 }
 
+export type ReviewCreatedAction = {
+  type: 'REVIEW_CREATED',
+  review: ReviewType
+}
+
 
 export type Action = (
   GoToAction |
@@ -99,5 +104,6 @@ export type Action = (
   DeleteReviewAction |
   UndeleteReviewAction |
   SaveReviewAction |
-  ReviewUpdatedAction
+  ReviewUpdatedAction |
+  ReviewCreatedAction
 );

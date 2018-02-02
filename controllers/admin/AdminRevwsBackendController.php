@@ -19,6 +19,7 @@
 use \Revws\Notifications;
 use \Revws\Utils;
 use \Revws\Shapes;
+use \Revws\FrontApp;
 
 class AdminRevwsBackendController extends ModuleAdminController {
   public $module;
@@ -165,6 +166,12 @@ class AdminRevwsBackendController extends ModuleAdminController {
         if ($rec == 'reviews') {
           $ret[$key] = $this->getReviews($options);
         }
+        if ($rec == 'productInfo') {
+          $ret[$key] = $this->getProductInfo($options);
+        }
+        if ($rec == 'customers') {
+          $ret[$key] = $this->getCustomers($options);
+        }
       }
     }
     return $ret;;
@@ -172,6 +179,24 @@ class AdminRevwsBackendController extends ModuleAdminController {
 
   private function getProducts($options) {
     return Utils::mapKeyValue('id_product', 'name', Product::getSimpleProducts($this->context->language->id));
+  }
+
+  private function getCustomers($options) {
+    return Utils::mapKeyValue('id_customer', function($data) {
+      return [
+        'id' => (int)$data['id_customer'],
+        'firstName' => $data['firstname'],
+        'lastName' => $data['lastname'],
+        'email' => $data['email'],
+      ];
+    }, Customer::getCustomers(true));
+  }
+
+  private function getProductInfo($options) {
+    $id = (int)$options['id'];
+    $lang = $this->context->language->id;
+    $permissions = $this->module->getPermissions();
+    return FrontApp::getProductData($id, $lang, $permissions);
   }
 
   private function getCategories($options) {

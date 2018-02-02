@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 import classnames from 'classnames';
-import type { ReviewType, ReviewFormErrors } from 'common/types';
-import type { SettingsType, ProductInfoType } from 'front/types';
+import type { ReviewType, ReviewFormErrors, ProductInfoType } from 'common/types';
+import type { SettingsType } from 'front/types';
 import { map, propOr, assoc } from 'ramda';
 import TextField from 'material-ui/TextField';
 import Grading from 'common/components/grading/grading';

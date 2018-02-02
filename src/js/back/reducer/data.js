@@ -1,7 +1,7 @@
 // @flow
 import type { Action } from 'back/actions';
 import Types from 'back/actions/types';
-import { always, map, assoc, update, findIndex, propEq, merge } from 'ramda';
+import { reject, has, always, map, assoc, update, findIndex, propEq, merge } from 'ramda';
 
 type State = {
   [ string ]: ?any
@@ -21,6 +21,8 @@ const updateReviews = (reviewId, func, state) => map(data => {
   return data;
 }, state);
 
+const resetReviews = reject(has('reviews'));
+
 export default (state?: State, action:Action): State => {
   state = state || defaultState;
   if (action.type === Types.setData) {
@@ -28,6 +30,9 @@ export default (state?: State, action:Action): State => {
   }
   if (action.type === Types.reviewUpdated) {
     return updateReviews(action.review.id, always(action.review), state);
+  }
+  if (action.type === Types.reviewCreated) {
+    return resetReviews(state);
   }
   return state;
 };

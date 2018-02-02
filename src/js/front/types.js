@@ -1,6 +1,6 @@
 // @flow
 
-import type { CriteriaType, GradingShapeType, NameFormatType } from 'common/types';
+import type { CriteriaType, GradingShapeType, NameFormatType, ProductInfoType } from 'common/types';
 
 export type SettingsType = {
   api: string,
@@ -29,14 +29,5 @@ export type SettingsType = {
     customerReviewsPerPage: number,
     customerMaxRequests: number
   },
-  canCreate: boolean
-}
-
-export type ProductInfoType = {
-  id: number,
-  name: string,
-  url: string,
-  image: string,
-  criteria: Array<number>,
   canCreate: boolean
 }

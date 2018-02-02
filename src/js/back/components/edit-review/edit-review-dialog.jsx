@@ -4,7 +4,7 @@ import React from 'react';
 import type { ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType } from 'common/types';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
-import EditReviewForm from './edit-review-form';
+import EditReviewForm from './edit-review-form-controller';
 import ViewReviewForm from './view-review-form';
 import { validateReview, hasErrors } from 'common/utils/validation';
 import { assoc, equals } from 'ramda';
@@ -131,6 +131,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
     const { criteria, language, shape } = this.props;
     return (
       <EditReviewForm
+        productId={review.productId}
         review={review}
         onUpdateReview={this.onUpdateReview}
         shape={shape}

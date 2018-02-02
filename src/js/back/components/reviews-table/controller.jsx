@@ -64,13 +64,13 @@ class Controller extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     const { data, uniqueId } = this.props;
-    if (!has(uniqueId, data)) {
+    if (! has(uniqueId, data)) {
       this.loadPage(this.state);
     }
   }
 
   componentWillUpdate(nextProps: Props, nextState: State) {
-    if (! equals(this.state, nextState)) {
+    if (! equals(this.state, nextState) || !has(nextProps.uniqueId, nextProps.data)) {
       this.loadPage(nextState);
     }
     const list = this.getList(nextProps);

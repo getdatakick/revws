@@ -27,14 +27,18 @@ class Utils {
 
   public static function mapKeyValue($keyField, $valueField, $arr) {
     $ret = [];
+    $identity = $valueField === '@identity';
+    $callback = is_callable($valueField);
     foreach ($arr as $key => $fields) {
       if ($keyField === '@key') {
         $id = (int)$key;
       } else {
         $id = (int)$fields[$keyField];
       }
-      if ($valueField === '@identity') {
+      if ($identity) {
         $value = $fields;
+      } else if ($callback) {
+        $value = call_user_func($valueField, $fields);
       } else {
         $value = $fields[$valueField];
       }

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
 import { getSettings } from 'back/selectors/settings';
 import { getCriteria } from 'back/selectors/criteria';
+import { saveReview } from 'back/actions/creators';
 import Reviews from './reviews';
 
 const mapStateToProps = mapObject({
@@ -13,6 +14,7 @@ const mapStateToProps = mapObject({
 });
 
 const actions = {
+  saveReview
 };
 
 const connectRedux = connect(mapStateToProps, actions);

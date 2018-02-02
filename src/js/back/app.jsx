@@ -27,7 +27,7 @@ class BackApp extends React.PureComponent<Props> {
       <AppTheme htmlFontSize={16}>
         <div className={styles.app}>
           { this.renderNavigation(routingState) }
-          { render(routingState, { routingState, data, goTo }) }
+          { render(routingState, { ...routingState, data, goTo }) }
           <Snackbar anchorOrigin={snackbarPosition} />
         </div>
       </AppTheme>

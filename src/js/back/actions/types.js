@@ -16,6 +16,7 @@ export default {
   criterionDeleted: 'CRITERION_DELETED',
 
   reviewUpdated: 'REVIEW_UPDATED',
+  reviewCreated: 'REVIEW_CREATED',
   approveReview: 'APPROVE_REVIEW',
   deleteReview: 'DELETE_REVIEW',
   undeleteReview: 'UNDELETE_REVIEW',

@@ -1,7 +1,7 @@
 // @flow
 import type { Action } from 'front/actions';
-import type { EditStage, ReviewType } from 'common/types';
-import type { SettingsType, ProductInfoType } from 'front/types';
+import type { EditStage, ReviewType, ProductInfoType } from 'common/types';
+import type { SettingsType } from 'front/types';
 import { formatName } from 'common/utils/format';
 import { zipObj, repeat } from 'ramda';
 import { getProduct } from 'front/settings';
