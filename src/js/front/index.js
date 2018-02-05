@@ -10,9 +10,12 @@ import createCommands from 'front/commands';
 import App from 'front/app';
 import { getSettings, getReviews } from 'front/settings';
 import { isObject, isArray } from 'common/utils/ramda';
+import { asObject } from 'common/utils/input';
 import Types from 'front/actions/types';
+import { setTranslation } from 'translations';
 
 const startRevws = (init: any) => {
+  setTranslation(asObject(init.translations));
   const dev = process.env.NODE_ENV !== 'production';
   const node = document.getElementById('revws-app');
   if (! node) {

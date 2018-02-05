@@ -23,7 +23,7 @@ export const loadData = (action: LoadDataAction, store: any, api: Api) => {
     if (result.type === 'success') {
       store.dispatch(setData(fixData(action.types, result.data)));
     } else {
-      store.dispatch(setSnackbar('Failed to load data'));
+      store.dispatch(setSnackbar(__('Failed to load data')));
     }
   });
 };

@@ -3,3 +3,5 @@ declare module CSSModule {
     [ key: string ]: string
   };
 }
+
+declare var __: (string, ...params: any) => string;

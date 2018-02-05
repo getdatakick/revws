@@ -39,8 +39,8 @@ class EditReviewForm extends React.PureComponent<Props, State> {
         { this.renderAuthor() }
         <TextField
           id="title"
-          label="Review title"
-          placeholder="Please enter review title"
+          label={__("Review title")}
+          placeholder={__("Please enter review title")}
           className={styles.input}
           value={title}
           onChange={this.update('title')}
@@ -49,10 +49,10 @@ class EditReviewForm extends React.PureComponent<Props, State> {
           autoFocus />
         <TextArea
           className={styles.input}
-          label="Review details"
+          label={__("Review details")}
           value={content}
           error={!! errors.content}
-          placeholder="Please enter review details"
+          placeholder={__("Please enter review details")}
           onChange={this.update('content')} />
       </div>
     );
@@ -91,7 +91,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
 
   renderAuthorShort = (review: ReviewType) => (
     <div className={classnames(styles.subtitle, styles.marginBottom)}>
-      by <a className={styles.author} onClick={this.editAuthor}>{review.displayName}</a>
+      {__('by')} <a className={styles.author} onClick={this.editAuthor}>{review.displayName}</a>
     </div>
   );
 
@@ -103,8 +103,8 @@ class EditReviewForm extends React.PureComponent<Props, State> {
         key="author"
         id="author"
         className={styles.input}
-        label="Your name"
-        placeholder="Please enter your name"
+        label={__("Your name")}
+        placeholder={__("Please enter your name")}
         value={review.displayName}
         onChange={this.update('displayName')}
         error={!! errors.displayName}
@@ -116,8 +116,8 @@ class EditReviewForm extends React.PureComponent<Props, State> {
           key="email"
           id="email"
           className={styles.input}
-          label="Your email address"
-          placeholder="Please enter your email address"
+          label={__("Your email address")}
+          placeholder={__("Please enter your email address")}
           value={review.email}
           onChange={this.update('email')}
           error={!! errors.email}

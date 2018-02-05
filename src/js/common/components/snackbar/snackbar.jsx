@@ -33,10 +33,9 @@ class AppSnackbar extends React.PureComponent<Props> {
         message={message || ' '}
         action={[
           <Button key="close" color="accent" dense onClick={this.onClose}>
-            CLOSE
+            {__('Close')}
           </Button>
-        ]}
-      />
+        ]} />
     );
   }
 

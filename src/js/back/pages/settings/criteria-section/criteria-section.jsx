@@ -71,7 +71,7 @@ class CriteriaSection extends React.PureComponent<Props, State> {
             <ListItemAvatar>
               <AddAvatar />
             </ListItemAvatar>
-            <ListItemText primary="Create new review criterion" />
+            <ListItemText primary={__("Create new review criterion")} />
           </ListItem>
           { this.renderEditForm() }
           <ConfirmDelete
@@ -162,23 +162,30 @@ class CriteriaSection extends React.PureComponent<Props, State> {
 
 const describeCriterion = (active, global, categories, products) => {
   if (! active) {
-    return <span><b>Disabled. </b>{ describeCriterion(true, global, categories, products)}</span>;
+    return (
+      <span>
+        <b>
+          {__('Disabled criterion')}
+        </b>
+        { describeCriterion(true, global, categories, products)}
+      </span>
+    );
   }
   if (global) {
-    return 'Applies to your entire catalog';
+    return __('Applies to your entire catalog');
   }
   const ccnt = count(categories);
   const pcnt = count(products);
   if (ccnt && pcnt) {
-    return `Applies to ${ccnt} categories and ${pcnt} products`;
+    return __('Applies to %s categories and %s products', ccnt, pcnt);
   }
   if (ccnt) {
-    return `Applies to product from ${ccnt} categories`;
+    return __('Applies to product from %s categories', ccnt);
   }
   if (pcnt) {
-    return `Applies to ${pcnt} products`;
+    return __('Applies to %s products', pcnt);
   }
-  return 'Does not apply to any product';
+  return __('Does not apply to any product');
 };
 
 const count = (val) => {

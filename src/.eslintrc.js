@@ -14,6 +14,7 @@ module.exports = {
     "sourceType": "module"
   },
   "globals": {
+    "__": true,
     process: true,
   },
   "plugins": [

@@ -1,28 +1,18 @@
 var path = require('path');
 var webpack = require('webpack');
-var Visualizer = require('webpack-visualizer-plugin');
+var ExtractTranslationKeysPlugin = require('translations-keys');
 
-module.exports = function(prod) {
+module.exports = function(name) {
   var plugins = [
-    new webpack.ProvidePlugin({
-      '__': ['translations', 'getTranslation']
+    new ExtractTranslationKeysPlugin({
+      functionName: '__',
+      output: path.resolve('./build/'+name+'-translation-keys.json')
     }),
-  ];
-  var front = [ "babel-polyfill", "./js/front" ];
-  var back = [ "babel-polyfill", "./js/back" ];
-
-  if (! prod) {
-    plugins.push(new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify("development"),
-    }));
-  } else {
-    plugins.push(new webpack.DefinePlugin({
+    new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify("production"),
-    }));
-    plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
-    plugins.push(new webpack.optimize.UglifyJsPlugin({ sourceMap: true, }));
-    plugins.push(new Visualizer());
-  }
+    })
+  ];
+  var app = [ "babel-polyfill", "./js/"+name ];
 
   return {
     module: {
@@ -52,8 +42,7 @@ module.exports = function(prod) {
     },
 
     entry: {
-      'front_app': front,
-      'back_app': back
+      'transl': app
     },
 
     resolve: {
@@ -66,7 +55,6 @@ module.exports = function(prod) {
       path: path.resolve('./build/'),
       publicPath: '/'
     },
-    plugins: plugins,
-    devtool: 'source-map'
+    plugins: plugins
   };
 };

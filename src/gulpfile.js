@@ -4,6 +4,7 @@ var webpack = require('webpack');
 var webpackStream = require('webpack-stream');
 var WebpackDevServer = require("webpack-dev-server");
 var config = require('./webpack-config');
+var translateConfig = require('./webpack-config-translation');
 var del = require('del');
 var eslint = require('gulp-eslint');
 var zip = require('gulp-zip');
@@ -11,7 +12,8 @@ var ramda = require('ramda');
 var fs = require('fs');
 var path = require('path');
 var merge = require('merge-stream');
-var { append, prepend, map, flatten } = ramda;
+var replace = require('gulp-replace');
+var { sortBy, identity, values, mapObjIndexed, append, prepend, map, flatten } = ramda;
 
 var deployDir = "./build";
 
@@ -24,6 +26,13 @@ function getFolders(dir) {
       return prepend(dir+'/'+file, subdirs);
     })
   );
+}
+
+function readTranslations(path) {
+  var keys = JSON.parse(fs.readFileSync(path, 'utf8'));
+  return sortBy(identity, values(mapObjIndexed((value, key) => {
+    return '"' + key + '" => $this->l(\'' + value.replace(/'/g, "\\'") +'\')';
+  }, keys)));
 }
 
 gulp.task("devel", function() {
@@ -99,7 +108,47 @@ gulp.task('create-index', function(done) {
   return merge(tasks);
 });
 
-gulp.task('stage', gulp.series('copy-files', 'copy-build', 'create-index'));
+gulp.task('extract-front-translations', function(done) {
+  process.env.NODE_ENV = 'production';
+  gulp.src('./js')
+    .pipe(webpackStream(translateConfig('front'), webpack))
+    .pipe(gulp.dest('./build'))
+    .on('end', () => {
+      del.sync(['./build/transl.js'], { force: true });
+      done();
+    });
+});
+
+gulp.task('extract-back-translations', function(done) {
+  process.env.NODE_ENV = 'production';
+  gulp.src('./js')
+    .pipe(webpackStream(translateConfig('back'), webpack))
+    .pipe(gulp.dest('./build'))
+    .on('end', () => {
+      del.sync(['./build/transl.js'], { force: true });
+      done();
+    });
+});
+
+
+gulp.task('create-translations', function(done) {
+  const frontTranslations = readTranslations('./build/front-translation-keys.json');
+  const backTranslations = readTranslations('./build/back-translation-keys.json');
+  gulp
+    .src('../app-translation.php')
+    .pipe(replace(/([ ]*)\/\/ FRONT_TRANSLATIONS/, (_, spaces) => {
+      return spaces + frontTranslations.join(",\n"+spaces);
+    }))
+    .pipe(replace(/([ ]*)\/\/ BACK_TRANSLATIONS/, (_, spaces) => {
+      return spaces + backTranslations.join(",\n"+spaces);
+    }))
+    .pipe(gulp.dest('./build/staging/revws/'))
+    .on('end', done);
+});
+
+gulp.task('translate', gulp.series('extract-front-translations', 'extract-back-translations', 'create-translations'));
+
+gulp.task('stage', gulp.series('copy-files', 'copy-build', 'create-index', 'translate'));
 
 gulp.task('build', gulp.series('clean', 'build-javascript', 'copy-javascript'));
 

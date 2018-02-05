@@ -10,9 +10,9 @@ export const deleteReview = (action: DeleteReviewAction, store: any, api: Api) =
   api('deleteReview', { id }).then(result => {
     if (result.type === 'success') {
       store.dispatch(reviewUpdated(fixReview(result.data)));
-      store.dispatch(setSnackbar('Review has been marked as deleted'));
+      store.dispatch(setSnackbar(__('Review has been marked as deleted')));
     } else {
-      store.dispatch(setSnackbar('Failed to delete review'));
+      store.dispatch(setSnackbar(__('Failed to delete review')));
     }
   });
 };

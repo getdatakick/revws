@@ -61,7 +61,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
     const errors = validateReview(allowEmptyReviews, review);
     const viewMode = this.state.mode === 'view';
     const withErrors = hasErrors(errors);
-    const label = viewMode ? 'Review details' : 'Edit review';
+    const label = viewMode ? __('Review details') : __('Edit review');
     return (
       <div className={styles.root}>
         <DialogTitle>{ label }</DialogTitle>
@@ -81,14 +81,14 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
     if (review.deleted) {
       actions.push(
         <Button key="undelete" onClick={this.undeleteReview}>
-          {'Undelete'}
+          {__('Undelete')}
         </Button>
       );
     } else {
       if (review.underReview) {
         actions.push(
           <Button key="approve" color='accent' onClick={this.approveReview}>
-            {'Approve'}
+            {__('Approve')}
           </Button>
         );
       }
@@ -103,12 +103,12 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
     );
     actions.push(
       <Button key="edit" onClick={e => this.setState({ mode: 'edit' })}>
-        {'Edit'}
+        {__('Edit')}
       </Button>
     );
     actions.push(
       <Button key="close" color="primary" onClick={onClose}>
-        {'Close'}
+        {__('Close')}
       </Button>
     );
     return actions;
@@ -119,10 +119,10 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
     const same = equals(this.props.review, review);
     return [
       <Button key="close" onClick={onClose}>
-        {'Close'}
+        {__('Close')}
       </Button>,
       <Button key="save" color='accent' disabled={withErrors || same} onClick={e => onSave(review)}>
-        {'Save'}
+        {__('Save')}
       </Button>
     ];
   }

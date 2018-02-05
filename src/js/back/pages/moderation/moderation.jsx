@@ -20,8 +20,8 @@ class ModerationPage extends React.PureComponent<Props> {
     return (
       <ReviewsTable
         language={data.language}
-        title={'Unapproved reviews'}
-        emptyLabel={'Nothing to approve'}
+        title={__('Unapproved reviews')}
+        emptyLabel={__('Nothing to approve')}
         shape={shape}
         shapeSize={settings.theme.shapeSize.product}
         criteria={criteria}
@@ -29,7 +29,7 @@ class ModerationPage extends React.PureComponent<Props> {
           validated: false,
           deleted: false
         }}
-        uniqueId={'toApprove'} />
+        uniqueId='toApprove' />
     );
   }
 }

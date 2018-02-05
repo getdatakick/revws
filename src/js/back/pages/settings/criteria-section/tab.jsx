@@ -30,8 +30,8 @@ class Tab extends React.PureComponent<Props, State> {
       <div className={classes.tab}>
         <div className={classes.search}>
           <TextField
-            label='Search'
-            placeholder='Search'
+            label={__('Search')}
+            placeholder={__('Search')}
             onChange={e => this.setState({ search: e.target.value })}
             value={search}
           />
@@ -39,7 +39,7 @@ class Tab extends React.PureComponent<Props, State> {
         <List dense={true}>
           { values ? map(this.renderItem, filter(this.filter, toPairs(values))) : (
             <ListItem button>
-              <ListItemText primary='Loading...' />
+              <ListItemText primary={__('Loading...')} />
             </ListItem>
           )}
         </List>

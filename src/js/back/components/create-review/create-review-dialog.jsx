@@ -50,10 +50,10 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>
-            {'Close'}
+            {__('Close')}
           </Button>,
           <Button color='accent' disabled={invalid} onClick={this.onSave}>
-            {'Create review'}
+            {__('Create review')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -63,12 +63,12 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
   getLabel = () => {
     const { review, productId } = this.state;
     if (! productId) {
-      return 'Select product';
+      return __('Select product');
     }
     if (! review) {
-      return 'Select customer';
+      return __('Select customer');
     }
-    return 'Create review';
+    return __('Create review');
   }
 
   renderContent = (errors: ?ReviewFormErrors) => {

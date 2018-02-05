@@ -69,7 +69,7 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
       const toReview = slice(0, settings.preferences.customerMaxRequests, productsToReview);
       return (
         <div>
-          <h1 className="page-heading">Could you review these products?</h1>
+          <h1 className="page-heading">{__('Could you review these products?')}</h1>
           <div className='revws-review-requests'>
             { toReview.map(this.renderRequest) }
           </div>
@@ -97,7 +97,7 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
   renderEmptyState = () => {
     return (
       <div className="form-group">
-        {"You haven't written any review yet"}
+        {__("You haven't written any review yet")}
       </div>
     );
   }

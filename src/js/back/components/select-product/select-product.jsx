@@ -62,8 +62,8 @@ class SelectProduct extends React.PureComponent<Props, State> {
     return (
       <div>
         <TextField
-          label="Search products"
-          placeholder="Search products"
+          label={__("Search products")}
+          placeholder={__("Search products")}
           value={text}
           onChange={e => this.setState({text: e.target.value})}
           fullWidth />
@@ -79,7 +79,7 @@ class SelectProduct extends React.PureComponent<Props, State> {
     return products.length == 0 ? (
       <div className={styles.center}>
         <div>
-          {'Nothing found'}
+          {__('Nothing found')}
         </div>
       </div>
     ) : (

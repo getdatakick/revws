@@ -55,8 +55,8 @@ class EnahncedTableToolbar extends React.PureComponent<Props> {
         </div>
         <div className={classes.spacer} />
         <div className={classes.actions}>
-          <Tooltip title="Filter list">
-            <IconButton aria-label="Filter list">
+          <Tooltip title={__("Filter list")}>
+            <IconButton>
               <FilterListIcon />
             </IconButton>
           </Tooltip>

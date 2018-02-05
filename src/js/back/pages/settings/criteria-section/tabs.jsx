@@ -65,8 +65,8 @@ class FullWidthTabs extends React.PureComponent<Props, State> {
             onChange={this.handleChange}
             indicatorColor="accent"
             fullWidth >
-            <Tab label="Categories" />
-            <Tab label="Products" />
+            <Tab label={__("Categories")} />
+            <Tab label={__("Products")} />
           </Tabs>
         </AppBar>
         { value === 0 ?

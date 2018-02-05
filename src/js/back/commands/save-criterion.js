@@ -9,9 +9,9 @@ export const saveCriterion = (action: SaveCriterionAction, store: any, api: Api)
     if (result.type === 'success') {
       const criterion = result.data;
       store.dispatch(criterionSaved(criterion));
-      store.dispatch(setSnackbar('Criterion saved'));
+      store.dispatch(setSnackbar(__('Criterion saved')));
     } else {
-      store.dispatch(setSnackbar('Failed to save criterion'));
+      store.dispatch(setSnackbar(__('Failed to save criterion')));
     }
   });
 };

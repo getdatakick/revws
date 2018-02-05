@@ -80,6 +80,7 @@ class FrontApp {
     }
 
     return [
+      'translations' => $this->module->getFrontTranslations(),
       'entityType' => $entityType,
       'entityId' => $entityId,
       'products' => $products,

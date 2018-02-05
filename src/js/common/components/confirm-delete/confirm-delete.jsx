@@ -38,10 +38,10 @@ class DeleteReviewConfirm<T> extends React.PureComponent<Props<T>> {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>
-            Cancel
+            {__('Cancel')}
           </Button>
           <Button onClick={this.onDelete} color="accent">
-            Delete { type }
+            {__('Delete %s', type)}
           </Button>
         </DialogActions>
       </Dialog>

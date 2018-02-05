@@ -26,7 +26,7 @@ class ShapeSelect extends React.PureComponent<Props> {
     const { shape, shapes, onChange } = this.props;
     return (
       <FormControl fullWidth>
-        <InputLabel>Choose rating style</InputLabel>
+        <InputLabel>{__('Choose rating style')}</InputLabel>
         <Select
           value={shape}
           onChange={(e) => onChange(e.target.value)} >

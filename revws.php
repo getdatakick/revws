@@ -18,6 +18,7 @@
 */
 define('REVWS_MODULE_DIR', dirname(__FILE__));
 
+require_once __DIR__.'/app-translation.php';
 require_once __DIR__.'/classes/utils.php';
 require_once __DIR__.'/classes/settings.php';
 require_once __DIR__.'/classes/permissions.php';
@@ -41,6 +42,7 @@ use \Revws\Visitor;
 use \Revws\Shapes;
 use \Revws\Utils;
 use \Revws\FrontApp;
+use \Revws\AppTranslation;
 
 class Revws extends Module {
   private $permissions;
@@ -327,6 +329,16 @@ class Revws extends Module {
 
   public function clearCache() {
     $this->_clearCache('product-list.tpl');
+  }
+
+  public function getFrontTranslations() {
+    $translations = new AppTranslation($this);
+    return $translations->getFrontTranslations();
+  }
+
+  public function getBackTranslations() {
+    $translations = new AppTranslation($this);
+    return $translations->getBackTranslations();
   }
 
 }

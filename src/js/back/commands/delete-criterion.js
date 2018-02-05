@@ -9,9 +9,9 @@ export const deleteCriterion = (action: DeleteCriterionAction, store: any, api: 
   api('deleteCriterion', { id }).then(result => {
     if (result.type === 'success') {
       store.dispatch(criterionDeleted(id));
-      store.dispatch(setSnackbar('Criterion deleted'));
+      store.dispatch(setSnackbar(__('Criterion deleted')));
     } else {
-      store.dispatch(setSnackbar('Failed to delete criterion'));
+      store.dispatch(setSnackbar(__('Failed to delete criterion')));
     }
   });
 };

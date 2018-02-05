@@ -11,7 +11,7 @@ export const saveReview = (action: SaveReviewAction, store: any, api: Api) => {
   api(cmd, review).then(result => {
     const review = result.type === 'success' ? fixReview(result.data) : null;
     store.dispatch(saveReviewCompleted(!!review));
-    store.dispatch(setSnackbar(review ? "Review has been created" : "Failed to create review"));
+    store.dispatch(setSnackbar(review ? __("Review has been created") : __("Failed to create review")));
     if (review) {
       store.dispatch(setReview(review));
       setTimeout(() => {

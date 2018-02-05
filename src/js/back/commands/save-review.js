@@ -11,13 +11,13 @@ export const saveReview = (action: SaveReviewAction, store: any, api: Api) => {
     if (result.type === 'success') {
       if (review.id > 0) {
         store.dispatch(reviewUpdated(fixReview(result.data)));
-        store.dispatch(setSnackbar('Review saved'));
+        store.dispatch(setSnackbar(__('Review saved')));
       } else {
         store.dispatch(reviewCreated(fixReview(result.data)));
-        store.dispatch(setSnackbar('Review has been created'));
+        store.dispatch(setSnackbar(__('Review has been created')));
       }
     } else {
-      store.dispatch(setSnackbar('Failed to save review'));
+      store.dispatch(setSnackbar(__('Failed to save review')));
     }
   });
 };

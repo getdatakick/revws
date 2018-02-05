@@ -59,7 +59,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
     const withErrors = hasErrors(errors);
     const saving = stage === 'saving';
     const saved = stage === 'saved' || stage === 'failed';
-    const closeLabel = saved ? 'Close' : 'Cancel';
+    const closeLabel = saved ? __('Close') : __('Cancel');
     const isNew = review.id === -1;
     const buttons = [
       <Button key="close" onClick={onClose}>
@@ -70,13 +70,13 @@ class EditReviewDialog extends React.PureComponent<Props> {
     if (! saved) {
       buttons.push(
         <Button key="create" disabled={saving || withErrors} onClick={() => onSave(review)} color="accent">
-          { isNew ? 'Create review' : 'Update review' }
+          { isNew ? __('Create review') : __('Update review') }
         </Button>
       );
     }
     return (
       <div>
-        <DialogTitle>Please review {name}</DialogTitle>
+        <DialogTitle>{__('Please review %s', name)}</DialogTitle>
         <DialogContent>
           { this.renderContent(product, review, errors)}
         </DialogContent>
@@ -196,9 +196,9 @@ class EditReviewDialog extends React.PureComponent<Props> {
 
 const getSaveMessage = (isNew, success) => {
   if (isNew) {
-    return success ? 'Review has been created' : 'Failed to create review';
+    return success ? __('Review has been created') : __('Failed to create review');
   }
-  return success ? 'Review has been updated' : 'Failed to update review';
+  return success ? __('Review has been updated') : __('Failed to update review');
 };
 
 const makeResponsive = withMobileDialog({

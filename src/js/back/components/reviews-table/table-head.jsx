@@ -45,7 +45,7 @@ class EnhancedTableHead extends React.PureComponent<Props> {
     const { disableSort, label, id } = column;
     return disableSort ? label : (
       <Tooltip
-        title="Sort"
+        title={__("Sort")}
         placement='bottom-start'
         enterDelay={300} >
         <TableSortLabel

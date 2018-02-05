@@ -61,57 +61,57 @@ class Settings extends React.PureComponent<Props, State> {
     const sections = [
       {
         key: 'reviews',
-        label: 'Reviews',
+        label: __('Reviews'),
         content: this.renderReview()
       },
       {
         key: 'theme',
-        label: 'Theme and Appearance',
+        label: __('Theme and Appearance'),
         content: this.renderTheme()
       },
       {
         key: 'product-detail',
-        label: 'Product detail page',
+        label: __('Product detail page'),
         content: this.renderProductDetail(errors)
       },
       {
         key: 'product-detail',
-        label: 'Product listing page',
+        label: __('Product listing page'),
         content: this.renderProductList()
       },
       {
         key: 'product-comparison',
-        label: 'Product comparison page',
+        label: __('Product comparison page'),
         content: this.renderProductComparison()
       },
       {
         key: 'customer-account',
-        label: 'Customer account page',
+        label: __('Customer account page'),
         content: this.renderCustomerAccount(errors)
       },
       {
         key: 'rich-snippets',
-        label: 'Structured Data / Rich Snippets',
+        label: __('Structured Data / Rich Snippets'),
         content: this.renderRichSnippets()
       },
       {
         key: 'moderation',
-        label: 'Review moderation',
+        label: __('Review moderation'),
         content: this.renderModeration()
       },
       {
         key: 'admin-notifications',
-        label: 'Admin notifications',
+        label: __('Admin notifications'),
         content: this.renderAdminNotifications(errors)
       },
       {
         key: 'customer-notifications',
-        label: 'Customer notifications',
+        label: __('Customer notifications'),
         content: this.renderCustomerNotifications()
       },
       {
         key: 'criteria',
-        label: 'Review criteria',
+        label: __('Review criteria'),
         content: this.renderCriteria()
       }
     ];
@@ -120,7 +120,7 @@ class Settings extends React.PureComponent<Props, State> {
       <Grid container>
         <Grid item md={4} hidden={{smDown: true}}>
           <div style={{position: 'fixed'}}>
-            <h2>Settings</h2>
+            <h2>{__('Settings')}</h2>
             <ScrollSpy items={items} className={styles.sectionList} currentClassName={styles.activeSection}>
               { sections.map((section, i) => (
                 <li className={styles.sectionListItem} key={i}>
@@ -146,10 +146,10 @@ class Settings extends React.PureComponent<Props, State> {
     return (
       <div className={styles.footerContent}>
         <Button onClick={this.onReset}>
-          Cancel
+          {__('Cancel')}
         </Button>
         <Button disabled={invalid} raised color="accent" onClick={this.onSaveSettings}>
-          Save changes
+          {__('Save changes')}
         </Button>
       </div>
     );
@@ -171,7 +171,7 @@ class Settings extends React.PureComponent<Props, State> {
           <div className={styles.space} />
           <TextField
             select
-            label="Rating shape size"
+            label={__("Rating shape size")}
             value={size}
             fullWidth
             onChange={this.setSize}>
@@ -179,7 +179,7 @@ class Settings extends React.PureComponent<Props, State> {
           </TextField>
         </div>
 
-        <h2 className={styles.margin}>Preview</h2>
+        <h2 className={styles.margin}>{__('Preview')}</h2>
         <Preview
           shape={shapes[theme.shape]}
           size={theme.shapeSize.product}
@@ -196,24 +196,24 @@ class Settings extends React.PureComponent<Props, State> {
       <FormGroup>
         <FormControlLabel
           control={this.renderSwitch(['moderation', 'enabled'])}
-          label="All reviews must be approved"
+          label={__("All reviews must be approved")}
         />
         <div>
-          <h3>What to approve</h3>
+          <h3>{__('What to approve')}</h3>
           <div className={styles.subSection}>
             <FormControlLabel
               control={this.renderCheckbox(['moderation', 'needApprove', 'create'], disabled)}
               disabled={disabled}
-              label="new reviews must be approved"
+              label={__("new reviews must be approved")}
             />
             <FormControlLabel
               control={this.renderCheckbox(['moderation', 'needApprove', 'edit'], disabled)}
-              label="edits of already approved review must be validated"
+              label={__("edits of already approved review must be validated")}
               disabled={disabled}
             />
             <FormControlLabel
               control={this.renderCheckbox(['moderation', 'needApprove', 'reported'], disabled)}
-              label="reviews reported as abusive must be re-approved"
+              label={__("reviews reported as abusive must be re-approved")}
               disabled={disabled}
             />
           </div>
@@ -231,7 +231,7 @@ class Settings extends React.PureComponent<Props, State> {
         <div className={styles.group}>
           <TextField
             fullWidth
-            label="Email address for notifications"
+            label={__("Email address for notifications")}
             value={settings.notifications.admin.email}
             onChange={e => this.set(['notifications', 'admin', 'email'], e.target.value)}
             error={!! errors.notifications.admin.email} />
@@ -239,7 +239,7 @@ class Settings extends React.PureComponent<Props, State> {
           <TextField
             select
             fullWidth
-            label="Email language"
+            label={__("Email language")}
             value={settings.notifications.admin.language}
             onChange={e => this.set(['notifications', 'admin', 'language'], e.target.value)}
             error={!! errors.notifications.admin.email}>
@@ -247,23 +247,23 @@ class Settings extends React.PureComponent<Props, State> {
           </TextField>
           <div className={styles.space} />
         </div>
-        <h3>Send email when</h3>
+        <h3>{__('Send email when')}</h3>
         <div className={styles.subSection}>
           <FormControlLabel
             control={this.renderCheckbox(['notifications', 'admin', 'needApprove'], moderationDisabled)}
             disabled={moderationDisabled}
-            label="review needs approval" />
+            label={__("review needs approval")} />
           <FormControlLabel
             control={this.renderCheckbox(['notifications', 'admin', 'reviewCreated'], false)}
-            label="visitor creates new review" />
+            label={__("visitor creates new review")} />
           <FormControlLabel
             control={this.renderCheckbox(['notifications', 'admin', 'reviewUpdated'], !settings.review.allowEdit)}
             disabled={!settings.review.allowEdit}
-            label="review author updates review" />
+            label={__("review author updates review")} />
           <FormControlLabel
             control={this.renderCheckbox(['notifications', 'admin', 'reviewDeleted'], !settings.review.allowDelete)}
             disabled={!settings.review.allowDelete}
-            label="review author deletes review" />
+            label={__("review author deletes review")} />
         </div>
       </FormGroup>
     );
@@ -276,20 +276,20 @@ class Settings extends React.PureComponent<Props, State> {
       <FormGroup>
         <FormControlLabel
           control={this.renderSwitch(['notifications', 'author', 'thankYou'])}
-          label="Send thank you email"
+          label={__("Send thank you email")}
         />
-        <h3>Notify customer when</h3>
+        <h3>{__('Notify customer when')}</h3>
         <div className={styles.subSection}>
           <FormControlLabel
             control={this.renderCheckbox(['notifications', 'author', 'reviewApproved'], moderationDisabled)}
             disabled={moderationDisabled}
-            label="employee approves review" />
+            label={__("employee approves review")} />
           <FormControlLabel
             control={this.renderCheckbox(['notifications', 'author', 'reviewDeleted'], false)}
-            label={ moderationDisabled ? "employee deletes review" : "employee rejects review" } />
+            label={ moderationDisabled ? __("employee deletes review") : __("employee rejects review") } />
           <FormControlLabel
             control={this.renderCheckbox(['notifications', 'author', 'reply'], false)}
-            label={ "employee replies to review" } />
+            label={__("employee replies to review")} />
         </div>
       </FormGroup>
     );
@@ -326,37 +326,37 @@ class Settings extends React.PureComponent<Props, State> {
       <FormGroup>
         <FormControlLabel
           control={this.renderSwitch(['review', 'allowEmpty'])}
-          label="Allow reviews without details"
+          label={__("Allow reviews without details")}
         />
         <FormControlLabel
           control={this.renderSwitch(['review', 'allowReviewWithoutCriteria'])}
-          label="Allow reviews for products without review criteria"
+          label={__("Allow reviews for products without review criteria")}
         />
         <FormControlLabel
           control={this.renderSwitch(['review', 'allowGuestReviews'])}
-          label="Allow reviews by annonymous visitors"
+          label={__("Allow reviews by annonymous visitors")}
         />
         <FormControlLabel
           control={this.renderSwitch(['review', 'allowDelete'])}
-          label="Visitors can delete their reviews"
+          label={__("Visitors can delete their reviews")}
         />
         <FormControlLabel
           control={this.renderSwitch(['review', 'allowEdit'])}
-          label="Visitors can edit their reviews"
+          label={__("Visitors can edit their reviews")}
         />
         <FormControlLabel
           control={this.renderSwitch(['review', 'allowVoting'])}
-          label="Visitors can mark reviews as useful"
+          label={__("Visitors can mark reviews as useful")}
         />
         <FormControlLabel
           control={this.renderSwitch(['review', 'allowReporting'])}
-          label="Visitors can report abusive, fake, or incorrect reviews"
+          label={__("Visitors can report abusive, fake, or incorrect reviews")}
         />
         <div className={styles.group}>
           <div className={styles.space} />
           <TextField
             select
-            label="Default customer name format"
+            label={__("Default customer name format")}
             value={settings.review.displayName}
             fullWidth
             onChange={e => this.set(['review', 'displayName'], e.target.value)}>
@@ -365,12 +365,12 @@ class Settings extends React.PureComponent<Props, State> {
             <MenuItem value='lastName'>Doe</MenuItem>
             <MenuItem value='initials'>J.D.</MenuItem>
             <MenuItem value='initialLastName'>John D.</MenuItem>
-            <MenuItem value='custom'>Custom</MenuItem>
+            <MenuItem value='custom'>{__('Custom')}</MenuItem>
           </TextField>
         </div>
         {settings.review.displayName === 'custom' && (
           <div className={styles.note}>
-            please create javascript function named <strong>revwsFormatName</strong> and include it to product page. For example
+            {__("please create javascript function named 'revwsFormatName' and include it to product page. For example")}
             <pre>{ func }</pre>
           </div>
         )}
@@ -386,27 +386,27 @@ class Settings extends React.PureComponent<Props, State> {
           <TextField
             select
             fullWidth
-            label="Display reviews in"
+            label={__("Display reviews in")}
             value={settings.display.product.placement}
             onChange={e => this.set(['display', 'product', 'placement'], e.target.value)}>
-            <MenuItem value='block'>Separate block</MenuItem>
-            <MenuItem value='tab'>Tab</MenuItem>
+            <MenuItem value='block'>{__('Separate block')}</MenuItem>
+            <MenuItem value='tab'>{__('Tab')}</MenuItem>
           </TextField>
           <div className={styles.space} />
           <TextField
             select
             fullWidth
-            label="Order reviews by"
+            label={__("Order reviews by")}
             value={settings.display.product.orderBy}
             onChange={e => this.set(['display', 'product', 'orderBy'], e.target.value)}>
-            <MenuItem value='date'>Date</MenuItem>
-            <MenuItem value='grade'>Ratings</MenuItem>
-            <MenuItem value='usefulness'>Votes</MenuItem>
+            <MenuItem value='date'>{__('Date')}</MenuItem>
+            <MenuItem value='grade'>{__('Ratings')}</MenuItem>
+            <MenuItem value='usefulness'>{__('Votes')}</MenuItem>
           </TextField>
           <div className={styles.space} />
           <TextField
             fullWidth
-            label="Reviews per page"
+            label={__("Reviews per page")}
             value={settings.display.product.reviewsPerPage}
             error={!! errors.display.product.reviewsPerPage}
             onChange={e => this.set(['display', 'product', 'reviewsPerPage'], e.target.value)} />
@@ -414,7 +414,7 @@ class Settings extends React.PureComponent<Props, State> {
         </div>
         <FormControlLabel
           control={this.renderSwitch(['display', 'product', 'showAverage'])}
-          label="Show average ratings on product page"
+          label={__("Show average ratings on product page")}
         />
       </FormGroup>
     );
@@ -425,7 +425,7 @@ class Settings extends React.PureComponent<Props, State> {
       <FormGroup>
         <FormControlLabel
           control={this.renderSwitch(['display', 'productList', 'show'])}
-          label="Show average ratings on product listing page"
+          label={__("Show average ratings on product listing page")}
         />
       </FormGroup>
     );
@@ -437,7 +437,7 @@ class Settings extends React.PureComponent<Props, State> {
         <FormGroup>
           <FormControlLabel
             control={this.renderSwitch(['richSnippets', 'enabled'])}
-            label="Emit microdata / rich snippets"
+            label={__("Emit microdata / rich snippets")}
           />
         </FormGroup>
         <div className={styles.note2}>
@@ -453,18 +453,18 @@ class Settings extends React.PureComponent<Props, State> {
       <FormGroup>
         <FormControlLabel
           control={this.renderSwitch(['display', 'myReviews', 'show'])}
-          label="Show review section in customer account" />
+          label={__("Show review section in customer account")} />
         <div className={styles.group}>
           <TextField
             fullWidth
-            label="Reviews per page"
+            label={__("Reviews per page")}
             value={settings.display.myReviews.reviewsPerPage}
             error={!! errors.display.myReviews.reviewsPerPage}
             onChange={e => this.set(['display', 'myReviews', 'reviewsPerPage'], e.target.value)} />
           <div className={styles.space} />
           <TextField
             fullWidth
-            label="Max review requests"
+            label={__("Max review requests")}
             value={settings.display.myReviews.maxRequests}
             error={!! errors.display.myReviews.maxRequests}
             onChange={e => this.set(['display', 'myReviews', 'maxRequests'], e.target.value)} />
@@ -477,10 +477,10 @@ class Settings extends React.PureComponent<Props, State> {
   renderProductComparison = () => {
     return (
       <FormGroup>
-        <h3>Product comparison</h3>
+        <h3>{__('Product comparison')}</h3>
         <FormControlLabel
           control={this.renderSwitch(['display', 'productComparison', 'show'])}
-          label="Show average ratings on product comparison page"
+          label={__("Show average ratings on product comparison page")}
         />
       </FormGroup>
     );

@@ -37,7 +37,7 @@ class FrontAppReviewList extends React.PureComponent<Props> {
           onReport={onReport}
           onVote={onVote} />
         { this.renderPaging() }
-        { canCreate && this.renderCreateButton('Write your review!') }
+        { canCreate && this.renderCreateButton(__('Write your review!')) }
       </div>
     );
   }
@@ -60,11 +60,11 @@ class FrontAppReviewList extends React.PureComponent<Props> {
 
   renderEmptyState = (canCreate: boolean) => {
     if (canCreate) {
-      return this.renderCreateButton('Be the first to write review!');
+      return this.renderCreateButton(__('Be the first to write review!'));
     }
     return (
       <div className="form-group">
-        {'No customer reviews for the moment.'}
+        {__('No customer reviews for the moment.')}
       </div>
     );
   }

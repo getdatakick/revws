@@ -22,20 +22,20 @@ export const hasErrors = pipe(
 
 const notEmpty = curry((errorMessage: string, value: ?string):?string => isEmpty(value) ? errorMessage : null);
 
-export const validateDisplayName = notEmpty("Please provide your name");
+export const validateDisplayName = notEmpty(__("Please provide your name"));
 
-export const validateTitle = notEmpty("Review title must be set");
+export const validateTitle = notEmpty(__("Review title must be set"));
 
 export const validateContent = (allowEmptyReviews: boolean, content: ?string) => {
   if (allowEmptyReviews) {
     return null;
   }
-  return notEmpty("Review content must be set", content);
+  return notEmpty(__("Review content must be set"), content);
 };
 
 export const validateReviewEmail = (email: ?string) => {
   if (isEmpty(email) || !validator.isEmail(email)) {
-    return "Please provide valid email address";
+    return __("Please provide valid email address");
   }
   return null;
 };
@@ -47,5 +47,5 @@ export const validateIsNumber = (input: any): ?string => {
   if (isString(input) && validator.isNumeric(input)) {
     return null;
   }
-  return "Invalid number";
+  return __("Invalid number");
 };

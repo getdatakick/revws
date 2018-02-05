@@ -22,8 +22,8 @@ class Navigation extends React.PureComponent<Props> {
       <div className={styles.root}>
         <div className={styles.left}>
           <Tabs value={selected} onChange={this.onChangeTab}>
-            <Tab value='moderation' label="Moderation" />
-            <Tab value='reviews' label="Reviews" />
+            <Tab value='moderation' label={__("Moderation")} />
+            <Tab value='reviews' label={__("Reviews")} />
           </Tabs>
         </div>
         <div className={styles.right}>
@@ -37,7 +37,7 @@ class Navigation extends React.PureComponent<Props> {
     const { goTo } = this.props;
     if (value === 'reviews') {
       return (
-        <Tooltip title={'Create review'}>
+        <Tooltip title={__('Create review')}>
           <Button fab mini color="accent" onClick={() => goTo(reviewsPage(true))}>
             <AddIcon />
           </Button>

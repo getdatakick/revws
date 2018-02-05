@@ -71,39 +71,39 @@ class ReviewListItem extends React.PureComponent<Props, State> {
               { title }
             </p>
             {underReview && (
-              <div className="revws-under-review">{"This review hasn't been approved yet"}</div>
+              <div className="revws-under-review">{__("This review hasn't been approved yet")}</div>
             )}
             <p className="revws-review-content">{ this.renderContent(content) }</p>
             <div className="revws-actions">
               {canVote && (
                 <div className="revws-action revws-useful">
-                  {'Was this comment useful to you?'}
+                  {__('Was this comment useful to you?')}
                   <a className="btn btn-xs btn-link" onClick={() => onVote(review, 'up')}>
-                    <i className="icon icon-thumbs-up"></i> {'Yes'}
+                    <i className="icon icon-thumbs-up"></i> {__('Yes')}
                   </a>
                   <a className="btn btn-xs btn-link" onClick={() => onVote(review, 'down')}>
-                    <i className="icon icon-thumbs-down"></i> {'No'}
+                    <i className="icon icon-thumbs-down"></i> {__('No')}
                   </a>
                 </div>
               )}
               {canReport && (
                 <div className="revws-action revws-report">
                   <a className="btn btn-xs btn-link" onClick={() => onReport(review)}>
-                    <i className="icon icon-flag"></i> {'Report abuse'}
+                    <i className="icon icon-flag"></i> {__('Report abuse')}
                   </a>
                 </div>
               )}
               {canEdit && (
                 <div className="revws-action revws-edit">
                   <a className="btn btn-xs btn-link" onClick={() => onEdit(review)}>
-                    <i className="icon icon-edit"></i> {'Edit review'}
+                    <i className="icon icon-edit"></i> {__('Edit review')}
                   </a>
                 </div>
               )}
               {canDelete && (
                 <div className="revws-action revws-delete">
                   <a className="btn btn-xs btn-link" onClick={() => onDelete(review)}>
-                    <i className="icon icon-remove"></i> {'Delete review'}
+                    <i className="icon icon-remove"></i> {__('Delete review')}
                   </a>
                 </div>
               )}
@@ -152,15 +152,15 @@ class ReviewListItem extends React.PureComponent<Props, State> {
       <div className="revws-replies">
         <Textarea
           value={reply}
-          label={'Your answer'}
-          placeholder={'Write your answer'}
+          label={__('Your answer')}
+          placeholder={__('Write your answer')}
           onChange={e => this.setState({ editReply: e.target.value })} />
         <div className={styles.margin}>
           <Button onClick={this.stopEditReply}>
-            Cancel
+            {__('Cancel')}
           </Button>
           <Button color='accent' onClick={this.saveReply}>
-            Save
+            {__('Save')}
           </Button>
         </div>
       </div>
@@ -172,7 +172,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
       <div className="revws-replies">
         <div className={styles.reply} onClick={this.startEditReply}>
           <ReplyIcon />
-          {'Click here to reply'}
+          {__('Click here to reply')}
         </div>
       </div>
     );

@@ -56,7 +56,8 @@ class AdminRevwsBackendController extends ModuleAdminController {
           'language' => $lang,
         ],
         'criteria' => array_map(array('RevwsCriterion', 'toJSData'), RevwsCriterion::getFullCriteria()),
-        'settings' => $settings->get()
+        'settings' => $settings->get(),
+        'translations' => $this->module->getBackTranslations(),
       ]
     ]);
     return parent::display();

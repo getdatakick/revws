@@ -27,13 +27,13 @@ class ModerationPage extends React.PureComponent<Props> {
       <div>
         <ReviewsTable
           language={data.language}
-          title={'All reviews'}
-          emptyLabel={'No reviews'}
+          title={__('All reviews')}
+          emptyLabel={__('No reviews')}
           shape={shape}
           shapeSize={shapeSize}
           criteria={criteria}
           filters={{}}
-          uniqueId={'allReviews'} />
+          uniqueId='allReviews' />
         { createReview && (
           <CreateReview
             shape={shape}

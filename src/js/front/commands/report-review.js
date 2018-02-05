@@ -8,7 +8,7 @@ export const reportAbuse = (action: TriggerReportReviewAction, store: any, api: 
   const review = action.review;
   api('report', { id: review.id }).then(result => {
     if (result.type === 'success') {
-      store.dispatch(setSnackbar('Thank you for reporting this review'));
+      store.dispatch(setSnackbar(__('Thank you for reporting this review')));
       if (result.data.hide) {
         store.dispatch(reviewRemoved(review));
       }

@@ -10,7 +10,7 @@ export const loadPage = (action: LoadPageAction, store: any, api: Api) => {
     if (result.type === 'success') {
       store.dispatch(setReviews(getReviews({ reviews: result.data })));
     } else {
-      store.dispatch(setSnackbar('Failed to load reviews'));
+      store.dispatch(setSnackbar(__('Failed to load reviews')));
     }
   });
 };

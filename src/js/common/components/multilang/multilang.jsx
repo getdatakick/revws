@@ -54,7 +54,7 @@ class MultiLangField extends React.PureComponent<Props, State> {
           />
         </FormControl>
         <Select className={styles.lang} renderValue={this.renderLang} value={language} onChange={this.changeLang}>
-          <MenuItem value={-1}>All languages</MenuItem>
+          <MenuItem value={-1}>{__('All languages')}</MenuItem>
           { langs.map(this.renderLanguage) }
         </Select>
       </div>

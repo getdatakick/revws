@@ -54,12 +54,12 @@ type Props = InputProps & {
 }
 
 const columnsData = [
-  { id: 'product', disablePadding: false, label: 'Product' },
-  { id: 'author', disablePadding: true, label: 'Author' },
-  { id: 'grade', disablePadding: false, label: 'Ratings' },
-  { id: 'title', disablePadding: true, label: 'Review title' },
-  { id: 'content', disablePadding: true, label: 'Review content' },
-  { id: 'actions', disablePadding: false, label: 'Actions', disableSort: true },
+  { id: 'product', disablePadding: false, label: __('Product') },
+  { id: 'author', disablePadding: true, label: __('Author') },
+  { id: 'grade', disablePadding: false, label: __('Ratings') },
+  { id: 'title', disablePadding: true, label: __('Review title') },
+  { id: 'content', disablePadding: true, label: __('Review content') },
+  { id: 'actions', disablePadding: false, label: __('Actions'), disableSort: true },
 ];
 
 const styles = theme => ({
@@ -129,7 +129,7 @@ class EnhancedTable extends React.Component<Props> {
                 const ratings = hasRatings(review) ;
                 const grade = averageGrade(review);
                 const Icon = authorType === 'customer' ? CustomerIcon : GuestIcon;
-                const type = authorType === 'customer' ? 'Customer' : 'Guest visitor';
+                const type = authorType === 'customer' ? __('Customer') : __('Guest visitor');
                 return (
                   <TableRow
                     tabIndex={-1}
@@ -199,7 +199,7 @@ class EnhancedTable extends React.Component<Props> {
     const actions = [];
     if (review.deleted) {
       actions.push(
-        <Tooltip key="undelete" title={'Undelete'}>
+        <Tooltip key="undelete" title={__('Undelete')}>
           <IconButton className={iconClass} onClick={e => { e.stopPropagation(); undeleteReview(review.id);}}>
             <UndeleteButton />
           </IconButton>
@@ -208,7 +208,7 @@ class EnhancedTable extends React.Component<Props> {
     } else {
       if (review.underReview) {
         actions.push(
-          <Tooltip key="approve" title={'Approve'}>
+          <Tooltip key="approve" title={__('Approve')}>
             <IconButton className={iconClass} onClick={e => { e.stopPropagation(); approveReview(review.id);}}>
               <ApproveIcon />
             </IconButton>
@@ -216,7 +216,7 @@ class EnhancedTable extends React.Component<Props> {
         );
       }
       actions.push(
-        <Tooltip key="reject" title={'Delete'}>
+        <Tooltip key="reject" title={__('Delete')}>
           <IconButton className={iconClass} onClick={e => { e.stopPropagation(); deleteReview(review.id);}}>
             <RejectButton />
           </IconButton>

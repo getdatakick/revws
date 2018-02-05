@@ -55,16 +55,16 @@ class CriterionForm extends React.PureComponent<Props, State> {
         onClose={onClose} >
         {criterion ? (
           <div>
-            <DialogTitle>Edit criterion</DialogTitle>
+            <DialogTitle>{__('Edit criterion')}</DialogTitle>
             <DialogContent>
               { this.renderContent(criterion) }
             </DialogContent>
             <DialogActions>
               <Button onClick={onClose}>
-                Cancel
+                {__('Cancel')}
               </Button>
               <Button onClick={this.submit} disabled={isSame} color="accent">
-                Save
+                {__('Save')}
               </Button>
             </DialogActions>
           </div>
@@ -81,7 +81,7 @@ class CriterionForm extends React.PureComponent<Props, State> {
         <div className={styles.space} />
         <div className={styles.group}>
           <MultiLangField
-            label="Label"
+            label={__("Label")}
             values={label}
             language={-1}
             fullWidth
@@ -95,7 +95,7 @@ class CriterionForm extends React.PureComponent<Props, State> {
                 checked={global}
                 onChange={(event, checked) => this.setCriterion({...criterion, global: checked})} />
             )}
-            label="Applies to entire catalog" />
+            label={__("Applies to entire catalog")} />
           { !global && this.renderAssociations(criterion) }
         </div>
       </div>

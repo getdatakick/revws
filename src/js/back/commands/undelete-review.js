@@ -10,9 +10,9 @@ export const undeleteReview = (action: UndeleteReviewAction, store: any, api: Ap
   api('undeleteReview', { id }).then(result => {
     if (result.type === 'success') {
       store.dispatch(reviewUpdated(fixReview(result.data)));
-      store.dispatch(setSnackbar('Review has been activated'));
+      store.dispatch(setSnackbar(__('Review has been activated')));
     } else {
-      store.dispatch(setSnackbar('Failed to undelete review'));
+      store.dispatch(setSnackbar(__('Failed to undelete review')));
     }
   });
 };

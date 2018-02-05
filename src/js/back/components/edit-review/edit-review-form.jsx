@@ -33,8 +33,8 @@ class EditReviewForm extends React.PureComponent<Props> {
             <TextField
               key="author"
               id="author"
-              label="Reviewer name"
-              placeholder="Please enter customer name"
+              label={__("Reviewer name")}
+              placeholder={__("Please enter customer name")}
               value={review.displayName}
               onChange={this.update('displayName')}
               error={!! errors.displayName}
@@ -43,8 +43,8 @@ class EditReviewForm extends React.PureComponent<Props> {
               key="email"
               id="email"
               className={styles.input}
-              label="Reviewer email"
-              placeholder="Please enter reviewer email"
+              label={__("Reviewer email")}
+              placeholder={__("Please enter reviewer email")}
               value={review.email}
               onChange={this.update('email')}
               error={!! errors.email}
@@ -57,8 +57,8 @@ class EditReviewForm extends React.PureComponent<Props> {
         </Grid>
         <TextField
           id="title"
-          label="Review title"
-          placeholder="Please enter review title"
+          label={__("Review title")}
+          placeholder={__("Please enter review title")}
           className={styles.input}
           value={title}
           onChange={this.update('title')}
@@ -67,10 +67,10 @@ class EditReviewForm extends React.PureComponent<Props> {
           autoFocus />
         <TextArea
           className={styles.input}
-          label="Review details"
+          label={__("Review details")}
           value={content}
           error={!! errors.content}
-          placeholder="Please enter review details"
+          placeholder={__("Please enter review details")}
           onChange={this.update('content')} />
       </div>
     );

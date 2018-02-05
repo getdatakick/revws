@@ -14,6 +14,8 @@ import { transition, toState, fixUrl, toUrl } from 'back/routing';
 import { moderationPage } from 'back/routing/moderation';
 import { getRoutingState } from 'back/selectors/routing-state';
 import { createHashHistory } from 'history';
+import { setTranslation } from 'translations';
+import { asObject } from 'common/utils/input';
 import Types from 'back/actions/types';
 import App from 'back/app';
 
@@ -58,6 +60,7 @@ const syncHistory = history => store => next => action => {
 };
 
 window.startRevws = (init: any) => {
+  setTranslation(asObject(init.translations));
   const content = document.getElementById('content');
   if (content) {
     content.className = 'app-content';
