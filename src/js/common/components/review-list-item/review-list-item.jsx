@@ -152,7 +152,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
       <div className="revws-replies">
         <Textarea
           value={reply}
-          label={'Your anwser'}
+          label={'Your answer'}
           placeholder={'Write your answer'}
           onChange={e => this.setState({ editReply: e.target.value })} />
         <div className={styles.margin}>

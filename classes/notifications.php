@@ -244,9 +244,9 @@ class Notifications {
       '{author_name}' => $authorName,
       '{display_name}' => $review->display_name,
       '{title}' => $review->title,
-      '{content}' => $review->content,
+      '{content}' => $this->escapeContent($review->content),
       '{ratings}' => round(Utils::calculateAverage($review->grades), 1),
-      '{reply}' => $review->reply,
+      '{reply}' => $this->escapeContent($review->reply),
       '{validated}' => $review->validated,
       '{deleted}' => $review->deleted
     ];
@@ -349,6 +349,13 @@ class Notifications {
       'review-id' => (int)$review->id,
       'secret' => $review->getSecretHash('reject')
     ]);
+  }
+
+  private function escapeContent($str) {
+    if ($str) {
+      return nl2br($str);
+    }
+    return $str;
   }
 
 }
