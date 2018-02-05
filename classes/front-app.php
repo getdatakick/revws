@@ -109,7 +109,8 @@ class FrontApp {
         'allowReviewWithoutCriteria' => $set->allowReviewWithoutCriteria(),
         'allowGuestReviews' => $set->allowGuestReviews(),
         'customerReviewsPerPage' => $set->getCustomerReviewsPerPage(),
-        'customerMaxRequests' => $set->getCustomerMaxRequests()
+        'customerMaxRequests' => $set->getCustomerMaxRequests(),
+        'placement' => $set->getPlacement()
       ],
       'canCreate' => $canCreate
     ];

@@ -17,17 +17,18 @@
     $('a[href="#idTabRevws"]').addClass('selected');
   };
 
-  // watch changes in hash and open tab if necesseary
-  var hashchange = function() {
-    if (window.location.hash.indexOf('#idTabRevws') > -1) {
-      openTab();
-    }
-  };
-  $(window).on('hashchange', hashchange);
-
   $(function() {
-    hashchange();
-    $('a[href=#idTabRevws]').click(openTab);
+    if (window.revwsData && window.revwsData.preferences.placement === 'tab') {
+      // watch changes in hash and open tab if necesseary
+      var hashchange = function() {
+        if (window.location.hash.indexOf('#idTabRevws') > -1) {
+          openTab();
+        }
+      };
+      $(window).on('hashchange', hashchange);
+      $('a[href=#idTabRevws]').click(openTab);
+      hashchange();
+    }
     $('[data-revws-create-trigger]').click(function(e) {
       e.preventDefault();
       if (window.revws) {
