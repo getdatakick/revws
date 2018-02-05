@@ -136,8 +136,8 @@ class RevwsCriterion extends ObjectModel {
     return $ret;
   }
 
-  public function save() {
-    $ret = parent::save();
+  public function save($nullValues = false, $autoDate = true) {
+    $ret = parent::save($nullValues, $autoDate);
     $ret &= $this->saveProductAssociations();
     $ret &= $this->saveCategoryAssociations();
     return $ret;
