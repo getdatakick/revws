@@ -29,6 +29,7 @@ class Grading extends React.PureComponent<Props, State> {
     return (
       <div
         className={classnames("revws-grading", this.props.className)}
+        onTouchStart={onSetGrade ? this.onTouchStart : undefined}
         onTouchMove={onSetGrade ? this.onTouchMove : undefined}
         onTouchEnd={onSetGrade ? this.onTouchEnd : undefined}
       >
@@ -84,7 +85,6 @@ class Grading extends React.PureComponent<Props, State> {
 
   onTouchMove = (e: any) => {
     e.stopPropagation();
-    e.preventDefault();
     if (e.changedTouches && e.changedTouches.length) {
       let node = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
       while (node) {
@@ -97,9 +97,12 @@ class Grading extends React.PureComponent<Props, State> {
     }
   }
 
+  onTouchStart = (e: any) => {
+    this.onTouchMove(e);
+  }
+
   onTouchEnd = (e: any) => {
     e.stopPropagation();
-    e.preventDefault();
     if (this.state.grade) {
       this.onClick(this.state.grade);
     }

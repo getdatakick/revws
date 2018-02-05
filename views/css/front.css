@@ -2,6 +2,7 @@
 .revws-grading {
   display: flex;
   cursor: default;
+  touch-action: none;
 }
 a .revws-grading {
   cursor: pointer;
