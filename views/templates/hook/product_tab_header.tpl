@@ -16,5 +16,5 @@
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
 <li>
-  <a href="#revws-tab-content" class="idTabHrefShort">{l s='Reviews' mod='revws'}</a>
+  <a href="#idTabRevws" class="idTabHrefShort">{l s='Reviews' mod='revws'}</a>
 </li>

@@ -15,8 +15,10 @@
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-<div id="revws-tab-content">
-  <div id="revws-app">
-    {include file="./private_product_list.tpl" reviewsData=$reviewsData}
+<div id="idTabRevws">
+  <div id="revws-tab-content">
+    <div id="revws-app">
+      {include file="./private_product_list.tpl" reviewsData=$reviewsData}
+    </div>
   </div>
 </div>
