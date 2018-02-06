@@ -7,6 +7,7 @@ tags:
 description_short: This module let your customers easily create product reviews
 description: description.md
 images:
+  - image-cover.png
   - image-1.png
   - image-2.png
   - image-3.png
