@@ -2,7 +2,7 @@
 <module>
 	<name>revws</name>
 	<displayName><![CDATA[Recenze produktů]]></displayName>
-	<version><![CDATA[0.0.4]]></version>
+	<version><![CDATA[1.0.0]]></version>
 	<description><![CDATA[Revws - recenze produktů]]></description>
 	<author><![CDATA[DataKick <petr@getdatakick.com>]]></author>
 	<tab><![CDATA[administration]]></tab>

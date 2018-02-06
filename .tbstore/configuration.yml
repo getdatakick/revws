@@ -1,0 +1,21 @@
+module_name: Revws - Product Reviews
+compatible_versions: 1.0.0+
+author: datakick
+category: front office
+tags:
+  - product reviews
+description_short: This module let your customers easily create product reviews
+description: description.md
+images:
+  - image-1.png
+  - image-2.png
+  - image-3.png
+  - image-4.png
+  - image-5.png
+license: MIT
+php_version:
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
