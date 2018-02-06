@@ -23,4 +23,4 @@ During module development I've cooperated closely with actual [merchants](https:
 
 This free module is integrated with [DataKick module](https://www.getdatakick.com/) - your review data will be available in lists, xml exports, you can use inline editing and mass updates functionality. You can even import your reviews. Minimal required version of datakick module is 2.1.0
 
-![price alert datakick integration](images/image-5.png)
+![price alert datakick integration](https://www.getdatakick.com/images/extras/revws-product-reviews/image-5.png)
