@@ -1,0 +1,11 @@
+Nová recenze byla vytvořena - {shop_name}
+
+Detaily:
+
+Produkt: {product_name}
+Hodnocení: {ratings}
+Nadpis: {title}
+Obsah: {content}
+ID recenze: {review_id}
+
+Revws - modul recenzí od DataKick

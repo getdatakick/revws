@@ -8,7 +8,8 @@ import { getReview } from 'front/selectors/delete-review';
 import { closeDeleteReview, deleteReview } from 'front/actions/creators';
 
 const mapStateToProps = mapObject({
-  type: 'review',
+  deleteLabel: () => __('Delete review'),
+  confirmation: () => __('Are you sure you want to delete this review?'),
   payload: getReview,
 });
 

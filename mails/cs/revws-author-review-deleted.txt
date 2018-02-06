@@ -1,0 +1,16 @@
+Vaše recenze byla zamítnuta - {shop_name}
+
+Dobrý den,
+
+děkujeme za vaši recenzi. Bohužel tato recenze nesplňuje naše kritéria a byla zamítnuta.
+
+Pro připomenutí, zde jsou detaily recenze:
+
+Produkt: {product_name}
+Hodnocení: {ratings}
+Nadpis: {title}
+Obsah: {content}
+Zobrazené jméno: {display_name}
+
+Děkujeme za pochopení
+{shop_name}

@@ -25,7 +25,7 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
     return (
       <div>
         { this.renderRequests() }
-        <h1 className="page-heading">Your reviews</h1>
+        <h1 className="page-heading">{__('Your reviews')}</h1>
         { this.renderList() }
       </div>
     );

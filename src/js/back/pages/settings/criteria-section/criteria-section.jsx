@@ -75,7 +75,8 @@ class CriteriaSection extends React.PureComponent<Props, State> {
           </ListItem>
           { this.renderEditForm() }
           <ConfirmDelete
-            type="criterion"
+            deleteLabel={__('Delete criterion')}
+            confirmation={__('Are you sure you want to delete this criterion?')}
             payload={this.state.delete}
             onClose={() => this.triggerDeleteCriterion(null)}
             onConfirm={id => {

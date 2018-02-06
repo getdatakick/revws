@@ -53,15 +53,6 @@ type Props = InputProps & {
   classes: any
 }
 
-const columnsData = [
-  { id: 'product', disablePadding: false, label: __('Product') },
-  { id: 'author', disablePadding: true, label: __('Author') },
-  { id: 'grade', disablePadding: false, label: __('Ratings') },
-  { id: 'title', disablePadding: true, label: __('Review title') },
-  { id: 'content', disablePadding: true, label: __('Review content') },
-  { id: 'actions', disablePadding: false, label: __('Actions'), disableSort: true },
-];
-
 const styles = theme => ({
   root: {
     width: '100%',
@@ -111,6 +102,14 @@ class EnhancedTable extends React.Component<Props> {
       shape, emptyLabel, title, classes, total, data, order, orderBy, rowsPerPage, page, onChangePage, onChangeRowsPerPage,
       onAuthorClick, onReviewClick
     } = this.props;
+    const columnsData = [
+      { id: 'product', disablePadding: false, label: __('Product') },
+      { id: 'author', disablePadding: true, label: __('Author') },
+      { id: 'grade', disablePadding: false, label: __('Ratings') },
+      { id: 'title', disablePadding: true, label: __('Review title') },
+      { id: 'content', disablePadding: true, label: __('Review content') },
+      { id: 'actions', disablePadding: false, label: __('Actions'), disableSort: true },
+    ];
     return (
       <Paper className={classes.root}>
         <EnhancedTableToolbar title={title} total={total} />

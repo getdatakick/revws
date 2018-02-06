@@ -1,0 +1,18 @@
+Odpověd na vaši recenzi - {shop_name}
+
+Dobrý den,
+
+děkujeme za vaši recenzi. Zde si můžete přečíst naši odpověd:
+
+{reply}
+
+Pro připomenutí, zde jsou detaily recenze:
+
+Produkt: {product_name}
+Hodnocení: {ratings}
+Nadpis: {title}
+Obsah: {content}
+Zobrazené jméno: {display_name}
+
+Ještě jednou děkujeme, vašeho přínosu si velice ceníme.
+{shop_name}

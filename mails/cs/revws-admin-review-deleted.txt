@@ -1,0 +1,14 @@
+Recenze byla smazána - {shop_name}
+
+Recenze na produkt {product_name} s hodnocením {ratings} byla autorem smazána.
+
+Pokud se chcete autora zeptat na důvod, zde jsou jeho detaily:
+
+Email: {author_email}
+Jméno: {author_name}
+Zobrazené jméno na recenzi: {display_name}
+Hodnocení: {ratings}
+Nadpis: {title}
+Obsah: {content}
+
+Revws - modul recenzí od DataKick

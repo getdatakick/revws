@@ -1,0 +1,8 @@
+Recenze vyžaduje odsouhlasení - {shop_name}
+===========================================
+
+Máte novou recenzi na {product_name}.
+
+Recenze {review_id} s hodnocením {ratings} vyžaduje váš souhlas k tomu aby byla zveřejněna.
+
+Revws - modul recenzí od DataKick

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>revws</name>
+	<displayName><![CDATA[Recenze produktů]]></displayName>
+	<version><![CDATA[0.0.4]]></version>
+	<description><![CDATA[Revws - recenze produktů]]></description>
+	<author><![CDATA[DataKick <petr@getdatakick.com>]]></author>
+	<tab><![CDATA[administration]]></tab>
+	<confirmUninstall><![CDATA[Chcete opravdu odinstalovat tento modul? Všehna data budou ztracena!]]></confirmUninstall>
+	<is_configurable>1</is_configurable>
+	<need_instance>0</need_instance>
+	<limited_countries></limited_countries>
+</module>

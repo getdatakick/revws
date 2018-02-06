@@ -1,0 +1,12 @@
+Recenze byla aktualizována - {shop_name}
+
+Recenze na produkt {product_name} s hodnocením {ratings} byla autorem upravena.
+
+Email: {author_email}
+Jméno: {author_name}
+Zobrazené jméno na recenzi: {display_name}
+Hodnocení: {ratings}
+Nadpis: {title}
+Obsah: {content}
+
+Revws - modul recenzí od DataKick

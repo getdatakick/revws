@@ -51,7 +51,7 @@ class EditReviewForm extends React.PureComponent<Props> {
               fullWidth />
           </Grid>
           <Grid item md={6}>
-            <h3>Ratings</h3>
+            <h3>{__('Ratings')}</h3>
             { criteria.map(this.renderCriterion) }
           </Grid>
         </Grid>

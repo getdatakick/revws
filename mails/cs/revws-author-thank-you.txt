@@ -1,0 +1,16 @@
+{shop_name} Vám děkuje za vaši recenzi
+
+Dobrý den!
+
+děkujeme vám za vaši recenzi na produkt {product_name}! Velice si ceníme vašeho přínosu.
+
+Pro připomenutí, zde jsou detaily recenze:
+
+Produkt: {product_name}
+Hodnocení: {ratings}
+Nadpis: {title}
+Obsah: {content}
+Zobrazené jméno: {display_name}
+
+přejeme příjemný den
+{shop_name}
