@@ -5,7 +5,7 @@ create the most user friendly way to create reviews on your website.
 
 ![screencast](https://www.getdatakick.com/images/extras/revws-product-reviews/screencast.gif)
 
-During review development I've closely cooperated with actual [merchants](https://forum.thirtybees.com/topic/1235/i-m-going-to-create-a-free-module), so you can be sure this module covers the most common use cases.
+During module development I've very closely cooperated with actual [merchants](https://forum.thirtybees.com/topic/1235/i-m-going-to-create-a-free-module), so you can be sure this module covers the most common use cases.
 
 ## Features
 
