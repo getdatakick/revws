@@ -34,16 +34,6 @@ require_once __DIR__.'/classes/front-app.php';
 require_once __DIR__.'/model/criterion.php';
 require_once __DIR__.'/model/review.php';
 
-use \Revws\Settings;
-use \Revws\Permissions;
-use \Revws\VisitorPermissions;
-use \Revws\EmployeePermissions;
-use \Revws\Visitor;
-use \Revws\Shapes;
-use \Revws\Utils;
-use \Revws\FrontApp;
-use \Revws\AppTranslation;
-
 class Revws extends Module {
   private $permissions;
   private $visitor;
@@ -51,7 +41,7 @@ class Revws extends Module {
   public function __construct() {
     $this->name = 'revws';
     $this->tab = 'administration';
-    $this->version = '1.0.0';
+    $this->version = '1.0.1';
     $this->author = 'DataKick <petr@getdatakick.com>';
     $this->need_instance = 0;
     $this->bootstrap = true;
@@ -189,12 +179,12 @@ class Revws extends Module {
   }
 
   public function getSettings() {
-    return Settings::getInstance();
+    return \Revws\Settings::getInstance();
   }
 
   public function getVisitor() {
     if (! $this->visitor) {
-      $this->visitor = new Visitor($this->context, $this->getSettings());
+      $this->visitor = new \Revws\Visitor($this->context, $this->getSettings());
     }
     return $this->visitor;
   }
@@ -202,16 +192,16 @@ class Revws extends Module {
   public function getPermissions() {
     if (! $this->permissions) {
       if (isset($this->context->employee) && $this->context->employee->id > 0) {
-        $this->permissions = new EmployeePermissions();
+        $this->permissions = new \Revws\EmployeePermissions();
       } else {
-        $this->permissions = new VisitorPermissions($this->getSettings(), $this->getVisitor());
+        $this->permissions = new \Revws\VisitorPermissions($this->getSettings(), $this->getVisitor());
       }
     }
     return $this->permissions;
   }
 
   private function assignReviewsData($productId) {
-    $frontApp = new FrontApp($this);
+    $frontApp = new \Revws\FrontApp($this);
     $reviewsData = $frontApp->getData('product', $productId);
     $this->context->smarty->assign('reviewsData', $reviewsData);
     $this->context->smarty->assign('microdata', $this->getSettings()->emitRichSnippets());
@@ -219,7 +209,7 @@ class Revws extends Module {
   }
 
   private function getShapeSettings() {
-    return Shapes::getShape($this->getSettings()->getShape());
+    return \Revws\Shapes::getShape($this->getSettings()->getShape());
   }
 
   public function hookProductTab() {
@@ -332,12 +322,12 @@ class Revws extends Module {
   }
 
   public function getFrontTranslations() {
-    $translations = new AppTranslation($this);
+    $translations = new \Revws\AppTranslation($this);
     return $translations->getFrontTranslations();
   }
 
   public function getBackTranslations() {
-    $translations = new AppTranslation($this);
+    $translations = new \Revws\AppTranslation($this);
     return $translations->getBackTranslations();
   }
 

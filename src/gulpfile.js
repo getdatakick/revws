@@ -87,8 +87,8 @@ gulp.task('create-zip', function(done) {
 });
 
 gulp.task('copy-files', function(done) {
-  const ext = ['php', 'tpl', 'css', 'js', 'xml', 'md', 'sql', 'html', 'txt'];
-  const sources = append('!../src/**', map(e => '../**/*.'+e, ext));
+  const ext = ['php', 'tpl', 'css', 'js', 'xml', 'md', 'sql', 'html', 'txt', 'png'];
+  const sources = append('!../.tbstore/**', append('!../src/**', map(e => '../**/*.'+e, ext)));
   return gulp
     .src(sources)
     .pipe(gulp.dest('./build/staging/revws'))
