@@ -60,7 +60,7 @@ class FrontAppReviewList extends React.PureComponent<Props> {
 
   renderEmptyState = (canCreate: boolean) => {
     if (canCreate) {
-      return this.renderCreateButton(__('Be the first to write review!'));
+      return this.renderCreateButton(__('Be the first to write a review!'));
     }
     return (
       <div className="form-group">

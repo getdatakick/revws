@@ -31,7 +31,7 @@
     {else}
       {if $canCreate}
         <a class="revws-product-extra-link" href="#" data-revws-create-trigger="{$productId}">
-          {l s='Be the first to write review!' mod='revws'}
+          {l s='Be the first to write a review!' mod='revws'}
         </a>
       {else}
         {l s='No customer reviews for the moment.' mod='revws'}
