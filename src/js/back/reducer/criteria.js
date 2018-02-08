@@ -15,11 +15,16 @@ const defaultState = (criteria) => ({
   criteria
 });
 
+const fixCriteria = (crit: any): FullCriteria => asObject(crit);
+
 export default (criteria: FullCriteria) => {
   return (state?: State, action:Action): State => {
-    state = state || defaultState(asObject(criteria));
-    if (action.type === Types.saveCriterion) {
+    state = state || defaultState(fixCriteria(criteria));
+    if (action.type === Types.saveCriterion || action.type === Types.migrateData) {
       return { ...state, loading: true };
+    }
+    if (action.type === Types.setCriteria) {
+      return { loading: false, criteria: fixCriteria(action.criteria) };
     }
     if (action.type === Types.criterionSaved) {
       const crit = action.criterion;

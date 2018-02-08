@@ -50,11 +50,16 @@ class AdminRevwsBackendController extends ModuleAdminController {
       'revws' => [
         'data' => [
           'api' => $this->context->link->getAdminLink('AdminRevwsBackend'),
+          'baseUrl' => $this->getPath(''),
           'shapes' => Shapes::getAvailableShapes(),
           'languages' => $languages,
           'language' => $lang,
+          'environment' => [
+            'mailstream' => Module::isInstalled('mailstream'),
+            'productcomments' => Module::isInstalled('productcomments')
+          ]
         ],
-        'criteria' => array_map(array('RevwsCriterion', 'toJSData'), RevwsCriterion::getFullCriteria()),
+        'criteria' => $this->getCriteria(),
         'settings' => $settings->get(),
         'translations' => $this->module->getBackTranslations(),
       ]
@@ -114,6 +119,8 @@ class AdminRevwsBackendController extends ModuleAdminController {
         return $this->saveCriterion($payload);
       case 'saveReview':
         return $this->saveReview($payload);
+      case 'migrateData':
+        return $this->migrateData($payload);
       default:
         throw new Exception("Unknown command $cmd");
     }
@@ -237,6 +244,25 @@ class AdminRevwsBackendController extends ModuleAdminController {
     return false;
   }
 
+  private function migrateData($data) {
+    $source = isset($data['source']) ? $data['source'] : 'invalid';
+    switch ($source) {
+      case 'productcomments':
+        $this->migrateProductComments();
+        break;
+      default:
+        throw new Exception("Don't know how to migrate $source");
+    }
+    return [
+      'source' => $source,
+      'criteria' => $this->getCriteria()
+    ];
+  }
+
+  private function migrateProductComments() {
+    $this->module->executeSqlScript('migrate-productcomments');
+  }
+
   private function reply($error, $result) {
     if ($error) {
       echo json_encode(['success'=>false, 'error' => $error]);
@@ -267,6 +293,11 @@ class AdminRevwsBackendController extends ModuleAdminController {
       return $rev->toJSData($this->module->getPermissions());
     }
     throw new Exception("Review does not exists");
+  }
+
+
+  private function getCriteria() {
+    return array_map(array('RevwsCriterion', 'toJSData'), RevwsCriterion::getFullCriteria());
   }
 
 }

@@ -40,7 +40,7 @@ class Grading extends React.PureComponent<Props, State> {
 
   renderShape = (id: number) => {
     const { shape, size, onSetGrade } = this.props;
-    const grade = this.state.grade || this.props.grade;
+    const grade = Math.round(this.state.grade || this.props.grade);
     const padding = size/8;
     return (
       <div

@@ -2,7 +2,7 @@
 import React from 'react';
 import type { SettingsType, GlobalDataType } from 'back/types';
 import ScrollSpy from 'react-scrollspy';
-import { toPairs, path, last, merge, range, map, curry, equals, assocPath } from 'ramda';
+import { prop, toPairs, path, last, merge, range, map, curry, equals, assocPath } from 'ramda';
 import Section from './section';
 import ShapeSelect from './shape-select';
 import Grid from 'material-ui/Grid';
@@ -15,6 +15,7 @@ import Preview from './review-preview';
 import MenuItem from 'material-ui/Menu/MenuItem';
 import TextField from 'material-ui/TextField';
 import CriteriaSection from './criteria-section';
+import MigrateData from './migrate-data';
 import { hasErrors, validateIsNumber, validateReviewEmail } from 'common/utils/validation';
 import styles from './style.less';
 
@@ -113,6 +114,12 @@ class Settings extends React.PureComponent<Props, State> {
         key: 'criteria',
         label: __('Review criteria'),
         content: this.renderCriteria()
+      },
+      {
+        key: 'migrate',
+        label: __('Migrate data'),
+        subheader: __('Import review data and criteria settings from other modules'),
+        content: this.renderMigrateData()
       }
     ];
     const items = map(sectionKey, sections);
@@ -132,7 +139,7 @@ class Settings extends React.PureComponent<Props, State> {
         </Grid>
         <Grid item md={8} sm={12}>
           { sections.map((section, i) => (
-            <Section key={i} id={sectionKey(section)} label={section.label}>
+            <Section key={i} id={sectionKey(section)} label={section.label} subheader={prop('subheader', section)}>
               { section.content }
             </Section>
           )) }
@@ -301,6 +308,16 @@ class Settings extends React.PureComponent<Props, State> {
       <CriteriaSection
         language={language}
         languages={languages}/>
+    );
+  }
+
+  renderMigrateData = () => {
+    const { environment, baseUrl } = this.props.data;
+    return (
+      <MigrateData
+        environment={environment}
+        baseUrl={baseUrl}
+      />
     );
   }
 

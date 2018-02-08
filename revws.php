@@ -41,7 +41,7 @@ class Revws extends Module {
   public function __construct() {
     $this->name = 'revws';
     $this->tab = 'administration';
-    $this->version = '1.0.1';
+    $this->version = '1.0.2';
     $this->author = 'DataKick <petr@getdatakick.com>';
     $this->need_instance = 0;
     $this->bootstrap = true;
@@ -122,7 +122,7 @@ class Revws extends Module {
     return $this->executeSqlScript('uninstall');
   }
 
-  private function executeSqlScript($script) {
+  public function executeSqlScript($script) {
     $file = dirname(__FILE__) . '/sql/' . $script . '.sql';
     if (! file_exists($file)) {
       return false;

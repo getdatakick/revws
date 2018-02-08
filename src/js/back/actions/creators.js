@@ -1,6 +1,6 @@
 // @flow
 
-import type { Load, SettingsType, FullCriterion } from 'back/types';
+import type { Load, SettingsType, FullCriterion, FullCriteria } from 'back/types';
 import type { ReviewType } from 'common/types';
 import type { RoutingState } from 'back/routing';
 import type {
@@ -8,6 +8,7 @@ import type {
   SetSizeAction,
   SetSnackbarAction,
   SetSettingsAction,
+  SetCriteriaAction,
   SaveCriterionAction,
   CriterionSavedAction,
   DeleteCriterionAction,
@@ -19,7 +20,8 @@ import type {
   UndeleteReviewAction,
   SaveReviewAction,
   ReviewUpdatedAction,
-  ReviewCreatedAction
+  ReviewCreatedAction,
+  MigrateDataAction
 } from './index';
 import Types from './types';
 
@@ -27,6 +29,8 @@ export const goTo = (routingState: RoutingState, updateHistory?:boolean = true):
 export const setSnackbar = (message: ?string): SetSnackbarAction => ({ type: Types.setSnackbar, message });
 export const setSize = (width: number, height: number): SetSizeAction => ({ type: Types.setSize, width, height });
 export const setSettings = (settings: SettingsType): SetSettingsAction => ({ type: Types.setSettings, settings });
+
+export const setCriteria = (criteria: FullCriteria): SetCriteriaAction => ({ type: Types.setCriteria, criteria });
 export const saveCriterion = (criterion: FullCriterion): SaveCriterionAction => ({ type: Types.saveCriterion, criterion });
 export const criterionSaved = (criterion: FullCriterion): CriterionSavedAction => ({ type: Types.criterionSaved, criterion });
 export const deleteCriterion = (id: number): DeleteCriterionAction => ({ type: Types.deleteCriterion, id });
@@ -42,3 +46,5 @@ export const undeleteReview = (id: number): UndeleteReviewAction => ({ type: Typ
 export const saveReview = (review: ReviewType): SaveReviewAction => ({ type: Types.saveReview, review });
 export const reviewUpdated = (review: ReviewType): ReviewUpdatedAction => ({ type: Types.reviewUpdated, review });
 export const reviewCreated = (review: ReviewType): ReviewCreatedAction => ({ type: Types.reviewCreated, review });
+
+export const migrateData = (source: string, payload: any): MigrateDataAction => ({ type: Types.migrateData, source, payload });
