@@ -74,6 +74,7 @@ class Settings {
         ],
         'myReviews' => [
           'show' => true,
+          'iconClass' => 'icon icon-star',
           'reviewsPerPage' => 5,
           'maxRequests' => 3
         ]
@@ -234,6 +235,10 @@ class Settings {
 
   public function showOnCustomerAccount() {
     return $this->toBool($this->get(['display', 'myReviews', 'show']));
+  }
+
+  public function getCustomerAccountIcon() {
+    return $this->get(['display', 'myReviews', 'iconClass']);
   }
 
   public function getCustomerReviewsPerPage() {

@@ -286,6 +286,7 @@ class Revws extends Module {
 
   public function hookCustomerAccount($params) {
     if ($this->getSettings()->showOnCustomerAccount()) {
+      $this->context->smarty->assign('iconClass', $this->getSettings()->getCustomerAccountIcon());
       return $this->display(__FILE__, 'my-account.tpl');
     }
   }

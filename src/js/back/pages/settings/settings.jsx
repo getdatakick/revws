@@ -469,6 +469,12 @@ class Settings extends React.PureComponent<Props, State> {
             error={!! errors.display.myReviews.maxRequests}
             onChange={e => this.set(['display', 'myReviews', 'maxRequests'], e.target.value)} />
           <div className={styles.space} />
+          <TextField
+            fullWidth
+            label={__("Icon css class")}
+            value={settings.display.myReviews.iconClass}
+            onChange={e => this.set(['display', 'myReviews', 'iconClass'], e.target.value)} />
+          <div className={styles.space} />
         </div>
       </FormGroup>
     );

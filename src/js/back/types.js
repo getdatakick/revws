@@ -26,6 +26,7 @@ export type SettingsType = {
     },
     myReviews: {
       show: boolean,
+      iconClass: string,
       reviewsPerPage: number | string,
       maxRequests: number | string,
     }
