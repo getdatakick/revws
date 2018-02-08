@@ -235,10 +235,13 @@ class Revws extends Module {
   }
 
   public function hookHeader() {
-    $this->context->controller->addCSS($this->_path.'views/css/front.css', 'all');
+    if (file_exists(_PS_THEME_DIR_."css/modules/{$this->name}/{$this->name}.css")) {
+        $this->context->controller->addCSS(_PS_THEME_DIR_."css/modules/{$this->name}/{$this->name}.css", 'all');
+    } else {
+        $this->context->controller->addCSS($this->_path.'views/css/front.css', 'all');
+    }
     $this->context->controller->addCSS('https://fonts.googleapis.com/css?family=Roboto:300,400,500', 'all');
   }
-
 
   public function hookDisplayRightColumnProduct($params) {
     if ($this->getSettings()->showAverageOnProductPage()) {
