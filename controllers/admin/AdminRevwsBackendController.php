@@ -30,7 +30,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
     $this->bootstrap = false;
     $this->module->includeCommonStyles($this);
     $this->addCSS($this->getPath('views/css/back.css'));
-    $this->addJs($this->module->getSettings()->getBackendAppUrl($this->module->name));
+    $this->addJs($this->module->getSettings()->getBackendAppUrl($this->module));
   }
 
   public function display() {
@@ -73,14 +73,14 @@ class AdminRevwsBackendController extends ModuleAdminController {
 
   public function createTemplate($tpl_name) {
     if ($this->viewAccess() && $tpl_name === 'content.tpl') {
-      $path = $this->getPath('views/templates/admin/backend.tpl');
+      $path = _PS_MODULE_DIR_ . $this->module->name . '/views/templates/admin/backend.tpl';
       return $this->context->smarty->createTemplate($path, $this->context->smarty);
     }
     return parent::createTemplate($tpl_name);
   }
 
   private function getPath($path) {
-    return _PS_MODULE_DIR_ . $this->module->name . '/' . $path;
+    return $this->module->getPath($path);
   }
 
   public function ajaxProcessCommand() {

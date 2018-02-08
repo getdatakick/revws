@@ -220,7 +220,7 @@ class Revws extends Module {
 
   public function hookProductTabContent() {
     if ($this->getSettings()->getPlacement() === 'tab') {
-      $this->context->controller->addJS($this->_path.'views/js/front_bootstrap.js');
+      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
       $this->assignReviewsData((int)(Tools::getValue('id_product')));
       return $this->display(__FILE__, 'product_tab_content.tpl');
     }
@@ -228,7 +228,7 @@ class Revws extends Module {
 
   public function hookProductFooter() {
     if ($this->getSettings()->getPlacement() === 'block') {
-      $this->context->controller->addJS($this->_path.'views/js/front_bootstrap.js');
+      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
       $this->assignReviewsData((int)(Tools::getValue('id_product')));
       return $this->display(__FILE__, 'product_footer.tpl');
     }
@@ -296,7 +296,7 @@ class Revws extends Module {
   }
 
   public function getPath($relative) {
-    return $this->_path . $relative;
+    return $this->getPathUri() . $relative;
   }
 
   public static function getReviewUrl($context, $productId) {
@@ -334,7 +334,7 @@ class Revws extends Module {
     if (file_exists(_PS_THEME_DIR_."css/modules/{$this->name}/{$this->name}.css")) {
         $controller->addCSS(_PS_THEME_DIR_."css/modules/{$this->name}/{$this->name}.css", 'all');
     } else {
-        $controller->addCSS($this->_path.'views/css/front.css', 'all');
+        $controller->addCSS($this->getPath('views/css/front.css'), 'all');
     }
     $controller->addCSS('https://fonts.googleapis.com/css?family=Roboto:300,400,500', 'all');
   }

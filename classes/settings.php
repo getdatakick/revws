@@ -135,10 +135,10 @@ class Settings {
     return $url . "?v=" . $module->version;
   }
 
-  public function getBackendAppUrl($moduleName) {
+  public function getBackendAppUrl($module) {
     $url = Configuration::get(self::BACKEND_APP_URL);
     if (! $url) {
-      $url = _PS_MODULE_DIR_ . $moduleName . '/views/js/back_app.js';
+      return $module->getPath('views/js/back_app.js');
     }
     return $url;
   }
