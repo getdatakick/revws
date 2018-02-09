@@ -14,7 +14,7 @@ var path = require('path');
 var merge = require('merge-stream');
 var replace = require('gulp-replace');
 var exec = require('child_process').exec;
-var { sortBy, identity, values, mapObjIndexed, append, prepend, map, flatten } = ramda;
+var { find, sortBy, identity, values, mapObjIndexed, append, prepend, map, flatten } = ramda;
 
 var deployDir = "./build";
 
@@ -36,6 +36,16 @@ function getLatestCommitHash(cb) {
     }
     cb(stdout);
   });
+}
+
+function getVersion() {
+  var raw = fs.readFileSync('../revws.php', 'utf8');
+  var lines = map(line => line.replace(/\s+/g, ""), raw.split("\n"));
+  var line = find(line => line.indexOf("$this->version") === 0, lines);
+  if (line) {
+    return line.replace(/[^0-9\.]+/g, '');
+  }
+  throw new Error("version not found");
 }
 
 function readTranslations(path) {
@@ -90,9 +100,11 @@ gulp.task('copy-javascript', function(done) {
 });
 
 gulp.task('create-zip', function(done) {
+  var version = getVersion();
+  var fileVersion = version.replace(/\./g, '_');
   return gulp
     .src('./build/staging/**/*')
-    .pipe(zip('revws.zip'))
+    .pipe(zip('revws-'+fileVersion+'.zip'))
     .pipe(gulp.dest('./build'));
 });
 
