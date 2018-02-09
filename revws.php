@@ -87,7 +87,8 @@ class Revws extends Module {
       $this->registerHook('displayRightColumnProduct') &&
       $this->registerHook('displayProductListReviews') &&
       $this->registerHook('extraProductComparison') &&
-      $this->registerHook('customerAccount') &&
+      $this->registerHook('displayCustomerAccount') &&
+      $this->registerHook('displayMyAccountBlock') &&
       $this->registerHook('productFooter') &&
       $this->registerHook('discoverReviewModule') &&
       $this->registerHook('datakickExtend')
@@ -101,7 +102,8 @@ class Revws extends Module {
     $this->unregisterHook('displayRightColumnProduct');
     $this->unregisterHook('displayProductListReviews');
     $this->unregisterHook('extraProductComparison');
-    $this->unregisterHook('customerAccount');
+    $this->unregisterHook('displayCustomerAccount');
+    $this->unregisterHook('displayMyAccountBlock');
     $this->unregisterHook('productFooter');
     $this->unregisterHook('discoverReviewModule');
     $this->unregisterHook('datakickExtend');
@@ -284,12 +286,18 @@ class Revws extends Module {
     }
   }
 
-  public function hookCustomerAccount($params) {
+  public function hookDisplayCustomerAccount($params) {
     if ($this->getSettings()->showOnCustomerAccount()) {
       $this->context->smarty->assign('iconClass', $this->getSettings()->getCustomerAccountIcon());
       return $this->display(__FILE__, 'my-account.tpl');
     }
   }
+
+
+  public function hookDisplayMyAccountBlock($params) {
+    return $this->hookDisplayCustomerAccount($params);
+  }
+
 
   public function getContext() {
     return $this->context;
