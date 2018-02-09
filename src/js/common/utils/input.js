@@ -14,3 +14,14 @@ export const asObject = (input: ?any): {} => {
   }
   throw new Error("Invalid input");
 };
+
+export const prevent = (e: ?any) => {
+  if (e) {
+    if (e.stopPropagation) {
+      e.stopPropagation();
+    }
+    if (e.preventDefault) {
+      e.preventDefault();
+    }
+  }
+};
