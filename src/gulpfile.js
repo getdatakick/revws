@@ -13,6 +13,7 @@ var fs = require('fs');
 var path = require('path');
 var merge = require('merge-stream');
 var replace = require('gulp-replace');
+var exec = require('child_process').exec;
 var { sortBy, identity, values, mapObjIndexed, append, prepend, map, flatten } = ramda;
 
 var deployDir = "./build";
@@ -26,6 +27,15 @@ function getFolders(dir) {
       return prepend(dir+'/'+file, subdirs);
     })
   );
+}
+
+function getLatestCommitHash(cb) {
+  exec('git log -n 1 --pretty=format:"%h"', (err, stdout, stderr) => {
+    if (err || !stdout) {
+      throw new Error(err);
+    }
+    cb(stdout);
+  });
 }
 
 function readTranslations(path) {
@@ -86,8 +96,20 @@ gulp.task('create-zip', function(done) {
     .pipe(gulp.dest('./build'));
 });
 
-gulp.task('copy-files', function(done) {
-  const ext = ['php', 'tpl', 'css', 'js', 'xml', 'md', 'sql', 'html', 'txt', 'png'];
+gulp.task('copy-text-files', function(done) {
+  getLatestCommitHash(commit => {
+    const ext = ['php', 'tpl', 'css', 'js', 'sql', 'html', 'xml', 'md'];
+    const sources = append('!../.tbstore/**', append('!../src/**', map(e => '../**/*.'+e, ext)));
+    return gulp
+      .src(sources)
+      .pipe(replace(/CACHE_CONTROL/, commit))
+      .pipe(gulp.dest('./build/staging/revws'))
+      .on('end', done);
+  });
+});
+
+gulp.task('copy-binary-files', function(done) {
+  const ext = ['png'];
   const sources = append('!../.tbstore/**', append('!../src/**', map(e => '../**/*.'+e, ext)));
   return gulp
     .src(sources)
@@ -148,7 +170,7 @@ gulp.task('create-translations', function(done) {
 
 gulp.task('translate', gulp.series('extract-front-translations', 'extract-back-translations', 'create-translations'));
 
-gulp.task('stage', gulp.series('copy-files', 'copy-build', 'create-index', 'translate'));
+gulp.task('stage', gulp.series('copy-text-files', 'copy-binary-files', 'copy-build', 'create-index', 'translate'));
 
 gulp.task('build', gulp.series('clean', 'build-javascript', 'copy-javascript'));
 

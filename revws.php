@@ -222,7 +222,7 @@ class Revws extends Module {
 
   public function hookProductTabContent() {
     if ($this->getSettings()->getPlacement() === 'tab') {
-      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
+      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
       $this->assignReviewsData((int)(Tools::getValue('id_product')));
       return $this->display(__FILE__, 'product_tab_content.tpl');
     }
@@ -230,7 +230,7 @@ class Revws extends Module {
 
   public function hookProductFooter() {
     if ($this->getSettings()->getPlacement() === 'block') {
-      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
+      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
       $this->assignReviewsData((int)(Tools::getValue('id_product')));
       return $this->display(__FILE__, 'product_footer.tpl');
     }

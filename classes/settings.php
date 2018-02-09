@@ -132,7 +132,7 @@ class Settings {
     if (! $url) {
       $url = $context->shop->getBaseURI() . "modules/{$module->name}/views/js/front_app.js";
     }
-    return $url . "?v=" . $module->version;
+    return $url . "?CACHE_CONTROL";
   }
 
   public function getBackendAppUrl($module) {
@@ -140,7 +140,7 @@ class Settings {
     if (! $url) {
       return $module->getPath('views/js/back_app.js');
     }
-    return $url;
+    return $url . "?CACHE_CONTROL";
   }
 
   public function getSalt() {
