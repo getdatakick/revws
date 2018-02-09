@@ -114,7 +114,7 @@ gulp.task('copy-text-files', function(done) {
     const sources = append('!../.tbstore/**', append('!../src/**', map(e => '../**/*.'+e, ext)));
     return gulp
       .src(sources)
-      .pipe(replace(/CACHE_CONTROL/, commit))
+      .pipe(replace(/CACHE_CONTROL/g, commit))
       .pipe(gulp.dest('./build/staging/revws'))
       .on('end', done);
   });
