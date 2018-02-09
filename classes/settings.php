@@ -138,7 +138,7 @@ class Settings {
   public function getBackendAppUrl($module) {
     $url = Configuration::get(self::BACKEND_APP_URL);
     if (! $url) {
-      return $module->getPath('views/js/back_app.js');
+      $url = $module->getPath('views/js/back_app.js');
     }
     return $url . "?CACHE_CONTROL";
   }
