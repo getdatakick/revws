@@ -322,7 +322,7 @@ class RevwsReview extends ObjectModel {
       'date' => $this->date_add,
       'email' => $canEdit ? $this->email : '',
       'grades' => $this->grades,
-      'grade' => Utils::calculateAverage($this->grades),
+      'grade' => round(Utils::calculateAverage($this->grades)),
       'title' => $this->title,
       'content' => $this->content,
       'underReview' => !$this->validated,

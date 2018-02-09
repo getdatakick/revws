@@ -26,6 +26,7 @@ export type SettingsType = {
     },
     myReviews: {
       show: boolean,
+      iconClass: string,
       reviewsPerPage: number | string,
       maxRequests: number | string,
     }
@@ -63,18 +64,25 @@ export type SettingsType = {
       reply: boolean,
     }
   },
-  'richSnippets': {
+  richSnippets: {
     enabled: boolean
   }
 }
 
+export type EnvironmentType = {
+  productcomments: boolean,
+  mailstream: boolean
+}
+
 export type GlobalDataType = {
   api: string,
+  baseUrl: string,
   shapes: {
     [ string ]: GradingShapeType
   },
   language: number,
-  languages: LanguagesType
+  languages: LanguagesType,
+  environment: EnvironmentType
 }
 
 export type FullCriterion = {

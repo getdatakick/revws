@@ -37,7 +37,7 @@
   {if $reviewsData.canCreate}
     <div class="form-group">
       <a class="btn btn-primary">
-        {l s='Be the first to write review!' mod='revws'}
+        {l s='Be the first to write a review!' mod='revws'}
       </a>
     </div>
   {else}

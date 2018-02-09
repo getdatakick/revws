@@ -60,7 +60,7 @@ class DatakickIntegration {
         ],
         'cl' => [
           'table' => 'revws_criterion_lang',
-          'require' => [ 'r' ],
+          'require' => [ 'c' ],
           'parameters' => [ 'language' ],
           'create' => [
             'id_criterion' => '<pk>',
@@ -140,6 +140,8 @@ class DatakickIntegration {
           'type' => 'HAS_MANY',
           'sourceFields' => [ 'id' ],
           'targetFields' => [ 'criterionId' ],
+          'delete' => true,
+          'create' => true,
         ]
       ]
     ];
@@ -160,6 +162,13 @@ class DatakickIntegration {
         'r' => [
           'table' => 'revws_review',
           'create' => [
+            'id_lang' => '<param:language>',
+            'validated' => 0,
+            'deleted' => 0,
+            'id_customer' => 0,
+            'id_guest' => 0,
+            'date_add' => '<param:timestamp>',
+            'date_upd' => '<param:timestamp>'
           ]
         ],
         'pl' => [
@@ -234,6 +243,7 @@ class DatakickIntegration {
           'description' => 'title',
           'mapping' => [ 'r' => 'title' ],
           'update' => true,
+          'required' => true
         ],
         'content' => [
           'type' => 'string',
@@ -252,12 +262,14 @@ class DatakickIntegration {
           'description' => 'email',
           'mapping' => [ 'r' => 'email' ],
           'update' => true,
+          'required' => true
         ],
         'reviewerName' => [
           'type' => 'string',
           'description' => 'Reviewer name',
           'mapping' => [ 'r' => 'display_name' ],
           'update' => true,
+          'required' => true,
         ],
         'approved' => [
           'type' => 'boolean',
@@ -350,6 +362,8 @@ class DatakickIntegration {
             'type' => 'HAS_MANY',
             'sourceFields' => [ 'id' ],
             'targetFields' => [ 'reviewId' ],
+            'create' => true,
+            'delete' => true
           ],
         ],
         'list' => [
@@ -396,7 +410,8 @@ class DatakickIntegration {
             'mapping' => [
               'g' => 'id_review',
             ],
-            'update' => false,
+            'update' => true,
+            'required' => true,
             'selectRecord' => 'revwsReviews'
           ],
           'criterion' => [
@@ -413,7 +428,8 @@ class DatakickIntegration {
             'mapping' => [
               'g' => 'id_criterion'
             ],
-            'update' => false
+            'required' => true,
+            'update' => true
           ],
           'rating' => [
             'type' => 'number',
@@ -421,6 +437,7 @@ class DatakickIntegration {
             'mapping' => [
               'g' => 'grade',
             ],
+            'required' => true,
             'update' => true,
           ],
         ],

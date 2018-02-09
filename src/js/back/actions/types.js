@@ -10,6 +10,7 @@ export default {
   setSize: 'SET_SIZE',
   setSnackbar: 'SET_SNACKBAR',
 
+  setCriteria: 'SET_CRITERIA',
   saveCriterion: 'SAVE_CRITERION',
   criterionSaved: 'CRITERION_SAVED',
   deleteCriterion: 'DELETE_CRITERION',
@@ -20,5 +21,7 @@ export default {
   approveReview: 'APPROVE_REVIEW',
   deleteReview: 'DELETE_REVIEW',
   undeleteReview: 'UNDELETE_REVIEW',
-  saveReview: 'SAVE_REVIEW'
+  saveReview: 'SAVE_REVIEW',
+
+  migrateData: 'MIGRATE_DATA'
 };

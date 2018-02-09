@@ -14,6 +14,7 @@ import { loadData } from './load-data';
 import { approveReview } from './approve-review';
 import { deleteReview } from './delete-review';
 import { undeleteReview } from './undelete-review';
+import { migrateData } from './migrate-data';
 
 const commands = {
   [ Types.setSettings ]: saveSettings,
@@ -24,6 +25,7 @@ const commands = {
   [ Types.deleteReview ]: deleteReview,
   [ Types.undeleteReview ]: undeleteReview,
   [ Types.approveReview ]: approveReview,
+  [ Types.migrateData ]: migrateData,
 };
 
 export default (settings: GlobalDataType) => {

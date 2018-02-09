@@ -74,6 +74,7 @@ class Settings {
         ],
         'myReviews' => [
           'show' => true,
+          'iconClass' => 'icon icon-star',
           'reviewsPerPage' => 5,
           'maxRequests' => 3
         ]
@@ -134,10 +135,10 @@ class Settings {
     return $url . "?v=" . $module->version;
   }
 
-  public function getBackendAppUrl($moduleName) {
+  public function getBackendAppUrl($module) {
     $url = Configuration::get(self::BACKEND_APP_URL);
     if (! $url) {
-      $url = _PS_MODULE_DIR_ . $moduleName . '/views/js/back_app.js';
+      return $module->getPath('views/js/back_app.js');
     }
     return $url;
   }
@@ -234,6 +235,10 @@ class Settings {
 
   public function showOnCustomerAccount() {
     return $this->toBool($this->get(['display', 'myReviews', 'show']));
+  }
+
+  public function getCustomerAccountIcon() {
+    return $this->get(['display', 'myReviews', 'iconClass']);
   }
 
   public function getCustomerReviewsPerPage() {

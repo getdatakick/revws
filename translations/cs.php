@@ -3,7 +3,7 @@
 global $_MODULE;
 $_MODULE = array();
 $_MODULE['<{revws}prestashop>app-translation_8f839f87018d358124bc6aa5c9383c9a'] = 'Opravdu chcete smazat tuto recenzi?';
-$_MODULE['<{revws}prestashop>app-translation_083f7a6379223de0a949150accd7f31b'] = 'Napište první recenzi';
+$_MODULE['<{revws}prestashop>app-translation_ff7872689b6546ccf30f86adf2ac8b1a'] = 'Napište první recenzi';
 $_MODULE['<{revws}prestashop>app-translation_ea4788705e6873b424c65e91c2846b19'] = 'Zrušit';
 $_MODULE['<{revws}prestashop>app-translation_f33f1b5b551e943f4bfd4cc865d38572'] = 'Odpověz kliknutím';
 $_MODULE['<{revws}prestashop>app-translation_d3d2e617335f08df83599665eef8a418'] = 'Zavřít';
@@ -177,7 +177,7 @@ $_MODULE['<{revws}prestashop>private_my_review_list_28f9fe422a6def7fdbcd1b10ed37
 $_MODULE['<{revws}prestashop>private_my_review_list_d9a32421dd3734edae71548f85c2af74'] = 'Vaše recenze';
 $_MODULE['<{revws}prestashop>private_my_review_list_b65d0256ae78ad075e86fae8290634b8'] = 'Nenapsal jste zatím žádnou recenzi';
 $_MODULE['<{revws}prestashop>private_product_list_c565011debb8e2812ef12853eb6a38a9'] = 'Napište recenzi';
-$_MODULE['<{revws}prestashop>private_product_list_083f7a6379223de0a949150accd7f31b'] = 'Napište první recenzi';
+$_MODULE['<{revws}prestashop>private_product_list_ff7872689b6546ccf30f86adf2ac8b1a'] = 'Napište první recenzi';
 $_MODULE['<{revws}prestashop>private_product_list_08c7d6f84301ee7d0aab0a5f67edc419'] = 'Žádné recenze';
 $_MODULE['<{revws}prestashop>private_review_list_item_3ca32221f7742304da26dc83ad3a33fa'] = 'Tato recenze ještě nebyla schválena';
 $_MODULE['<{revws}prestashop>private_review_list_item_39630ad6ee79b8653ea89194cdb45bec'] = 'Pomohla vám tato recenze?';
@@ -188,7 +188,7 @@ $_MODULE['<{revws}prestashop>private_review_list_item_e31a637718a446f76bb48dbf6c
 $_MODULE['<{revws}prestashop>private_review_list_item_b4fec2e4120bcfbbdc5938c00a2dc00f'] = 'Smazat recenzi';
 $_MODULE['<{revws}prestashop>product_extra_dda9c06f33071c9b6fc237ee164109d8'] = 'Hodnocení';
 $_MODULE['<{revws}prestashop>product_extra_86018e4e7bd71c20b349a9d074ec506d'] = '(přečtěte si %1$d recenze)';
-$_MODULE['<{revws}prestashop>product_extra_083f7a6379223de0a949150accd7f31b'] = 'Napište první recenzi';
+$_MODULE['<{revws}prestashop>product_extra_ff7872689b6546ccf30f86adf2ac8b1a'] = 'Napište první recenzi';
 $_MODULE['<{revws}prestashop>product_extra_08c7d6f84301ee7d0aab0a5f67edc419'] = 'Žádné recenze';
 $_MODULE['<{revws}prestashop>product_footer_34e80a799d144cfe4af46815e103f017'] = 'Recenze';
 $_MODULE['<{revws}prestashop>product_list_ba184250416f4c700caaa55c8ec56004'] = 'jedna recenze';

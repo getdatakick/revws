@@ -1,5 +1,5 @@
 // @flow
-import type { Load, SettingsType, FullCriterion } from 'back/types';
+import type { Load, SettingsType, FullCriterion, FullCriteria } from 'back/types';
 import type { ReviewType } from 'common/types';
 import type { RoutingState } from 'back/routing';
 
@@ -24,6 +24,11 @@ export type SetSizeAction = {
 export type SetSettingsAction = {
   type: 'SET_SETTINGS',
   settings: SettingsType
+}
+
+export type SetCriteriaAction = {
+  type: 'SET_CRITERIA',
+  criteria: FullCriteria
 }
 
 export type SaveCriterionAction = {
@@ -88,6 +93,12 @@ export type ReviewCreatedAction = {
   review: ReviewType
 }
 
+export type MigrateDataAction = {
+  type: 'MIGRATE_DATA',
+  source: string,
+  payload: any
+}
+
 
 export type Action = (
   GoToAction |
@@ -96,6 +107,7 @@ export type Action = (
   SetSettingsAction |
   SetSnackbarAction |
   SetSizeAction |
+  SetCriteriaAction |
   SaveCriterionAction |
   CriterionSavedAction |
   DeleteCriterionAction |
@@ -105,5 +117,6 @@ export type Action = (
   UndeleteReviewAction |
   SaveReviewAction |
   ReviewUpdatedAction |
-  ReviewCreatedAction
+  ReviewCreatedAction |
+  MigrateDataAction
 );

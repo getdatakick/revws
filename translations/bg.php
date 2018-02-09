@@ -2,7 +2,7 @@
 
 global $_MODULE;
 $_MODULE = array();
-$_MODULE['<{revws}prestashop>app-translation_083f7a6379223de0a949150accd7f31b'] = 'Бъдете първият написал ревю!';
+$_MODULE['<{revws}prestashop>app-translation_ff7872689b6546ccf30f86adf2ac8b1a'] = 'Бъдете първият написал ревю!';
 $_MODULE['<{revws}prestashop>app-translation_ea4788705e6873b424c65e91c2846b19'] = 'Откажи';
 $_MODULE['<{revws}prestashop>app-translation_f33f1b5b551e943f4bfd4cc865d38572'] = 'Кликни тук да отговориш';
 $_MODULE['<{revws}prestashop>app-translation_d3d2e617335f08df83599665eef8a418'] = 'Затвори';
@@ -163,7 +163,7 @@ $_MODULE['<{revws}prestashop>app-translation_d1956df52b2886dfbbd77ebd78d66971'] 
 $_MODULE['<{revws}prestashop>app-translation_f88a72cfa37b2f2dcdd9bb22e85edd5a'] = 'посетител пише ново ревю';
 $_MODULE['<{revws}prestashop>private_my_review_list_b65d0256ae78ad075e86fae8290634b8'] = 'Все още не сте писали ревюта';
 $_MODULE['<{revws}prestashop>private_product_list_c565011debb8e2812ef12853eb6a38a9'] = 'Напишете ревю!';
-$_MODULE['<{revws}prestashop>private_product_list_083f7a6379223de0a949150accd7f31b'] = 'Бъдете първият написал ревю!';
+$_MODULE['<{revws}prestashop>private_product_list_ff7872689b6546ccf30f86adf2ac8b1a'] = 'Бъдете първият написал ревю!';
 $_MODULE['<{revws}prestashop>private_product_list_08c7d6f84301ee7d0aab0a5f67edc419'] = 'Все още няма отзиви от клиенти.';
 $_MODULE['<{revws}prestashop>private_review_list_item_3ca32221f7742304da26dc83ad3a33fa'] = 'Ревюто все още не е одобрено';
 $_MODULE['<{revws}prestashop>private_review_list_item_39630ad6ee79b8653ea89194cdb45bec'] = 'Беше ли полезен този коментар за Вас?';
@@ -172,5 +172,5 @@ $_MODULE['<{revws}prestashop>private_review_list_item_bafd7322c6e97d25b6299b5d6f
 $_MODULE['<{revws}prestashop>private_review_list_item_28b3b1e564a00f572c5d4e21da986d49'] = 'Докладвайте нарушение';
 $_MODULE['<{revws}prestashop>private_review_list_item_e31a637718a446f76bb48dbf6c69cab7'] = 'Редактирайте ревю';
 $_MODULE['<{revws}prestashop>private_review_list_item_b4fec2e4120bcfbbdc5938c00a2dc00f'] = 'Изтрийте ревю';
-$_MODULE['<{revws}prestashop>product_extra_083f7a6379223de0a949150accd7f31b'] = 'Бъдете първият написал ревю!';
+$_MODULE['<{revws}prestashop>product_extra_ff7872689b6546ccf30f86adf2ac8b1a'] = 'Бъдете първият написал ревю!';
 $_MODULE['<{revws}prestashop>product_extra_08c7d6f84301ee7d0aab0a5f67edc419'] = 'Все още няма отзиви от клиенти.';

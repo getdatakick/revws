@@ -2,7 +2,7 @@
 <module>
 	<name>revws</name>
 	<displayName><![CDATA[Product Reviews]]></displayName>
-	<version><![CDATA[1.0.1]]></version>
+	<version><![CDATA[1.0.2]]></version>
 	<description><![CDATA[Product Reviews module]]></description>
 	<author><![CDATA[DataKick <petr@getdatakick.com>]]></author>
 	<tab><![CDATA[administration]]></tab>

@@ -41,7 +41,7 @@ class Revws extends Module {
   public function __construct() {
     $this->name = 'revws';
     $this->tab = 'administration';
-    $this->version = '1.0.1';
+    $this->version = '1.0.2';
     $this->author = 'DataKick <petr@getdatakick.com>';
     $this->need_instance = 0;
     $this->bootstrap = true;
@@ -122,7 +122,7 @@ class Revws extends Module {
     return $this->executeSqlScript('uninstall');
   }
 
-  private function executeSqlScript($script) {
+  public function executeSqlScript($script) {
     $file = dirname(__FILE__) . '/sql/' . $script . '.sql';
     if (! file_exists($file)) {
       return false;
@@ -220,7 +220,7 @@ class Revws extends Module {
 
   public function hookProductTabContent() {
     if ($this->getSettings()->getPlacement() === 'tab') {
-      $this->context->controller->addJS($this->_path.'views/js/front_bootstrap.js');
+      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
       $this->assignReviewsData((int)(Tools::getValue('id_product')));
       return $this->display(__FILE__, 'product_tab_content.tpl');
     }
@@ -228,17 +228,15 @@ class Revws extends Module {
 
   public function hookProductFooter() {
     if ($this->getSettings()->getPlacement() === 'block') {
-      $this->context->controller->addJS($this->_path.'views/js/front_bootstrap.js');
+      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
       $this->assignReviewsData((int)(Tools::getValue('id_product')));
       return $this->display(__FILE__, 'product_footer.tpl');
     }
   }
 
   public function hookHeader() {
-    $this->context->controller->addCSS($this->_path.'views/css/front.css', 'all');
-    $this->context->controller->addCSS('https://fonts.googleapis.com/css?family=Roboto:300,400,500', 'all');
+    $this->includeCommonStyles($this->context->controller);
   }
-
 
   public function hookDisplayRightColumnProduct($params) {
     if ($this->getSettings()->showAverageOnProductPage()) {
@@ -288,6 +286,7 @@ class Revws extends Module {
 
   public function hookCustomerAccount($params) {
     if ($this->getSettings()->showOnCustomerAccount()) {
+      $this->context->smarty->assign('iconClass', $this->getSettings()->getCustomerAccountIcon());
       return $this->display(__FILE__, 'my-account.tpl');
     }
   }
@@ -297,7 +296,7 @@ class Revws extends Module {
   }
 
   public function getPath($relative) {
-    return $this->_path . $relative;
+    return $this->getPathUri() . $relative;
   }
 
   public static function getReviewUrl($context, $productId) {
@@ -329,6 +328,15 @@ class Revws extends Module {
   public function getBackTranslations() {
     $translations = new \Revws\AppTranslation($this);
     return $translations->getBackTranslations();
+  }
+
+  public function includeCommonStyles($controller) {
+    if (file_exists(_PS_THEME_DIR_."css/modules/{$this->name}/{$this->name}.css")) {
+        $controller->addCSS(_PS_THEME_DIR_."css/modules/{$this->name}/{$this->name}.css", 'all');
+    } else {
+        $controller->addCSS($this->getPath('views/css/front.css'), 'all');
+    }
+    $controller->addCSS('https://fonts.googleapis.com/css?family=Roboto:300,400,500', 'all');
   }
 
 }

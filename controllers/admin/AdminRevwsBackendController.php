@@ -28,10 +28,9 @@ class AdminRevwsBackendController extends ModuleAdminController {
     parent::__construct();
     $this->display = 'view';
     $this->bootstrap = false;
+    $this->module->includeCommonStyles($this);
     $this->addCSS($this->getPath('views/css/back.css'));
-    $this->addCSS($this->getPath('views/css/front.css'));
-    $this->context->controller->addCSS('https://fonts.googleapis.com/css?family=Roboto:300,400,500', 'all');
-    $this->addJs($this->module->getSettings()->getBackendAppUrl($this->module->name));
+    $this->addJs($this->module->getSettings()->getBackendAppUrl($this->module));
   }
 
   public function display() {
@@ -51,11 +50,16 @@ class AdminRevwsBackendController extends ModuleAdminController {
       'revws' => [
         'data' => [
           'api' => $this->context->link->getAdminLink('AdminRevwsBackend'),
+          'baseUrl' => $this->getPath(''),
           'shapes' => Shapes::getAvailableShapes(),
           'languages' => $languages,
           'language' => $lang,
+          'environment' => [
+            'mailstream' => Module::isInstalled('mailstream'),
+            'productcomments' => Module::isInstalled('productcomments')
+          ]
         ],
-        'criteria' => array_map(array('RevwsCriterion', 'toJSData'), RevwsCriterion::getFullCriteria()),
+        'criteria' => $this->getCriteria(),
         'settings' => $settings->get(),
         'translations' => $this->module->getBackTranslations(),
       ]
@@ -74,14 +78,14 @@ class AdminRevwsBackendController extends ModuleAdminController {
 
   public function createTemplate($tpl_name) {
     if ($this->viewAccess() && $tpl_name === 'content.tpl') {
-      $path = $this->getPath('views/templates/admin/backend.tpl');
+      $path = _PS_MODULE_DIR_ . $this->module->name . '/views/templates/admin/backend.tpl';
       return $this->context->smarty->createTemplate($path, $this->context->smarty);
     }
     return parent::createTemplate($tpl_name);
   }
 
   private function getPath($path) {
-    return _PS_MODULE_DIR_ . $this->module->name . '/' . $path;
+    return $this->module->getPath($path);
   }
 
   public function ajaxProcessCommand() {
@@ -115,6 +119,8 @@ class AdminRevwsBackendController extends ModuleAdminController {
         return $this->saveCriterion($payload);
       case 'saveReview':
         return $this->saveReview($payload);
+      case 'migrateData':
+        return $this->migrateData($payload);
       default:
         throw new Exception("Unknown command $cmd");
     }
@@ -238,6 +244,25 @@ class AdminRevwsBackendController extends ModuleAdminController {
     return false;
   }
 
+  private function migrateData($data) {
+    $source = isset($data['source']) ? $data['source'] : 'invalid';
+    switch ($source) {
+      case 'productcomments':
+        $this->migrateProductComments();
+        break;
+      default:
+        throw new Exception("Don't know how to migrate $source");
+    }
+    return [
+      'source' => $source,
+      'criteria' => $this->getCriteria()
+    ];
+  }
+
+  private function migrateProductComments() {
+    $this->module->executeSqlScript('migrate-productcomments');
+  }
+
   private function reply($error, $result) {
     if ($error) {
       echo json_encode(['success'=>false, 'error' => $error]);
@@ -268,6 +293,11 @@ class AdminRevwsBackendController extends ModuleAdminController {
       return $rev->toJSData($this->module->getPermissions());
     }
     throw new Exception("Review does not exists");
+  }
+
+
+  private function getCriteria() {
+    return array_map(array('RevwsCriterion', 'toJSData'), RevwsCriterion::getFullCriteria());
   }
 
 }
