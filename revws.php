@@ -348,9 +348,13 @@ class Revws extends Module {
   }
 
   private function getProductReviewsLink($product) {
-    return $this->context->link->getProductLink($product, null, null, null, null, null, 0, false, false, false, [
-      'show' => 'reviews'
-    ]);
+    $link = $this->context->link->getProductLink($product);
+    if (strpos($link, '?') === false) {
+      $link .= '?show=reviews';
+    } else {
+      $link .= '&show=reviews';
+    }
+    return $link;
   }
 
 }
