@@ -12,6 +12,7 @@ import Textarea from 'common/components/text-area/text-area';
 import Button from 'material-ui/Button';
 
 type Props = {
+  shopName: string,
   shape: GradingShapeType,
   shapeSize: number,
   review: ReviewType,
@@ -131,6 +132,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
   }
 
   renderReply = (reply: string) => {
+    const shopName = this.props.shopName;
     const canEdit = !!this.props.onSaveReply;
     const clazz = classnames("revws-reply", {
       [ styles.editable ]: canEdit
@@ -139,6 +141,9 @@ class ReviewListItem extends React.PureComponent<Props, State> {
     return (
       <div className="revws-replies">
         <div className={clazz} onClick={onClick}>
+          <div className="revws-reply-title">
+            {__('Reply from %s:', shopName)}
+          </div>
           <div className="revws-reply-content">
             { this.renderContent(reply) }
           </div>

@@ -50,6 +50,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
       'revws' => [
         'data' => [
           'api' => $this->context->link->getAdminLink('AdminRevwsBackend'),
+          'shopName' => Configuration::get('PS_SHOP_NAME'),
           'baseUrl' => $this->getPath(''),
           'shapes' => Shapes::getAvailableShapes(),
           'languages' => $languages,

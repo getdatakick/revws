@@ -22,6 +22,7 @@
 *
 *
 *}
+{strip}
 <div class="revws-review row no-gutter" {if $microdata}itemprop="review" itemscope itemtype="http://schema.org/Review"{/if}>
   <div class="col-sm-3 col-md-2">
     <div class="revws-review-author">
@@ -85,6 +86,9 @@
       {if $review.reply}
         <div class="revws-replies">
           <div class="revws-reply">
+            <div class="revws-reply-title">
+              {l s='Reply from %s:' sprintf="{$reviewsData.shopName}" mod='revws'}
+            </div>
             <div class="revws-reply-content">
               {$review.reply|escape:'html':'UTF-8'|nl2br}
             </div>
@@ -94,3 +98,4 @@
     </div>
   </div>
 </div>
+{/strip}

@@ -163,7 +163,7 @@ class Settings extends React.PureComponent<Props, State> {
   }
 
   renderTheme = () => {
-    const { shapes } = this.props.data;
+    const { shapes, shopName } = this.props.data;
     const { theme, review } = this.state.settings;
     const size = theme.shapeSize.product;
     const sizes = map(v => v*2, range(5, 13));
@@ -188,6 +188,7 @@ class Settings extends React.PureComponent<Props, State> {
 
         <h2 className={styles.margin}>{__('Preview')}</h2>
         <Preview
+          shopName={shopName}
           shape={shapes[theme.shape]}
           size={theme.shapeSize.product}
           canVote={review.allowVoting}

@@ -28,6 +28,7 @@ class FrontAppReviewList extends React.PureComponent<Props> {
     return isEmpty ? this.renderEmptyState(canCreate) : (
       <div>
         <List
+          shopName={settings.shopName}
           shape={settings.shape}
           shapeSize={settings.shapeSize.product}
           reviewList={reviewList}

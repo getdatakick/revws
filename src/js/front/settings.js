@@ -11,6 +11,7 @@ export const getSettings = (input: any): SettingsType => {
     throw new Error('Invalid settings object');
   }
 
+  const shopName = get('shopName', isString, input);
   const theme = get('theme', isObject, input);
   const shape = get('shape', isObject, theme);
   const shapeSize = get('shapeSize', isObject, theme);
@@ -22,6 +23,7 @@ export const getSettings = (input: any): SettingsType => {
   const api = get('api', isString, input);
 
   return {
+    shopName,
     api,
     products,
     criteria,

@@ -76,6 +76,7 @@ export type EnvironmentType = {
 
 export type GlobalDataType = {
   api: string,
+  shopName: string,
   baseUrl: string,
   shapes: {
     [ string ]: GradingShapeType

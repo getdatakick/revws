@@ -3,6 +3,7 @@
 import type { CriteriaType, GradingShapeType, NameFormatType, ProductInfoType } from 'common/types';
 
 export type SettingsType = {
+  shopName: string,
   api: string,
   criteria: CriteriaType,
   shape: GradingShapeType,

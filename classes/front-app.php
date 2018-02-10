@@ -20,6 +20,7 @@
 namespace Revws;
 
 use \Context;
+use \Configuration;
 use \RevwsReview;
 use \RevwsCriterion;
 use \Product;
@@ -80,6 +81,7 @@ class FrontApp {
     }
 
     return [
+      'shopName' => Configuration::get('PS_SHOP_NAME'),
       'translations' => $this->module->getFrontTranslations(),
       'entityType' => $entityType,
       'entityId' => $entityId,

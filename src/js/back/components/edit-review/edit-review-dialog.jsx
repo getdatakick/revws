@@ -11,6 +11,7 @@ import { assoc, equals } from 'ramda';
 import styles from './edit-review-form.less';
 
 type Props = {
+  shopName: string,
   allowEmptyReviews: boolean,
   review: ?ReviewType,
   language: number,
@@ -142,13 +143,14 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
   }
 
   renderViewMode = (review: ReviewType) => {
-    const { onSave, criteria, language, shape, shapeSize } = this.props;
+    const { onSave, criteria, language, shape, shapeSize, shopName } = this.props;
     return (
       <ViewReviewForm
         onUpdateReview={review => {
           this.onUpdateReview(review);
           onSave(review);
         }}
+        shopName={shopName}
         review={review}
         shape={shape}
         shapeSize={shapeSize}

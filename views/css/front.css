@@ -204,6 +204,14 @@ a .revws-grading {
   padding: 20px;
   background-color: #EBF3F8;
   margin-top: 10px;
+  font-size: 90%;
+  color: #777;
+}
+
+.revws-reply-title {
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 10px;
 }
 
 .revws-review-with-product {
