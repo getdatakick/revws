@@ -265,7 +265,7 @@ class Revws extends Module {
         $this->context->smarty->assign('reviewCount', $count);
         $this->context->smarty->assign('shape', $this->getShapeSettings());
         $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
-        $this->context->smarty->assign('reviewsUrl', $this->context->link->getProductLink($productId).'#idTabRevws');
+        $this->context->smarty->assign('reviewsUrl', $this->getProductReviewsLink($productId));
         return $this->display(__FILE__, 'product_list.tpl');
       }
     }
@@ -345,6 +345,12 @@ class Revws extends Module {
         $controller->addCSS($this->getPath('views/css/front.css'), 'all');
     }
     $controller->addCSS('https://fonts.googleapis.com/css?family=Roboto:300,400,500', 'all');
+  }
+
+  private function getProductReviewsLink($product) {
+    return $this->context->link->getProductLink($product, null, null, null, null, null, 0, false, false, false, [
+      'show' => 'reviews'
+    ]);
   }
 
 }

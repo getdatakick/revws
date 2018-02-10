@@ -6,6 +6,11 @@
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+  // returns true, if reviews are displayed in tab.
+  var displayedInTab = function() {
+    return (window.revwsData && window.revwsData.preferences.placement === 'tab');
+  }
+
   /**
    * this function will not work on all themes. Change it if you use tabs,
    * and reviews tab will not open automatically when you click on 'read reviews'
@@ -17,18 +22,24 @@
     $('a[href="#idTabRevws"]').addClass('selected');
   };
 
-  $(function() {
-    if (window.revwsData && window.revwsData.preferences.placement === 'tab') {
-      // watch changes in hash and open tab if necesseary
-      var hashchange = function() {
-        if (window.location.hash.indexOf('#idTabRevws') > -1) {
-          openTab();
-        }
-      };
-      $(window).on('hashchange', hashchange);
-      $('a[href=#idTabRevws]').click(openTab);
-      hashchange();
+  var scrollToReviews = function() {
+    if (displayedInTab()) {
+      openTab();
     }
+    $('html, body').animate({
+      scrollTop: $("#idTabRevws").offset().top - 80
+    }, 500);
+  }
+
+  $(function() {
+    var s = window.location.search || '';
+    if (s.indexOf('show=reviews') > -1) {
+      scrollToReviews();
+    }
+    $('a[href=#idTabRevws]').click(function(e) {
+      e.preventDefault();
+      scrollToReviews();
+    });
     $('[data-revws-create-trigger]').click(function(e) {
       e.preventDefault();
       if (window.revws) {
