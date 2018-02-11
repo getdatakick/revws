@@ -208,6 +208,7 @@ class Revws extends Module {
     $this->context->smarty->assign('reviewsData', $reviewsData);
     $this->context->smarty->assign('microdata', $this->getSettings()->emitRichSnippets());
     Media::addJsDef([ 'revwsData' => $reviewsData ]);
+    return $reviewsData;
   }
 
   private function getShapeSettings() {
@@ -222,18 +223,26 @@ class Revws extends Module {
 
   public function hookProductTabContent() {
     $set = $this->getSettings();
-    if ($set->showReviewsOnProductPage() && $this->getSettings()->getPlacement() === 'tab') {
+    if ($this->getSettings()->getPlacement() === 'tab') {
       $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
-      $this->assignReviewsData((int)(Tools::getValue('id_product')));
+      $reviewsData = $this->assignReviewsData((int)(Tools::getValue('id_product')));
+      $emptyReviews = $reviewsData['reviews']['total'] == 0;
+      if ($emptyReviews && $set->hideEmptyReviews()) {
+        return;
+      }
       return $this->display(__FILE__, 'product_tab_content.tpl');
     }
   }
 
   public function hookProductFooter() {
     $set = $this->getSettings();
-    if ($set->showReviewsOnProductPage() && $set->getPlacement() === 'block') {
+    if ($set->getPlacement() === 'block') {
       $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
-      $this->assignReviewsData((int)(Tools::getValue('id_product')));
+      $reviewsData = $this->assignReviewsData((int)(Tools::getValue('id_product')));
+      $emptyReviews = $reviewsData['reviews']['total'] == 0;
+      if ($emptyReviews && $set->hideEmptyReviews()) {
+        return;
+      }
       return $this->display(__FILE__, 'product_footer.tpl');
     }
   }
@@ -243,9 +252,13 @@ class Revws extends Module {
   }
 
   public function hookDisplayRightColumnProduct($params) {
-    if ($this->getSettings()->showAverageOnProductPage()) {
+    $set = $this->getSettings();
+    if ($set->showAverageOnProductPage()) {
       $productId = (int)(Tools::getValue('id_product'));
       list($grade, $count) = RevwsReview::getAverageGrade($productId);
+      if ($count == 0 && $set->hideEmptyReviews()) {
+        return;
+      }
       $this->context->smarty->assign('productId', $productId);
       $this->context->smarty->assign('grade', $grade);
       $this->context->smarty->assign('reviewCount', $count);

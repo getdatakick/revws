@@ -182,10 +182,7 @@ class Settings {
   }
 
   public function showAverageOnProductPage() {
-    return (
-      $this->showReviewsOnProductPage() &&
-      $this->toBool($this->get(['display', 'product', 'showAverage']))
-    );
+    return $this->toBool($this->get(['display', 'product', 'showAverage']));
   }
 
   public function getReviewsPerPage() {
@@ -233,8 +230,8 @@ class Settings {
     return $this->toEmptyStateBehavior($this->get(['display', 'product', 'emptyStateBehavior']));
   }
 
-  public function showReviewsOnProductPage() {
-    return $this->getEmptyStateBehavior() !== 'hide';
+  public function hideEmptyReviews() {
+    return $this->getEmptyStateBehavior() === 'hide';
   }
 
   public function getShape() {
