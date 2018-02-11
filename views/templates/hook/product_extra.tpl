@@ -34,7 +34,13 @@
           {l s='Be the first to write a review!' mod='revws'}
         </a>
       {else}
-        {l s='No customer reviews for the moment.' mod='revws'}
+        {if $showLogin}
+          <a class="revws-product-extra-link" href="{$loginLink}">
+            {l s='Sign in to write a review' mod='revws'}
+          </a>
+        {else}
+          {l s='No customer reviews for the moment.' mod='revws'}
+        {/if}
       {/if}
     {/if}
 </div>

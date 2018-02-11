@@ -429,7 +429,26 @@ class Settings extends React.PureComponent<Props, State> {
             error={!! errors.display.product.reviewsPerPage}
             onChange={e => this.set(['display', 'product', 'reviewsPerPage'], e.target.value)} />
           <div className={styles.space} />
+
         </div>
+        {!settings.review.allowGuestReviews && (
+          <div>
+            <div className={styles.group}>
+              <TextField
+                select
+                label={__("No reviews and guest behavior")}
+                value={settings.display.product.emptyStateBehavior}
+                fullWidth
+                disabled={settings.review.allowGuestReviews}
+                onChange={e => this.set(['display', 'product', 'emptyStateBehavior'], e.target.value)}>
+                <MenuItem value='display'>{__("show empty reviews tab")}</MenuItem>
+                <MenuItem value='hide'>{__("hide reviews tab completely")}</MenuItem>
+                <MenuItem value='login'>{__("show sign in button")}</MenuItem>
+              </TextField>
+            </div>
+            <div className={styles.space} />
+          </div>
+        )}
         <FormControlLabel
           control={this.renderSwitch(['display', 'product', 'showAverage'])}
           label={__("Show average ratings on product page")}

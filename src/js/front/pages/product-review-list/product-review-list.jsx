@@ -63,6 +63,16 @@ class FrontAppReviewList extends React.PureComponent<Props> {
     if (canCreate) {
       return this.renderCreateButton(__('Be the first to write a review!'));
     }
+    const settings = this.props.settings;
+    if (settings.preferences.emptyStateBehavior == 'login') {
+      return (
+        <div className="form-group">
+          <a className="btn btn-primary" href={settings.loginUrl}>
+            {__('Sign in to write a review')}
+          </a>
+        </div>
+      );
+    }
     return (
       <div className="form-group">
         {__('No customer reviews for the moment.')}

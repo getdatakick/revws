@@ -28,7 +28,9 @@ export type SettingsType = {
     allowGuestReviews: boolean,
     allowReviewWithoutCriteria: boolean,
     customerReviewsPerPage: number,
-    customerMaxRequests: number
+    customerMaxRequests: number,
+    emptyStateBehavior: 'display' | 'hide' | 'login'
   },
+  loginUrl: string,
   canCreate: boolean
 }

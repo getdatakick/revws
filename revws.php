@@ -221,7 +221,8 @@ class Revws extends Module {
   }
 
   public function hookProductTabContent() {
-    if ($this->getSettings()->getPlacement() === 'tab') {
+    $set = $this->getSettings();
+    if ($set->showReviewsOnProductPage() && $this->getSettings()->getPlacement() === 'tab') {
       $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
       $this->assignReviewsData((int)(Tools::getValue('id_product')));
       return $this->display(__FILE__, 'product_tab_content.tpl');
@@ -229,7 +230,8 @@ class Revws extends Module {
   }
 
   public function hookProductFooter() {
-    if ($this->getSettings()->getPlacement() === 'block') {
+    $set = $this->getSettings();
+    if ($set->showReviewsOnProductPage() && $set->getPlacement() === 'block') {
       $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
       $this->assignReviewsData((int)(Tools::getValue('id_product')));
       return $this->display(__FILE__, 'product_footer.tpl');
@@ -250,6 +252,8 @@ class Revws extends Module {
       $this->context->smarty->assign('shape', $this->getShapeSettings());
       $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
       $this->context->smarty->assign('canCreate', $this->getPermissions()->canCreateReview($productId));
+      $this->context->smarty->assign('showLogin', $this->getSettings()->getEmptyStateBehavior() == 'login');
+      $this->context->smarty->assign('loginLink', $this->getLoginUrl($productId));
       $this->context->smarty->assign('microdata', $this->getSettings()->emitRichSnippets());
       return $this->display(__FILE__, 'product_extra.tpl');
     }
@@ -355,6 +359,17 @@ class Revws extends Module {
       $link .= '&show=reviews';
     }
     return $link;
+  }
+
+  private function getMyReviewsUrl() {
+    return $this->context->link->getModuleLink('revws', 'MyReviews');
+  }
+
+  public function getLoginUrl($product) {
+    $back = $product ? $this->getProductReviewsLink($product) : $this->getMyReviewsUrl();
+    return $this->context->link->getPageLink('authentication', true, null, [
+      'back' => $back
+    ]);
   }
 
 }

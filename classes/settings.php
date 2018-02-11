@@ -65,6 +65,7 @@ class Settings {
           'reviewsPerPage' => 5,
           'orderBy' => 'date',
           'showAverage' => true,
+          'emptyStateBehavior' => 'display'
         ],
         'productList' => [
           'show' => true,
@@ -181,7 +182,10 @@ class Settings {
   }
 
   public function showAverageOnProductPage() {
-    return $this->toBool($this->get(['display', 'product', 'showAverage']));
+    return (
+      $this->showReviewsOnProductPage() &&
+      $this->toBool($this->get(['display', 'product', 'showAverage']))
+    );
   }
 
   public function getReviewsPerPage() {
@@ -223,6 +227,14 @@ class Settings {
 
   public function getReviewOrder() {
     return $this->toOrderByPreference($this->get(['display', 'product', 'orderBy']));
+  }
+
+  public function getEmptyStateBehavior() {
+    return $this->toEmptyStateBehavior($this->get(['display', 'product', 'emptyStateBehavior']));
+  }
+
+  public function showReviewsOnProductPage() {
+    return $this->getEmptyStateBehavior() !== 'hide';
   }
 
   public function getShape() {
@@ -315,6 +327,13 @@ class Settings {
       return $pref;
     }
     return 'fullName';
+  }
+
+  private function toEmptyStateBehavior($pref) {
+    if (!$this->allowGuestReviews() && in_array($pref, ['display', 'hide', 'login'])) {
+      return $pref;
+    }
+    return 'display';
   }
 
   private function toOrderByPreference($pref) {

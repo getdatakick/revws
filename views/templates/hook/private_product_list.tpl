@@ -41,7 +41,15 @@
       </a>
     </div>
   {else}
-    <div class="form-group">{l s='No customer reviews for the moment.' mod='revws'}</div>
+    {if $reviewsData.preferences.emptyStateBehavior == 'login'}
+      <div class="form-group">
+        <a class="btn btn-primary" href="{$reviewsData.loginUrl}">
+          {l s='Sign in to write a review' mod='revws'}
+        </a>
+      </div>
+    {else}
+      <div class="form-group">{l s='No customer reviews for the moment.' mod='revws'}</div>
+    {/if}
   {/if}
 {/if}
 {/strip}

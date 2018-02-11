@@ -41,6 +41,7 @@ class FrontApp {
     $visitor = $this->getVisitor();
     $perms = $this->getPermissions();
     $set = $this->getSettings();
+    $loginUrl;
     if ($entityType == 'product') {
       $products = [
         $entityId => self::getProductData($entityId, $this->getLanguage(), $this->getPermissions())
@@ -51,6 +52,7 @@ class FrontApp {
       if (! $visitor->hasWrittenReview($entityId)) {
         $productsToReview[] = $entityId;
       }
+      $loginUrl = $this->module->getLoginUrl($entityId);
     } else {
       $products = [];
       $reviews = $this->getCustomerReviews($entityId);
@@ -78,6 +80,7 @@ class FrontApp {
           }
         }
       }
+      $loginUrl = $this->module->getLoginUrl(null);
     }
 
     return [
@@ -98,6 +101,7 @@ class FrontApp {
       ],
       'api' => $context->link->getModuleLink('revws', 'api', [], true),
       'appJsUrl' => $set->getAppUrl($context, $this->module),
+      'loginUrl' => $loginUrl,
       'theme' => [
         'shape' => $this->getShapeSettings(),
         'shapeSize' => [
@@ -113,6 +117,7 @@ class FrontApp {
         'allowGuestReviews' => $set->allowGuestReviews(),
         'customerReviewsPerPage' => $set->getCustomerReviewsPerPage(),
         'customerMaxRequests' => $set->getCustomerMaxRequests(),
+        'emptyStateBehavior' => $set->getEmptyStateBehavior(),
         'placement' => $set->getPlacement()
       ],
       'canCreate' => $canCreate
