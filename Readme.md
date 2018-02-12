@@ -39,6 +39,14 @@ This review module is integrated with [DataKick module](https://www.getdatakick.
 
 ![price alert datakick integration](.tbstore/images/image-5.png)
 
+## Development and contribution
+
+This module is released under Academic Free License (AFL 3.0). You are welcome to fork this repository and adjust the code according to your needs.
+
+This repository is NOT a valid prestashop module. You can't just upload it to your prestashop and expect it will work. Huge chunk of code is a [react.js](https://reactjs.org/) application that needs to be transpiled from es6 to standard javascript library.
+
+Please follow instructions in [dev manual](dev.md).
+
 ## Author
 
 Petr Hučík - [datakick](https://www.getdatakick.com)
