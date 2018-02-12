@@ -19,8 +19,8 @@ Before we build ```revws``` module, we need to install its dependencies. Simply 
 This needs to be done only once, or whenever new dependency is added to the project.
 
 ```
-> cd src;
-> npm install;
+cd src;
+npm install;
 ```
 
 ## Build process
@@ -32,3 +32,22 @@ gulp release
 ```
 
 This will generate file ```rewvs-1_x_x.zip``` in ```src/build``` directory. This is a valid prestashop module.
+
+## Development process
+
+If you want to modify react.js app, building module after each change would take too much time. It's better if you follow this process:
+
+1. go to ```src``` directory
+2. execute command ```gulp``` - this will build react app, and created dev server running on localhost, port 8080
+3. this dev server servers two javascript files http://localhost:8080/front_app.js and http://localhost:8080/back_app.js . When you change
+source code, these files are re-compiled automatically.
+4. install ```revws``` module to your prestashop
+5. now we need to ask module to use javascript files from our dev server, instead of files that comes with module. To do so, we need to enter two entries to ```PREFIX_configuration``` table. Use following sql (replace PREFIX with your database prefix):
+
+```
+INSERT INTO PREFIX_configuration(name, value, date_add, date_upd) VALUES
+('REVWS_APP_URL', 'http://localhost:8080/front_app.js', now(), now()),
+('REVWS_BACK_APP_URL', 'http://localhost:8080/back_app.js', now(), now());
+```
+
+That's it. You can now change javascript code, and immediately test it in the module.
