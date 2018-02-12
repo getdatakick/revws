@@ -65,7 +65,7 @@ class FrontAppReviewList extends React.PureComponent<Props> {
     if (canCreate) {
       return this.renderCreateButton(__('Write your review!'));
     }
-    if (settings.visitor.type === 'guest') {
+    if (this.showSignInButton()) {
       return (
         <div className="form-group">
           <a className="btn btn-primary" href={loginUrl}>
@@ -78,11 +78,11 @@ class FrontAppReviewList extends React.PureComponent<Props> {
 
   renderEmptyState = () => {
     const { canCreate, settings } = this.props;
-    const { preferences, loginUrl } = settings;
+    const { loginUrl } = settings;
     if (canCreate) {
       return this.renderCreateButton(__('Be the first to write a review!'));
     }
-    if (settings.visitor.type === 'guest' && preferences.emptyStateBehavior == 'login') {
+    if (this.showSignInButton()) {
       return (
         <div className="form-group">
           <a className="btn btn-primary" href={loginUrl}>
@@ -107,6 +107,11 @@ class FrontAppReviewList extends React.PureComponent<Props> {
         </a>
       </div>
     );
+  }
+
+  showSignInButton = () => {
+    const { preferences, visitor } = this.props.settings;
+    return visitor.type === 'guest' && preferences.showSignInButton;
   }
 }
 

@@ -227,7 +227,8 @@ class Revws extends Module {
       $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
       $reviewsData = $this->assignReviewsData((int)(Tools::getValue('id_product')));
       $emptyReviews = $reviewsData['reviews']['total'] == 0;
-      if ($emptyReviews && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
+      $canCreate = $reviewsData['canCreate'];
+      if ($emptyReviews && !$canCreate && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
         return;
       }
       return $this->display(__FILE__, 'product_tab_content.tpl');
@@ -240,7 +241,8 @@ class Revws extends Module {
       $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
       $reviewsData = $this->assignReviewsData((int)(Tools::getValue('id_product')));
       $emptyReviews = $reviewsData['reviews']['total'] == 0;
-      if ($emptyReviews && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
+      $canCreate = $reviewsData['canCreate'];
+      if ($emptyReviews && !$canCreate && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
         return;
       }
       return $this->display(__FILE__, 'product_footer.tpl');

@@ -65,7 +65,8 @@ class Settings {
           'reviewsPerPage' => 5,
           'orderBy' => 'date',
           'showAverage' => true,
-          'emptyStateBehavior' => 'display'
+          'hideEmptyReviews' => false,
+          'showSignInButton' => true,
         ],
         'productList' => [
           'show' => true,
@@ -226,12 +227,12 @@ class Settings {
     return $this->toOrderByPreference($this->get(['display', 'product', 'orderBy']));
   }
 
-  public function getEmptyStateBehavior() {
-    return $this->toEmptyStateBehavior($this->get(['display', 'product', 'emptyStateBehavior']));
+  public function showSignInButton() {
+    return $this->get(['display', 'product', 'showSignInButton']);
   }
 
   public function hideEmptyReviews() {
-    return $this->getEmptyStateBehavior() === 'hide';
+    return $this->get(['display', 'product', 'hideEmptyReviews']);
   }
 
   public function getShape() {
@@ -324,13 +325,6 @@ class Settings {
       return $pref;
     }
     return 'fullName';
-  }
-
-  private function toEmptyStateBehavior($pref) {
-    if (!$this->allowGuestReviews() && in_array($pref, ['display', 'hide', 'login'])) {
-      return $pref;
-    }
-    return 'display';
   }
 
   private function toOrderByPreference($pref) {

@@ -117,7 +117,7 @@ class FrontApp {
         'allowGuestReviews' => $set->allowGuestReviews(),
         'customerReviewsPerPage' => $set->getCustomerReviewsPerPage(),
         'customerMaxRequests' => $set->getCustomerMaxRequests(),
-        'emptyStateBehavior' => $set->getEmptyStateBehavior(),
+        'showSignInButton' => $set->showSignInButton(),
         'placement' => $set->getPlacement()
       ],
       'canCreate' => $canCreate

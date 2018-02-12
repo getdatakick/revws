@@ -17,7 +17,7 @@ export type SettingsType = {
       orderBy: 'date' | 'grade' | 'usefulness',
       reviewsPerPage: number | string,
       showAverage: boolean,
-      emptyStateBehavior: 'display' | 'hide' | 'login'
+      showSignInButton: boolean,
     },
     productList: {
       show: boolean,

@@ -29,7 +29,7 @@ export type SettingsType = {
     allowReviewWithoutCriteria: boolean,
     customerReviewsPerPage: number,
     customerMaxRequests: number,
-    emptyStateBehavior: 'display' | 'hide' | 'login'
+    showSignInButton: boolean
   },
   loginUrl: string,
   canCreate: boolean

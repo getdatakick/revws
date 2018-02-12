@@ -49,7 +49,7 @@
       </a>
     </div>
   {else}
-    {if $reviewsData.visitor.type === 'guest' && $reviewsData.preferences.emptyStateBehavior == 'login'}
+    {if $reviewsData.visitor.type === 'guest' && $reviewsData.preferences.showSignInButton}
       <div class="form-group">
         <a class="btn btn-primary" href="{$reviewsData.loginUrl}">
           {l s='Sign in to write a review' mod='revws'}

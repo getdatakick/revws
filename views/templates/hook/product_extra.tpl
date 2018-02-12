@@ -34,7 +34,7 @@
           {l s='Be the first to write a review!' mod='revws'}
         </a>
       {else}
-        {if $isGuest}
+        {if $isGuest && $reviewsData.preferences.showSignInButton}
           <a class="revws-product-extra-link" href="{$loginLink}">
             {l s='Sign in to write a review' mod='revws'}
           </a>
