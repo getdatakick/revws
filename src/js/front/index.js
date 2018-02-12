@@ -19,7 +19,7 @@ const startRevws = (init: any) => {
   const dev = process.env.NODE_ENV !== 'production';
   const node = document.getElementById('revws-app');
   if (! node) {
-    throw new Error('Element revws-app not found');
+    return;
   }
 
   const settings = getSettings(init);

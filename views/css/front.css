@@ -8,6 +8,13 @@ a .revws-grading {
   cursor: pointer;
 }
 
+/* product extra - right panel */
+.revws-grade-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .revws-grade {
   transition: all 200ms linear;
 }
@@ -183,7 +190,6 @@ a .revws-grading {
   flex-direction: row;
   align-items: center;
 }
-
 
 #revws-product-extra b,
 .revws-product-list .revws-grading,

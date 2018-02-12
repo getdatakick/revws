@@ -46,6 +46,7 @@ class Grading extends React.PureComponent<Props, State> {
     return (
       <div
         key={id}
+        className={'revws-grade-wrap'}
         onMouseOver={onSetGrade ? () => this.onMouseOver(id) : undefined}
         onMouseOut={onSetGrade ? () => this.onMouseOut(id) : undefined}
         onClick={onSetGrade ? (e) => this.onClick(id, e) : undefined}

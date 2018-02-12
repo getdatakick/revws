@@ -17,30 +17,30 @@
 *}
 <div id="revws-product-extra">
   <b>{l s='Rating' mod='revws'}:</b>
-    {if $reviewCount > 0}
-      <a class="revws-product-extra-link" href="#idTabRevws">
-        {include file='./grading.tpl' grade=$grade shape=$shape size=$shapeSize}
-        {l s='(read %1$d reviews)' sprintf=[$reviewCount] mod='revws'}
+  {if $reviewCount > 0}
+    <a class="revws-product-extra-link" href="#idTabRevws">
+      {include file='./grading.tpl' grade=$grade shape=$shape size=$shapeSize}
+      {l s='(read %1$d reviews)' sprintf=[$reviewCount] mod='revws'}
+    </a>
+    {if $microdata}
+    <div style="display:none" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+      Rated <span itemprop="ratingValue">{$grade|string_format:"%.2f"}</span>/5
+      based on <span itemprop="reviewCount">{$reviewCount}</span> customer reviews
+    </div>
+    {/if}
+  {else}
+    {if $canCreate}
+      <a class="revws-product-extra-link" href="#" data-revws-create-trigger="{$productId}">
+        {l s='Be the first to write a review!' mod='revws'}
       </a>
-      {if $microdata}
-      <div style="display:none" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-        Rated <span itemprop="ratingValue">{$grade|string_format:"%.2f"}</span>/5
-        based on <span itemprop="reviewCount">{$reviewCount}</span> customer reviews
-      </div>
-      {/if}
     {else}
-      {if $canCreate}
-        <a class="revws-product-extra-link" href="#" data-revws-create-trigger="{$productId}">
-          {l s='Be the first to write a review!' mod='revws'}
+      {if $isGuest && $reviewsData.preferences.showSignInButton}
+        <a class="revws-product-extra-link" href="{$loginLink}">
+          {l s='Sign in to write a review' mod='revws'}
         </a>
       {else}
-        {if $isGuest && $reviewsData.preferences.showSignInButton}
-          <a class="revws-product-extra-link" href="{$loginLink}">
-            {l s='Sign in to write a review' mod='revws'}
-          </a>
-        {else}
-          {l s='No customer reviews for the moment.' mod='revws'}
-        {/if}
+        {l s='No customer reviews for the moment.' mod='revws'}
       {/if}
     {/if}
+  {/if}
 </div>
