@@ -227,7 +227,7 @@ class Revws extends Module {
       $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
       $reviewsData = $this->assignReviewsData((int)(Tools::getValue('id_product')));
       $emptyReviews = $reviewsData['reviews']['total'] == 0;
-      if ($emptyReviews && $set->hideEmptyReviews()) {
+      if ($emptyReviews && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
         return;
       }
       return $this->display(__FILE__, 'product_tab_content.tpl');
@@ -240,7 +240,7 @@ class Revws extends Module {
       $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
       $reviewsData = $this->assignReviewsData((int)(Tools::getValue('id_product')));
       $emptyReviews = $reviewsData['reviews']['total'] == 0;
-      if ($emptyReviews && $set->hideEmptyReviews()) {
+      if ($emptyReviews && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
         return;
       }
       return $this->display(__FILE__, 'product_footer.tpl');
@@ -256,16 +256,13 @@ class Revws extends Module {
     if ($set->showAverageOnProductPage()) {
       $productId = (int)(Tools::getValue('id_product'));
       list($grade, $count) = RevwsReview::getAverageGrade($productId);
-      if ($count == 0 && $set->hideEmptyReviews()) {
-        return;
-      }
       $this->context->smarty->assign('productId', $productId);
       $this->context->smarty->assign('grade', $grade);
       $this->context->smarty->assign('reviewCount', $count);
       $this->context->smarty->assign('shape', $this->getShapeSettings());
       $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
       $this->context->smarty->assign('canCreate', $this->getPermissions()->canCreateReview($productId));
-      $this->context->smarty->assign('showLogin', $this->getSettings()->getEmptyStateBehavior() == 'login');
+      $this->context->smarty->assign('isGuest', $this->getVisitor()->isGuest());
       $this->context->smarty->assign('loginLink', $this->getLoginUrl($productId));
       $this->context->smarty->assign('microdata', $this->getSettings()->emitRichSnippets());
       return $this->display(__FILE__, 'product_extra.tpl');
