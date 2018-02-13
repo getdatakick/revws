@@ -34,7 +34,7 @@ class RevwsReview extends ObjectModel {
       'id_customer'   => [ 'type' => self::TYPE_INT ],
       'id_guest'      => [ 'type' => self::TYPE_INT ],
       'id_lang'       => [ 'type' => self::TYPE_INT],
-      'email'         => [ 'type' => self::TYPE_STRING, 'required' => true ],
+      'email'         => [ 'type' => self::TYPE_STRING ],
       'display_name'  => [ 'type' => self::TYPE_STRING, 'required' => true ],
       'title'         => [ 'type' => self::TYPE_STRING, 'required' => true ],
       'content'       => [ 'type' => self::TYPE_STRING, 'size' => 65535],
