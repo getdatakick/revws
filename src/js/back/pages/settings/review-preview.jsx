@@ -6,6 +6,7 @@ import Bootstrap from 'common/components/bootstrap/bootstrap';
 import ReviewListItem from 'common/components/review-list-item/review-list-item';
 
 type Props = {
+  shopName: string,
   shape: GradingShapeType,
   size: number,
   canVote: boolean,
@@ -16,7 +17,7 @@ class ReviewPreview extends React.PureComponent<Props> {
   static displayName = 'ReviewPreview';
 
   render() {
-    const { shape, size, canVote, canReport } = this.props;
+    const { shape, size, canVote, canReport, shopName } = this.props;
     const grades = {};
     grades[1] = 5;
     grades[2] = 3;
@@ -46,6 +47,7 @@ class ReviewPreview extends React.PureComponent<Props> {
       <Bootstrap key={size} className={styles.preview}>
         <div id="revws-tab-content">
           <ReviewListItem
+            shopName={shopName}
             shape={shape}
             shapeSize={size}
             review={review}

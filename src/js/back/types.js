@@ -17,6 +17,7 @@ export type SettingsType = {
       orderBy: 'date' | 'grade' | 'usefulness',
       reviewsPerPage: number | string,
       showAverage: boolean,
+      showSignInButton: boolean,
     },
     productList: {
       show: boolean,
@@ -76,6 +77,7 @@ export type EnvironmentType = {
 
 export type GlobalDataType = {
   api: string,
+  shopName: string,
   baseUrl: string,
   shapes: {
     [ string ]: GradingShapeType

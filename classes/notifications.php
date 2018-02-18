@@ -103,11 +103,13 @@ class Notifications {
       // send thank you email
       if ($this->getSettings()->emailAuthorThankYou()) {
         $review = $this->getReview($id);
-        $lang = $this->getReviewerLanguage($review);
         $email = $this->getReviewerEmail($review);
-        $data = $this->getCommonData($review, $lang);
-        if (! Mail::Send($lang, 'revws-author-thank-you', Mail::l('Thank you for your review', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
-          self::emailError('revws-author-thank-you', $id, $lang, $email);
+        if ($email) {
+          $lang = $this->getReviewerLanguage($review);
+          $data = $this->getCommonData($review, $lang);
+          if (! Mail::Send($lang, 'revws-author-thank-you', Mail::l('Thank you for your review', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
+            self::emailError('revws-author-thank-you', $id, $lang, $email);
+          }
         }
       }
     }
@@ -142,11 +144,13 @@ class Notifications {
     if ($actor === 'employee') {
       if ($this->getSettings()->emailAuthorReviewDeleted()) {
         $review = $this->getReview($id);
-        $lang = $this->getReviewerLanguage($review);
         $email = $this->getReviewerEmail($review);
-        $data = $this->getCommonData($review, $lang);
-        if (! Mail::Send($lang, 'revws-author-review-deleted', Mail::l('Your review has been deleted', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
-          self::emailError('revws-author-review-deleted', $id, $lang, $email);
+        if ($email) {
+          $lang = $this->getReviewerLanguage($review);
+          $data = $this->getCommonData($review, $lang);
+          if (! Mail::Send($lang, 'revws-author-review-deleted', Mail::l('Your review has been deleted', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
+            self::emailError('revws-author-review-deleted', $id, $lang, $email);
+          }
         }
       }
     }
@@ -156,11 +160,13 @@ class Notifications {
     if ($actor === 'employee') {
       if ($this->getSettings()->emailAuthorReviewApproved()) {
         $review = $this->getReview($id);
-        $lang = $this->getReviewerLanguage($review);
         $email = $this->getReviewerEmail($review);
-        $data = $this->getCommonData($review, $lang);
-        if (! Mail::Send($lang, 'revws-author-review-approved', Mail::l('Your review has been approved', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
-          self::emailError('revws-author-review-approved', $id, $lang, $email);
+        if ($email) {
+          $lang = $this->getReviewerLanguage($review);
+          $data = $this->getCommonData($review, $lang);
+          if (! Mail::Send($lang, 'revws-author-review-approved', Mail::l('Your review has been approved', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
+            self::emailError('revws-author-review-approved', $id, $lang, $email);
+          }
         }
       }
     }
@@ -188,11 +194,13 @@ class Notifications {
       $settings = $this->getSettings();
       if ($settings->emailAuthorNotifyOnReply()) {
         $review = $this->getReview($id);
-        $lang = $this->getReviewerLanguage($review);
         $email = $this->getReviewerEmail($review);
-        $data = $this->getCommonData($review, $lang);
-        if (! Mail::Send($lang, 'revws-author-review-replied', sprintf(Mail::l('%s replied to your review', $lang), $this->getShopName()), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
-          self::emailError('revws-author-review-replied', $id, $lang, $email);
+        if ($email) {
+          $lang = $this->getReviewerLanguage($review);
+          $data = $this->getCommonData($review, $lang);
+          if (! Mail::Send($lang, 'revws-author-review-replied', sprintf(Mail::l('%s replied to your review', $lang), $this->getShopName()), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
+            self::emailError('revws-author-review-replied', $id, $lang, $email);
+          }
         }
       }
     }

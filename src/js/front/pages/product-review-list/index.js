@@ -27,8 +27,8 @@ const actions = {
 
 const merge = (props, actions, passed) => {
   const { productsToReview, ...own } = props;
-  const productId = passed.productId;
-  const canCreate = contains(productId, productsToReview);
+  const { productId, settings } = passed;
+  const canCreate = settings.canCreate && contains(productId, productsToReview);
   return {
     canCreate,
     ...own,

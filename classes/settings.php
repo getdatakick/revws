@@ -65,6 +65,8 @@ class Settings {
           'reviewsPerPage' => 5,
           'orderBy' => 'date',
           'showAverage' => true,
+          'hideEmptyReviews' => false,
+          'showSignInButton' => true,
         ],
         'productList' => [
           'show' => true,
@@ -132,15 +134,15 @@ class Settings {
     if (! $url) {
       $url = $context->shop->getBaseURI() . "modules/{$module->name}/views/js/front_app.js";
     }
-    return $url . "?v=" . $module->version;
+    return $url . "?CACHE_CONTROL";
   }
 
   public function getBackendAppUrl($module) {
     $url = Configuration::get(self::BACKEND_APP_URL);
     if (! $url) {
-      return $module->getPath('views/js/back_app.js');
+      $url = $module->getPath('views/js/back_app.js');
     }
-    return $url;
+    return $url . "?CACHE_CONTROL";
   }
 
   public function getSalt() {
@@ -223,6 +225,14 @@ class Settings {
 
   public function getReviewOrder() {
     return $this->toOrderByPreference($this->get(['display', 'product', 'orderBy']));
+  }
+
+  public function showSignInButton() {
+    return $this->get(['display', 'product', 'showSignInButton']);
+  }
+
+  public function hideEmptyReviews() {
+    return $this->get(['display', 'product', 'hideEmptyReviews']);
   }
 
   public function getShape() {

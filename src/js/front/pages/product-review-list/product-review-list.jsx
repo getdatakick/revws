@@ -23,11 +23,12 @@ class FrontAppReviewList extends React.PureComponent<Props> {
   static displayName = 'FrontAppReviewList';
 
   render() {
-    const { settings, reviewList, loading, onEdit, onDelete, onReport, onVote, canCreate } = this.props;
+    const { settings, reviewList, loading, onEdit, onDelete, onReport, onVote } = this.props;
     const isEmpty = reviewList.total === 0;
-    return isEmpty ? this.renderEmptyState(canCreate) : (
+    return isEmpty ? this.renderEmptyState() : (
       <div>
         <List
+          shopName={settings.shopName}
           shape={settings.shape}
           shapeSize={settings.shapeSize.product}
           reviewList={reviewList}
@@ -37,7 +38,7 @@ class FrontAppReviewList extends React.PureComponent<Props> {
           onReport={onReport}
           onVote={onVote} />
         { this.renderPaging() }
-        { canCreate && this.renderCreateButton(__('Write your review!')) }
+        { this.renderWriteReview() }
       </div>
     );
   }
@@ -58,9 +59,37 @@ class FrontAppReviewList extends React.PureComponent<Props> {
     return null;
   }
 
-  renderEmptyState = (canCreate: boolean) => {
+  renderWriteReview = () => {
+    const { canCreate, settings } = this.props;
+    const { loginUrl } = settings;
+    if (canCreate) {
+      return this.renderCreateButton(__('Write your review!'));
+    }
+    if (this.showSignInButton()) {
+      return (
+        <div className="form-group">
+          <a className="btn btn-primary" href={loginUrl}>
+            {__('Sign in to write a review')}
+          </a>
+        </div>
+      );
+    }
+  }
+
+  renderEmptyState = () => {
+    const { canCreate, settings } = this.props;
+    const { loginUrl } = settings;
     if (canCreate) {
       return this.renderCreateButton(__('Be the first to write a review!'));
+    }
+    if (this.showSignInButton()) {
+      return (
+        <div className="form-group">
+          <a className="btn btn-primary" href={loginUrl}>
+            {__('Sign in to write a review')}
+          </a>
+        </div>
+      );
     }
     return (
       <div className="form-group">
@@ -78,6 +107,11 @@ class FrontAppReviewList extends React.PureComponent<Props> {
         </a>
       </div>
     );
+  }
+
+  showSignInButton = () => {
+    const { preferences, visitor } = this.props.settings;
+    return visitor.type === 'guest' && preferences.showSignInButton;
   }
 }
 

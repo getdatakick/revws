@@ -18,7 +18,7 @@
 <div class="revws-grading">
   {assign "pad" $size/8}
   {section name="i" start=0 loop=5 step=1}
-    <div style='padding-left:{$pad}px;padding-right:{$pad}px'>
+    <div class="revws-grade-wrap" style='padding-left:{$pad}px;padding-right:{$pad}px'>
       <svg
         class="revws-grade revws-grade-{if $grade <= $smarty.section.i.index}off{else}on{/if}"
         viewBox="{$shape.viewBox}"

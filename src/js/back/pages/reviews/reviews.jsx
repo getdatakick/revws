@@ -26,6 +26,7 @@ class ModerationPage extends React.PureComponent<Props> {
     return (
       <div>
         <ReviewsTable
+          shopName={data.shopName}
           language={data.language}
           title={__('All reviews')}
           emptyLabel={__('No reviews')}

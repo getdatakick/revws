@@ -6,6 +6,7 @@ import ReviewListItem from 'common/components/review-list-item/review-list-item'
 import { CircularProgress } from 'material-ui/Progress';
 
 type Props = {
+  shopName: string,
   shape: GradingShapeType,
   shapeSize: number,
   reviewList: ReviewListType,
@@ -35,12 +36,13 @@ class ProductReviewList extends React.PureComponent<Props> {
   }
 
   renderReview = (review: ReviewType) => {
-    const { shape, shapeSize, onReport, onVote, onEdit, onDelete } = this.props;
+    const { shape, shapeSize, onReport, onVote, onEdit, onDelete, shopName } = this.props;
     return (
       <ReviewListItem
         key={review.id}
         shape={shape}
         shapeSize={shapeSize}
+        shopName={shopName}
         onEdit={onEdit}
         onDelete={onDelete}
         onVote={onVote}

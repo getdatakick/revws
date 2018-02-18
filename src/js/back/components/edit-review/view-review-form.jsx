@@ -8,6 +8,7 @@ import styles from './edit-review-form.less';
 
 
 type Props = {
+  shopName: string,
   language: number,
   criteria: CriteriaType,
   shape: GradingShapeType,
@@ -27,11 +28,12 @@ class EditReviewForm extends React.PureComponent<Props> {
   static displayName = 'EditReviewForm';
 
   render() {
-    const { review, shape, shapeSize, onUpdateReview } = this.props;
+    const { shopName, review, shape, shapeSize, onUpdateReview } = this.props;
     return (
       <Bootstrap className={styles.preview}>
         <div id="revws-tab-content">
           <ReviewListItem
+            shopName={shopName}
             shape={shape}
             shapeSize={shapeSize}
             review={merge(review, caps)}

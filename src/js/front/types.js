@@ -3,6 +3,7 @@
 import type { CriteriaType, GradingShapeType, NameFormatType, ProductInfoType } from 'common/types';
 
 export type SettingsType = {
+  shopName: string,
   api: string,
   criteria: CriteriaType,
   shape: GradingShapeType,
@@ -27,7 +28,9 @@ export type SettingsType = {
     allowGuestReviews: boolean,
     allowReviewWithoutCriteria: boolean,
     customerReviewsPerPage: number,
-    customerMaxRequests: number
+    customerMaxRequests: number,
+    showSignInButton: boolean
   },
+  loginUrl: string,
   canCreate: boolean
 }

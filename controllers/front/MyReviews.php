@@ -40,7 +40,7 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
   }
 
   private function renderContent(Visitor $visitor) {
-    $this->addJS($this->module->getPath('views/js/front_bootstrap.js'));
+    $this->addJS($this->module->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
     $frontApp = new FrontApp($this->module);
     $params = $this->getParams();
     $reviewProduct = (isset($params['review-product'])) ? (int)$params['review-product'] : null;

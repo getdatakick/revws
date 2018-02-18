@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { range, map } from 'ramda';
 import type { GradingShapeType } from 'common/types';
 import GradingShape from 'common/components/grading-shape/grading-shape';
+import { prevent } from 'common/utils/input';
 
 type Props = {
   className?: string,
@@ -29,7 +30,7 @@ class Grading extends React.PureComponent<Props, State> {
     return (
       <div
         className={classnames("revws-grading", this.props.className)}
-        onTouchStart={onSetGrade ? this.onTouchStart : undefined}
+        onTouchStart={onSetGrade ? this.onTouchMove : undefined}
         onTouchMove={onSetGrade ? this.onTouchMove : undefined}
         onTouchEnd={onSetGrade ? this.onTouchEnd : undefined}
       >
@@ -45,9 +46,10 @@ class Grading extends React.PureComponent<Props, State> {
     return (
       <div
         key={id}
+        className={'revws-grade-wrap'}
         onMouseOver={onSetGrade ? () => this.onMouseOver(id) : undefined}
         onMouseOut={onSetGrade ? () => this.onMouseOut(id) : undefined}
-        onClick={onSetGrade ? () => this.onClick(id) : undefined}
+        onClick={onSetGrade ? (e) => this.onClick(id, e) : undefined}
         style={{
           paddingLeft: padding,
           paddingRight: padding,
@@ -75,7 +77,8 @@ class Grading extends React.PureComponent<Props, State> {
     this.setState({ grade: null });
   }
 
-  onClick = (id: number) => {
+  onClick = (id: number, e?:any) => {
+    prevent(e);
     const { grade, onSetGrade } = this.props;
     this.setState({ grade: null });
     if (onSetGrade && grade != id) {
@@ -84,7 +87,7 @@ class Grading extends React.PureComponent<Props, State> {
   }
 
   onTouchMove = (e: any) => {
-    e.stopPropagation();
+    prevent(e);
     if (e.changedTouches && e.changedTouches.length) {
       let node = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
       while (node) {
@@ -97,17 +100,12 @@ class Grading extends React.PureComponent<Props, State> {
     }
   }
 
-  onTouchStart = (e: any) => {
-    this.onTouchMove(e);
-  }
-
   onTouchEnd = (e: any) => {
-    e.stopPropagation();
+    prevent(e);
     if (this.state.grade) {
       this.onClick(this.state.grade);
     }
   }
-
 }
 
 export default Grading;

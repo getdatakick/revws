@@ -45,6 +45,7 @@ class CustomerReviewList extends React.PureComponent<Props> {
         <div className='revws-review-wrapper'>
           <h2><a href={product.url}>{product.name}</a></h2>
           <ReviewListItem
+            shopName={settings.shopName}
             shape={settings.shape}
             shapeSize={settings.shapeSize.product}
             review={review}

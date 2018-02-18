@@ -14,6 +14,7 @@ type Filters = {
 }
 
 export type InputProps = {
+  shopName: string,
   language: number,
   criteria: CriteriaType,
   shape: GradingShapeType,
@@ -112,7 +113,7 @@ class Controller extends React.PureComponent<Props, State> {
   }
 
   renderList(list: ReviewListType) {
-    const { criteria, emptyLabel, title, shape, approveReview, deleteReview, undeleteReview, language, shapeSize } = this.props;
+    const { criteria, emptyLabel, title, shape, approveReview, deleteReview, undeleteReview, language, shapeSize, shopName } = this.props;
     const { edit, page, pageSize, order, orderBy } = this.state;
     const { total, reviews } = list;
     const filtered = this.filter(reviews);
@@ -141,6 +142,7 @@ class Controller extends React.PureComponent<Props, State> {
           emptyLabel={emptyLabel || 'Nothing found'}
         />
         <EditReviewDialog
+          shopName={shopName}
           language={language}
           review={selectedReview}
           allowEmptyReviews={true}

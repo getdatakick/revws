@@ -41,7 +41,7 @@ class Revws extends Module {
   public function __construct() {
     $this->name = 'revws';
     $this->tab = 'administration';
-    $this->version = '1.0.2';
+    $this->version = '1.0.4';
     $this->author = 'DataKick <petr@getdatakick.com>';
     $this->need_instance = 0;
     $this->bootstrap = true;
@@ -87,7 +87,8 @@ class Revws extends Module {
       $this->registerHook('displayRightColumnProduct') &&
       $this->registerHook('displayProductListReviews') &&
       $this->registerHook('extraProductComparison') &&
-      $this->registerHook('customerAccount') &&
+      $this->registerHook('displayCustomerAccount') &&
+      $this->registerHook('displayMyAccountBlock') &&
       $this->registerHook('productFooter') &&
       $this->registerHook('discoverReviewModule') &&
       $this->registerHook('datakickExtend')
@@ -101,7 +102,8 @@ class Revws extends Module {
     $this->unregisterHook('displayRightColumnProduct');
     $this->unregisterHook('displayProductListReviews');
     $this->unregisterHook('extraProductComparison');
-    $this->unregisterHook('customerAccount');
+    $this->unregisterHook('displayCustomerAccount');
+    $this->unregisterHook('displayMyAccountBlock');
     $this->unregisterHook('productFooter');
     $this->unregisterHook('discoverReviewModule');
     $this->unregisterHook('datakickExtend');
@@ -206,6 +208,7 @@ class Revws extends Module {
     $this->context->smarty->assign('reviewsData', $reviewsData);
     $this->context->smarty->assign('microdata', $this->getSettings()->emitRichSnippets());
     Media::addJsDef([ 'revwsData' => $reviewsData ]);
+    return $reviewsData;
   }
 
   private function getShapeSettings() {
@@ -219,17 +222,29 @@ class Revws extends Module {
   }
 
   public function hookProductTabContent() {
+    $set = $this->getSettings();
     if ($this->getSettings()->getPlacement() === 'tab') {
-      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
-      $this->assignReviewsData((int)(Tools::getValue('id_product')));
+      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
+      $reviewsData = $this->assignReviewsData((int)(Tools::getValue('id_product')));
+      $emptyReviews = $reviewsData['reviews']['total'] == 0;
+      $canCreate = $reviewsData['canCreate'];
+      if ($emptyReviews && !$canCreate && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
+        return;
+      }
       return $this->display(__FILE__, 'product_tab_content.tpl');
     }
   }
 
   public function hookProductFooter() {
-    if ($this->getSettings()->getPlacement() === 'block') {
-      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
-      $this->assignReviewsData((int)(Tools::getValue('id_product')));
+    $set = $this->getSettings();
+    if ($set->getPlacement() === 'block') {
+      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
+      $reviewsData = $this->assignReviewsData((int)(Tools::getValue('id_product')));
+      $emptyReviews = $reviewsData['reviews']['total'] == 0;
+      $canCreate = $reviewsData['canCreate'];
+      if ($emptyReviews && !$canCreate && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
+        return;
+      }
       return $this->display(__FILE__, 'product_footer.tpl');
     }
   }
@@ -239,7 +254,8 @@ class Revws extends Module {
   }
 
   public function hookDisplayRightColumnProduct($params) {
-    if ($this->getSettings()->showAverageOnProductPage()) {
+    $set = $this->getSettings();
+    if ($set->showAverageOnProductPage()) {
       $productId = (int)(Tools::getValue('id_product'));
       list($grade, $count) = RevwsReview::getAverageGrade($productId);
       $this->context->smarty->assign('productId', $productId);
@@ -248,6 +264,8 @@ class Revws extends Module {
       $this->context->smarty->assign('shape', $this->getShapeSettings());
       $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
       $this->context->smarty->assign('canCreate', $this->getPermissions()->canCreateReview($productId));
+      $this->context->smarty->assign('isGuest', $this->getVisitor()->isGuest());
+      $this->context->smarty->assign('loginLink', $this->getLoginUrl($productId));
       $this->context->smarty->assign('microdata', $this->getSettings()->emitRichSnippets());
       return $this->display(__FILE__, 'product_extra.tpl');
     }
@@ -263,7 +281,7 @@ class Revws extends Module {
         $this->context->smarty->assign('reviewCount', $count);
         $this->context->smarty->assign('shape', $this->getShapeSettings());
         $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
-        $this->context->smarty->assign('reviewsUrl', $this->context->link->getProductLink($productId).'#idTabRevws');
+        $this->context->smarty->assign('reviewsUrl', $this->getProductReviewsLink($productId));
         return $this->display(__FILE__, 'product_list.tpl');
       }
     }
@@ -284,12 +302,18 @@ class Revws extends Module {
     }
   }
 
-  public function hookCustomerAccount($params) {
+  public function hookDisplayCustomerAccount($params) {
     if ($this->getSettings()->showOnCustomerAccount()) {
       $this->context->smarty->assign('iconClass', $this->getSettings()->getCustomerAccountIcon());
       return $this->display(__FILE__, 'my-account.tpl');
     }
   }
+
+
+  public function hookDisplayMyAccountBlock($params) {
+    return $this->hookDisplayCustomerAccount($params);
+  }
+
 
   public function getContext() {
     return $this->context;
@@ -337,6 +361,27 @@ class Revws extends Module {
         $controller->addCSS($this->getPath('views/css/front.css'), 'all');
     }
     $controller->addCSS('https://fonts.googleapis.com/css?family=Roboto:300,400,500', 'all');
+  }
+
+  private function getProductReviewsLink($product) {
+    $link = $this->context->link->getProductLink($product);
+    if (strpos($link, '?') === false) {
+      $link .= '?show=reviews';
+    } else {
+      $link .= '&show=reviews';
+    }
+    return $link;
+  }
+
+  private function getMyReviewsUrl() {
+    return $this->context->link->getModuleLink('revws', 'MyReviews');
+  }
+
+  public function getLoginUrl($product) {
+    $back = $product ? $this->getProductReviewsLink($product) : $this->getMyReviewsUrl();
+    return $this->context->link->getPageLink('authentication', true, null, [
+      'back' => $back
+    ]);
   }
 
 }

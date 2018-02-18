@@ -19,6 +19,7 @@ class ModerationPage extends React.PureComponent<Props> {
     const shape = data.shapes[settings.theme.shape];
     return (
       <ReviewsTable
+        shopName={data.shopName}
         language={data.language}
         title={__('Unapproved reviews')}
         emptyLabel={__('Nothing to approve')}

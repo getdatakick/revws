@@ -8,6 +8,13 @@ a .revws-grading {
   cursor: pointer;
 }
 
+/* product extra - right panel */
+.revws-grade-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .revws-grade {
   transition: all 200ms linear;
 }
@@ -184,7 +191,6 @@ a .revws-grading {
   align-items: center;
 }
 
-
 #revws-product-extra b,
 .revws-product-list .revws-grading,
 .revws-comparison .revws-grading,
@@ -204,6 +210,14 @@ a .revws-grading {
   padding: 20px;
   background-color: #EBF3F8;
   margin-top: 10px;
+  font-size: 90%;
+  color: #777;
+}
+
+.revws-reply-title {
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 10px;
 }
 
 .revws-review-with-product {
