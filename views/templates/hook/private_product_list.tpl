@@ -28,7 +28,7 @@
   {include file="./private_review_list_paging.tpl" reviewsData=$reviewsData}
   {if $reviewsData.canCreate}
     <div class="form-group">
-      <a class="btn btn-primary">
+      <a class="btn btn-primary" data-revws-create-trigger="{$productId}">
         {l s='Write your review!' mod='revws'}
       </a>
     </div>
@@ -44,7 +44,7 @@
 {else}
   {if $reviewsData.canCreate}
     <div class="form-group">
-      <a class="btn btn-primary">
+      <a class="btn btn-primary" data-revws-create-trigger="{$productId}">
         {l s='Be the first to write a review!' mod='revws'}
       </a>
     </div>

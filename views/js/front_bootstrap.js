@@ -4,11 +4,23 @@
   tag.setAttribute('defer', '');
   tag.setAttribute('async', '');
   var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  setTimeout(function() {
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  }, 1000);
 
   // returns true, if reviews are displayed in tab.
   var displayedInTab = function() {
     return (window.revwsData && window.revwsData.preferences.placement === 'tab');
+  }
+
+  if (! window.revws) {
+    window.revws = function(action) {
+      if (window.revwsData) {
+        console.info('revws not loaded yet');
+        window.revwsData.initActions = window.revwsData.initActions || [];
+        window.revwsData.initActions.push(action);
+      }
+    }
   }
 
   /**
@@ -42,13 +54,11 @@
     });
     $('[data-revws-create-trigger]').click(function(e) {
       e.preventDefault();
-      if (window.revws) {
-        var productId = parseInt($(this).data('revws-create-trigger'), 10);
-        window.revws({
-          type: 'TRIGGER_CREATE_REVIEW',
-          productId: productId
-        })
-      }
+      var productId = parseInt($(this).data('revws-create-trigger'), 10);
+      window.revws({
+        type: 'TRIGGER_CREATE_REVIEW',
+        productId: productId
+      })
     });
   })
 })();
