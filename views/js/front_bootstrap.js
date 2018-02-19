@@ -4,9 +4,7 @@
   tag.setAttribute('defer', '');
   tag.setAttribute('async', '');
   var firstScriptTag = document.getElementsByTagName('script')[0];
-  setTimeout(function() {
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-  }, 1000);
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
   // returns true, if reviews are displayed in tab.
   var displayedInTab = function() {
