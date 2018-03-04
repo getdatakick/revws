@@ -11,6 +11,16 @@
     return (window.revwsData && window.revwsData.preferences.placement === 'tab');
   }
 
+  if (! window.revws) {
+    window.revws = function(action) {
+      if (window.revwsData) {
+        console.info('revws not loaded yet');
+        window.revwsData.initActions = window.revwsData.initActions || [];
+        window.revwsData.initActions.push(action);
+      }
+    }
+  }
+
   /**
    * this function will not work on all themes. Change it if you use tabs,
    * and reviews tab will not open automatically when you click on 'read reviews'
@@ -42,13 +52,11 @@
     });
     $('[data-revws-create-trigger]').click(function(e) {
       e.preventDefault();
-      if (window.revws) {
-        var productId = parseInt($(this).data('revws-create-trigger'), 10);
-        window.revws({
-          type: 'TRIGGER_CREATE_REVIEW',
-          productId: productId
-        })
-      }
+      var productId = parseInt($(this).data('revws-create-trigger'), 10);
+      window.revws({
+        type: 'TRIGGER_CREATE_REVIEW',
+        productId: productId
+      })
     });
   })
 })();

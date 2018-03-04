@@ -5,18 +5,31 @@ import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 
 type Props = {
   htmlFontSize: number,
-  children: any
+  children: any,
+  zIndexBase?: number
 };
 
 class AppTheme extends React.PureComponent<Props> {
   static displayName = 'AppTheme';
 
+  static defaultProps = {
+    zIndexBase: 1000000
+  }
+
   render() {
-    const { children, htmlFontSize } = this.props;
+    const { zIndexBase, children, htmlFontSize } = this.props;
     const theme = createMuiTheme({
       typography: {
         htmlFontSize
       },
+      zIndex: {
+        mobileStepper: zIndexBase + 1000,
+        appBar: zIndexBase + 1100,
+        drawer: zIndexBase + 1200,
+        modal: zIndexBase + 1300,
+        snackbar: zIndexBase + 1400,
+        tooltip: zIndexBase + 1500,
+      }
     });
     return (
       <MuiThemeProvider theme={theme}>
