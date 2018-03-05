@@ -63,6 +63,9 @@ class Revws extends Module {
   }
 
   public function uninstall($dropTables=true) {
+    echo "<pre>";
+    $this->registerHooks();
+    die();
     return (
       $this->uninstallDb($dropTables) &&
       $this->unregisterHooks() &&
@@ -80,34 +83,41 @@ class Revws extends Module {
   }
 
   public function registerHooks() {
-    return (
-      $this->registerHook('productTab') &&
-      $this->registerHook('header') &&
-      $this->registerHook('productTabContent') &&
-      $this->registerHook('displayRightColumnProduct') &&
-      $this->registerHook('displayProductListReviews') &&
-      $this->registerHook('extraProductComparison') &&
-      $this->registerHook('displayCustomerAccount') &&
-      $this->registerHook('displayMyAccountBlock') &&
-      $this->registerHook('productFooter') &&
-      $this->registerHook('discoverReviewModule') &&
-      $this->registerHook('datakickExtend')
-    );
+    return $this->setupHooks([
+      'header',
+      'productTab',
+      'productTabContent',
+      'displayRightColumnProduct',
+      'displayProductListReviews',
+      'extraProductComparison',
+      'displayCustomerAccount',
+      'displayMyAccountBlock',
+      'productFooter',
+      'discoverReviewModule',
+      'datakickExtend'
+    ]);
   }
 
   public function unregisterHooks() {
-    $this->unregisterHook('productTab');
-    $this->unregisterHook('header');
-    $this->unregisterHook('productTabContent');
-    $this->unregisterHook('displayRightColumnProduct');
-    $this->unregisterHook('displayProductListReviews');
-    $this->unregisterHook('extraProductComparison');
-    $this->unregisterHook('displayCustomerAccount');
-    $this->unregisterHook('displayMyAccountBlock');
-    $this->unregisterHook('productFooter');
-    $this->unregisterHook('discoverReviewModule');
-    $this->unregisterHook('datakickExtend');
-    return true;
+    return $this->setupHooks([]);
+  }
+
+  private function setupHooks($hooks) {
+    $id = $this->id;
+    $wanted = [];
+    foreach ($hooks as $hook) {
+      $wanted[strtolower($hook)] = $hook;
+    }
+    $sql = 'SELECT DISTINCT LOWER(h.name) AS `hook` FROM '._DB_PREFIX_.'hook h INNER JOIN '._DB_PREFIX_.'hook_module hm ON (h.id_hook = hm.id_hook) WHERE hm.id_module = '.(int)$id;
+    $delete = [];
+    foreach (Db::getInstance()->executeS($sql) as $row) {
+      $hook = $row['hook'];
+      if (! isset($wanted['hook'])) {
+        $delete[] = $hook;
+      }
+    }
+    print_r($wanted);
+    print_r($delete);
   }
 
   private function installDb($create) {
