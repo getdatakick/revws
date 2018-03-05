@@ -74,12 +74,13 @@ class Notifications {
   public function process($module) {
     if ($this->queue) {
       $module->clearCache();
+      $settings = $module->getSettings();
       foreach ($this->queue as $workItem) {
         $type = $workItem['type'];
         $id = $workItem['id'];
         $actor = $workItem['actor'];
         try {
-          call_user_func(array($this, $type), $id, $actor);
+          call_user_func(array($this, $type), $id, $actor, $settings);
         } catch (Exception $e) {
           self::log("failed to process $type: " . $e->getMessage());
         }
@@ -87,13 +88,13 @@ class Notifications {
     }
   }
 
-  private function processReviewCreated($id, $actor) {
+  private function processReviewCreated($id, $actor, $settings) {
     if ($actor === 'visitor') {
 
       // send notification to administrator
-      if ($this->getSettings()->emailAdminReviewCreated()) {
-        $lang = $this->getAdminEmailLanguage();
-        $email = $this->getAdminEmail();
+      if ($emailAdminReviewCreated()) {
+        $lang = $settings->getAdminEmailLanguage();
+        $email = $settings->getAdminEmail();
         $data = $this->getCommonData($this->getReview($id), $lang);
         if (! Mail::Send($lang, 'revws-admin-review-created', Mail::l('New review has been created', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
           self::emailError('revws-admin-review-created', $id, $lang, $email);
@@ -101,7 +102,7 @@ class Notifications {
       }
 
       // send thank you email
-      if ($this->getSettings()->emailAuthorThankYou()) {
+      if ($settings->emailAuthorThankYou()) {
         $review = $this->getReview($id);
         $email = $this->getReviewerEmail($review);
         if ($email) {
@@ -115,12 +116,12 @@ class Notifications {
     }
   }
 
-  private function processReviewUpdated($id, $actor) {
+  private function processReviewUpdated($id, $actor, $settings) {
     if ($actor === 'visitor') {
       // send notification to administrator
-      if ($this->getSettings()->emailAdminReviewUpdated()) {
-        $lang = $this->getAdminEmailLanguage();
-        $email = $this->getAdminEmail();
+      if ($settings->emailAdminReviewUpdated()) {
+        $lang = $settings->getAdminEmailLanguage();
+        $email = $settings->getAdminEmail();
         $data = $this->getCommonData($this->getReview($id), $lang);
         if (! Mail::Send($lang, 'revws-admin-review-updated', Mail::l('Review has been updated', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
           self::emailError('revws-admin-review-updated', $id, $lang, $email);
@@ -129,12 +130,12 @@ class Notifications {
     }
   }
 
-  private function processReviewDeleted($id, $actor) {
+  private function processReviewDeleted($id, $actor, $settings) {
     if ($actor === 'visitor') {
       // send notification to administrator
-      if ($this->getSettings()->emailAdminReviewDeleted()) {
-        $lang = $this->getAdminEmailLanguage();
-        $email = $this->getAdminEmail();
+      if ($settings->emailAdminReviewDeleted()) {
+        $lang = $settings->getAdminEmailLanguage();
+        $email = $settings->getAdminEmail();
         $data = $this->getCommonData($this->getReview($id), $lang);
         if (! Mail::Send($lang, 'revws-admin-review-deleted', Mail::l('Review has been deleted', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
           self::emailError('revws-admin-review-deleted', $id, $lang, $email);
@@ -142,7 +143,7 @@ class Notifications {
       }
     }
     if ($actor === 'employee') {
-      if ($this->getSettings()->emailAuthorReviewDeleted()) {
+      if ($settings->emailAuthorReviewDeleted()) {
         $review = $this->getReview($id);
         $email = $this->getReviewerEmail($review);
         if ($email) {
@@ -156,9 +157,9 @@ class Notifications {
     }
   }
 
-  private function processReviewApproved($id, $actor) {
+  private function processReviewApproved($id, $actor, $settings) {
     if ($actor === 'employee') {
-      if ($this->getSettings()->emailAuthorReviewApproved()) {
+      if ($settings->emailAuthorReviewApproved()) {
         $review = $this->getReview($id);
         $email = $this->getReviewerEmail($review);
         if ($email) {
@@ -172,16 +173,15 @@ class Notifications {
     }
   }
 
-  private function processNeedsApproval($id, $actor) {
+  private function processNeedsApproval($id, $actor, $settings) {
     if ($actor === 'visitor') {
-      $settings = $this->getSettings();
       if ($settings->moderationEnabled() && $settings->emailAdminReviewNeedsApproval()) {
         $review = $this->getReview($id);
-        $lang = $this->getAdminEmailLanguage();
-        $email = $this->getAdminEmail();
+        $lang = $settings->getAdminEmailLanguage();
+        $email = $settings->getAdminEmail();
         $data = $this->getCommonData($review, $lang);
-        $data['{approve_link}'] = $this->getApproveLink($review);
-        $data['{reject_link}'] = $this->getRejectLink($review);
+        $data['{approve_link}'] = $this->getApproveLink($review, $settings);
+        $data['{reject_link}'] = $this->getRejectLink($review, $settings);
         if (! Mail::Send($lang, 'revws-admin-needs-approval', Mail::l('Review needs approval', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory())) {
           self::emailError('revws-admin-needs-approval', $id, $lang, $email);
         }
@@ -189,9 +189,8 @@ class Notifications {
     }
   }
 
-  private function processReplied($id, $actor) {
+  private function processReplied($id, $actor, $settings) {
     if ($actor === 'employee') {
-      $settings = $this->getSettings();
       if ($settings->emailAuthorNotifyOnReply()) {
         $review = $this->getReview($id);
         $email = $this->getReviewerEmail($review);
@@ -260,14 +259,6 @@ class Notifications {
     ];
   }
 
-  private function getAdminEmailLanguage() {
-    return $this->getSettings()->getAdminEmailLanguage();
-  }
-
-  private function getAdminEmail() {
-    return $this->getSettings()->getAdminEmail();
-  }
-
   private function getReviewerEmail(RevwsReview $review) {
     if ($review->isCustomer()) {
       return $this->getCustomer($review)->email;
@@ -321,10 +312,6 @@ class Notifications {
     return $this->customer;
   }
 
-  private function getSettings() {
-    return Settings::getInstance();
-  }
-
   private function getShopName() {
     return Configuration::get('PS_SHOP_NAME');
   }
@@ -338,24 +325,23 @@ class Notifications {
     Logger::addLog("Revws module: $msg");
   }
 
-
   private function getActionLink($action, $data) {
     $context = Context::getContext();
     $data['action'] = $action;
     return $context->link->getModuleLink('revws', 'EmailAction', $data, true);
   }
 
-  private function getApproveLink(RevwsReview $review) {
+  private function getApproveLink(RevwsReview $review, Settings $settings) {
     return $this->getActionLink('approve', [
       'review-id' => (int)$review->id,
-      'secret' => $review->getSecretHash('approve')
+      'secret' => $review->getSecretHash('approve', $settings)
     ]);
   }
 
-  private function getRejectLink(RevwsReview $review) {
+  private function getRejectLink(RevwsReview $review, Settings $settings) {
     return $this->getActionLink('reject', [
       'review-id' => (int)$review->id,
-      'secret' => $review->getSecretHash('reject')
+      'secret' => $review->getSecretHash('reject', $settings)
     ]);
   }
 

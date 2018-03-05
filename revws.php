@@ -37,6 +37,7 @@ require_once __DIR__.'/model/review.php';
 class Revws extends Module {
   private $permissions;
   private $visitor;
+  private $settings;
 
   public function __construct() {
     $this->name = 'revws';
@@ -63,9 +64,6 @@ class Revws extends Module {
   }
 
   public function uninstall($dropTables=true) {
-    echo "<pre>";
-    $this->registerHooks();
-    die();
     return (
       $this->uninstallDb($dropTables) &&
       $this->unregisterHooks() &&
@@ -85,14 +83,14 @@ class Revws extends Module {
   public function registerHooks() {
     return $this->setupHooks([
       'header',
-      'productTab',
-      'productTabContent',
+      'displayProductTab',
+      'displayProductTabContent',
       'displayRightColumnProduct',
       'displayProductListReviews',
-      'extraProductComparison',
+      'displayProductComparison',
       'displayCustomerAccount',
       'displayMyAccountBlock',
-      'productFooter',
+      'displayFooterProduct',
       'discoverReviewModule',
       'datakickExtend'
     ]);
@@ -104,20 +102,30 @@ class Revws extends Module {
 
   private function setupHooks($hooks) {
     $id = $this->id;
-    $wanted = [];
+    $install = [];
+    $delete = [];
     foreach ($hooks as $hook) {
-      $wanted[strtolower($hook)] = $hook;
+      $install[strtolower($hook)] = $hook;
     }
     $sql = 'SELECT DISTINCT LOWER(h.name) AS `hook` FROM '._DB_PREFIX_.'hook h INNER JOIN '._DB_PREFIX_.'hook_module hm ON (h.id_hook = hm.id_hook) WHERE hm.id_module = '.(int)$id;
-    $delete = [];
     foreach (Db::getInstance()->executeS($sql) as $row) {
       $hook = $row['hook'];
-      if (! isset($wanted['hook'])) {
+      if (isset($install[$hook])) {
+        unset($install[$hook]);
+      } else {
         $delete[] = $hook;
       }
     }
-    print_r($wanted);
-    print_r($delete);
+    $ret = true;
+    foreach ($install as $hook) {
+      if (! $this->registerHook($hook)) {
+        $ret = false;
+      }
+    }
+    foreach ($delete as $hook) {
+      $this->unregisterHook($hook);
+    }
+    return $ret;
   }
 
   private function installDb($create) {
@@ -191,7 +199,14 @@ class Revws extends Module {
   }
 
   public function getSettings() {
-    return \Revws\Settings::getInstance();
+    if (! $this->settings) {
+      $this->settings = new \Revws\Settings();
+      if ($this->settings->getVersion() != $this->version) {
+        $this->registerHooks();
+        $this->settings->setVersion($this->version);
+      }
+    }
+    return $this->settings;
   }
 
   public function getVisitor() {
@@ -225,13 +240,13 @@ class Revws extends Module {
     return \Revws\Shapes::getShape($this->getSettings()->getShape());
   }
 
-  public function hookProductTab() {
+  public function hookDisplayProductTab() {
     if ($this->getSettings()->getPlacement() === 'tab') {
       return $this->display(__FILE__, 'product_tab_header.tpl');
     }
   }
 
-  public function hookProductTabContent() {
+  public function hookDisplayProductTabContent() {
     $set = $this->getSettings();
     if ($this->getSettings()->getPlacement() === 'tab') {
       $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
@@ -245,7 +260,7 @@ class Revws extends Module {
     }
   }
 
-  public function hookProductFooter() {
+  public function hookDisplayFooterProduct() {
     $set = $this->getSettings();
     if ($set->getPlacement() === 'block') {
       $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
@@ -297,7 +312,7 @@ class Revws extends Module {
     }
   }
 
-  public function hookExtraProductComparison($params) {
+  public function hookDisplayProductComparison($params) {
     if ($this->getSettings()->showOnProductComparison()) {
       $averages = [];
       foreach ($params['list_ids_product'] as $idProduct) {

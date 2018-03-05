@@ -394,8 +394,8 @@ class RevwsReview extends ObjectModel {
     return $review;
   }
 
-  public static function fromJson($json) {
-    $moderation = Settings::getInstance()->moderationEnabled();
+  public static function fromJson($json, $settings) {
+    $moderation = $settings->moderationEnabled();
     $id = (int)$json['id'];
     if ($id === -1) {
       $id = null;
@@ -440,8 +440,8 @@ class RevwsReview extends ObjectModel {
     return (int)$this->id_lang;
   }
 
-  private function getSignature($action) {
-    $salt = Settings::getInstance()->getSalt();
+  private function getSignature($action, $settings) {
+    $salt = $settings->getSalt();
     return (
       (int)$this->id .
       $action .
@@ -455,11 +455,11 @@ class RevwsReview extends ObjectModel {
     );
   }
 
-  public function getSecretHash($action) {
-    return md5($this->getSignature($action));
+  public function getSecretHash($action, $settings) {
+    return md5($this->getSignature($action, $settings));
   }
 
-  public function verifySecretHash($action, $hash) {
-    return $this->getSecretHash($action) === $hash;
+  public function verifySecretHash($action, $hash, $settings) {
+    return $this->getSecretHash($action, $settings) === $hash;
   }
 }
