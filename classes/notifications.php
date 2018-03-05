@@ -29,6 +29,7 @@ use \Validate;
 use \Mail;
 use \Exception;
 use \Logger;
+use \Hook;
 
 class Notifications {
   private static $instance;
@@ -90,12 +91,13 @@ class Notifications {
 
   private function processReviewCreated($id, $actor, $settings) {
     if ($actor === 'visitor') {
+      $review = $this->getReview($id);
 
       // send notification to administrator
-      if ($emailAdminReviewCreated()) {
+      if ($settings->emailAdminReviewCreated()) {
         $lang = $settings->getAdminEmailLanguage();
         $email = $settings->getAdminEmail();
-        $data = $this->getCommonData($this->getReview($id), $lang);
+        $data = $this->getCommonData($review, $lang);
         if (! Mail::Send($lang, 'revws-admin-review-created', Mail::l('New review has been created', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
           self::emailError('revws-admin-review-created', $id, $lang, $email);
         }
@@ -103,7 +105,6 @@ class Notifications {
 
       // send thank you email
       if ($settings->emailAuthorThankYou()) {
-        $review = $this->getReview($id);
         $email = $this->getReviewerEmail($review);
         if ($email) {
           $lang = $this->getReviewerLanguage($review);
@@ -113,6 +114,8 @@ class Notifications {
           }
         }
       }
+
+      $this->triggerKronaAction('review_created', $review);
     }
   }
 
@@ -143,8 +146,8 @@ class Notifications {
       }
     }
     if ($actor === 'employee') {
+      $review = $this->getReview($id);
       if ($settings->emailAuthorReviewDeleted()) {
-        $review = $this->getReview($id);
         $email = $this->getReviewerEmail($review);
         if ($email) {
           $lang = $this->getReviewerLanguage($review);
@@ -154,13 +157,14 @@ class Notifications {
           }
         }
       }
+      $this->triggerKronaAction('review_rejected', $review);
     }
   }
 
   private function processReviewApproved($id, $actor, $settings) {
     if ($actor === 'employee') {
+      $review = $this->getReview($id);
       if ($settings->emailAuthorReviewApproved()) {
-        $review = $this->getReview($id);
         $email = $this->getReviewerEmail($review);
         if ($email) {
           $lang = $this->getReviewerLanguage($review);
@@ -170,6 +174,7 @@ class Notifications {
           }
         }
       }
+      $this->triggerKronaAction('review_approved', $review);
     }
   }
 
@@ -350,6 +355,17 @@ class Notifications {
       return nl2br($str);
     }
     return $str;
+  }
+
+  private function triggerKronaAction($action, $review) {
+    if ($review->isCustomer()) {
+      $data = [
+        'module_name' => 'revws',
+        'action_name' => $action,
+        'id_customer' => $review->getAuthorId()
+      ];
+      Hook::exec('actionExecuteKronaAction', $data);
+    }
   }
 
 }

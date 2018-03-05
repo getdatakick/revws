@@ -92,7 +92,8 @@ class Revws extends Module {
       'displayMyAccountBlock',
       'displayFooterProduct',
       'discoverReviewModule',
-      'datakickExtend'
+      'datakickExtend',
+      'actionRegisterKronaAction'
     ]);
   }
 
@@ -363,6 +364,14 @@ class Revws extends Module {
   public function hookDataKickExtend($params) {
     require_once(__DIR__.'/classes/integration/datakick.php');
     return \Revws\DatakickIntegration::integrate($params);
+  }
+
+  public function hookActionRegisterKronaAction($params) {
+    return [
+      'review_created',
+      'review_approved',
+      'review_rejected'
+    ];
   }
 
   public function clearCache() {
