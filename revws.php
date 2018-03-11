@@ -368,9 +368,18 @@ class Revws extends Module {
 
   public function hookActionRegisterKronaAction($params) {
     return [
-      'review_created',
-      'review_approved',
-      'review_rejected'
+      'review_created' => [
+        'title'   => 'Review Created',
+        'message' => 'You received {points} Points for having a review created',
+      ],
+      'review_approved' => [
+        'title'   => 'Review Approved',
+        'message' => 'You received {points} Points for having a review approved',
+      ],
+      'review_rejected' => [
+        'title'   => 'Review Rejected',
+        'message' => 'You lost {points} Points for having a review rejected',
+      ],
     ];
   }
 
