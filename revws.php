@@ -37,6 +37,7 @@ require_once __DIR__.'/model/review.php';
 class Revws extends Module {
   private $permissions;
   private $visitor;
+  private $settings;
 
   public function __construct() {
     $this->name = 'revws';
@@ -80,34 +81,52 @@ class Revws extends Module {
   }
 
   public function registerHooks() {
-    return (
-      $this->registerHook('productTab') &&
-      $this->registerHook('header') &&
-      $this->registerHook('productTabContent') &&
-      $this->registerHook('displayRightColumnProduct') &&
-      $this->registerHook('displayProductListReviews') &&
-      $this->registerHook('extraProductComparison') &&
-      $this->registerHook('displayCustomerAccount') &&
-      $this->registerHook('displayMyAccountBlock') &&
-      $this->registerHook('productFooter') &&
-      $this->registerHook('discoverReviewModule') &&
-      $this->registerHook('datakickExtend')
-    );
+    return $this->setupHooks([
+      'header',
+      'displayProductTab',
+      'displayProductTabContent',
+      'displayRightColumnProduct',
+      'displayProductListReviews',
+      'displayProductComparison',
+      'displayCustomerAccount',
+      'displayMyAccountBlock',
+      'displayFooterProduct',
+      'discoverReviewModule',
+      'datakickExtend',
+      'actionRegisterKronaAction'
+    ]);
   }
 
   public function unregisterHooks() {
-    $this->unregisterHook('productTab');
-    $this->unregisterHook('header');
-    $this->unregisterHook('productTabContent');
-    $this->unregisterHook('displayRightColumnProduct');
-    $this->unregisterHook('displayProductListReviews');
-    $this->unregisterHook('extraProductComparison');
-    $this->unregisterHook('displayCustomerAccount');
-    $this->unregisterHook('displayMyAccountBlock');
-    $this->unregisterHook('productFooter');
-    $this->unregisterHook('discoverReviewModule');
-    $this->unregisterHook('datakickExtend');
-    return true;
+    return $this->setupHooks([]);
+  }
+
+  private function setupHooks($hooks) {
+    $id = $this->id;
+    $install = [];
+    $delete = [];
+    foreach ($hooks as $hook) {
+      $install[strtolower($hook)] = $hook;
+    }
+    $sql = 'SELECT DISTINCT LOWER(h.name) AS `hook` FROM '._DB_PREFIX_.'hook h INNER JOIN '._DB_PREFIX_.'hook_module hm ON (h.id_hook = hm.id_hook) WHERE hm.id_module = '.(int)$id;
+    foreach (Db::getInstance()->executeS($sql) as $row) {
+      $hook = $row['hook'];
+      if (isset($install[$hook])) {
+        unset($install[$hook]);
+      } else {
+        $delete[] = $hook;
+      }
+    }
+    $ret = true;
+    foreach ($install as $hook) {
+      if (! $this->registerHook($hook)) {
+        $ret = false;
+      }
+    }
+    foreach ($delete as $hook) {
+      $this->unregisterHook($hook);
+    }
+    return $ret;
   }
 
   private function installDb($create) {
@@ -181,7 +200,14 @@ class Revws extends Module {
   }
 
   public function getSettings() {
-    return \Revws\Settings::getInstance();
+    if (! $this->settings) {
+      $this->settings = new \Revws\Settings();
+      if ($this->settings->getVersion() != $this->version) {
+        $this->registerHooks();
+        $this->settings->setVersion($this->version);
+      }
+    }
+    return $this->settings;
   }
 
   public function getVisitor() {
@@ -215,13 +241,13 @@ class Revws extends Module {
     return \Revws\Shapes::getShape($this->getSettings()->getShape());
   }
 
-  public function hookProductTab() {
+  public function hookDisplayProductTab() {
     if ($this->getSettings()->getPlacement() === 'tab') {
       return $this->display(__FILE__, 'product_tab_header.tpl');
     }
   }
 
-  public function hookProductTabContent() {
+  public function hookDisplayProductTabContent() {
     $set = $this->getSettings();
     if ($this->getSettings()->getPlacement() === 'tab') {
       $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
@@ -235,7 +261,7 @@ class Revws extends Module {
     }
   }
 
-  public function hookProductFooter() {
+  public function hookDisplayFooterProduct() {
     $set = $this->getSettings();
     if ($set->getPlacement() === 'block') {
       $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
@@ -287,7 +313,7 @@ class Revws extends Module {
     }
   }
 
-  public function hookExtraProductComparison($params) {
+  public function hookDisplayProductComparison($params) {
     if ($this->getSettings()->showOnProductComparison()) {
       $averages = [];
       foreach ($params['list_ids_product'] as $idProduct) {
@@ -338,6 +364,14 @@ class Revws extends Module {
   public function hookDataKickExtend($params) {
     require_once(__DIR__.'/classes/integration/datakick.php');
     return \Revws\DatakickIntegration::integrate($params);
+  }
+
+  public function hookActionRegisterKronaAction($params) {
+    return [
+      'review_created',
+      'review_approved',
+      'review_rejected'
+    ];
   }
 
   public function clearCache() {

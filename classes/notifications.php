@@ -29,6 +29,7 @@ use \Validate;
 use \Mail;
 use \Exception;
 use \Logger;
+use \Hook;
 
 class Notifications {
   private static $instance;
@@ -74,12 +75,13 @@ class Notifications {
   public function process($module) {
     if ($this->queue) {
       $module->clearCache();
+      $settings = $module->getSettings();
       foreach ($this->queue as $workItem) {
         $type = $workItem['type'];
         $id = $workItem['id'];
         $actor = $workItem['actor'];
         try {
-          call_user_func(array($this, $type), $id, $actor);
+          call_user_func(array($this, $type), $id, $actor, $settings);
         } catch (Exception $e) {
           self::log("failed to process $type: " . $e->getMessage());
         }
@@ -87,22 +89,22 @@ class Notifications {
     }
   }
 
-  private function processReviewCreated($id, $actor) {
+  private function processReviewCreated($id, $actor, $settings) {
     if ($actor === 'visitor') {
+      $review = $this->getReview($id);
 
       // send notification to administrator
-      if ($this->getSettings()->emailAdminReviewCreated()) {
-        $lang = $this->getAdminEmailLanguage();
-        $email = $this->getAdminEmail();
-        $data = $this->getCommonData($this->getReview($id), $lang);
+      if ($settings->emailAdminReviewCreated()) {
+        $lang = $settings->getAdminEmailLanguage();
+        $email = $settings->getAdminEmail();
+        $data = $this->getCommonData($review, $lang);
         if (! Mail::Send($lang, 'revws-admin-review-created', Mail::l('New review has been created', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
           self::emailError('revws-admin-review-created', $id, $lang, $email);
         }
       }
 
       // send thank you email
-      if ($this->getSettings()->emailAuthorThankYou()) {
-        $review = $this->getReview($id);
+      if ($settings->emailAuthorThankYou()) {
         $email = $this->getReviewerEmail($review);
         if ($email) {
           $lang = $this->getReviewerLanguage($review);
@@ -112,15 +114,17 @@ class Notifications {
           }
         }
       }
+
+      $this->triggerKronaAction('review_created', $review);
     }
   }
 
-  private function processReviewUpdated($id, $actor) {
+  private function processReviewUpdated($id, $actor, $settings) {
     if ($actor === 'visitor') {
       // send notification to administrator
-      if ($this->getSettings()->emailAdminReviewUpdated()) {
-        $lang = $this->getAdminEmailLanguage();
-        $email = $this->getAdminEmail();
+      if ($settings->emailAdminReviewUpdated()) {
+        $lang = $settings->getAdminEmailLanguage();
+        $email = $settings->getAdminEmail();
         $data = $this->getCommonData($this->getReview($id), $lang);
         if (! Mail::Send($lang, 'revws-admin-review-updated', Mail::l('Review has been updated', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
           self::emailError('revws-admin-review-updated', $id, $lang, $email);
@@ -129,12 +133,12 @@ class Notifications {
     }
   }
 
-  private function processReviewDeleted($id, $actor) {
+  private function processReviewDeleted($id, $actor, $settings) {
     if ($actor === 'visitor') {
       // send notification to administrator
-      if ($this->getSettings()->emailAdminReviewDeleted()) {
-        $lang = $this->getAdminEmailLanguage();
-        $email = $this->getAdminEmail();
+      if ($settings->emailAdminReviewDeleted()) {
+        $lang = $settings->getAdminEmailLanguage();
+        $email = $settings->getAdminEmail();
         $data = $this->getCommonData($this->getReview($id), $lang);
         if (! Mail::Send($lang, 'revws-admin-review-deleted', Mail::l('Review has been deleted', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
           self::emailError('revws-admin-review-deleted', $id, $lang, $email);
@@ -142,8 +146,8 @@ class Notifications {
       }
     }
     if ($actor === 'employee') {
-      if ($this->getSettings()->emailAuthorReviewDeleted()) {
-        $review = $this->getReview($id);
+      $review = $this->getReview($id);
+      if ($settings->emailAuthorReviewDeleted()) {
         $email = $this->getReviewerEmail($review);
         if ($email) {
           $lang = $this->getReviewerLanguage($review);
@@ -153,13 +157,14 @@ class Notifications {
           }
         }
       }
+      $this->triggerKronaAction('review_rejected', $review);
     }
   }
 
-  private function processReviewApproved($id, $actor) {
+  private function processReviewApproved($id, $actor, $settings) {
     if ($actor === 'employee') {
-      if ($this->getSettings()->emailAuthorReviewApproved()) {
-        $review = $this->getReview($id);
+      $review = $this->getReview($id);
+      if ($settings->emailAuthorReviewApproved()) {
         $email = $this->getReviewerEmail($review);
         if ($email) {
           $lang = $this->getReviewerLanguage($review);
@@ -169,19 +174,19 @@ class Notifications {
           }
         }
       }
+      $this->triggerKronaAction('review_approved', $review);
     }
   }
 
-  private function processNeedsApproval($id, $actor) {
+  private function processNeedsApproval($id, $actor, $settings) {
     if ($actor === 'visitor') {
-      $settings = $this->getSettings();
       if ($settings->moderationEnabled() && $settings->emailAdminReviewNeedsApproval()) {
         $review = $this->getReview($id);
-        $lang = $this->getAdminEmailLanguage();
-        $email = $this->getAdminEmail();
+        $lang = $settings->getAdminEmailLanguage();
+        $email = $settings->getAdminEmail();
         $data = $this->getCommonData($review, $lang);
-        $data['{approve_link}'] = $this->getApproveLink($review);
-        $data['{reject_link}'] = $this->getRejectLink($review);
+        $data['{approve_link}'] = $this->getApproveLink($review, $settings);
+        $data['{reject_link}'] = $this->getRejectLink($review, $settings);
         if (! Mail::Send($lang, 'revws-admin-needs-approval', Mail::l('Review needs approval', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory())) {
           self::emailError('revws-admin-needs-approval', $id, $lang, $email);
         }
@@ -189,9 +194,8 @@ class Notifications {
     }
   }
 
-  private function processReplied($id, $actor) {
+  private function processReplied($id, $actor, $settings) {
     if ($actor === 'employee') {
-      $settings = $this->getSettings();
       if ($settings->emailAuthorNotifyOnReply()) {
         $review = $this->getReview($id);
         $email = $this->getReviewerEmail($review);
@@ -260,14 +264,6 @@ class Notifications {
     ];
   }
 
-  private function getAdminEmailLanguage() {
-    return $this->getSettings()->getAdminEmailLanguage();
-  }
-
-  private function getAdminEmail() {
-    return $this->getSettings()->getAdminEmail();
-  }
-
   private function getReviewerEmail(RevwsReview $review) {
     if ($review->isCustomer()) {
       return $this->getCustomer($review)->email;
@@ -321,10 +317,6 @@ class Notifications {
     return $this->customer;
   }
 
-  private function getSettings() {
-    return Settings::getInstance();
-  }
-
   private function getShopName() {
     return Configuration::get('PS_SHOP_NAME');
   }
@@ -338,24 +330,23 @@ class Notifications {
     Logger::addLog("Revws module: $msg");
   }
 
-
   private function getActionLink($action, $data) {
     $context = Context::getContext();
     $data['action'] = $action;
     return $context->link->getModuleLink('revws', 'EmailAction', $data, true);
   }
 
-  private function getApproveLink(RevwsReview $review) {
+  private function getApproveLink(RevwsReview $review, Settings $settings) {
     return $this->getActionLink('approve', [
       'review-id' => (int)$review->id,
-      'secret' => $review->getSecretHash('approve')
+      'secret' => $review->getSecretHash('approve', $settings)
     ]);
   }
 
-  private function getRejectLink(RevwsReview $review) {
+  private function getRejectLink(RevwsReview $review, Settings $settings) {
     return $this->getActionLink('reject', [
       'review-id' => (int)$review->id,
-      'secret' => $review->getSecretHash('reject')
+      'secret' => $review->getSecretHash('reject', $settings)
     ]);
   }
 
@@ -364,6 +355,17 @@ class Notifications {
       return nl2br($str);
     }
     return $str;
+  }
+
+  private function triggerKronaAction($action, $review) {
+    if ($review->isCustomer()) {
+      $data = [
+        'module_name' => 'revws',
+        'action_name' => $action,
+        'id_customer' => $review->getAuthorId()
+      ];
+      Hook::exec('actionExecuteKronaAction', $data);
+    }
   }
 
 }

@@ -151,7 +151,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
   }
 
   private function saveReview($json) {
-    $review = RevwsReview::fromJson($json);
+    $review = RevwsReview::fromJson($json, $this->module->getSettings());
     if (! $review->save()) {
       throw new Exception("Failed to save review");
     }

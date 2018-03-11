@@ -27,11 +27,11 @@ class Settings {
   const BACKEND_APP_URL = 'REVWS_BACK_APP_URL';
   const SALT = 'REVWS_SALT';
   const SETTINGS = 'REVWS_SETTINGS';
+  const VERSION = 'REVWS_VERSION';
 
-  private static $instance;
   private $data;
 
-  private function __construct() {
+  public function __construct() {
     $this->data = self::getDefaultSettings();
     $stored = Configuration::get(self::SETTINGS);
     if ($stored) {
@@ -40,13 +40,6 @@ class Settings {
         $this->data = self::mergeSettings($this->data, $stored);
       }
     }
-  }
-
-  public static function getInstance() {
-    if (! self::$instance) {
-      self::$instance = new Settings();
-    }
-    return self::$instance;
   }
 
   private static function getDefaultSettings() {
@@ -152,6 +145,14 @@ class Settings {
       Configuration::updateValue(self::SALT, $salt);
     }
     return $salt;
+  }
+
+  public function getVersion() {
+    return Configuration::get(self::VERSION);
+  }
+
+  public function setVersion($version) {
+    Configuration::updateValue(self::VERSION, $version);
   }
 
   public function getPlacement() {

@@ -52,7 +52,7 @@ class RevwsEmailActionModuleFrontController extends ModuleFrontController {
   private function approval($action) {
     $review = $this->getReview(Tools::getValue('review-id'));
     $hash = $this->getValueOrThrow('secret');
-    if (! $review->verifySecretHash($action, $hash)) {
+    if (! $review->verifySecretHash($action, $hash, $this->module->getSettings())) {
       throw new Exception('Permission denied');
     }
     // secret hash has been validated, we can approve it
