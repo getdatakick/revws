@@ -57,7 +57,7 @@ class Settings {
           'placement' => 'block',
           'reviewsPerPage' => 5,
           'orderBy' => 'date',
-          'showAverage' => true,
+          'averagePlacement' => 'rightColumn',
           'hideEmptyReviews' => false,
           'showSignInButton' => true,
         ],
@@ -183,8 +183,8 @@ class Settings {
     return $this->toBool($this->get(['review', 'allowEdit']));
   }
 
-  public function showAverageOnProductPage() {
-    return $this->toBool($this->get(['display', 'product', 'showAverage']));
+  public function getAveragePlacement() {
+    return $this->toAveragePlacement($this->get(['display', 'product', 'averagePlacement']));
   }
 
   public function getReviewsPerPage() {
@@ -312,6 +312,13 @@ class Settings {
 
   private function toPlacement($placement) {
     return $placement === 'tab' ? 'tab' : 'block';
+  }
+
+  private function toAveragePlacement($placement) {
+    if (in_array($placement, ['rightColumn', 'buttons', 'none'])) {
+      return $placement;
+    }
+    return 'extra';
   }
 
   private function toShape($shape) {

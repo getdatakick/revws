@@ -87,6 +87,7 @@ class Revws extends Module {
       'displayProductTabContent',
       'displayRightColumnProduct',
       'displayProductListReviews',
+      'displayProductButtons',
       'displayProductComparison',
       'displayCustomerAccount',
       'displayMyAccountBlock',
@@ -281,21 +282,36 @@ class Revws extends Module {
 
   public function hookDisplayRightColumnProduct($params) {
     $set = $this->getSettings();
-    if ($set->showAverageOnProductPage()) {
+    if ($set->getAveragePlacement() == 'rightColumn') {
       $productId = (int)(Tools::getValue('id_product'));
-      list($grade, $count) = RevwsReview::getAverageGrade($productId);
-      $this->context->smarty->assign('productId', $productId);
-      $this->context->smarty->assign('grade', $grade);
-      $this->context->smarty->assign('reviewCount', $count);
-      $this->context->smarty->assign('shape', $this->getShapeSettings());
-      $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
-      $this->context->smarty->assign('canCreate', $this->getPermissions()->canCreateReview($productId));
-      $this->context->smarty->assign('isGuest', $this->getVisitor()->isGuest());
-      $this->context->smarty->assign('loginLink', $this->getLoginUrl($productId));
-      $this->context->smarty->assign('microdata', $this->getSettings()->emitRichSnippets());
+      $this->setupAverageOnProductPage($productId);
       return $this->display(__FILE__, 'product_extra.tpl');
     }
   }
+
+  public function hookDisplayProductButtons($params) {
+    $set = $this->getSettings();
+    if ($set->getAveragePlacement() == 'buttons') {
+      $productId = (int)(Tools::getValue('id_product'));
+      $this->setupAverageOnProductPage($productId);
+      return $this->display(__FILE__, 'product_buttons.tpl');
+    }
+  }
+
+  private function setupAverageOnProductPage($productId) {
+    $set = $this->getSettings();
+    list($grade, $count) = RevwsReview::getAverageGrade($productId);
+    $this->context->smarty->assign('productId', $productId);
+    $this->context->smarty->assign('grade', $grade);
+    $this->context->smarty->assign('reviewCount', $count);
+    $this->context->smarty->assign('shape', $this->getShapeSettings());
+    $this->context->smarty->assign('shapeSize', $set->getShapeSize());
+    $this->context->smarty->assign('canCreate', $this->getPermissions()->canCreateReview($productId));
+    $this->context->smarty->assign('isGuest', $this->getVisitor()->isGuest());
+    $this->context->smarty->assign('loginLink', $this->getLoginUrl($productId));
+    $this->context->smarty->assign('microdata', $set->emitRichSnippets());
+  }
+
 
   public function hookDisplayProductListReviews($params) {
     if ($this->getSettings()->showOnProductListing()) {

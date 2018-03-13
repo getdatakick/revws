@@ -16,7 +16,7 @@ export type SettingsType = {
       placement: string,
       orderBy: 'date' | 'grade' | 'usefulness',
       reviewsPerPage: number | string,
-      showAverage: boolean,
+      averagePlacement: 'rightColumn' | 'buttons' | 'none',
       showSignInButton: boolean,
     },
     productList: {

@@ -429,11 +429,18 @@ class Settings extends React.PureComponent<Props, State> {
             error={!! errors.display.product.reviewsPerPage}
             onChange={e => this.set(['display', 'product', 'reviewsPerPage'], e.target.value)} />
           <div className={styles.space} />
+          <TextField
+            select
+            fullWidth
+            label={__("Display review average in")}
+            value={settings.display.product.averagePlacement}
+            onChange={e => this.set(['display', 'product', 'averagePlacement'], e.target.value)}>
+            <MenuItem value='rightColumn'>{__('Right column')}</MenuItem>
+            <MenuItem value='buttons'>{__('Product buttons')}</MenuItem>
+            <MenuItem value='none'>{__("Don't show review average")}</MenuItem>
+          </TextField>
+          <div className={styles.space} />
         </div>
-        <FormControlLabel
-          control={this.renderSwitch(['display', 'product', 'showAverage'])}
-          label={__("Show average ratings on product page")}
-        />
         <FormControlLabel
           control={this.renderSwitch(['display', 'product', 'hideEmptyReviews'])}
           label={__("Hide review section when is empty")}

@@ -185,15 +185,20 @@ a .revws-grading {
 }
 
 /* product extra - right panel */
- #revws-product-extra, .revws-product-extra-link {
+ #revws-product-extra,
+ #revws-product-buttons,
+ .revws-product-extra-link,
+ .revws-product-buttons-link {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
 #revws-product-extra b,
+#revws-product-buttons b,
 .revws-product-list .revws-grading,
 .revws-comparison .revws-grading,
+.revws-product-buttons-link .revws-grading,
 .revws-product-extra-link .revws-grading {
   margin-right: 10px;
 }
