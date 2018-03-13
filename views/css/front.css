@@ -205,6 +205,10 @@ a .revws-grading {
   align-items: center;
 }
 
+.revws-product-list-empty {
+  display: none;
+}
+
 .revws-replies {
   width: 100%;
   padding: 20px;

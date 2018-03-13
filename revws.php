@@ -42,7 +42,7 @@ class Revws extends Module {
   public function __construct() {
     $this->name = 'revws';
     $this->tab = 'administration';
-    $this->version = '1.0.4';
+    $this->version = '1.0.5';
     $this->author = 'DataKick <petr@getdatakick.com>';
     $this->need_instance = 0;
     $this->bootstrap = true;
@@ -301,15 +301,13 @@ class Revws extends Module {
     if ($this->getSettings()->showOnProductListing()) {
       $productId = (int) $params['product']['id_product'];
       list($grade, $count) = RevwsReview::getAverageGrade($productId);
-      if ($count > 0) {
-        $this->context->smarty->assign('productId', $productId);
-        $this->context->smarty->assign('grade', $grade);
-        $this->context->smarty->assign('reviewCount', $count);
-        $this->context->smarty->assign('shape', $this->getShapeSettings());
-        $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
-        $this->context->smarty->assign('reviewsUrl', $this->getProductReviewsLink($productId));
-        return $this->display(__FILE__, 'product_list.tpl');
-      }
+      $this->context->smarty->assign('productId', $productId);
+      $this->context->smarty->assign('grade', $grade);
+      $this->context->smarty->assign('reviewCount', $count);
+      $this->context->smarty->assign('shape', $this->getShapeSettings());
+      $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
+      $this->context->smarty->assign('reviewsUrl', $this->getProductReviewsLink($productId));
+      return $this->display(__FILE__, 'product_list.tpl');
     }
   }
 
