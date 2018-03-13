@@ -2,11 +2,12 @@
 import type { ComponentType } from 'react';
 import type { InputProps } from './migrate-data';
 import { connect } from 'react-redux';
-import { migrateData } from 'back/actions/creators';
+import { migrateData, uploadYotpoCsv } from 'back/actions/creators';
 import MigrateData from './migrate-data';
 
 const actions = {
-  onMigrate: migrateData
+  onMigrate: migrateData,
+  onUploadYotpo: uploadYotpoCsv
 };
 
 const connectRedux = connect(null, actions);

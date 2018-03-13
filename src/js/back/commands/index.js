@@ -1,6 +1,6 @@
 // @flow
 
-import { prop } from 'ramda';
+import { forEach, keys, prop } from 'ramda';
 import type { GlobalDataType } from 'back/types';
 import type { Command } from 'common/types';
 import type { Action } from 'back/actions';
@@ -15,6 +15,7 @@ import { approveReview } from './approve-review';
 import { deleteReview } from './delete-review';
 import { undeleteReview } from './undelete-review';
 import { migrateData } from './migrate-data';
+import { uploadYotpoCsv } from './upload-yopto';
 
 const commands = {
   [ Types.setSettings ]: saveSettings,
@@ -26,6 +27,7 @@ const commands = {
   [ Types.undeleteReview ]: undeleteReview,
   [ Types.approveReview ]: approveReview,
   [ Types.migrateData ]: migrateData,
+  [ Types.uploadYotpoCsv ]: uploadYotpoCsv
 };
 
 export default (settings: GlobalDataType) => {
@@ -43,19 +45,38 @@ export default (settings: GlobalDataType) => {
         }
       };
       const error = (xhr, error) => failure(error);
-      window.$.ajax({
-        url: fixUrl(settings.api),
-        type: 'POST',
-        dataType: 'json',
-        data: {
-          ajax: true,
-          action: 'command',
-          cmd: cmd,
-          payload: JSON.stringify(payload).replace(/\\n/g, "\\\\n")
-        },
-        success,
-        error
-      });
+      if (payload.file) {
+        const data = new FormData();
+        data.append('ajax', '1');
+        data.append('action', 'command');
+        data.append('cmd', cmd);
+        forEach(key => data.append(key, payload[key]), keys(payload));
+        window.$.ajax({
+          url: fixUrl(settings.api),
+          data: data,
+          cache: false,
+          dataType: 'json',
+          contentType: false,
+          processData: false,
+          type: 'POST',
+          success,
+          error
+        });
+      } else {
+        window.$.ajax({
+          url: fixUrl(settings.api),
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            ajax: true,
+            action: 'command',
+            cmd: cmd,
+            payload: JSON.stringify(payload).replace(/\\n/g, "\\\\n")
+          },
+          success,
+          error
+        });
+      }
     });
   };
 

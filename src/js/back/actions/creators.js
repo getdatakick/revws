@@ -21,7 +21,8 @@ import type {
   SaveReviewAction,
   ReviewUpdatedAction,
   ReviewCreatedAction,
-  MigrateDataAction
+  MigrateDataAction,
+  UploadYotpoCsvAction
 } from './index';
 import Types from './types';
 
@@ -48,3 +49,4 @@ export const reviewUpdated = (review: ReviewType): ReviewUpdatedAction => ({ typ
 export const reviewCreated = (review: ReviewType): ReviewCreatedAction => ({ type: Types.reviewCreated, review });
 
 export const migrateData = (source: string, payload: any): MigrateDataAction => ({ type: Types.migrateData, source, payload });
+export const uploadYotpoCsv = (file: File): UploadYotpoCsvAction => ({ type: Types.uploadYotpoCsv, file });

@@ -19,6 +19,7 @@
 define('REVWS_MODULE_DIR', dirname(__FILE__));
 
 require_once __DIR__.'/app-translation.php';
+require_once __DIR__.'/classes/csv-reader.php';
 require_once __DIR__.'/classes/utils.php';
 require_once __DIR__.'/classes/settings.php';
 require_once __DIR__.'/classes/permissions.php';

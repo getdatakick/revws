@@ -99,6 +99,11 @@ export type MigrateDataAction = {
   payload: any
 }
 
+export type UploadYotpoCsvAction = {
+  type: 'UPLOAD_YOTPO_CSV',
+  file: File
+}
+
 
 export type Action = (
   GoToAction |
@@ -118,5 +123,6 @@ export type Action = (
   SaveReviewAction |
   ReviewUpdatedAction |
   ReviewCreatedAction |
-  MigrateDataAction
+  MigrateDataAction |
+  UploadYotpoCsvAction
 );

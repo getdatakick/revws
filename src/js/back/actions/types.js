@@ -23,5 +23,6 @@ export default {
   undeleteReview: 'UNDELETE_REVIEW',
   saveReview: 'SAVE_REVIEW',
 
-  migrateData: 'MIGRATE_DATA'
+  migrateData: 'MIGRATE_DATA',
+  uploadYotpoCsv: 'UPLOAD_YOTPO_CSV'
 };

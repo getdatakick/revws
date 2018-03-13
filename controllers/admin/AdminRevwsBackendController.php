@@ -20,6 +20,7 @@ use \Revws\Notifications;
 use \Revws\Utils;
 use \Revws\Shapes;
 use \Revws\FrontApp;
+use \Revws\CsvReader;
 
 class AdminRevwsBackendController extends ModuleAdminController {
   public $module;
@@ -122,9 +123,30 @@ class AdminRevwsBackendController extends ModuleAdminController {
         return $this->saveReview($payload);
       case 'migrateData':
         return $this->migrateData($payload);
+      case 'importYotpo':
+        return $this->importYotpo();
       default:
         throw new Exception("Unknown command $cmd");
     }
+  }
+
+  private function importYotpo() {
+    $upload = Tools::fileAttachment('file', false);
+    if (! (isset($_FILES['file']['name']) && !empty($_FILES['file']['name']) && !empty($_FILES['file']['tmp_name']))) {
+      throw new Exception('No file');
+    }
+    $file = fopen($_FILES['file']['tmp_name'], 'r');
+    $reader = new CsvReader($file);
+    $index = array_flip($reader->getColumnNames());
+    foreach (['published', 'review_title', 'review_content', 'review_score', 'date', 'product_id', 'display_name', 'email', 'comment_content'] as $key) {
+      if (! isset($index[$key])) {
+        throw new Exception("CSV does not contains column $key");
+      }
+    }
+    while ($line = $reader->fetch()) {
+      // TODO
+    }
+    return true;
   }
 
   private function approveReview($payload) {
