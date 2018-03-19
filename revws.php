@@ -412,12 +412,8 @@ class Revws extends Module {
   }
 
   public function includeCommonStyles($controller) {
-    if (file_exists(_PS_THEME_DIR_."css/modules/{$this->name}/{$this->name}.css")) {
-        $controller->addCSS(_PS_THEME_DIR_."css/modules/{$this->name}/{$this->name}.css", 'all');
-    } else {
-        $controller->addCSS($this->getPath('views/css/front.css'), 'all');
-    }
     $controller->addCSS('https://fonts.googleapis.com/css?family=Roboto:300,400,500', 'all');
+    $controller->addCSS($this->getCSSFile(), 'all');
   }
 
   private function getProductReviewsLink($product) {
@@ -439,6 +435,42 @@ class Revws extends Module {
     return $this->context->link->getPageLink('authentication', true, null, [
       'back' => $back
     ]);
+  }
+
+  private function getCSSFile() {
+    $set = $this->getSettings();
+    $filename = $this->getCSSFilename($set);
+    if (! file_exists($filename)) {
+      $this->generateCSS($set, $filename);
+    }
+    return $filename;
+  }
+
+  private function getCSSFilename($set) {
+    static $filename;
+    if (is_null($filename)) {
+      $data = 'CACHE_CONTROL';
+      $data .= '-' . $set->getVersion();
+      $data .= '-' . json_encode($set->get());
+      foreach (['css.tpl', 'css-extend.tpl'] as $tpl) {
+        $source = $this->getTemplatePath($tpl);
+        if ($source) {
+          $data .= '-' . filemtime($source);
+        }
+      }
+      $id = md5($data);
+      $filename = _PS_THEME_DIR_ . "cache/" . $this->name . "-$id.css";
+    }
+    return $filename;
+  }
+
+  private function generateCSS($set, $filename) {
+    $css = $this->display(__FILE__, 'css.tpl');
+    $extend = $this->getTemplatePath('css-extend.tpl');
+    if ($extend) {
+      $css .= "\n" . $this->display(__FILE__, 'css-extend.tpl');
+    }
+    @file_put_contents($filename, $css);
   }
 
 }

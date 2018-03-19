@@ -1,4 +1,3 @@
-/* grading shapes - star, heart,... */
 .revws-grading {
   display: flex;
   cursor: default;
@@ -8,7 +7,6 @@ a .revws-grading {
   cursor: pointer;
 }
 
-/* product extra - right panel */
 .revws-grade-wrap {
   display: flex;
   align-items: center;
