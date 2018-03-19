@@ -59,6 +59,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
               <Grading
                 grade={averageGrade(review)}
                 shape={shape}
+                type={'product'}
                 size={shapeSize}
               />
             ) : undefined}

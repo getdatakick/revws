@@ -11,6 +11,7 @@ type Props = {
   grade: number,
   shape: GradingShapeType,
   size: number,
+  type?: 'product' | 'list' | 'create',
   onSetGrade?: (number)=>void
 };
 
@@ -26,14 +27,14 @@ class Grading extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { onSetGrade } = this.props;
+    const { onSetGrade, type, className } = this.props;
+    const typeClass = type ? 'revws-grading-'+type : null;
     return (
       <div
-        className={classnames("revws-grading", this.props.className)}
+        className={classnames("revws-grading", className, typeClass)}
         onTouchStart={onSetGrade ? this.onTouchMove : undefined}
         onTouchMove={onSetGrade ? this.onTouchMove : undefined}
-        onTouchEnd={onSetGrade ? this.onTouchEnd : undefined}
-      >
+        onTouchEnd={onSetGrade ? this.onTouchEnd : undefined} >
         { map(this.renderShape, range(1, 6)) }
       </div>
     );
