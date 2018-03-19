@@ -110,11 +110,13 @@ gulp.task('create-zip', function(done) {
 
 gulp.task('copy-text-files', function(done) {
   getLatestCommitHash(commit => {
+    const version = getVersion();
     const ext = ['php', 'tpl', 'css', 'js', 'sql', 'html', 'xml', 'md'];
     const sources = append('!../.tbstore/**', append('!../src/**', map(e => '../**/*.'+e, ext)));
     return gulp
       .src(sources)
       .pipe(replace(/CACHE_CONTROL/g, commit))
+      .pipe(replace(/CONSTANT_VERSION/g, version))
       .pipe(gulp.dest('./build/staging/revws'))
       .on('end', done);
   });
