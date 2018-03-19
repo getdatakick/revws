@@ -43,11 +43,11 @@ class Revws extends Module {
     $this->name = 'revws';
     $this->tab = 'administration';
     $this->version = '1.0.6';
-    $this->author = 'DataKick <petr@getdatakick.com>';
+    $this->author = 'DataKick';
     $this->need_instance = 0;
     $this->bootstrap = true;
     parent::__construct();
-    $this->displayName = $this->l('Product Reviews');
+    $this->displayName = $this->l('Revws - Product Reviews');
     $this->description = $this->l('Product Reviews module');
     $this->confirmUninstall = $this->l('Are you sure you want to uninstall the module? All its data will be lost!');
     $this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.999');
@@ -323,7 +323,7 @@ class Revws extends Module {
       $this->context->smarty->assign('shape', $this->getShapeSettings());
       $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
       $this->context->smarty->assign('reviewsUrl', $this->getProductReviewsLink($productId));
-      return $this->display(__FILE__, 'product_list.tpl');
+      return $this->display(__FILE__, 'product_list.tpl', $this->getCacheId() . '|' . $productId);
     }
   }
 
