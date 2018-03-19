@@ -19,13 +19,13 @@
   <b>{l s='Rating' mod='revws'}:</b>
   {if $reviewCount > 0}
     <a class="revws-product-buttons-link" href="#idTabRevws">
-      {include file='./grading.tpl' grade=$grade shape=$shape size=$shapeSize}
+      {include file='./grading.tpl' grade=$grade shape=$shape type='product'}
       <div class="revws-count-text">
         {l s='(read %1$d reviews)' sprintf=[$reviewCount] mod='revws'}
       </div>
     </a>
     {if $microdata}
-    <div style="display:none" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+    <div class="revws-hidden" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
       Rated <span itemprop="ratingValue">{$grade|string_format:"%.2f"}</span>/5
       based on <span itemprop="reviewCount">{$reviewCount}</span> customer reviews
     </div>

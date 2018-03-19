@@ -451,7 +451,8 @@ class Revws extends Module {
     if (is_null($filename)) {
       $data = 'CACHE_CONTROL';
       $data .= '-' . $set->getVersion();
-      $data .= '-' . json_encode($set->get());
+      $data .= '-' . json_encode($this->getCSSSettings($set));
+      $data .= time();
       foreach (['css.tpl', 'css-extend.tpl'] as $tpl) {
         $source = $this->getTemplatePath($tpl);
         if ($source) {
@@ -464,7 +465,19 @@ class Revws extends Module {
     return $filename;
   }
 
+  private function getCSSSettings($set) {
+    return [
+      'shape' => $this->getShapeSettings(),
+      'shapeSize' => [
+        'product' => $set->getShapeSize(),
+        'list' => $set->getShapeSize(),
+        'create' => $set->getShapeSize() * 5
+      ]
+    ];
+  }
+
   private function generateCSS($set, $filename) {
+    $this->smarty->assign('cssSettings', $this->getCSSSettings($set));
     $css = $this->display(__FILE__, 'css.tpl');
     $extend = $this->getTemplatePath('css-extend.tpl');
     if ($extend) {

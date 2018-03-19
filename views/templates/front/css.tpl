@@ -1,3 +1,7 @@
+.revws-hidden {
+  display: none;
+}
+
 .revws-grading {
   display: flex;
   cursor: default;
@@ -13,8 +17,39 @@ a .revws-grading {
   justify-content: center;
 }
 
+.revws-grading-product .revws-grade-wrap {
+  padding-left: {$cssSettings.shapeSize.product / 8}px;
+  padding-right: {$cssSettings.shapeSize.product / 8}px;
+}
+
+.revws-grading-list .revws-grade-wrap {
+  padding-left: {$cssSettings.shapeSize.list / 8}px;
+  padding-right: {$cssSettings.shapeSize.list / 8}px;
+}
+
+.revws-grading-create .revws-grade-wrap {
+  padding-left: {$cssSettings.shapeSize.create / 8}px;
+  padding-right: {$cssSettings.shapeSize.create / 8}px;
+}
+
+.revws-grading-product .revws-grade {
+  width: {$cssSettings.shapeSize.product}px;
+  height: {$cssSettings.shapeSize.product}px;
+}
+
+.revws-grading-list .revws-grade {
+  width: {$cssSettings.shapeSize.list}px;
+  height: {$cssSettings.shapeSize.list}px;
+}
+
+.revws-grading-create .revws-grade {
+  width: {$cssSettings.shapeSize.create}px;
+  height: {$cssSettings.shapeSize.create}px;
+}
+
 .revws-grade {
   transition: all 200ms linear;
+  stroke-width: {$cssSettings.shape.strokeWidth};
 }
 
 .revws-grade path {

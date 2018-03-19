@@ -28,9 +28,9 @@
     <div class="revws-review-author">
       <div class="revws-review-author-name" {if $microdata}itemprop="author"{/if}>{$review.displayName|escape:'html':'UTF-8'}</div>
       {if count($review.grades) > 0}
-      {include file='./grading.tpl' grade=$review.grade shape=$reviewsData.theme.shape size=$reviewsData.theme.shapeSize.product}
+      {include file='./grading.tpl' grade=$review.grade shape=$reviewsData.theme.shape type='product'}
       {if $microdata}
-      <div style="display:none" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+      <div class="revws-hidden" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
         <meta itemprop="worstRating" content="1">
         <meta itemprop="ratingValue" content="{$review.grade|string_format:"%.2f"}">
         <meta itemprop="bestRating" content="5">
