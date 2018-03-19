@@ -20,7 +20,9 @@
   {if $reviewCount > 0}
     <a class="revws-product-extra-link" href="#idTabRevws">
       {include file='./grading.tpl' grade=$grade shape=$shape size=$shapeSize}
-      {l s='(read %1$d reviews)' sprintf=[$reviewCount] mod='revws'}
+      <div class="revws-count-text">
+        {l s='(read %1$d reviews)' sprintf=[$reviewCount] mod='revws'}
+      </div>
     </a>
     {if $microdata}
     <div style="display:none" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
