@@ -112,7 +112,7 @@ gulp.task('create-zip', function(done) {
 gulp.task('copy-text-files', function(done) {
   getLatestCommitHash(commit => {
     const version = getVersion();
-    const ext = ['php', 'tpl', 'css', 'js', 'sql', 'html', 'md'];
+    const ext = ['php', 'tpl', 'css', 'js', 'sql', 'html', 'md', 'txt'];
     let sources = map(e => '../**/*.'+e, ext);
     sources = append('!../src/**', sources);
     sources = append('!../.tbstore/**', sources);
