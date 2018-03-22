@@ -19,6 +19,7 @@
 define('REVWS_MODULE_DIR', dirname(__FILE__));
 
 require_once __DIR__.'/app-translation.php';
+require_once __DIR__.'/classes/color.php';
 require_once __DIR__.'/classes/utils.php';
 require_once __DIR__.'/classes/settings.php';
 require_once __DIR__.'/classes/permissions.php';
@@ -466,13 +467,17 @@ class Revws extends Module {
   }
 
   private function getCSSSettings($set) {
+    $colors = $set->getShapeColors();
+    $colors['fillColorHigh'] = $colors['fillColor'] ? \Revws\Color::emphasize($colors['fillColor'], 0.2) : null;
+    $colors['borderColorHigh'] = $colors['borderColor'] ? \Revws\Color::emphasize($colors['borderColor'], 0.2) : null;
     return [
       'shape' => $this->getShapeSettings(),
       'shapeSize' => [
         'product' => $set->getShapeSize(),
         'list' => $set->getShapeSize(),
         'create' => $set->getShapeSize() * 5
-      ]
+      ],
+      'colors' => $colors
     ];
   }
 

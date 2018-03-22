@@ -46,6 +46,7 @@
   "dependencies": {
     "autosuggest-highlight": "^3.1.1",
     "babel-polyfill": "^6.26.0",
+    "colr": "^1.2.2",
     "element-resize-detector": "^1.1.12",
     "history": "^4.7.2",
     "material-ui": "^1.0.0-beta.27",

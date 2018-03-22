@@ -57,18 +57,18 @@ a .revws-grading {
 }
 
 .revws-grade-off path {
-  fill: transparent;
-  stroke: #d5d5d5;
+  fill: {if $cssSettings.colors.fillColorOff}{$cssSettings.colors.fillColorOff}{else}transparent{/if};
+  stroke: {if $cssSettings.colors.borderColorOff}{$cssSettings.colors.borderColorOff}{else}transparent{/if};
 }
 
 .revws-grade-on path {
-  fill: #ffd055;
-  stroke: #ffd055;
+  fill: {if $cssSettings.colors.fillColor}{$cssSettings.colors.fillColor}{else}transparent{/if};
+  stroke: {if $cssSettings.colors.borderColor}{$cssSettings.colors.borderColor}{else}transparent{/if};
 }
 
 .revws-grade-highlight path {
-  fill: #ffe066;
-  stroke: #ffe066;
+  fill: {if $cssSettings.colors.fillColorHigh}{$cssSettings.colors.fillColorHigh}{else}transparent{/if};
+  stroke: {if $cssSettings.colors.borderColorHigh}{$cssSettings.colors.borderColorHigh}{else}transparent{/if};
 }
 
 /* review layout */

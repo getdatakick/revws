@@ -1,12 +1,13 @@
 // @flow
 import React from 'react';
-import type { GradingShapeType, ReviewType } from 'common/types';
+import type { GradingShapeType, ReviewType, ShapeColorsType } from 'common/types';
 import styles from './style.less';
 import Bootstrap from 'common/components/bootstrap/bootstrap';
 import ReviewListItem from 'common/components/review-list-item/review-list-item';
 
 type Props = {
   shopName: string,
+  colors: ShapeColorsType,
   shape: GradingShapeType,
   size: number,
   canVote: boolean,
@@ -17,7 +18,7 @@ class ReviewPreview extends React.PureComponent<Props> {
   static displayName = 'ReviewPreview';
 
   render() {
-    const { shape, size, canVote, canReport, shopName } = this.props;
+    const { shape, size, colors, canVote, canReport, shopName } = this.props;
     const grades = {};
     grades[1] = 5;
     grades[2] = 3;
@@ -51,7 +52,7 @@ class ReviewPreview extends React.PureComponent<Props> {
             shape={shape}
             shapeSize={size}
             review={review}
-          />
+            colors={colors} />
         </div>
       </Bootstrap>
     );

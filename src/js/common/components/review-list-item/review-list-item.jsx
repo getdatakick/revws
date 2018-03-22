@@ -2,7 +2,7 @@
 
 import React from 'react';
 import classnames from 'classnames';
-import type { GradingShapeType, ReviewType } from 'common/types';
+import type { GradingShapeType, ReviewType, ShapeColorsType } from 'common/types';
 import { F, isNil } from 'ramda';
 import { hasRatings, averageGrade } from 'common/utils/reviews';
 import Grading from 'common/components/grading/grading';
@@ -14,6 +14,7 @@ import Button from 'material-ui/Button';
 type Props = {
   shopName: string,
   shape: GradingShapeType,
+  colors?: ShapeColorsType,
   shapeSize: number,
   review: ReviewType,
   onEdit: (ReviewType)=>void,
@@ -48,7 +49,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { shape, shapeSize, onReport, onEdit, onDelete, onVote, review } = this.props;
+    const { colors, shape, shapeSize, onReport, onEdit, onDelete, onVote, review } = this.props;
     const { displayName, date, title, underReview, content, canVote, canReport, canEdit, canDelete } = review;
     return (
       <div className="revws-review row no-gutter">
@@ -61,6 +62,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
                 shape={shape}
                 type={'product'}
                 size={shapeSize}
+                colors={colors}
               />
             ) : undefined}
             <div className="revws-review-date">{formatDate(date)}</div>

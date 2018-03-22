@@ -2,7 +2,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { range, map } from 'ramda';
-import type { GradingShapeType } from 'common/types';
+import type { GradingShapeType, ShapeColorsType } from 'common/types';
 import GradingShape from 'common/components/grading-shape/grading-shape';
 import { prevent } from 'common/utils/input';
 
@@ -12,7 +12,8 @@ type Props = {
   shape: GradingShapeType,
   size: number,
   type?: 'product' | 'list' | 'create',
-  onSetGrade?: (number)=>void
+  onSetGrade?: (number)=>void,
+  colors?: ShapeColorsType,
 };
 
 type State = {
@@ -41,7 +42,7 @@ class Grading extends React.PureComponent<Props, State> {
   }
 
   renderShape = (id: number) => {
-    const { shape, size, onSetGrade } = this.props;
+    const { shape, size, onSetGrade, colors } = this.props;
     const grade = Math.round(this.state.grade || this.props.grade);
     const padding = size/8;
     return (
@@ -62,6 +63,7 @@ class Grading extends React.PureComponent<Props, State> {
           size={size}
           highlighted={grade >= id && !!this.state.grade}
           on={grade >= id}
+          colors={colors}
         />
       </div>
     );

@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import type { GradingShapeType } from 'common/types';
+import type { GradingShapeType, ShapeColorsType } from 'common/types';
 import { map, toPairs } from 'ramda';
 import { MenuItem } from 'material-ui/Menu';
 import { InputLabel } from 'material-ui/Input';
@@ -11,6 +11,7 @@ import styles from './style.less';
 
 type Props = {
   shape: string,
+  colors: ShapeColorsType,
   onChange: (string)=>void,
   shapes: {
     [ string ]: GradingShapeType
@@ -41,7 +42,12 @@ class ShapeSelect extends React.PureComponent<Props> {
     const shape = pair[1];
     return (
       <MenuItem key={key} value={key}>
-        <Grading className={styles.grading} size={26} grade={5} shape={shape} />
+        <Grading
+          colors={this.props.colors}
+          className={styles.grading}
+          size={26}
+          grade={5}
+          shape={shape} />
       </MenuItem>
     );
   }

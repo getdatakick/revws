@@ -50,6 +50,12 @@ class Settings {
           'product' => 16,
           'list' => 16,
           'create' => 80
+        ],
+        'colors' => [
+          'fillColor' => '#ffd055',
+          'borderColor' => '#ffd055',
+          'fillColorOff' => null,
+          'borderColorOff' => '#d5d5d5'
         ]
       ],
       'display' => [
@@ -304,6 +310,10 @@ class Settings {
 
   public function emitRichSnippets() {
     return (bool)$this->get(['richSnippets', 'enabled']);
+  }
+
+  public function getShapeColors() {
+    return $this->get(['theme', 'colors']);
   }
 
   private function toBool($val) {

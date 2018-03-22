@@ -103,3 +103,10 @@ export type CustomerInfoType = {
   lastName: string,
   email: string,
 }
+
+export type ShapeColorsType = {
+  fillColor: ?string,
+  borderColor: ?string,
+  fillColorOff: ?string,
+  borderColorOff: ?string
+}
