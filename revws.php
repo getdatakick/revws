@@ -43,7 +43,7 @@ class Revws extends Module {
   public function __construct() {
     $this->name = 'revws';
     $this->tab = 'administration';
-    $this->version = '1.0.7';
+    $this->version = '1.0.8';
     $this->author = 'DataKick';
     $this->need_instance = 0;
     $this->bootstrap = true;
