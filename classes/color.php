@@ -22,6 +22,9 @@ namespace Revws;
 
 class Color {
   public static function decomposeColor($color) {
+    if (self::isTransparent($color)) {
+      return [ 255, 255, 255 ];
+    }
     return [
       hexdec(substr($color, 1, 2)),
       hexdec(substr($color, 3, 2)),
@@ -39,7 +42,10 @@ class Color {
     return (0.2126 * $vals[0] + 0.7152 * $vals[1] + 0.0722 * $vals[2]);
   }
 
-  public static function emphasize($color, $coef=0.1) {
+  public static function emphasize($color, $coef=0.25) {
+    if (self::isTransparent($color)) {
+      return $color;
+    }
     return self::getLuminance($color) > 0.5 ? self::darken($color, $coef) : self::lighten($color, $coef);
   }
 
@@ -61,5 +67,9 @@ class Color {
 
   private static function toColor($values) {
     return '#' . dechex($values[0]) . dechex($values[1]) . dechex($values[2]);
+  }
+
+  public static function isTransparent($color) {
+    return $color == 'transparent';
   }
 }

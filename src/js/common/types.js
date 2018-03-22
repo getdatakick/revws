@@ -105,8 +105,8 @@ export type CustomerInfoType = {
 }
 
 export type ShapeColorsType = {
-  fillColor: ?string,
-  borderColor: ?string,
-  fillColorOff: ?string,
-  borderColorOff: ?string
+  fillColor: string,
+  borderColor: string,
+  fillColorOff: string,
+  borderColorOff: string
 }

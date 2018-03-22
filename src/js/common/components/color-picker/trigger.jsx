@@ -15,14 +15,14 @@ import type { PresetType } from './types';
 
 type Props = {
   label: string,
-  color: ?string,
+  color: string,
   onChange: (?string)=>void,
   presets?: Array<PresetType>
 }
 
 type State = {
   open: boolean,
-  color: ?string,
+  color: string,
 }
 
 class ColorPickerTrigger extends React.PureComponent<Props, State> {
@@ -44,8 +44,8 @@ class ColorPickerTrigger extends React.PureComponent<Props, State> {
   render() {
     const { open } = this.state;
     const { presets, label } = this.props;
-    const hasColor = !!this.state.color;
-    const color = this.state.color || '#ffffff';
+    const hasColor = this.state.color != 'transparent';
+    const color = hasColor ? this.state.color : '#ffffff';
     const secondaryText = hasColor ? color : __('Transparent');
     return (
       <div>
@@ -74,9 +74,8 @@ class ColorPickerTrigger extends React.PureComponent<Props, State> {
               presets={presets}
               onChange={this.onChange} />
             <div className={styles.buttons}>
-              <Button onClick={this.handleRequestClose}>
-                {__('Close')}
-              </Button>
+              <Button onClick={this.setTransparent}>{__('Use transparent')}</Button>
+              <Button onClick={this.handleRequestClose}>{__('Close')}</Button>
             </div>
           </div>
         </Popover>
@@ -84,7 +83,7 @@ class ColorPickerTrigger extends React.PureComponent<Props, State> {
     );
   }
 
-  onChange = (color: ?string) => {
+  onChange = (color: string) => {
     this.setState({ color });
   };
 
@@ -93,16 +92,21 @@ class ColorPickerTrigger extends React.PureComponent<Props, State> {
     e.preventDefault();
     this.setState({
       open: true,
-      color: this.props.color || '#ffffff'
+      color: this.props.color
     });
   };
+
+  setTransparent = () => {
+    this.setState({ open: false });
+    this.emit('transparent');
+  }
 
   handleRequestClose = () => {
     this.setState({ open: false });
     this.emit(this.state.color);
   };
 
-  emit = (newColor: ?string) => {
+  emit = (newColor: string) => {
     const { color, onChange } = this.props;
     if (onChange && color != newColor) {
       onChange(newColor);

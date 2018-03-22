@@ -12,7 +12,7 @@ import type { HSV, PresetType } from './types';
 
 type Props = {
   color: string,
-  onChange: (?string)=>void,
+  onChange: (string)=>void,
   presets?: Array<PresetType>
 };
 
@@ -61,7 +61,7 @@ export default class extends React.PureComponent<Props, State> {
     }
   };
 
-  changeHexColor = (hex: ?string) => {
+  changeHexColor = (hex: string) => {
     if (hex != this.props.color) {
       this.props.onChange(hex);
     }
@@ -133,10 +133,6 @@ export default class extends React.PureComponent<Props, State> {
 
   initColor = () => {
     this.changeHexColor('#FFFFFF');
-  };
-
-  dontUse = () => {
-    this.changeHexColor(null);
   };
 }
 

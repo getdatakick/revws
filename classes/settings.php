@@ -54,7 +54,7 @@ class Settings {
         'colors' => [
           'fillColor' => '#ffd055',
           'borderColor' => '#ffd055',
-          'fillColorOff' => null,
+          'fillColorOff' => 'transparent',
           'borderColorOff' => '#d5d5d5'
         ]
       ],

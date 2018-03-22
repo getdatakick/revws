@@ -468,8 +468,8 @@ class Revws extends Module {
 
   private function getCSSSettings($set) {
     $colors = $set->getShapeColors();
-    $colors['fillColorHigh'] = $colors['fillColor'] ? \Revws\Color::emphasize($colors['fillColor'], 0.2) : null;
-    $colors['borderColorHigh'] = $colors['borderColor'] ? \Revws\Color::emphasize($colors['borderColor'], 0.2) : null;
+    $colors['fillColorHigh'] = \Revws\Color::emphasize($colors['fillColor']);
+    $colors['borderColorHigh'] = \Revws\Color::emphasize($colors['borderColor']);
     return [
       'shape' => $this->getShapeSettings(),
       'shapeSize' => [
