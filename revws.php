@@ -461,7 +461,6 @@ class Revws extends Module {
       $data = 'CACHE_CONTROL';
       $data .= '-' . $set->getVersion();
       $data .= '-' . json_encode($this->getCSSSettings($set));
-      $data .= time();
       foreach (['css.tpl', 'css-extend.tpl'] as $tpl) {
         $source = $this->getTemplatePath($tpl);
         if ($source) {

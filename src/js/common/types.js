@@ -35,6 +35,10 @@ export type GradingShapeType = {
   strokeWidth: number
 }
 
+export type GradingType = {
+  [ number ]: number
+};
+
 export type ReviewType = {
   id: number,
   productId: number,
@@ -47,9 +51,7 @@ export type ReviewType = {
   title: string,
   content: ?string,
   reply: ?string,
-  grades: {
-    [ number ]: number
-  },
+  grades: GradingType,
   date: Date,
   underReview: boolean,
   deleted: boolean,
@@ -112,4 +114,4 @@ export type ShapeColorsType = {
   borderColorOff: string
 }
 
-export type DisplayCriteriaType = 'none' | 'popup' | 'inline' | 'side';
+export type DisplayCriteriaType = 'none' | 'inline' | 'side';

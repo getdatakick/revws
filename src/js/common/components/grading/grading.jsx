@@ -11,7 +11,7 @@ type Props = {
   grade: number,
   shape: GradingShapeType,
   size: number,
-  type?: 'product' | 'list' | 'create',
+  type?: 'criterion' | 'product' | 'list' | 'create',
   onSetGrade?: (number)=>void,
   colors?: ShapeColorsType,
 };

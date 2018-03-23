@@ -3,12 +3,14 @@
 import React from 'react';
 import classnames from 'classnames';
 import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType } from 'common/types';
-import { F, isNil } from 'ramda';
+import { F, isNil, sortBy, prop, values, filter, has } from 'ramda';
 import { hasRatings, averageGrade } from 'common/utils/reviews';
 import Grading from 'common/components/grading/grading';
 import ReplyIcon from 'material-ui-icons/Reply';
 import styles from './review-list-item.less';
 import Textarea from 'common/components/text-area/text-area';
+import InlineCriteria from 'common/components/criteria/inline';
+import BlockCriteria from 'common/components/criteria/block';
 import Button from 'material-ui/Button';
 
 type Props = {
@@ -51,12 +53,27 @@ class ReviewListItem extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { colors, shape, shapeSize, onReport, onEdit, onDelete, onVote, review } = this.props;
-    const { displayName, date, title, underReview, verifiedBuyer, content, canVote, canReport, canEdit, canDelete } = review;
+    const { colors, shape, shapeSize, onReport, onEdit, onDelete, onVote, review, criteria, displayCriteria } = this.props;
+    const { displayName, date, title, underReview, verifiedBuyer, content, canVote, canReport, grades, canEdit, canDelete } = review;
     const classes = classnames('revws-review', 'row', 'no-gutter', {
       'revws-review-under-review': underReview,
       'revws-verified-buyer': verifiedBuyer
     });
+
+    const crits = displayCriteria == 'none' ? [] : getCriteriaToRender(criteria, grades);
+    const showCriteria = crits.length > 1;
+    let stars = undefined;
+
+    if (hasRatings(review)) {
+      stars = (
+        <Grading
+          grade={averageGrade(review)}
+          shape={shape}
+          type={'product'}
+          size={shapeSize}
+          colors={colors} />
+      );
+    }
 
     return (
       <div className={classes}>
@@ -64,28 +81,40 @@ class ReviewListItem extends React.PureComponent<Props, State> {
           <div className="revws-review-author">
             <div className="revws-review-author-name">{ displayName }</div>
             {verifiedBuyer && <div className="revws-verified-buyer-badge">{__("Verified purchase")}</div>}
-            { hasRatings(review) ? (
-              <Grading
-                grade={averageGrade(review)}
-                shape={shape}
-                type={'product'}
-                size={shapeSize}
-                colors={colors}
-              />
-            ) : undefined}
+            {stars}
             <div className="revws-review-date">{formatDate(date)}</div>
           </div>
         </div>
 
         <div className="col-sm-9 col-md-10">
           <div className="revws-review-details">
-            <p className="revws-review-title">
-              { title }
-            </p>
-            {underReview && (
-              <div className="revws-under-review">{__("This review hasn't been approved yet")}</div>
-            )}
-            <p className="revws-review-content">{ this.renderContent(content) }</p>
+            <div className="revws-review-review">
+              <div>
+                {showCriteria && displayCriteria == 'inline' && (
+                  <InlineCriteria
+                    grades={review.grades}
+                    shape={shape}
+                    shapeSize={shapeSize}
+                    colors={colors}
+                    criteria={crits} />
+                )}
+                <p className="revws-review-title">
+                  { title }
+                </p>
+                {underReview && (
+                  <div className="revws-under-review">{__("This review hasn't been approved yet")}</div>
+                )}
+                <p className="revws-review-content">{ this.renderContent(content) }</p>
+              </div>
+              {showCriteria && displayCriteria == 'side' && (
+                <BlockCriteria
+                  grades={review.grades}
+                  shape={shape}
+                  shapeSize={shapeSize}
+                  colors={colors}
+                  criteria={crits} />
+              )}
+            </div>
             <div className="revws-actions">
               {canVote && (
                 <div className="revws-action revws-useful">
@@ -241,5 +270,11 @@ const formatDate = (date: Date): string => {
 };
 
 const pad = (value) => ('00'+value).substr(-2);
+
+const getCriteriaToRender = (criteria, grades) => {
+  const list = sortBy(prop('id'), values(criteria));
+  return filter(crit => has(crit.id, grades), list);
+};
+
 
 export default ReviewListItem;

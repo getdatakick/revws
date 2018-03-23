@@ -97,7 +97,7 @@ class Settings {
         'allowEdit' => true,
         'allowVoting' => true,
         'allowReporting' => true,
-        'displayCriteria' => 'popup'
+        'displayCriteria' => 'side'
       ],
       'notifications' => [
         'admin' => [
@@ -327,7 +327,7 @@ class Settings {
   }
 
   private function toDisplayCriteria($in) {
-    if (in_array($in, ['none', 'popup', 'inline', 'side'])) {
+    if (in_array($in, ['none', 'inline', 'side'])) {
       return $in;
     }
     return 'none';

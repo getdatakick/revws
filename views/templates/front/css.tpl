@@ -117,27 +117,6 @@ a .revws-grading {
   border-top: none;
 }
 
-@media (min-width: 768px) {
-  .revws-review-author {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  #revws-tab-content .revws-grading {
-    margin: 20px 0px;
-  }
-}
-
-@media (max-width: 768px) {
-  .revws-review-author {
-    display: flex;
-    flex-direction: row;
-  }
-  #revws-tab-content .revws-grading {
-    margin: 0px 20px;
-  }
-}
-
 .revws-review-author-name {
   color: #222;
   font-size: 12px;
@@ -166,12 +145,11 @@ a .revws-grading {
   font-size: 12px;
 }
 
-@media (min-width: 768px) {
-  .revws-review-details {
-    border-left: 1px solid #f5f5f5;
-    padding-left: 30px;
-  }
+.revws-review-review {
+  display: flex;
+  justify-content: space-between;
 }
+
 
 .revws-review-title {
   color: #222;
@@ -184,6 +162,42 @@ a .revws-grading {
   color: #666;
   padding: 10px 0px;
   font-size: 14px;
+}
+
+.revws-review-criteria {
+  color: #999;
+  font-size: 14px;
+  font-weight: 400;
+  padding-left: 15px;
+}
+
+.revws-review-criteria-block table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.revws-review-criteria-block td {
+  padding: 0px 10px;
+}
+
+.revws-review-criteria-inline {
+  width: 100%;
+  padding-bottom: 20px;
+  display: flex;
+}
+
+.revws-review-criterion {
+  display: flex;
+}
+
+.revws-review-criteria-inline .revws-criterion-label {
+  margin-right: 10px;
+}
+
+.revws-review-criteria-inline .revws-review-criterion:not(:last-child) {
+  border-right: 1px solid #f5f5f5;
+  padding-right: 20px;
+  margin-right: 20px;
 }
 
 .revws-actions {
@@ -336,4 +350,48 @@ a .revws-grading {
 .revws-review-request-name {
   margin-top: 10px;
   text-align: center;
+}
+
+@media (min-width: 768px) {
+  .revws-review-author {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #revws-tab-content .revws-grading-product {
+    margin: 20px 0px;
+  }
+
+  .revws-review-details {
+    border-left: 1px solid #f5f5f5;
+    padding-left: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .revws-review-author {
+    display: flex;
+    flex-direction: row;
+  }
+  #revws-tab-content .revws-grading-product {
+    margin: 0px 20px;
+  }
+  #revws-tab-content .revws-verified-buyer-badge {
+    margin: 0px 5px;
+  }
+  .revws-review-details {
+    margin: 30px 0px;
+  }
+  .revws-review-content {
+    margin-top: 10px;
+  }
+  .revws-review-review {
+    flex-direction: column;
+  }
+  .revws-review-criteria {
+    padding: 20px 0px;
+  }
+  .revws-review-criteria .revws-criterion-label {
+    padding-left: 0px;
+  }
 }
