@@ -1,0 +1,21 @@
+Betreff: Ihre Bewertung wurde genehmigt!
+ - {shop_name}
+
+Hallo!
+
+Vielen Dank für Ihre Bewertung!
+
+Diese wurde nun freigeschaltet. Vielen herzlichen Dank für Ihre Bewertung! 
+
+Zur Erinnerung, das war Ihre Bewertung:
+
+Artikel: {product_name}
+Bewertung: {ratings} 
+Überschrift: {title}
+Inhalt: {content}
+Gezeigter Name: {display_name}
+
+Nochmals vielen Dank! Wir sind Ihnen sehr dankbar für Ihre Bewertung.
+{shop_name}
+
+

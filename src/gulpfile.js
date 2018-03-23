@@ -126,7 +126,7 @@ gulp.task('copy-text-files', function(done) {
 });
 
 gulp.task('copy-binary-files', function(done) {
-  const ext = ['png'];
+  const ext = ['png', 'svg', 'jpg'];
   const sources = append('!../.tbstore/**', append('!../src/**', map(e => '../**/*.'+e, ext)));
   return gulp
     .src(sources)

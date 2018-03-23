@@ -1,0 +1,24 @@
+Betreff: {shop_name} hat auf Ihre Bewertung geantwortet
+
+Hallo!
+
+Vielen Dank für Ihre Bewertung!
+
+Wir haben gerade darauf geantwortet:
+
+{reply}
+
+Nochmals vielen Dank, dass Sie eine Bewertung hinterlassen haben.
+
+Zur Erinnerung, das war Ihre Bewertung:
+
+Artikel: {product_name}
+Bewertung: {ratings}
+Überschrift: {title}
+Inhalt: {content}
+Der gezeigte Name: {display_name}
+
+Nochmals vielen, vielen Dank!
+{shop_name}
+
+
