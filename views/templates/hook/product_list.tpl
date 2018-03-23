@@ -15,13 +15,15 @@
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-<div class="revws-product-list">
+<div class="revws-product-list{if $reviewCount == 0} revws-product-list-empty{/if}">
   <a href="{$reviewsUrl}">
-  {include file='./grading.tpl' grade=$grade shape=$shape size=$shapeSize}
-  {if $reviewCount == 1}
-  {l s='one review' mod='revws'}
-  {else}
-  {l s='%1$d reviews' sprintf=[$reviewCount] mod='revws'}
-  {/if}
+    {include file='./grading.tpl' grade=$grade shape=$shape type='list'}
+    <div class="revws-count-text">
+      {if $reviewCount == 1}
+        {l s='one review' mod='revws'}
+      {else}
+        {l s='%1$d reviews' sprintf=[$reviewCount] mod='revws'}
+      {/if}
+    </div>
   </a>
 </div>

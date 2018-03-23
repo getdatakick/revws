@@ -17,6 +17,7 @@ import Tooltip from 'material-ui/Tooltip';
 import IconButton from 'material-ui/IconButton';
 import CustomerIcon from 'material-ui-icons/ShoppingCart';
 import GuestIcon from 'material-ui-icons/HelpOutline';
+import VerifiedBuyerIcon from 'material-ui-icons/VerifiedUser';
 import ApproveIcon from 'material-ui-icons/Check';
 import RejectButton from 'material-ui-icons/Delete';
 import UndeleteButton from 'material-ui-icons/Refresh';
@@ -124,11 +125,10 @@ class EnhancedTable extends React.Component<Props> {
             />
             <TableBody>
               {data.map((review: ReviewType) => {
-                const { id, product, title, content, customer, displayName, authorType, authorId  } = review;
+                const { id, product, title, content, customer, displayName, authorType, authorId, verifiedBuyer  } = review;
                 const ratings = hasRatings(review) ;
                 const grade = averageGrade(review);
-                const Icon = authorType === 'customer' ? CustomerIcon : GuestIcon;
-                const type = authorType === 'customer' ? __('Customer') : __('Guest visitor');
+                const { icon, type } = getAuthorInfo(classes, authorType, verifiedBuyer);
                 return (
                   <TableRow
                     tabIndex={-1}
@@ -142,7 +142,7 @@ class EnhancedTable extends React.Component<Props> {
                     <TableCell padding="none">
                       <Tooltip placement='bottom-start' title={type}>
                         <div className={classes.customer} onClick={e => onAuthorClick(authorType, authorId, e)}>
-                          <Icon className={classes.svg} />
+                          { icon }
                           { customer || displayName}
                         </div>
                       </Tooltip>
@@ -241,6 +241,23 @@ class EnhancedTable extends React.Component<Props> {
     return null;
   }
 }
+
+
+const getAuthorInfo = (css: any, authorType: string, verified: boolean) => {
+  let icon;
+  let type;
+  if (verified) {
+    icon = <VerifiedBuyerIcon className={css.svg} />;
+    type = __('Verified buyer');
+  } else if (authorType === 'customer') {
+    icon = <CustomerIcon className={css.svg} />;
+    type = __('Customer');
+  } else {
+    icon = <GuestIcon className={css.svg} />;
+    type = __('Guest visitor');
+  }
+  return { icon, type };
+};
 
 const Component: ComponentType<InputProps> = withStyles(styles)(EnhancedTable);
 export default Component;

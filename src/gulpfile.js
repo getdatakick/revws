@@ -14,6 +14,7 @@ var path = require('path');
 var merge = require('merge-stream');
 var replace = require('gulp-replace');
 var exec = require('child_process').exec;
+var rename = require('gulp-rename');
 var { find, sortBy, identity, values, mapObjIndexed, append, prepend, map, flatten } = ramda;
 
 var deployDir = "./build";
@@ -110,11 +111,15 @@ gulp.task('create-zip', function(done) {
 
 gulp.task('copy-text-files', function(done) {
   getLatestCommitHash(commit => {
-    const ext = ['php', 'tpl', 'css', 'js', 'sql', 'html', 'xml', 'md'];
-    const sources = append('!../.tbstore/**', append('!../src/**', map(e => '../**/*.'+e, ext)));
+    const version = getVersion();
+    const ext = ['php', 'tpl', 'css', 'js', 'sql', 'html', 'md', 'txt'];
+    let sources = map(e => '../**/*.'+e, ext);
+    sources = append('!../src/**', sources);
+    sources = append('!../.tbstore/**', sources);
     return gulp
       .src(sources)
       .pipe(replace(/CACHE_CONTROL/g, commit))
+      .pipe(replace(/CONSTANT_VERSION/g, version))
       .pipe(gulp.dest('./build/staging/revws'))
       .on('end', done);
   });
@@ -140,6 +145,15 @@ gulp.task('create-index', function(done) {
   var folders = getFolders('./build/staging/revws');
   var tasks = folders.map(folder => gulp.src('../index.php').pipe(gulp.dest(folder)));
   return merge(tasks);
+});
+
+gulp.task('create-config-xml', function(done) {
+  const version = getVersion();
+  return gulp.src(['../config.xml.src'])
+    .pipe(replace(/CONSTANT_VERSION/g, version))
+    .pipe(rename('config.xml'))
+    .pipe(gulp.dest('./build/staging/revws'))
+    .on('end', done);
 });
 
 gulp.task('extract-front-translations', function(done) {
@@ -182,7 +196,7 @@ gulp.task('create-translations', function(done) {
 
 gulp.task('translate', gulp.series('extract-front-translations', 'extract-back-translations', 'create-translations'));
 
-gulp.task('stage', gulp.series('copy-text-files', 'copy-binary-files', 'copy-build', 'create-index', 'translate'));
+gulp.task('stage', gulp.series('copy-text-files', 'copy-binary-files', 'copy-build', 'create-index', 'create-config-xml', 'translate'));
 
 gulp.task('build', gulp.series('clean', 'build-javascript', 'copy-javascript'));
 

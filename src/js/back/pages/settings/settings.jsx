@@ -18,6 +18,7 @@ import CriteriaSection from './criteria-section';
 import MigrateData from './migrate-data';
 import { hasErrors, validateIsNumber, validateReviewEmail } from 'common/utils/validation';
 import styles from './style.less';
+import ColorPicker from 'common/components/color-picker/trigger';
 
 type Props = {
   data: GlobalDataType,
@@ -167,10 +168,12 @@ class Settings extends React.PureComponent<Props, State> {
     const { theme, review } = this.state.settings;
     const size = theme.shapeSize.product;
     const sizes = map(v => v*2, range(5, 13));
+    const colors = theme.colors;
     return (
       <div>
         <div className={styles.group}>
           <ShapeSelect
+            colors={colors}
             onChange={this.set(['theme', 'shape'])}
             shape={theme.shape}
             shapes={shapes}
@@ -184,10 +187,36 @@ class Settings extends React.PureComponent<Props, State> {
             onChange={this.setSize}>
             { map(value => <MenuItem key={value} value={value}>{value}</MenuItem>, sizes) }
           </TextField>
+          <div className={styles.space} />
+          <ColorPicker
+            color={colors.fillColor}
+            label={__("Fill color - filled shape")}
+            onChange={this.set(['theme', 'colors', 'fillColor'])}
+          />
+          <div className={styles.space} />
+          <ColorPicker
+            color={colors.borderColor}
+            label={__("Border color - filled shape")}
+            onChange={this.set(['theme', 'colors', 'borderColor'])}
+          />
+          <div className={styles.space} />
+          <ColorPicker
+            color={colors.fillColorOff}
+            label={__("Fill color - empty shape")}
+            onChange={this.set(['theme', 'colors', 'fillColorOff'])}
+          />
+          <div className={styles.space} />
+          <ColorPicker
+            color={colors.borderColorOff}
+            label={__("Border color - empty shape")}
+            onChange={this.set(['theme', 'colors', 'borderColorOff'])}
+          />
+
         </div>
 
         <h2 className={styles.margin}>{__('Preview')}</h2>
         <Preview
+          colors={colors}
           shopName={shopName}
           shape={shapes[theme.shape]}
           size={theme.shapeSize.product}
@@ -429,11 +458,18 @@ class Settings extends React.PureComponent<Props, State> {
             error={!! errors.display.product.reviewsPerPage}
             onChange={e => this.set(['display', 'product', 'reviewsPerPage'], e.target.value)} />
           <div className={styles.space} />
+          <TextField
+            select
+            fullWidth
+            label={__("Display review average in")}
+            value={settings.display.product.averagePlacement}
+            onChange={e => this.set(['display', 'product', 'averagePlacement'], e.target.value)}>
+            <MenuItem value='rightColumn'>{__('Right column')}</MenuItem>
+            <MenuItem value='buttons'>{__('Product buttons')}</MenuItem>
+            <MenuItem value='none'>{__("Don't show review average")}</MenuItem>
+          </TextField>
+          <div className={styles.space} />
         </div>
-        <FormControlLabel
-          control={this.renderSwitch(['display', 'product', 'showAverage'])}
-          label={__("Show average ratings on product page")}
-        />
         <FormControlLabel
           control={this.renderSwitch(['display', 'product', 'hideEmptyReviews'])}
           label={__("Hide review section when is empty")}

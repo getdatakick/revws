@@ -15,10 +15,10 @@
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-<div id="revws-product-extra">
+<div id="revws-product-buttons">
   <b>{l s='Rating' mod='revws'}:</b>
   {if $reviewCount > 0}
-    <a class="revws-product-extra-link" href="#idTabRevws">
+    <a class="revws-product-buttons-link" href="#idTabRevws">
       {include file='./grading.tpl' grade=$grade shape=$shape type='product'}
       <div class="revws-count-text">
         {l s='(read %1$d reviews)' sprintf=[$reviewCount] mod='revws'}
@@ -32,12 +32,12 @@
     {/if}
   {else}
     {if $canCreate}
-      <a class="revws-product-extra-link" href="#" data-revws-create-trigger="{$productId}">
+      <a class="revws-product-buttons-link" href="#" data-revws-create-trigger="{$productId}">
         {l s='Be the first to write a review!' mod='revws'}
       </a>
     {else}
       {if $isGuest && $reviewsData.preferences.showSignInButton}
-        <a class="revws-product-extra-link" href="{$loginLink}">
+        <a class="revws-product-buttons-link" href="{$loginLink}">
           {l s='Sign in to write a review' mod='revws'}
         </a>
       {else}

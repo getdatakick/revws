@@ -30,19 +30,20 @@ class RevwsReview extends ObjectModel {
     'table'   => 'revws_review',
     'primary' => 'id_review',
     'fields'  => [
-      'id_product'    => [ 'type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true],
-      'id_customer'   => [ 'type' => self::TYPE_INT ],
-      'id_guest'      => [ 'type' => self::TYPE_INT ],
-      'id_lang'       => [ 'type' => self::TYPE_INT],
-      'email'         => [ 'type' => self::TYPE_STRING ],
-      'display_name'  => [ 'type' => self::TYPE_STRING, 'required' => true ],
-      'title'         => [ 'type' => self::TYPE_STRING, 'required' => true ],
-      'content'       => [ 'type' => self::TYPE_STRING, 'size' => 65535],
-      'reply'         => [ 'type' => self::TYPE_STRING, 'size' => 65535],
-      'validated'     => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
-      'deleted'       => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
-      'date_add'      => [ 'type' => self::TYPE_DATE ],
-      'date_upd'      => [ 'type' => self::TYPE_DATE ],
+      'id_product'     => [ 'type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true],
+      'id_customer'    => [ 'type' => self::TYPE_INT ],
+      'id_guest'       => [ 'type' => self::TYPE_INT ],
+      'id_lang'        => [ 'type' => self::TYPE_INT],
+      'email'          => [ 'type' => self::TYPE_STRING ],
+      'display_name'   => [ 'type' => self::TYPE_STRING, 'required' => true ],
+      'title'          => [ 'type' => self::TYPE_STRING, 'required' => true ],
+      'content'        => [ 'type' => self::TYPE_STRING, 'size' => 65535],
+      'reply'          => [ 'type' => self::TYPE_STRING, 'size' => 65535],
+      'validated'      => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
+      'deleted'        => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
+      'verified_buyer' => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
+      'date_add'       => [ 'type' => self::TYPE_DATE ],
+      'date_upd'       => [ 'type' => self::TYPE_DATE ],
     ],
   ];
 
@@ -57,6 +58,7 @@ class RevwsReview extends ObjectModel {
   public $content;
   public $validated = 0;
   public $deleted = 0;
+  public $verified_buyer = 0;
   public $date_add;
   public $date_upd;
   public $reply;
@@ -328,6 +330,7 @@ class RevwsReview extends ObjectModel {
       'underReview' => !$this->validated,
       'reply' => $this->reply ? $this->reply : null,
       'deleted' => !!$this->deleted,
+      'verifiedBuyer' => $this->isVerifiedBuyer(),
       'canReport' => $permissions->canReportAbuse($this),
       'canVote' => $permissions->canVote($this),
       'canEdit' => $canEdit,
@@ -358,6 +361,7 @@ class RevwsReview extends ObjectModel {
     $review->date_upd = $dbData['date_add'];
     $review->validated = !!$dbData['validated'];
     $review->deleted = !!$dbData['deleted'];
+    $review->verified_buyer = !!$dbData['verified_buyer'];
     $review->reply = $dbData['reply'];
     if (isset($dbData['product'])) {
       $review->product = $dbData['product'];
@@ -385,6 +389,7 @@ class RevwsReview extends ObjectModel {
     $review->content = Tools::getValue('content');
     $review->date_upd = new \DateTime();
     $review->grades = [];
+    $review->verified_buyer = $visitor->hasPurchasedProduct($review->id_product);
     $grades = Tools::getValue('grades');
     if (is_array($grades)) {
       foreach (Tools::getValue('grades') as $key => $value) {
@@ -411,6 +416,7 @@ class RevwsReview extends ObjectModel {
     $review->reply = $json['reply'] ? str_replace('\\', '\\\\', $json['reply']) : null;
     $review->validated = !$json['underReview'];
     $review->deleted = $json['deleted'];
+    $review->verified_buyer = !!$json['verifiedBuyer'];
     $review->grades = [];
     foreach ($json['grades'] as $key => $value) {
       $review->grades[(int)$key] = (int)$value;
@@ -422,6 +428,10 @@ class RevwsReview extends ObjectModel {
       $review->validated = true;
     }
     return $review;
+  }
+
+  public function isVerifiedBuyer() {
+    return !! $this->verified_buyer;
   }
 
   public function isCustomer() {

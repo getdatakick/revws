@@ -36,6 +36,7 @@ const defaultReview = (settings: SettingsType, product: ProductInfoType):ReviewT
     underReview: true,
     deleted: false,
     date: new Date(),
+    verifiedBuyer: false,
     canVote: false,
     canReport: false,
     canDelete: true,

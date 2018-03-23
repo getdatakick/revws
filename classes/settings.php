@@ -50,6 +50,12 @@ class Settings {
           'product' => 16,
           'list' => 16,
           'create' => 80
+        ],
+        'colors' => [
+          'fillColor' => '#ffd055',
+          'borderColor' => '#ffd055',
+          'fillColorOff' => 'transparent',
+          'borderColorOff' => '#d5d5d5'
         ]
       ],
       'display' => [
@@ -57,7 +63,7 @@ class Settings {
           'placement' => 'block',
           'reviewsPerPage' => 5,
           'orderBy' => 'date',
-          'showAverage' => true,
+          'averagePlacement' => 'rightColumn',
           'hideEmptyReviews' => false,
           'showSignInButton' => true,
         ],
@@ -183,8 +189,8 @@ class Settings {
     return $this->toBool($this->get(['review', 'allowEdit']));
   }
 
-  public function showAverageOnProductPage() {
-    return $this->toBool($this->get(['display', 'product', 'showAverage']));
+  public function getAveragePlacement() {
+    return $this->toAveragePlacement($this->get(['display', 'product', 'averagePlacement']));
   }
 
   public function getReviewsPerPage() {
@@ -306,12 +312,23 @@ class Settings {
     return (bool)$this->get(['richSnippets', 'enabled']);
   }
 
+  public function getShapeColors() {
+    return $this->get(['theme', 'colors']);
+  }
+
   private function toBool($val) {
     return !!$val;
   }
 
   private function toPlacement($placement) {
     return $placement === 'tab' ? 'tab' : 'block';
+  }
+
+  private function toAveragePlacement($placement) {
+    if (in_array($placement, ['rightColumn', 'buttons', 'none'])) {
+      return $placement;
+    }
+    return 'extra';
   }
 
   private function toShape($shape) {

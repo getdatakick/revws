@@ -2,7 +2,7 @@
 
 import React from 'react';
 import classnames from 'classnames';
-import type { GradingShapeType, ReviewType } from 'common/types';
+import type { GradingShapeType, ReviewType, ShapeColorsType } from 'common/types';
 import { F, isNil } from 'ramda';
 import { hasRatings, averageGrade } from 'common/utils/reviews';
 import Grading from 'common/components/grading/grading';
@@ -14,6 +14,7 @@ import Button from 'material-ui/Button';
 type Props = {
   shopName: string,
   shape: GradingShapeType,
+  colors?: ShapeColorsType,
   shapeSize: number,
   review: ReviewType,
   onEdit: (ReviewType)=>void,
@@ -48,18 +49,26 @@ class ReviewListItem extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { shape, shapeSize, onReport, onEdit, onDelete, onVote, review } = this.props;
-    const { displayName, date, title, underReview, content, canVote, canReport, canEdit, canDelete } = review;
+    const { colors, shape, shapeSize, onReport, onEdit, onDelete, onVote, review } = this.props;
+    const { displayName, date, title, underReview, verifiedBuyer, content, canVote, canReport, canEdit, canDelete } = review;
+    const classes = classnames('revws-review', 'row', 'no-gutter', {
+      'revws-review-under-review': underReview,
+      'revws-verified-buyer': verifiedBuyer
+    });
+
     return (
-      <div className="revws-review row no-gutter">
+      <div className={classes}>
         <div className="col-sm-3 col-md-2">
           <div className="revws-review-author">
             <div className="revws-review-author-name">{ displayName }</div>
+            {verifiedBuyer && <div className="revws-verified-buyer-badge">{__("Verified purchase")}</div>}
             { hasRatings(review) ? (
               <Grading
                 grade={averageGrade(review)}
                 shape={shape}
+                type={'product'}
                 size={shapeSize}
+                colors={colors}
               />
             ) : undefined}
             <div className="revws-review-date">{formatDate(date)}</div>

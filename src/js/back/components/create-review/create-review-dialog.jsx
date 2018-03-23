@@ -115,6 +115,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
       content: null,
       underReview: true,
       deleted: false,
+      verifiedBuyer: true,
       date: new Date(),
       canVote: false,
       canReport: false,

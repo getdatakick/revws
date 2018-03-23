@@ -66,6 +66,7 @@ class ReviewQuery {
       'date_upd' => 'r.date_upd',
       'validated' => 'r.validated',
       'deleted' => 'r.deleted',
+      'verified_buyer' => 'r.verified_buyer'
     ];
     if ($this->includeProductInfo()) {
       $fields['product'] = 'pl.name';

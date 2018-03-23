@@ -28,6 +28,7 @@
     "gulp-replace": "^0.6.1",
     "gulp-util": "^3.0.8",
     "gulp-zip": "^4.1.0",
+    "gulp-rename": "^1.2.2",
     "imports-loader": "^0.7.1",
     "less": "^2.5.3",
     "less-loader": "^4.0.4",
@@ -45,8 +46,8 @@
   "dependencies": {
     "autosuggest-highlight": "^3.1.1",
     "babel-polyfill": "^6.26.0",
+    "colr": "^1.2.2",
     "element-resize-detector": "^1.1.12",
-    "gulp-rename": "^1.2.2",
     "history": "^4.7.2",
     "material-ui": "^1.0.0-beta.27",
     "material-ui-icons": "^1.0.0-beta.17",

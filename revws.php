@@ -20,6 +20,7 @@ define('REVWS_MODULE_DIR', dirname(__FILE__));
 
 require_once __DIR__.'/app-translation.php';
 require_once __DIR__.'/classes/csv-reader.php';
+require_once __DIR__.'/classes/color.php';
 require_once __DIR__.'/classes/utils.php';
 require_once __DIR__.'/classes/settings.php';
 require_once __DIR__.'/classes/permissions.php';
@@ -43,12 +44,12 @@ class Revws extends Module {
   public function __construct() {
     $this->name = 'revws';
     $this->tab = 'administration';
-    $this->version = '1.0.4';
-    $this->author = 'DataKick <petr@getdatakick.com>';
+    $this->version = '1.0.9';
+    $this->author = 'DataKick';
     $this->need_instance = 0;
     $this->bootstrap = true;
     parent::__construct();
-    $this->displayName = $this->l('Product Reviews');
+    $this->displayName = $this->l('Revws - Product Reviews');
     $this->description = $this->l('Product Reviews module');
     $this->confirmUninstall = $this->l('Are you sure you want to uninstall the module? All its data will be lost!');
     $this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.999');
@@ -88,6 +89,7 @@ class Revws extends Module {
       'displayProductTabContent',
       'displayRightColumnProduct',
       'displayProductListReviews',
+      'displayProductButtons',
       'displayProductComparison',
       'displayCustomerAccount',
       'displayMyAccountBlock',
@@ -203,12 +205,20 @@ class Revws extends Module {
   public function getSettings() {
     if (! $this->settings) {
       $this->settings = new \Revws\Settings();
-      if ($this->settings->getVersion() != $this->version) {
+      $version = $this->settings->getVersion();
+      if ($version != $this->version) {
+        $this->migrate($version);
         $this->registerHooks();
         $this->settings->setVersion($this->version);
       }
     }
     return $this->settings;
+  }
+
+  private function migrate($version) {
+    if (version_compare($version, '1.0.9', '<')) {
+      $this->executeSqlScript('update-1_0_9');
+    }
   }
 
   public function getVisitor() {
@@ -282,35 +292,48 @@ class Revws extends Module {
 
   public function hookDisplayRightColumnProduct($params) {
     $set = $this->getSettings();
-    if ($set->showAverageOnProductPage()) {
+    if ($set->getAveragePlacement() == 'rightColumn') {
       $productId = (int)(Tools::getValue('id_product'));
+      $this->setupAverageOnProductPage($productId);
+      return $this->display(__FILE__, 'product_extra.tpl');
+    }
+  }
+
+  public function hookDisplayProductButtons($params) {
+    $set = $this->getSettings();
+    if ($set->getAveragePlacement() == 'buttons') {
+      $productId = (int)(Tools::getValue('id_product'));
+      $this->setupAverageOnProductPage($productId);
+      return $this->display(__FILE__, 'product_buttons.tpl');
+    }
+  }
+
+  private function setupAverageOnProductPage($productId) {
+    $set = $this->getSettings();
+    list($grade, $count) = RevwsReview::getAverageGrade($productId);
+    $this->context->smarty->assign('productId', $productId);
+    $this->context->smarty->assign('grade', $grade);
+    $this->context->smarty->assign('reviewCount', $count);
+    $this->context->smarty->assign('shape', $this->getShapeSettings());
+    $this->context->smarty->assign('shapeSize', $set->getShapeSize());
+    $this->context->smarty->assign('canCreate', $this->getPermissions()->canCreateReview($productId));
+    $this->context->smarty->assign('isGuest', $this->getVisitor()->isGuest());
+    $this->context->smarty->assign('loginLink', $this->getLoginUrl($productId));
+    $this->context->smarty->assign('microdata', $set->emitRichSnippets());
+  }
+
+
+  public function hookDisplayProductListReviews($params) {
+    if ($this->getSettings()->showOnProductListing()) {
+      $productId = (int) $params['product']['id_product'];
       list($grade, $count) = RevwsReview::getAverageGrade($productId);
       $this->context->smarty->assign('productId', $productId);
       $this->context->smarty->assign('grade', $grade);
       $this->context->smarty->assign('reviewCount', $count);
       $this->context->smarty->assign('shape', $this->getShapeSettings());
       $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
-      $this->context->smarty->assign('canCreate', $this->getPermissions()->canCreateReview($productId));
-      $this->context->smarty->assign('isGuest', $this->getVisitor()->isGuest());
-      $this->context->smarty->assign('loginLink', $this->getLoginUrl($productId));
-      $this->context->smarty->assign('microdata', $this->getSettings()->emitRichSnippets());
-      return $this->display(__FILE__, 'product_extra.tpl');
-    }
-  }
-
-  public function hookDisplayProductListReviews($params) {
-    if ($this->getSettings()->showOnProductListing()) {
-      $productId = (int) $params['product']['id_product'];
-      list($grade, $count) = RevwsReview::getAverageGrade($productId);
-      if ($count > 0) {
-        $this->context->smarty->assign('productId', $productId);
-        $this->context->smarty->assign('grade', $grade);
-        $this->context->smarty->assign('reviewCount', $count);
-        $this->context->smarty->assign('shape', $this->getShapeSettings());
-        $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
-        $this->context->smarty->assign('reviewsUrl', $this->getProductReviewsLink($productId));
-        return $this->display(__FILE__, 'product_list.tpl');
-      }
+      $this->context->smarty->assign('reviewsUrl', $this->getProductReviewsLink($productId));
+      return $this->display(__FILE__, 'product_list.tpl', $this->getCacheId() . '|' . $productId);
     }
   }
 
@@ -369,9 +392,18 @@ class Revws extends Module {
 
   public function hookActionRegisterKronaAction($params) {
     return [
-      'review_created',
-      'review_approved',
-      'review_rejected'
+      'review_created' => [
+        'title'   => 'Review Created',
+        'message' => 'You received {points} Points for having a review created',
+      ],
+      'review_approved' => [
+        'title'   => 'Review Approved',
+        'message' => 'You received {points} Points for having a review approved',
+      ],
+      'review_rejected' => [
+        'title'   => 'Review Rejected',
+        'message' => 'You lost {points} Points for having a review rejected',
+      ],
     ];
   }
 
@@ -390,12 +422,8 @@ class Revws extends Module {
   }
 
   public function includeCommonStyles($controller) {
-    if (file_exists(_PS_THEME_DIR_."css/modules/{$this->name}/{$this->name}.css")) {
-        $controller->addCSS(_PS_THEME_DIR_."css/modules/{$this->name}/{$this->name}.css", 'all');
-    } else {
-        $controller->addCSS($this->getPath('views/css/front.css'), 'all');
-    }
     $controller->addCSS('https://fonts.googleapis.com/css?family=Roboto:300,400,500', 'all');
+    $controller->addCSS($this->getCSSFile(), 'all');
   }
 
   private function getProductReviewsLink($product) {
@@ -417,6 +445,60 @@ class Revws extends Module {
     return $this->context->link->getPageLink('authentication', true, null, [
       'back' => $back
     ]);
+  }
+
+  private function getCSSFile() {
+    $set = $this->getSettings();
+    $filename = $this->getCSSFilename($set);
+    if (! file_exists($filename)) {
+      $this->generateCSS($set, $filename);
+    }
+    return $filename;
+  }
+
+  private function getCSSFilename($set) {
+    static $filename;
+    if (is_null($filename)) {
+      $data = 'CACHE_CONTROL';
+      $data .= '-' . $set->getVersion();
+      $data .= '-' . json_encode($this->getCSSSettings($set));
+      $data .= time();
+      foreach (['css.tpl', 'css-extend.tpl'] as $tpl) {
+        $source = $this->getTemplatePath($tpl);
+        if ($source) {
+          $data .= '-' . filemtime($source);
+        }
+      }
+      $id = md5($data);
+      $filename = _PS_THEME_DIR_ . "cache/" . $this->name . "-$id.css";
+    }
+    return $filename;
+  }
+
+  private function getCSSSettings($set) {
+    $colors = $set->getShapeColors();
+    $colors['fillColorHigh'] = \Revws\Color::emphasize($colors['fillColor']);
+    $colors['borderColorHigh'] = \Revws\Color::emphasize($colors['borderColor']);
+    return [
+      'imgs' => $this->getPath('views/img'),
+      'shape' => $this->getShapeSettings(),
+      'shapeSize' => [
+        'product' => $set->getShapeSize(),
+        'list' => $set->getShapeSize(),
+        'create' => $set->getShapeSize() * 5
+      ],
+      'colors' => $colors
+    ];
+  }
+
+  private function generateCSS($set, $filename) {
+    $this->smarty->assign('cssSettings', $this->getCSSSettings($set));
+    $css = $this->display(__FILE__, 'css.tpl');
+    $extend = $this->getTemplatePath('css-extend.tpl');
+    if ($extend) {
+      $css .= "\n" . $this->display(__FILE__, 'css-extend.tpl');
+    }
+    @file_put_contents($filename, $css);
   }
 
 }

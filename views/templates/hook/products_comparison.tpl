@@ -25,12 +25,14 @@
         {if $count == 0}
           {l s='no review' mod='revws'}
         {else}
-          {include file='./grading.tpl' grade=$grade shape=$shape size=$shapeSize}
-          {if $count == 1}
-            {l s='one review' mod='revws'}
-          {else}
-            {l s='%1$d reviews' sprintf=[$count] mod='revws'}
-          {/if}
+          {include file='./grading.tpl' grade=$grade shape=$shape type='list'}
+          <div class="revws-count-text">
+            {if $count == 1}
+              {l s='one review' mod='revws'}
+            {else}
+              {l s='%1$d reviews' sprintf=[$count] mod='revws'}
+            {/if}
+          </div>
         {/if}
       </div>
     </td>

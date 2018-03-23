@@ -159,4 +159,26 @@ class Visitor {
     return array_keys($data);
   }
 
+  public function hasPurchasedProduct($productId) {
+    if ($this->isGuest()) {
+      return false;
+    }
+    $customer = (int)$this->getCustomerId();
+    $shop = (int)Shop::getContextShopID();
+    $productId = (int)$productId;
+    $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
+    $sql = ("
+      SELECT 1
+        FROM "._DB_PREFIX_."orders o
+        INNER JOIN "._DB_PREFIX_."order_detail d ON (o.id_order = d.id_order AND o.id_shop=d.id_shop)
+        INNER JOIN "._DB_PREFIX_."product_shop p ON (p.id_product = d.product_id and p.id_shop = d.id_shop)
+        WHERE o.id_customer = $customer
+          AND o.id_shop = $shop
+          AND o.delivery_date IS NOT NULL
+          AND p.id_product = $productId
+    ");
+    $res = $conn->executeS($sql);
+    return !empty($res);
+  }
+
 }

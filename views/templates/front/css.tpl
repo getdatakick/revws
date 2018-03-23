@@ -1,4 +1,7 @@
-/* grading shapes - star, heart,... */
+.revws-hidden {
+  display: none;
+}
+
 .revws-grading {
   display: flex;
   cursor: default;
@@ -8,15 +11,45 @@ a .revws-grading {
   cursor: pointer;
 }
 
-/* product extra - right panel */
 .revws-grade-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.revws-grading-product .revws-grade-wrap {
+  padding-left: {$cssSettings.shapeSize.product / 8}px;
+  padding-right: {$cssSettings.shapeSize.product / 8}px;
+}
+
+.revws-grading-list .revws-grade-wrap {
+  padding-left: {$cssSettings.shapeSize.list / 8}px;
+  padding-right: {$cssSettings.shapeSize.list / 8}px;
+}
+
+.revws-grading-create .revws-grade-wrap {
+  padding-left: {$cssSettings.shapeSize.create / 8}px;
+  padding-right: {$cssSettings.shapeSize.create / 8}px;
+}
+
+.revws-grading-product .revws-grade {
+  width: {$cssSettings.shapeSize.product}px;
+  height: {$cssSettings.shapeSize.product}px;
+}
+
+.revws-grading-list .revws-grade {
+  width: {$cssSettings.shapeSize.list}px;
+  height: {$cssSettings.shapeSize.list}px;
+}
+
+.revws-grading-create .revws-grade {
+  width: {$cssSettings.shapeSize.create}px;
+  height: {$cssSettings.shapeSize.create}px;
+}
+
 .revws-grade {
   transition: all 200ms linear;
+  stroke-width: {$cssSettings.shape.strokeWidth};
 }
 
 .revws-grade path {
@@ -24,18 +57,18 @@ a .revws-grading {
 }
 
 .revws-grade-off path {
-  fill: transparent;
-  stroke: #d5d5d5;
+  fill: {$cssSettings.colors.fillColorOff};
+  stroke: {$cssSettings.colors.borderColorOff};
 }
 
 .revws-grade-on path {
-  fill: #ffd055;
-  stroke: #ffd055;
+  fill: {$cssSettings.colors.fillColor};
+  stroke: {$cssSettings.colors.borderColor};
 }
 
 .revws-grade-highlight path {
-  fill: #ffe066;
-  stroke: #ffe066;
+  fill: {$cssSettings.colors.fillColorHigh};
+  stroke: {$cssSettings.colors.borderColorHigh};
 }
 
 /* review layout */
@@ -70,6 +103,7 @@ a .revws-grading {
 
 .revws-under-review {
   color: red;
+  font-size: 12px;
   margin-top: -10px;
 }
 
@@ -107,6 +141,24 @@ a .revws-grading {
 .revws-review-author-name {
   color: #222;
   font-size: 12px;
+}
+
+.revws-verified-buyer-badge {
+  display: flex;
+  margin-top: 5px;
+  font-weight: 500;
+  color: green;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.revws-verified-buyer-badge:before {
+  content: '';
+  background:url('{$cssSettings.imgs}/verified-buyer-badge.svg');
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+  display: inline-block;
 }
 
 .revws-review-date {
@@ -185,17 +237,33 @@ a .revws-grading {
 }
 
 /* product extra - right panel */
- #revws-product-extra, .revws-product-extra-link {
+ #revws-product-extra,
+ #revws-product-buttons,
+ .revws-product-extra-link,
+ .revws-product-buttons-link {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
 #revws-product-extra b,
+#revws-product-buttons b,
 .revws-product-list .revws-grading,
 .revws-comparison .revws-grading,
+.revws-product-buttons-link .revws-grading,
 .revws-product-extra-link .revws-grading {
   margin-right: 10px;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.revws-count-text {
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
 }
 
 .revws-product-list, .revws-product-list a, .revws-comparison {
@@ -203,6 +271,15 @@ a .revws-grading {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+.revws-product-list a {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.revws-product-list-empty {
+  display: none;
 }
 
 .revws-replies {

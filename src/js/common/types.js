@@ -53,6 +53,7 @@ export type ReviewType = {
   date: Date,
   underReview: boolean,
   deleted: boolean,
+  verifiedBuyer: boolean,
   canVote: boolean,
   canEdit: boolean,
   canDelete: boolean,
@@ -102,4 +103,11 @@ export type CustomerInfoType = {
   firstName: string,
   lastName: string,
   email: string,
+}
+
+export type ShapeColorsType = {
+  fillColor: string,
+  borderColor: string,
+  fillColorOff: string,
+  borderColorOff: string
 }

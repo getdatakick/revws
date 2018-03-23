@@ -1,10 +1,11 @@
 // @flow
-import type { NameFormatType, LangString, LanguagesType, GradingShapeType } from 'common/types';
+import type { NameFormatType, LangString, LanguagesType, GradingShapeType, ShapeColorsType } from 'common/types';
 export type { RoutingState, GoTo } from 'back/routing';
 
 export type SettingsType = {
   theme: {
     shape: string,
+    colors: ShapeColorsType,
     shapeSize: {
       product: number,
       list: number,
@@ -16,7 +17,7 @@ export type SettingsType = {
       placement: string,
       orderBy: 'date' | 'grade' | 'usefulness',
       reviewsPerPage: number | string,
-      showAverage: boolean,
+      averagePlacement: 'rightColumn' | 'buttons' | 'none',
       showSignInButton: boolean,
     },
     productList: {
