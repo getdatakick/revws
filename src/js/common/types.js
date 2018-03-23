@@ -111,3 +111,5 @@ export type ShapeColorsType = {
   fillColorOff: string,
   borderColorOff: string
 }
+
+export type DisplayCriteriaType = 'none' | 'popup' | 'inline' | 'side';

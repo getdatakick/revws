@@ -33,6 +33,7 @@ class ModerationPage extends React.PureComponent<Props> {
           shape={shape}
           shapeSize={shapeSize}
           criteria={criteria}
+          displayCriteria={settings.review.displayCriteria}
           filters={{}}
           uniqueId='allReviews' />
         { createReview && (

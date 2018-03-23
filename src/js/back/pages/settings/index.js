@@ -6,10 +6,12 @@ import { mapObject } from 'common/utils/redux';
 import { getWidth } from 'back/selectors/ui';
 import { getSettings } from 'back/selectors/settings';
 import { setSettings } from 'back/actions/creators';
+import { getCriteria } from 'back/selectors/criteria';
 import Settings from './settings';
 
 const mapStateToProps = mapObject({
   pageWidth: getWidth,
+  criteria: getCriteria,
   settings: getSettings
 });
 

@@ -1,6 +1,6 @@
 // @flow
 
-import type { ReviewListType, GradingShapeType, ReviewType, CriteriaType } from 'common/types';
+import type { ReviewListType, GradingShapeType, ReviewType, CriteriaType, DisplayCriteriaType } from 'common/types';
 import type { LoadOptions } from 'back/types';
 import { notNil } from 'common/utils/ramda';
 import { find, propEq, reject, merge, equals, has } from 'ramda';
@@ -17,6 +17,7 @@ export type InputProps = {
   shopName: string,
   language: number,
   criteria: CriteriaType,
+  displayCriteria: DisplayCriteriaType,
   shape: GradingShapeType,
   shapeSize: number,
   uniqueId: string,
@@ -113,7 +114,7 @@ class Controller extends React.PureComponent<Props, State> {
   }
 
   renderList(list: ReviewListType) {
-    const { criteria, emptyLabel, title, shape, approveReview, deleteReview, undeleteReview, language, shapeSize, shopName } = this.props;
+    const { criteria, emptyLabel, title, shape, approveReview, deleteReview, undeleteReview, language, shapeSize, shopName, displayCriteria } = this.props;
     const { edit, page, pageSize, order, orderBy } = this.state;
     const { total, reviews } = list;
     const filtered = this.filter(reviews);
@@ -150,6 +151,7 @@ class Controller extends React.PureComponent<Props, State> {
           shape={shape}
           shapeSize={shapeSize}
           onSave={this.onSaveReview}
+          displayCriteria={displayCriteria}
           onClose={() => this.setState({ edit: null })}
         />
       </div>

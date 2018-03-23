@@ -1,6 +1,6 @@
 // @flow
 
-import type { CriteriaType, GradingShapeType, NameFormatType, ProductInfoType } from 'common/types';
+import type { CriteriaType, DisplayCriteriaType, GradingShapeType, NameFormatType, ProductInfoType } from 'common/types';
 
 export type SettingsType = {
   shopName: string,
@@ -29,7 +29,8 @@ export type SettingsType = {
     allowReviewWithoutCriteria: boolean,
     customerReviewsPerPage: number,
     customerMaxRequests: number,
-    showSignInButton: boolean
+    showSignInButton: boolean,
+    displayCriteria: DisplayCriteriaType
   },
   loginUrl: string,
   canCreate: boolean

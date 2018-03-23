@@ -25,6 +25,7 @@ class ModerationPage extends React.PureComponent<Props> {
         emptyLabel={__('Nothing to approve')}
         shape={shape}
         shapeSize={settings.theme.shapeSize.product}
+        displayCriteria={settings.review.displayCriteria}
         criteria={criteria}
         filters={{
           validated: false,

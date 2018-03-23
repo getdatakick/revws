@@ -2,7 +2,7 @@
 
 import React from 'react';
 import classnames from 'classnames';
-import type { GradingShapeType, ReviewType, ShapeColorsType } from 'common/types';
+import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType } from 'common/types';
 import { F, isNil } from 'ramda';
 import { hasRatings, averageGrade } from 'common/utils/reviews';
 import Grading from 'common/components/grading/grading';
@@ -16,6 +16,8 @@ type Props = {
   shape: GradingShapeType,
   colors?: ShapeColorsType,
   shapeSize: number,
+  criteria: CriteriaType,
+  displayCriteria: DisplayCriteriaType,
   review: ReviewType,
   onEdit: (ReviewType)=>void,
   onSaveReply?: (?string)=>void,

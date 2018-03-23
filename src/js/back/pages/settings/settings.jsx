@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import type { SettingsType, GlobalDataType } from 'back/types';
+import type { CriteriaType } from 'common/types';
 import ScrollSpy from 'react-scrollspy';
 import { prop, toPairs, path, last, merge, range, map, curry, equals, assocPath } from 'ramda';
 import Section from './section';
@@ -22,6 +23,7 @@ import ColorPicker from 'common/components/color-picker/trigger';
 
 type Props = {
   data: GlobalDataType,
+  criteria: CriteriaType,
   settings: SettingsType,
   pageWidth: number,
   saveSettings: (SettingsType)=>void
@@ -220,6 +222,8 @@ class Settings extends React.PureComponent<Props, State> {
           shopName={shopName}
           shape={shapes[theme.shape]}
           size={theme.shapeSize.product}
+          criteria={this.props.criteria}
+          displayCriteria={review.displayCriteria}
           canVote={review.allowVoting}
           canReport={review.allowReporting} />
       </div>

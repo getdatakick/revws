@@ -36,6 +36,8 @@ class FrontAppReviewList extends React.PureComponent<Props> {
           onDelete={onDelete}
           onEdit={onEdit}
           onReport={onReport}
+          criteria={settings.criteria}
+          displayCriteria={settings.preferences.displayCriteria}
           onVote={onVote} />
         { this.renderPaging() }
         { this.renderWriteReview() }

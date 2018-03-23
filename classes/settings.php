@@ -97,6 +97,7 @@ class Settings {
         'allowEdit' => true,
         'allowVoting' => true,
         'allowReporting' => true,
+        'displayCriteria' => 'popup'
       ],
       'notifications' => [
         'admin' => [
@@ -316,8 +317,20 @@ class Settings {
     return $this->get(['theme', 'colors']);
   }
 
+  public function getDisplayCriteriaPreference() {
+    $ret = $this->get(['review', 'displayCriteria']);
+    return $this->toDisplayCriteria($ret);
+  }
+
   private function toBool($val) {
     return !!$val;
+  }
+
+  private function toDisplayCriteria($in) {
+    if (in_array($in, ['none', 'popup', 'inline', 'side'])) {
+      return $in;
+    }
+    return 'none';
   }
 
   private function toPlacement($placement) {

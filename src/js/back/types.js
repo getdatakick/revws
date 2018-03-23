@@ -1,5 +1,5 @@
 // @flow
-import type { NameFormatType, LangString, LanguagesType, GradingShapeType, ShapeColorsType } from 'common/types';
+import type { NameFormatType, LangString, LanguagesType, GradingShapeType, ShapeColorsType, DisplayCriteriaType } from 'common/types';
 export type { RoutingState, GoTo } from 'back/routing';
 
 export type SettingsType = {
@@ -21,7 +21,7 @@ export type SettingsType = {
       showSignInButton: boolean,
     },
     productList: {
-      show: boolean,
+      show: boolean
     },
     productComparison: {
       show: boolean,
@@ -49,6 +49,7 @@ export type SettingsType = {
     allowReporting: boolean,
     allowDelete: boolean,
     allowEdit: boolean,
+    displayCriteria: DisplayCriteriaType
   },
   notifications: {
     admin: {
