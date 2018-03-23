@@ -61,3 +61,10 @@ INSERT IGNORE INTO `PREFIX_revws_review_reaction`(`id_review`, `id_customer`, `i
 SELECT `id_product_comment`, `id_customer`, 0, (CASE WHEN `usefulness` THEN 'vote_up' ELSE 'vote_down' END)
   FROM `PREFIX_product_comment_usefulness`
  WHERE `id_customer` > 0;
+
+/* update verified_buyer */
+UPDATE `PREFIX_revws_review` r
+INNER JOIN `PREFIX_customer` c ON (r.id_customer = c.id_customer)
+INNER JOIN `PREFIX_orders` o ON (o.id_customer = c.id_customer AND o.delivery_date IS NOT NULL)
+INNER JOIN `PREFIX_order_detail` d ON (d.id_order = o.id_order AND d.product_id = r.id_product)
+SET r.verified_buyer = 1;

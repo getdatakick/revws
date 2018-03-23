@@ -43,7 +43,7 @@ class Revws extends Module {
   public function __construct() {
     $this->name = 'revws';
     $this->tab = 'administration';
-    $this->version = '1.0.8';
+    $this->version = '1.0.9';
     $this->author = 'DataKick';
     $this->need_instance = 0;
     $this->bootstrap = true;
@@ -204,12 +204,20 @@ class Revws extends Module {
   public function getSettings() {
     if (! $this->settings) {
       $this->settings = new \Revws\Settings();
-      if ($this->settings->getVersion() != $this->version) {
+      $version = $this->settings->getVersion();
+      if ($version != $this->version) {
+        $this->migrate($version);
         $this->registerHooks();
         $this->settings->setVersion($this->version);
       }
     }
     return $this->settings;
+  }
+
+  private function migrate($version) {
+    if (version_compare($version, '1.0.9', '<')) {
+      $this->executeSqlScript('update-1_0_9');
+    }
   }
 
   public function getVisitor() {

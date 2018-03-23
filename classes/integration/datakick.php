@@ -277,6 +277,12 @@ class DatakickIntegration {
           'mapping' => [ 'r' => 'validated' ],
           'update' => true,
         ],
+        'verified' => [
+          'type' => 'boolean',
+          'description' => 'verified buyer',
+          'mapping' => [ 'r' => 'verified_buyer' ],
+          'update' => true,
+        ],
         'deleted' => [
           'type' => 'boolean',
           'description' => 'deleted',
@@ -317,11 +323,6 @@ class DatakickIntegration {
           ],
         ],
         'expressions' => [
-          'description' => [
-            'type' => 'string',
-            'description' => 'review description',
-            'expression' => "[<field:product>] + ' ' + <field:title>"
-          ]
         ],
         'links' => [
           'product' => [
