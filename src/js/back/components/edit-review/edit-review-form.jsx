@@ -6,8 +6,9 @@ import TextField from 'material-ui/TextField';
 import Grid from 'material-ui/Grid';
 import Grading from 'common/components/grading/grading';
 import TextArea from 'common/components/text-area/text-area';
+import Checkbox from 'material-ui/Checkbox';
 import styles from './edit-review-form.less';
-
+import { FormControlLabel } from 'material-ui/Form';
 
 type Props = {
   errors: ReviewFormErrors,
@@ -49,6 +50,14 @@ class EditReviewForm extends React.PureComponent<Props> {
               onChange={this.update('email')}
               error={!! errors.email}
               fullWidth />
+            <FormControlLabel
+              className={styles.formControl}
+              control={
+                <Checkbox
+                  checked={review.verifiedBuyer}
+                  onChange={this.toggleVerifiedBuyer} />
+              }
+              label={__("Verified buyer")} />
           </Grid>
           <Grid item md={6}>
             <h3>{__('Ratings')}</h3>
@@ -99,6 +108,11 @@ class EditReviewForm extends React.PureComponent<Props> {
   update = (key: string) => (e: any) => {
     const { review, onUpdateReview } = this.props;
     onUpdateReview({ ...review, [ key ]: e.target.value });
+  }
+
+  toggleVerifiedBuyer = (e: any) => {
+    const { review, onUpdateReview } = this.props;
+    onUpdateReview({ ...review, verifiedBuyer: !review.verifiedBuyer });
   }
 
   onSetGrade = (criterion: number, grade: number) => {

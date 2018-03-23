@@ -38,6 +38,7 @@ class ReviewPreview extends React.PureComponent<Props> {
       date: new Date(),
       underReview: false,
       deleted: false,
+      verifiedBuyer: false,
       canVote: canVote,
       canReport: canReport,
       canDelete: false,

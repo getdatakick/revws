@@ -53,6 +53,7 @@ export type ReviewType = {
   date: Date,
   underReview: boolean,
   deleted: boolean,
+  verifiedBuyer: boolean,
   canVote: boolean,
   canEdit: boolean,
   canDelete: boolean,
