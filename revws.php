@@ -479,6 +479,7 @@ class Revws extends Module {
     $colors['fillColorHigh'] = \Revws\Color::emphasize($colors['fillColor']);
     $colors['borderColorHigh'] = \Revws\Color::emphasize($colors['borderColor']);
     return [
+      'imgs' => $this->getPath('views/img'),
       'shape' => $this->getShapeSettings(),
       'shapeSize' => [
         'product' => $set->getShapeSize(),

@@ -50,12 +50,18 @@ class ReviewListItem extends React.PureComponent<Props, State> {
 
   render() {
     const { colors, shape, shapeSize, onReport, onEdit, onDelete, onVote, review } = this.props;
-    const { displayName, date, title, underReview, content, canVote, canReport, canEdit, canDelete } = review;
+    const { displayName, date, title, underReview, verifiedBuyer, content, canVote, canReport, canEdit, canDelete } = review;
+    const classes = classnames('revws-review', 'row', 'no-gutter', {
+      'revws-review-under-review': underReview,
+      'revws-verified-buyer': verifiedBuyer
+    });
+
     return (
-      <div className="revws-review row no-gutter">
+      <div className={classes}>
         <div className="col-sm-3 col-md-2">
           <div className="revws-review-author">
             <div className="revws-review-author-name">{ displayName }</div>
+            {verifiedBuyer && <div className="revws-verified-buyer-badge">{__("Verified purchase")}</div>}
             { hasRatings(review) ? (
               <Grading
                 grade={averageGrade(review)}

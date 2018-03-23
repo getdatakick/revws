@@ -103,6 +103,7 @@ a .revws-grading {
 
 .revws-under-review {
   color: red;
+  font-size: 12px;
   margin-top: -10px;
 }
 
@@ -140,6 +141,24 @@ a .revws-grading {
 .revws-review-author-name {
   color: #222;
   font-size: 12px;
+}
+
+.revws-verified-buyer-badge {
+  display: flex;
+  margin-top: 5px;
+  font-weight: 500;
+  color: green;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.revws-verified-buyer-badge:before {
+  content: '';
+  background:url('{$cssSettings.imgs}/verified-buyer-badge.svg');
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+  display: inline-block;
 }
 
 .revws-review-date {

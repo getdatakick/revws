@@ -23,10 +23,13 @@
 *
 *}
 {strip}
-<div class="revws-review row no-gutter" {if $microdata}itemprop="review" itemscope itemtype="http://schema.org/Review"{/if}>
+<div class="revws-review {if $review.underReview}revws-review-under-review {/if}{if $review.verifiedBuyer}revws-verified-buyer {/if}row no-gutter" {if $microdata}itemprop="review" itemscope itemtype="http://schema.org/Review"{/if}>
   <div class="col-sm-3 col-md-2">
     <div class="revws-review-author">
       <div class="revws-review-author-name" {if $microdata}itemprop="author"{/if}>{$review.displayName|escape:'html':'UTF-8'}</div>
+      {if $review.verifiedBuyer}
+        <div class="revws-verified-buyer-badge">{l s="Verified purchase" mod='revws'}</div>
+      {/if}
       {if count($review.grades) > 0}
       {include file='./grading.tpl' grade=$review.grade shape=$reviewsData.theme.shape type='product'}
       {if $microdata}
