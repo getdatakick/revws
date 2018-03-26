@@ -22,6 +22,7 @@
 *
 *
 *}
+{assign "showCriteria" count($review.grades) > 1}
 {strip}
 <div class="revws-review {if $review.underReview}revws-review-under-review {/if}{if $review.verifiedBuyer}revws-verified-buyer {/if}row no-gutter" {if $microdata}itemprop="review" itemscope itemtype="http://schema.org/Review"{/if}>
   <div class="col-sm-3 col-md-2">
@@ -46,13 +47,43 @@
 
   <div class="col-sm-9 col-md-10">
     <div class="revws-review-details">
-      <p class="revws-review-title" {if $microdata}itemprop="name"{/if}>
-        {$review.title}
-      </p>
-      {if $review.underReview}
-      <div class="revws-under-review">{l s="This review hasn't been approved yet" mod='revws'}</div>
-      {/if}
-      <p class="revws-review-content" {if $microdata}itemprop="description"{/if}>{$review.content|escape:'html':'UTF-8'|nl2br}</p>
+      <div class="revws-review-review">
+        <div>
+          {if $showCriteria && $reviewsData.preferences.displayCriteria === 'inline'}
+          <div class="revws-review-criteria revws-review-criteria-inline">
+            {foreach from=$review.grades item=critValue key=critKey}
+            <div class='revws-review-criterion'>
+              <span class='revws-criterion-label'>{$reviewsData.criteria[$critKey].label}</span>
+              {include file='./grading.tpl' grade=$critValue shape=$reviewsData.theme.shape type='criterion'}
+            </div>
+            {/foreach}
+          </div>
+          {/if}
+          <p class="revws-review-title" {if $microdata}itemprop="name"{/if}>
+            {$review.title}
+          </p>
+          {if $review.underReview}
+          <div class="revws-under-review">{l s="This review hasn't been approved yet" mod='revws'}</div>
+          {/if}
+          <p class="revws-review-content" {if $microdata}itemprop="description"{/if}>{$review.content|escape:'html':'UTF-8'|nl2br}</p>
+        </div>
+        {if $showCriteria && $reviewsData.preferences.displayCriteria === 'side'}
+        <div class="revws-review-criteria revws-review-criteria-block">
+          <table>
+            <tbody>
+              {foreach from=$review.grades item=critValue key=critKey}
+              <tr>
+                <td class="revws-criterion-label">{$reviewsData.criteria[$critKey].label}</td>
+                <td class="revws-criterion-value">
+                  {include file='./grading.tpl' grade=$critValue shape=$reviewsData.theme.shape type='criterion'}
+                </td>
+              </tr>
+              {/foreach}
+            </tbody>
+          </table>
+        </div>
+        {/if}
+      </div>
       <div class="revws-actions">
         {if $review.canVote}
           <div class="revws-action revws-useful">{l s='Was this comment useful to you?' mod='revws'}

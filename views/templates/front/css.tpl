@@ -22,6 +22,11 @@ a .revws-grading {
   padding-right: {$cssSettings.shapeSize.product / 8}px;
 }
 
+.revws-grading-criterion .revws-grade-wrap {
+  padding-left: {$cssSettings.shapeSize.product * 0.875 / 8}px;
+  padding-right: {$cssSettings.shapeSize.product * 0.875 / 8}px;
+}
+
 .revws-grading-list .revws-grade-wrap {
   padding-left: {$cssSettings.shapeSize.list / 8}px;
   padding-right: {$cssSettings.shapeSize.list / 8}px;
@@ -35,6 +40,11 @@ a .revws-grading {
 .revws-grading-product .revws-grade {
   width: {$cssSettings.shapeSize.product}px;
   height: {$cssSettings.shapeSize.product}px;
+}
+
+.revws-grading-criterion .revws-grade {
+  width: {$cssSettings.shapeSize.product * 0.875}px;
+  height: {$cssSettings.shapeSize.product * 0.875}px;
 }
 
 .revws-grading-list .revws-grade {
@@ -168,6 +178,9 @@ a .revws-grading {
   color: #999;
   font-size: 14px;
   font-weight: 400;
+}
+
+.revws-review-criteria-block {
   padding-left: 15px;
 }
 
