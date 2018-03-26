@@ -9,8 +9,22 @@
   }
 }
 
+.groups {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  .group {
+    padding-top: 2rem;
+  }
+  .group:not(:last-child) {
+    margin-right: 120px;
+  }
+}
+
 .group {
-  width: 250px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  max-width: 250px;
 }
 
 .sectionLabel {

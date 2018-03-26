@@ -3,13 +3,13 @@ import type { ComponentType } from 'react';
 import type { LanguagesType } from 'common/types';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
-import { getCriteria } from 'back/selectors/criteria';
+import { getFullCriteria } from 'back/selectors/criteria';
 import { getProducts, getCategories } from 'back/selectors/data';
 import { deleteCriterion, saveCriterion, loadData } from 'back/actions/creators';
 import CriteriaSection from './criteria-section';
 
 const mapStateToProps = mapObject({
-  criteria: getCriteria,
+  criteria: getFullCriteria,
   products: getProducts,
   categories: getCategories,
 });
