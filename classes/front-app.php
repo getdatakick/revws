@@ -122,7 +122,7 @@ class FrontApp {
         'displayCriteria' => $set->getDisplayCriteriaPreference()
       ],
       'canCreate' => $canCreate,
-      'css' => $this->module->getCSSFile()
+      'css' => $this->module->getCSSFile() . '?CACHE_CONTROL'
     ];
   }
 
