@@ -142,10 +142,10 @@ class Revws extends Module {
     if (! $drop) {
       return true;
     }
-    return $this->executeSqlScript('uninstall');
+    return $this->executeSqlScript('uninstall', false);
   }
 
-  public function executeSqlScript($script) {
+  public function executeSqlScript($script, $check=true) {
     $file = dirname(__FILE__) . '/sql/' . $script . '.sql';
     if (! file_exists($file)) {
       return false;
@@ -160,7 +160,9 @@ class Revws extends Module {
       $stmt = trim($statement);
       if ($stmt) {
         if (!Db::getInstance()->execute($stmt)) {
-          return false;
+          if ($check) {
+            return false;
+          }
         }
       }
     }
