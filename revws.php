@@ -159,7 +159,13 @@ class Revws extends Module {
     foreach ($sql as $statement) {
       $stmt = trim($statement);
       if ($stmt) {
-        if (!Db::getInstance()->execute($stmt)) {
+        try {
+          if (!Db::getInstance()->execute($stmt)) {
+            if ($check) {
+              return false;
+            }
+          }
+        } catch (\Exception $e) {
           if ($check) {
             return false;
           }
@@ -218,7 +224,7 @@ class Revws extends Module {
 
   private function migrate($version) {
     if (version_compare($version, '1.0.9', '<')) {
-      $this->executeSqlScript('update-1_0_9');
+      $this->executeSqlScript('update-1_0_9', false);
     }
   }
 
@@ -448,13 +454,13 @@ class Revws extends Module {
     ]);
   }
 
-  private function getCSSFile() {
+  public function getCSSFile() {
     $set = $this->getSettings();
     $filename = $this->getCSSFilename($set);
     if (! file_exists($filename)) {
       $this->generateCSS($set, $filename);
     }
-    return $filename;
+    return str_replace(_PS_ROOT_DIR_, '', $filename);
   }
 
   private function getCSSFilename($set) {

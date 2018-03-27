@@ -121,7 +121,8 @@ class FrontApp {
         'placement' => $set->getPlacement(),
         'displayCriteria' => $set->getDisplayCriteriaPreference()
       ],
-      'canCreate' => $canCreate
+      'canCreate' => $canCreate,
+      'css' => $this->module->getCSSFile()
     ];
   }
 
