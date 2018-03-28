@@ -118,6 +118,8 @@ a .revws-grading {
 }
 
 .revws-review {
+  display: flex;
+  flex-direction: row;
   margin: 10px 0px;
   padding: 10px;
   border-top: 1px solid #e5e5e5;
@@ -367,6 +369,7 @@ a .revws-grading {
 
 @media (min-width: 768px) {
   .revws-review-author {
+    width: 20%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -376,15 +379,23 @@ a .revws-grading {
   }
 
   .revws-review-details {
+    width: 80%;
     border-left: 1px solid #f5f5f5;
     padding-left: 30px;
   }
 }
 
 @media (max-width: 768px) {
+  .revws-review {
+    flex-direction: column;
+  }
   .revws-review-author {
+    width: 100%;
     display: flex;
     flex-direction: row;
+  }
+  .revws-review-details {
+    width: 100%;
   }
   #revws-tab-content .revws-grading-product {
     margin: 0px 20px;
