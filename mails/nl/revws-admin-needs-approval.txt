@@ -1,0 +1,12 @@
+Onderwerp: Review voor moderatie
+ - {shop_name}
+
+Hallo!
+
+Je hebt een nieuwe review voor {product_name}. 
+
+Review {review_id} met beoordeling {ratings} wacht op moderatie voor punlicatie. 
+
+Kijk snel op je site!
+
+Your DataKick Review Module

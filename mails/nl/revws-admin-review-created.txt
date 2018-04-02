@@ -1,0 +1,15 @@
+Onderwerp: Je hebt een nieuwe review - {shop_name}
+
+Hallo!
+
+Je hebt een nieuwe review!
+
+Hier zijn de details van de review:
+
+Product: {product_name}
+Rating: {ratings} 
+Titel: {title}
+Beschrijving: {content}
+Review ID: {review_id} 
+
+Your DataKick Review Module

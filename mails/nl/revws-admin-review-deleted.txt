@@ -1,0 +1,15 @@
+Onderwerp: Een review is verwijderd
+ - {shop_name}
+
+Hallo!
+
+Dit bericht is verzonden omdat er een review is verwijderd {review_id} met rating {ratings} van {product_name} is verwijderd door de reviewer.
+
+Als je wilt weten waarom, hier zijn de details:
+
+E-mail: {author_email}
+Naam: {author_name}
+Weergave naam van de review: {display_name}
+
+Your DataKick Review Module
+
