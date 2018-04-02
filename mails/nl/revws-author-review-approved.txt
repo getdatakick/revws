@@ -1,0 +1,21 @@
+Onderwerp: Je review is goedgekeurd
+ - {shop_name}
+
+Hallo!
+
+Dank je wel voor je review! 
+
+Je review is goedgekeurd. Wij willen je bedanken voor de tijd die jij hebt genomen voor het schrijven van je review.
+
+Hier de review welke geplaats is:
+
+Product: {product_name}
+Rating: {ratings} 
+Titel: {title}
+Beschrijving: {content}
+Weergave naam: {display_name}
+
+Nogmaals bedankt. 
+{shop_name}
+
+

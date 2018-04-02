@@ -1,0 +1,12 @@
+Onderwerp: Een product review is bijgewerkt - {shop_name}
+
+Hallo!
+
+Review {review_id} van {product_name} is gewijzigd in:
+
+Rating: {ratings} 
+Naam: {title}
+Tekst: {content}
+Review ID: {review_id} 
+
+Your DataKick Review Module

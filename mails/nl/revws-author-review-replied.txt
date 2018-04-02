@@ -1,0 +1,24 @@
+Onderwerp: {shop_name} heeft geantwoord op je review
+
+Hallo!
+
+Dank je wel voor je review! 
+
+Wij hebben het volgende geantwoord: 
+
+{reply}
+
+Wij danken je voor de tijd die genomen hebt voor het schrijven van een review.
+
+Hier een overzicht van je review:
+
+Product: {product_name}
+Rating: {ratings} 
+Titel: {title}
+Inhoud: {content}
+Kop tekst: {display_name}
+
+Nogmaals bedankt. 
+{shop_name}
+
+

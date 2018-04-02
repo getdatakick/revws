@@ -1,0 +1,18 @@
+Onderwerk: Je review is geweigerd - {shop_name}
+
+Hallo,
+
+Dank je wel voor je review. tot onze spijt moeten wij je mede delen dat de review niet voldoet aan de richtlijnen en niet gepubliceerd wordt op onze site.
+
+Hier nogmaals een overzicht van jouw review:
+
+Product: {product_name}
+Rating: {ratings}
+Titel: {title}
+Tekst: {content}
+Kop tekst: {display_name}
+
+Als je er vragen zij waarom de review gewijgerd is kan je contact opnemen met de klantenservice.
+
+Met vriendelijke groet,
+{shop_name}
