@@ -423,8 +423,12 @@ class Revws extends Module {
       if (is_object($params['review'])) {
         $review = $params['review'];
       } else if (is_numeric($params['review'])) {
-        $review = new RevwsReview($params['review']);
-        $review->loadGrades();
+        $review = new RevwsReview((int)$params['review']);
+        if (Validate::isLoadedObject($review)) {
+          $review->loadGrades();
+        } else {
+          $review = null;
+        }
       }
       if ($review) {
         $displayReply = true;
