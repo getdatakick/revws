@@ -500,6 +500,8 @@ class Revws extends Module {
   }
 
   private function generateCSS($set, $filename) {
+    Tools::clearSmartyCache();
+    Media::clearCache();
     $this->smarty->assign('cssSettings', $this->getCSSSettings($set));
     $css = $this->display(__FILE__, 'css.tpl');
     $extend = $this->getTemplatePath('css-extend.tpl');

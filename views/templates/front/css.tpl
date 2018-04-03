@@ -129,6 +129,10 @@ a .revws-grading {
   border-top: none;
 }
 
+.revws-review-author {
+  min-width: {6 * ($cssSettings.shapeSize.list + $cssSettings.shapeSize.list/4)}px;
+}
+
 .revws-review-author-name {
   color: #222;
   font-size: 12px;
