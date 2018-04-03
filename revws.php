@@ -430,7 +430,7 @@ class Revws extends Module {
 
   public function includeCommonStyles($controller) {
     $controller->addCSS('https://fonts.googleapis.com/css?family=Roboto:300,400,500', 'all');
-    $controller->addCSS($this->getCSSFile(), 'all');
+    $controller->addCSS($this->getCSSFile(), 'all', null, false);
   }
 
   private function getProductReviewsLink($product) {
