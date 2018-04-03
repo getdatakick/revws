@@ -166,6 +166,9 @@ a .revws-grading {
   justify-content: space-between;
 }
 
+.revws-review-box {
+  width: 100%;
+}
 
 .revws-review-title {
   color: #222;
@@ -203,6 +206,7 @@ a .revws-grading {
   width: 100%;
   padding-bottom: 20px;
   display: flex;
+  flex-wrap: wrap;
 }
 
 .revws-review-criterion {

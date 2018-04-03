@@ -46,7 +46,7 @@
 
   <div class="revws-review-details">
     <div class="revws-review-review">
-      <div>
+      <div class="revws-review-box">
         {if $showCriteria && $displayCriteria === 'inline'}
         <div class="revws-review-criteria revws-review-criteria-inline">
           {foreach from=$review.grades item=critValue key=critKey}

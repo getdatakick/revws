@@ -86,7 +86,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
 
         <div className="revws-review-details">
           <div className="revws-review-review">
-            <div>
+            <div className="revws-review-box">
               {showCriteria && displayCriteria == 'inline' && (
                 <InlineCriteria
                   grades={review.grades}
