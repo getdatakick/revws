@@ -1,0 +1,18 @@
+Onderwerp: {shop_name} Dank je wel voor je review
+
+Hallo!
+
+Dank je wel voor je review! Wij zijn blij dat je de tijd hebt willen nemen voor het schrijven van een review.
+
+Hier is een overzicht van je review.
+
+Product: {product_name}
+Rating: {ratings} 
+Titel: {title}
+Tekst: {content}
+Kop tekst: {display_name}
+
+Nogmaals hartelijke dank. 
+{shop_name}
+
+
