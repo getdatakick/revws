@@ -25,6 +25,7 @@ require_once __DIR__.'/classes/settings.php';
 require_once __DIR__.'/classes/permissions.php';
 require_once __DIR__.'/classes/visitor-permissions.php';
 require_once __DIR__.'/classes/employee-permissions.php';
+require_once __DIR__.'/classes/no-permissions.php';
 require_once __DIR__.'/classes/shapes.php';
 require_once __DIR__.'/classes/visitor.php';
 require_once __DIR__.'/classes/review-query.php';
@@ -95,7 +96,8 @@ class Revws extends Module {
       'displayFooterProduct',
       'discoverReviewModule',
       'datakickExtend',
-      'actionRegisterKronaAction'
+      'actionRegisterKronaAction',
+      'displayRevwsReview'
     ]);
   }
 
@@ -414,6 +416,35 @@ class Revws extends Module {
         'message' => 'You lost {points} Points for having a review rejected',
       ],
     ];
+  }
+
+  public function hookDisplayRevwsReview($params) {
+    if (isset($params['review'])) {
+      if (is_object($params['review'])) {
+        $review = $params['review'];
+      } else if (is_numeric($params['review'])) {
+        $review = new RevwsReview($params['review']);
+        $review->loadGrades();
+      }
+      if ($review) {
+        $displayReply = true;
+        if (isset($params['displayReply'])) {
+          $displayReply = !!$params['displayReply'];
+        }
+        $shopName = $displayReply ? Configuration::get('PS_SHOP_NAME') : null;
+        $displayCriteria = $this->getSettings()->getDisplayCriteriaPreference();
+        if (isset($params['displayCriteria'])) {
+          $displayCriteria = $params['displayCriteria'];
+        }
+        $this->context->smarty->assign('review', $review->toJSData(new \Revws\NoPermissions()));
+        $this->context->smarty->assign('shape', $this->getShapeSettings());
+        $this->context->smarty->assign('criteria', RevwsCriterion::getCriteria($this->context->language->id));
+        $this->context->smarty->assign('displayCriteria', $displayCriteria);
+        $this->context->smarty->assign('shopName', $shopName);
+        $this->context->smarty->assign('linkToProduct', $this->context->link->getProductLink($review->id_product));
+        return $this->display(__FILE__, 'single_review.tpl');
+      }
+    }
   }
 
   public function clearCache() {
