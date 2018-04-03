@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
-import type { GradingShapeType, ReviewType, ShapeColorsType } from 'common/types';
+import { map, indexBy, prop } from 'ramda';
+import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType } from 'common/types';
 import styles from './style.less';
 import Bootstrap from 'common/components/bootstrap/bootstrap';
 import ReviewListItem from 'common/components/review-list-item/review-list-item';
@@ -9,6 +10,7 @@ type Props = {
   shopName: string,
   colors: ShapeColorsType,
   shape: GradingShapeType,
+  displayCriteria: DisplayCriteriaType,
   size: number,
   canVote: boolean,
   canReport: boolean
@@ -18,10 +20,12 @@ class ReviewPreview extends React.PureComponent<Props> {
   static displayName = 'ReviewPreview';
 
   render() {
-    const { shape, size, colors, canVote, canReport, shopName } = this.props;
-    const grades = {};
-    grades[1] = 5;
-    grades[2] = 3;
+    const { shape, size, colors, canVote, canReport, shopName, displayCriteria } = this.props;
+    const criteria: CriteriaType = indexBy(prop('id'), [
+      { id: 1, label: __('Quality'), value: 5},
+      { id: 2, label: __('Shipping'), value: 3}
+    ]);
+    const grades = map(prop('value'), criteria);
     const review: ReviewType = {
       id: 1,
       authorType: 'customer',
@@ -53,6 +57,8 @@ class ReviewPreview extends React.PureComponent<Props> {
             shape={shape}
             shapeSize={size}
             review={review}
+            criteria={criteria}
+            displayCriteria={displayCriteria}
             colors={colors} />
         </div>
       </Bootstrap>

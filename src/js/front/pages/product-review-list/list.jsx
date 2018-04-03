@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { map } from 'ramda';
-import type { GradingShapeType, ReviewType, ReviewListType } from 'common/types';
+import type { DisplayCriteriaType, GradingShapeType, ReviewType, ReviewListType, CriteriaType } from 'common/types';
 import ReviewListItem from 'common/components/review-list-item/review-list-item';
 import { CircularProgress } from 'material-ui/Progress';
 
@@ -10,6 +10,8 @@ type Props = {
   shape: GradingShapeType,
   shapeSize: number,
   reviewList: ReviewListType,
+  criteria: CriteriaType,
+  displayCriteria: DisplayCriteriaType,
   loading: boolean,
   onEdit: (ReviewType)=>void,
   onDelete: (ReviewType)=>void,
@@ -36,7 +38,7 @@ class ProductReviewList extends React.PureComponent<Props> {
   }
 
   renderReview = (review: ReviewType) => {
-    const { shape, shapeSize, onReport, onVote, onEdit, onDelete, shopName } = this.props;
+    const { shape, shapeSize, onReport, onVote, onEdit, onDelete, shopName, displayCriteria, criteria } = this.props;
     return (
       <ReviewListItem
         key={review.id}
@@ -47,6 +49,8 @@ class ProductReviewList extends React.PureComponent<Props> {
         onDelete={onDelete}
         onVote={onVote}
         onReport={onReport}
+        criteria={criteria}
+        displayCriteria={displayCriteria}
         review={review} />
     );
   }

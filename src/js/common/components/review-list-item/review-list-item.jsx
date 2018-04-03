@@ -2,13 +2,15 @@
 
 import React from 'react';
 import classnames from 'classnames';
-import type { GradingShapeType, ReviewType, ShapeColorsType } from 'common/types';
-import { F, isNil } from 'ramda';
+import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType } from 'common/types';
+import { F, isNil, sortBy, prop, values, filter, has } from 'ramda';
 import { hasRatings, averageGrade } from 'common/utils/reviews';
 import Grading from 'common/components/grading/grading';
 import ReplyIcon from 'material-ui-icons/Reply';
 import styles from './review-list-item.less';
 import Textarea from 'common/components/text-area/text-area';
+import InlineCriteria from 'common/components/criteria/inline';
+import BlockCriteria from 'common/components/criteria/block';
 import Button from 'material-ui/Button';
 
 type Props = {
@@ -16,6 +18,8 @@ type Props = {
   shape: GradingShapeType,
   colors?: ShapeColorsType,
   shapeSize: number,
+  criteria: CriteriaType,
+  displayCriteria: DisplayCriteriaType,
   review: ReviewType,
   onEdit: (ReviewType)=>void,
   onSaveReply?: (?string)=>void,
@@ -49,77 +53,100 @@ class ReviewListItem extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { colors, shape, shapeSize, onReport, onEdit, onDelete, onVote, review } = this.props;
-    const { displayName, date, title, underReview, verifiedBuyer, content, canVote, canReport, canEdit, canDelete } = review;
-    const classes = classnames('revws-review', 'row', 'no-gutter', {
+    const { colors, shape, shapeSize, onReport, onEdit, onDelete, onVote, review, criteria, displayCriteria } = this.props;
+    const { displayName, date, title, underReview, verifiedBuyer, content, canVote, canReport, grades, canEdit, canDelete } = review;
+    const classes = classnames('revws-review', {
       'revws-review-under-review': underReview,
       'revws-verified-buyer': verifiedBuyer
     });
 
+    const crits = displayCriteria == 'none' ? [] : getCriteriaToRender(criteria, grades);
+    const showCriteria = crits.length > 1;
+    let stars = undefined;
+
+    if (hasRatings(review)) {
+      stars = (
+        <Grading
+          grade={averageGrade(review)}
+          shape={shape}
+          type={'product'}
+          size={shapeSize}
+          colors={colors} />
+      );
+    }
+
     return (
       <div className={classes}>
-        <div className="col-sm-3 col-md-2">
-          <div className="revws-review-author">
-            <div className="revws-review-author-name">{ displayName }</div>
-            {verifiedBuyer && <div className="revws-verified-buyer-badge">{__("Verified purchase")}</div>}
-            { hasRatings(review) ? (
-              <Grading
-                grade={averageGrade(review)}
-                shape={shape}
-                type={'product'}
-                size={shapeSize}
-                colors={colors}
-              />
-            ) : undefined}
-            <div className="revws-review-date">{formatDate(date)}</div>
-          </div>
+        <div className="revws-review-author">
+          <div className="revws-review-author-name">{ displayName }</div>
+          {verifiedBuyer && <div className="revws-verified-buyer-badge">{__("Verified purchase")}</div>}
+          {stars}
+          <div className="revws-review-date">{formatDate(date)}</div>
         </div>
 
-        <div className="col-sm-9 col-md-10">
-          <div className="revws-review-details">
-            <p className="revws-review-title">
-              { title }
-            </p>
-            {underReview && (
-              <div className="revws-under-review">{__("This review hasn't been approved yet")}</div>
-            )}
-            <p className="revws-review-content">{ this.renderContent(content) }</p>
-            <div className="revws-actions">
-              {canVote && (
-                <div className="revws-action revws-useful">
-                  {__('Was this comment useful to you?')}
-                  <a className="btn btn-xs btn-link" onClick={() => onVote(review, 'up')}>
-                    <i className="icon icon-thumbs-up"></i> {__('Yes')}
-                  </a>
-                  <a className="btn btn-xs btn-link" onClick={() => onVote(review, 'down')}>
-                    <i className="icon icon-thumbs-down"></i> {__('No')}
-                  </a>
-                </div>
+        <div className="revws-review-details">
+          <div className="revws-review-review">
+            <div>
+              {showCriteria && displayCriteria == 'inline' && (
+                <InlineCriteria
+                  grades={review.grades}
+                  shape={shape}
+                  shapeSize={shapeSize}
+                  colors={colors}
+                  criteria={crits} />
               )}
-              {canReport && (
-                <div className="revws-action revws-report">
-                  <a className="btn btn-xs btn-link" onClick={() => onReport(review)}>
-                    <i className="icon icon-flag"></i> {__('Report abuse')}
-                  </a>
-                </div>
+              <p className="revws-review-title">
+                { title }
+              </p>
+              {underReview && (
+                <div className="revws-under-review">{__("This review hasn't been approved yet")}</div>
               )}
-              {canEdit && (
-                <div className="revws-action revws-edit">
-                  <a className="btn btn-xs btn-link" onClick={() => onEdit(review)}>
-                    <i className="icon icon-edit"></i> {__('Edit review')}
-                  </a>
-                </div>
-              )}
-              {canDelete && (
-                <div className="revws-action revws-delete">
-                  <a className="btn btn-xs btn-link" onClick={() => onDelete(review)}>
-                    <i className="icon icon-remove"></i> {__('Delete review')}
-                  </a>
-                </div>
-              )}
+              <p className="revws-review-content">{ this.renderContent(content) }</p>
             </div>
-            { this.renderReplies() }
+            {showCriteria && displayCriteria == 'side' && (
+              <BlockCriteria
+                grades={review.grades}
+                shape={shape}
+                shapeSize={shapeSize}
+                colors={colors}
+                criteria={crits} />
+            )}
           </div>
+          <div className="revws-actions">
+            {canVote && (
+              <div className="revws-action revws-useful">
+                {__('Was this comment useful to you?')}
+                <a className="btn btn-xs btn-link" onClick={() => onVote(review, 'up')}>
+                  <i className="icon icon-thumbs-up"></i> {__('Yes')}
+                </a>
+                <a className="btn btn-xs btn-link" onClick={() => onVote(review, 'down')}>
+                  <i className="icon icon-thumbs-down"></i> {__('No')}
+                </a>
+              </div>
+            )}
+            {canReport && (
+              <div className="revws-action revws-report">
+                <a className="btn btn-xs btn-link" onClick={() => onReport(review)}>
+                  <i className="icon icon-flag"></i> {__('Report abuse')}
+                </a>
+              </div>
+            )}
+            {canEdit && (
+              <div className="revws-action revws-edit">
+                <a className="btn btn-xs btn-link" onClick={() => onEdit(review)}>
+                  <i className="icon icon-edit"></i> {__('Edit review')}
+                </a>
+              </div>
+            )}
+            {canDelete && (
+              <div className="revws-action revws-delete">
+                <a className="btn btn-xs btn-link" onClick={() => onDelete(review)}>
+                  <i className="icon icon-remove"></i> {__('Delete review')}
+                </a>
+              </div>
+            )}
+          </div>
+          { this.renderReplies() }
         </div>
       </div>
     );
@@ -239,5 +266,11 @@ const formatDate = (date: Date): string => {
 };
 
 const pad = (value) => ('00'+value).substr(-2);
+
+const getCriteriaToRender = (criteria, grades) => {
+  const list = sortBy(prop('id'), values(criteria));
+  return filter(crit => has(crit.id, grades), list);
+};
+
 
 export default ReviewListItem;

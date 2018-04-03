@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import type { ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType } from 'common/types';
+import type { DisplayCriteriaType, ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType } from 'common/types';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
 import EditReviewForm from './edit-review-form-controller';
@@ -16,6 +16,7 @@ type Props = {
   review: ?ReviewType,
   language: number,
   criteria: CriteriaType,
+  displayCriteria: DisplayCriteriaType,
   shape: GradingShapeType,
   shapeSize: number,
   onSave: (ReviewType)=>void,
@@ -143,7 +144,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
   }
 
   renderViewMode = (review: ReviewType) => {
-    const { onSave, criteria, language, shape, shapeSize, shopName } = this.props;
+    const { onSave, criteria, language, shape, shapeSize, shopName, displayCriteria } = this.props;
     return (
       <ViewReviewForm
         onUpdateReview={review => {
@@ -155,6 +156,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
         shape={shape}
         shapeSize={shapeSize}
         language={language}
+        displayCriteria={displayCriteria}
         criteria={criteria} />
     );
   }

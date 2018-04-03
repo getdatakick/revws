@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import type { ReviewType, CriteriaType, GradingShapeType } from 'common/types';
+import type { ReviewType, CriteriaType, GradingShapeType, DisplayCriteriaType } from 'common/types';
 import { assoc, merge } from 'ramda';
 import Bootstrap from 'common/components/bootstrap/bootstrap';
 import ReviewListItem from 'common/components/review-list-item/review-list-item';
@@ -14,6 +14,7 @@ type Props = {
   shape: GradingShapeType,
   shapeSize: number,
   review: ReviewType,
+  displayCriteria: DisplayCriteriaType,
   onUpdateReview: (ReviewType)=>void,
 }
 
@@ -28,11 +29,13 @@ class EditReviewForm extends React.PureComponent<Props> {
   static displayName = 'EditReviewForm';
 
   render() {
-    const { shopName, review, shape, shapeSize, onUpdateReview } = this.props;
+    const { shopName, criteria, review, shape, shapeSize, displayCriteria, onUpdateReview } = this.props;
     return (
       <Bootstrap className={styles.preview}>
         <div id="revws-tab-content">
           <ReviewListItem
+            criteria={criteria}
+            displayCriteria={displayCriteria}
             shopName={shopName}
             shape={shape}
             shapeSize={shapeSize}

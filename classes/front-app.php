@@ -118,9 +118,11 @@ class FrontApp {
         'customerReviewsPerPage' => $set->getCustomerReviewsPerPage(),
         'customerMaxRequests' => $set->getCustomerMaxRequests(),
         'showSignInButton' => $set->showSignInButton(),
-        'placement' => $set->getPlacement()
+        'placement' => $set->getPlacement(),
+        'displayCriteria' => $set->getDisplayCriteriaPreference()
       ],
-      'canCreate' => $canCreate
+      'canCreate' => $canCreate,
+      'css' => $this->module->getCSSFile() . '?CACHE_CONTROL'
     ];
   }
 

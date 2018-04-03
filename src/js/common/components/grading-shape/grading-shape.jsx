@@ -30,8 +30,12 @@ class GradingShape extends React.PureComponent<Props> {
         fill:  on ? colors.fillColor : colors.fillColorOff
       });
     }
+    const style = {
+      width: size,
+      height: size
+    };
     return (
-      <svg className={className} viewBox={viewBox} width={size} height={size} {...rest}>
+      <svg className={className} style={style} viewBox={viewBox} width={size} height={size} {...rest}>
         <path d={path} style={pathStyle} />
       </svg>
     );

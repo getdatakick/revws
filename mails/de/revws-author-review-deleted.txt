@@ -1,0 +1,18 @@
+Betreff: Ihre Bewertung wurde abgelehnt - {shop_name}
+
+Hallo,
+
+vielen Dank für Ihre Bewertung! Leider entspricht diese nicht unseren Richtlinien. 
+
+Zur Erinnerung, das war Ihre Bewertung:
+
+Artikel: {product_name}
+Bewertung: {ratings}
+Überschrift: {title}
+Inhalt: {content}
+Der gezeigte Name: {display_name}
+
+Bitte schreiben Sie uns, wenn Sie der Ansicht sind, dass hier ein Fehler vorliegt.
+
+Mit besten Grüßen
+{shop_name}

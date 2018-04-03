@@ -44,7 +44,7 @@ class Revws extends Module {
   public function __construct() {
     $this->name = 'revws';
     $this->tab = 'administration';
-    $this->version = '1.0.9';
+    $this->version = '1.0.10';
     $this->author = 'DataKick';
     $this->need_instance = 0;
     $this->bootstrap = true;
@@ -143,10 +143,10 @@ class Revws extends Module {
     if (! $drop) {
       return true;
     }
-    return $this->executeSqlScript('uninstall');
+    return $this->executeSqlScript('uninstall', false);
   }
 
-  public function executeSqlScript($script) {
+  public function executeSqlScript($script, $check=true) {
     $file = dirname(__FILE__) . '/sql/' . $script . '.sql';
     if (! file_exists($file)) {
       return false;
@@ -160,8 +160,16 @@ class Revws extends Module {
     foreach ($sql as $statement) {
       $stmt = trim($statement);
       if ($stmt) {
-        if (!Db::getInstance()->execute($stmt)) {
-          return false;
+        try {
+          if (!Db::getInstance()->execute($stmt)) {
+            if ($check) {
+              return false;
+            }
+          }
+        } catch (\Exception $e) {
+          if ($check) {
+            return false;
+          }
         }
       }
     }
@@ -207,7 +215,9 @@ class Revws extends Module {
       $this->settings = new \Revws\Settings();
       $version = $this->settings->getVersion();
       if ($version != $this->version) {
-        $this->migrate($version);
+        if (version_compare($version, $this->version, '<')) {
+          $this->migrate($version);
+        }
         $this->registerHooks();
         $this->settings->setVersion($this->version);
       }
@@ -217,7 +227,7 @@ class Revws extends Module {
 
   private function migrate($version) {
     if (version_compare($version, '1.0.9', '<')) {
-      $this->executeSqlScript('update-1_0_9');
+      $this->executeSqlScript('update-1_0_9', false);
     }
   }
 
@@ -423,7 +433,7 @@ class Revws extends Module {
 
   public function includeCommonStyles($controller) {
     $controller->addCSS('https://fonts.googleapis.com/css?family=Roboto:300,400,500', 'all');
-    $controller->addCSS($this->getCSSFile(), 'all');
+    $controller->addCSS($this->getCSSFile(), 'all', null, false);
   }
 
   private function getProductReviewsLink($product) {
@@ -447,13 +457,13 @@ class Revws extends Module {
     ]);
   }
 
-  private function getCSSFile() {
+  public function getCSSFile() {
     $set = $this->getSettings();
     $filename = $this->getCSSFilename($set);
     if (! file_exists($filename)) {
       $this->generateCSS($set, $filename);
     }
-    return $filename;
+    return str_replace(_PS_ROOT_DIR_, '', $filename);
   }
 
   private function getCSSFilename($set) {
@@ -462,7 +472,6 @@ class Revws extends Module {
       $data = 'CACHE_CONTROL';
       $data .= '-' . $set->getVersion();
       $data .= '-' . json_encode($this->getCSSSettings($set));
-      $data .= time();
       foreach (['css.tpl', 'css-extend.tpl'] as $tpl) {
         $source = $this->getTemplatePath($tpl);
         if ($source) {
@@ -492,11 +501,17 @@ class Revws extends Module {
   }
 
   private function generateCSS($set, $filename) {
+    Tools::clearSmartyCache();
+    Media::clearCache();
     $this->smarty->assign('cssSettings', $this->getCSSSettings($set));
     $css = $this->display(__FILE__, 'css.tpl');
     $extend = $this->getTemplatePath('css-extend.tpl');
     if ($extend) {
       $css .= "\n" . $this->display(__FILE__, 'css-extend.tpl');
+    }
+    $dir = dirname($filename);
+    if (! is_dir($dir)) {
+      @mkdir($dir);
     }
     @file_put_contents($filename, $css);
   }

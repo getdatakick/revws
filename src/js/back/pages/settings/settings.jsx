@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import type { SettingsType, GlobalDataType } from 'back/types';
+import type { CriteriaType } from 'common/types';
 import ScrollSpy from 'react-scrollspy';
 import { prop, toPairs, path, last, merge, range, map, curry, equals, assocPath } from 'ramda';
 import Section from './section';
@@ -22,6 +23,7 @@ import ColorPicker from 'common/components/color-picker/trigger';
 
 type Props = {
   data: GlobalDataType,
+  criteria: CriteriaType,
   settings: SettingsType,
   pageWidth: number,
   saveSettings: (SettingsType)=>void
@@ -171,47 +173,57 @@ class Settings extends React.PureComponent<Props, State> {
     const colors = theme.colors;
     return (
       <div>
-        <div className={styles.group}>
-          <ShapeSelect
-            colors={colors}
-            onChange={this.set(['theme', 'shape'])}
-            shape={theme.shape}
-            shapes={shapes}
-          />
-          <div className={styles.space} />
-          <TextField
-            select
-            label={__("Rating shape size")}
-            value={size}
-            fullWidth
-            onChange={this.setSize}>
-            { map(value => <MenuItem key={value} value={value}>{value}</MenuItem>, sizes) }
-          </TextField>
-          <div className={styles.space} />
-          <ColorPicker
-            color={colors.fillColor}
-            label={__("Fill color - filled shape")}
-            onChange={this.set(['theme', 'colors', 'fillColor'])}
-          />
-          <div className={styles.space} />
-          <ColorPicker
-            color={colors.borderColor}
-            label={__("Border color - filled shape")}
-            onChange={this.set(['theme', 'colors', 'borderColor'])}
-          />
-          <div className={styles.space} />
-          <ColorPicker
-            color={colors.fillColorOff}
-            label={__("Fill color - empty shape")}
-            onChange={this.set(['theme', 'colors', 'fillColorOff'])}
-          />
-          <div className={styles.space} />
-          <ColorPicker
-            color={colors.borderColorOff}
-            label={__("Border color - empty shape")}
-            onChange={this.set(['theme', 'colors', 'borderColorOff'])}
-          />
-
+        <div className={styles.groups}>
+          <div className={styles.group}>
+            <ShapeSelect
+              colors={colors}
+              onChange={this.set(['theme', 'shape'])}
+              shape={theme.shape}
+              shapes={shapes}
+            />
+            <div className={styles.space} />
+            <TextField
+              select
+              label={__("Rating shape size")}
+              value={size}
+              fullWidth
+              onChange={this.setSize}>
+              { map(value => <MenuItem key={value} value={value}>{value}</MenuItem>, sizes) }
+            </TextField>
+            <div className={styles.space} />
+            <TextField
+              select
+              label={__("Display multiple criteria")}
+              value={review.displayCriteria}
+              fullWidth
+              onChange={e => this.set(['review', 'displayCriteria'], e.target.value)}>
+              <MenuItem value='none'>{__("Don't show criteria")}</MenuItem>
+              <MenuItem value='inline'>{__("Show criteria on top")}</MenuItem>
+              <MenuItem value='side'>{__("Show criteria on side")}</MenuItem>
+            </TextField>
+          </div>
+          <div className={styles.group}>
+            <ColorPicker
+              color={colors.fillColor}
+              label={__("Fill color - filled shape")}
+              onChange={this.set(['theme', 'colors', 'fillColor'])}
+            />
+            <ColorPicker
+              color={colors.borderColor}
+              label={__("Border color - filled shape")}
+              onChange={this.set(['theme', 'colors', 'borderColor'])}
+            />
+            <ColorPicker
+              color={colors.fillColorOff}
+              label={__("Fill color - empty shape")}
+              onChange={this.set(['theme', 'colors', 'fillColorOff'])}
+            />
+            <ColorPicker
+              color={colors.borderColorOff}
+              label={__("Border color - empty shape")}
+              onChange={this.set(['theme', 'colors', 'borderColorOff'])}
+            />
+          </div>
         </div>
 
         <h2 className={styles.margin}>{__('Preview')}</h2>
@@ -220,6 +232,7 @@ class Settings extends React.PureComponent<Props, State> {
           shopName={shopName}
           shape={shapes[theme.shape]}
           size={theme.shapeSize.product}
+          displayCriteria={review.displayCriteria}
           canVote={review.allowVoting}
           canReport={review.allowReporting} />
       </div>

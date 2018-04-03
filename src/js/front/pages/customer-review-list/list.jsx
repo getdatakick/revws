@@ -48,6 +48,8 @@ class CustomerReviewList extends React.PureComponent<Props> {
             shopName={settings.shopName}
             shape={settings.shape}
             shapeSize={settings.shapeSize.product}
+            criteria={settings.criteria}
+            displayCriteria={settings.preferences.displayCriteria}
             review={review}
             onEdit={onEdit}
             onDelete={onDelete}
