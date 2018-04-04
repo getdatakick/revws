@@ -118,7 +118,7 @@
       <div class="revws-replies">
         <div class="revws-reply">
           <div class="revws-reply-title">
-            {l s='Reply from %s:' sprintf="{$reviewsData.shopName}" mod='revws'}
+            {l s='Reply from %s:' sprintf=[$reviewsData.shopName] mod='revws'}
           </div>
           <div class="revws-reply-content">
             {$review.reply|escape:'html':'UTF-8'|nl2br}
