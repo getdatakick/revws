@@ -331,7 +331,11 @@ class DatakickIntegration {
             'type' => 'BELONGS_TO',
             'sourceFields' => [ 'productId' ],
             'targetFields' => [ 'id' ],
-            'generateReverse' => true
+            'generateReverse' => [
+              'id' => 'revwsReview',
+              'description' => 'Reviews',
+              'type' => 'HAS_MANY'
+            ]
           ],
           'customer' => [
             'description' => 'Customer',
@@ -339,7 +343,11 @@ class DatakickIntegration {
             'type' => 'HAS_ONE',
             'sourceFields' => [ 'customerId' ],
             'targetFields' => [ 'id' ],
-            'generateReverse' => true
+            'generateReverse' => [
+              'id' => 'revwsReview',
+              'description' => 'Reviews',
+              'type' => 'HAS_MANY'
+            ]
           ],
           'visitor' => [
             'description' => 'Visitor',
@@ -347,7 +355,11 @@ class DatakickIntegration {
             'type' => 'HAS_ONE',
             'sourceFields' => [ 'visitorId' ],
             'targetFields' => [ 'id' ],
-            'generateReverse' => true
+            'generateReverse' => [
+              'id' => 'revwsReview',
+              'description' => 'Reviews',
+              'type' => 'HAS_MANY'
+            ]
           ],
           'language' => [
             'description' => 'Language',
@@ -355,7 +367,11 @@ class DatakickIntegration {
             'type' => 'BELONGS_TO',
             'sourceFields' => [ 'languageId' ],
             'targetFields' => [ 'id' ],
-            'generateReverse' => true
+            'generateReverse' => [
+              'id' => 'revwsReview',
+              'description' => 'Reviews',
+              'type' => 'HAS_MANY'
+            ]
           ],
           'ratings' => [
             'description' => 'Ratings',
