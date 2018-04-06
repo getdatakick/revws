@@ -2,6 +2,7 @@
 import React from 'react';
 import type { ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType } from 'common/types';
 import { pathOr, assoc, keys } from 'ramda';
+import { isArray } from 'common/utils/ramda';
 import TextField from 'material-ui/TextField';
 import Grid from 'material-ui/Grid';
 import Grading from 'common/components/grading/grading';
@@ -90,6 +91,7 @@ class EditReviewForm extends React.PureComponent<Props> {
     const grade = pathOr(0, ['grades', critKey], review);
     const criterion = criteria[critKey];
     if (criterion) {
+      const label = isArray(criterion.label) ? criterion.label[language] : criterion.label;
       return (
         <div key={critKey} className={styles.criterion}>
           <Grading
@@ -98,7 +100,7 @@ class EditReviewForm extends React.PureComponent<Props> {
             size={25}
             grade={grade}
             onSetGrade={(grade) => this.onSetGrade(critKey, grade)} />
-          <span className={styles.criterionLabel}>{criterion.label[language]}</span>
+          <span className={styles.criterionLabel}>{label}</span>
         </div>
       );
     }
