@@ -231,6 +231,11 @@ class Settings {
     return $this->toNamePreference($this->get(['review', 'displayName']));
   }
 
+  public function usePseudonym() {
+    $namePref = $this->getNamePreference();
+    return ($namePref === 'pseudonym' || $namePref === 'custom');
+  }
+
   public function getReviewOrder() {
     return $this->toOrderByPreference($this->get(['display', 'product', 'orderBy']));
   }
@@ -352,7 +357,7 @@ class Settings {
   }
 
   private function toNamePreference($pref) {
-    if (in_array($pref, ['fullName', 'firstName', 'lastName', 'initials', 'initialLastName', 'custom'])) {
+    if (in_array($pref, ['fullName', 'firstName', 'lastName', 'initials', 'initialLastName', 'pseudonym', 'custom'])) {
       return $pref;
     }
     return 'fullName';

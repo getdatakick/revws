@@ -96,6 +96,7 @@ class FrontApp {
         'id' => $visitor->getId(),
         'firstName' => $visitor->getFirstName(),
         'lastName' => $visitor->getLastName(),
+        'pseudonym' => $visitor->getPseudonym(),
         'nameFormat' => $set->getNamePreference(),
         'email' => $visitor->getEmail()
       ],

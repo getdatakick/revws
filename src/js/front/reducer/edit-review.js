@@ -18,7 +18,7 @@ const defaultState: State = {
 };
 
 const defaultReview = (settings: SettingsType, product: ProductInfoType):ReviewType => {
-  const { email, firstName, lastName, nameFormat } = settings.visitor;
+  const { email, firstName, lastName, pseudonym, nameFormat } = settings.visitor;
 
   return {
     id: -1,
@@ -30,7 +30,7 @@ const defaultReview = (settings: SettingsType, product: ProductInfoType):ReviewT
     email,
     grades: zipObj(product.criteria, repeat(0, product.criteria.length)),
     reply: null,
-    displayName: formatName(firstName, lastName, nameFormat),
+    displayName: formatName(firstName, lastName, pseudonym, nameFormat),
     title: '',
     content: null,
     underReview: true,

@@ -110,7 +110,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
       email: customerInfo.email,
       grades: {},
       reply: null,
-      displayName: formatName(customerInfo.firstName, customerInfo.lastName, this.props.nameFormat),
+      displayName: formatName(customerInfo.firstName, customerInfo.lastName, customerInfo.pseudonym, this.props.nameFormat),
       title: '',
       content: null,
       underReview: true,

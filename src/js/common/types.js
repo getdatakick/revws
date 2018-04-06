@@ -88,7 +88,7 @@ export type CriteriaType = {
 
 export type EditStage = 'edit' | 'saving' | 'saved' | 'failed';
 
-export type NameFormatType = 'fullName' | 'firstName' | 'lastName' | 'initials' | 'initialLastName' | 'custom';
+export type NameFormatType = 'fullName' | 'firstName' | 'lastName' | 'initials' | 'initialLastName' | 'pseudonym' | 'custom';
 
 export type ProductInfoType = {
   id: number,
@@ -104,6 +104,7 @@ export type CustomerInfoType = {
   id: number,
   firstName: string,
   lastName: string,
+  pseudonym: ?string,
   email: string,
 }
 

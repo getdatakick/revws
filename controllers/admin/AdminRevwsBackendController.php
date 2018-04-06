@@ -57,6 +57,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
           'language' => $lang,
           'environment' => [
             'mailstream' => Module::isInstalled('mailstream'),
+            'krona' => $this->module->getKrona()->isInstalled(),
             'productcomments' => Module::isInstalled('productcomments')
           ]
         ],
@@ -190,11 +191,16 @@ class AdminRevwsBackendController extends ModuleAdminController {
   }
 
   private function getCustomers($options) {
-    return Utils::mapKeyValue('id_customer', function($data) {
+    $loadPseudonyms = $this->module->getSettings()->usePseudonym();
+    $pseudonyms = $loadPseudonyms ? $this->module->getKrona()->getAllPseudonyms() : [];
+    return Utils::mapKeyValue('id_customer', function($data) use ($pseudonyms) {
+      $id = (int)$data['id_customer'];
+      $pseudonym = isset($pseudonyms[$id]) ? $pseudonyms[$id] : '';
       return [
-        'id' => (int)$data['id_customer'],
+        'id' => $id,
         'firstName' => $data['firstname'],
         'lastName' => $data['lastname'],
+        'pseudonym' => $pseudonym,
         'email' => $data['email'],
       ];
     }, Customer::getCustomers(true));

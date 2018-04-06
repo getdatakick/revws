@@ -32,6 +32,8 @@ require_once __DIR__.'/classes/review-query.php';
 require_once __DIR__.'/classes/notifications.php';
 require_once __DIR__.'/classes/actor.php';
 require_once __DIR__.'/classes/front-app.php';
+require_once __DIR__.'/classes/integration/datakick.php';
+require_once __DIR__.'/classes/integration/krona.php';
 
 require_once __DIR__.'/model/criterion.php';
 require_once __DIR__.'/model/review.php';
@@ -40,6 +42,7 @@ class Revws extends Module {
   private $permissions;
   private $visitor;
   private $settings;
+  private $krona;
 
   public function __construct() {
     $this->name = 'revws';
@@ -234,7 +237,7 @@ class Revws extends Module {
 
   public function getVisitor() {
     if (! $this->visitor) {
-      $this->visitor = new \Revws\Visitor($this->context, $this->getSettings());
+      $this->visitor = new \Revws\Visitor($this->context, $this->getSettings(), $this->getKrona());
     }
     return $this->visitor;
   }
@@ -248,6 +251,13 @@ class Revws extends Module {
       }
     }
     return $this->permissions;
+  }
+
+  public function getKrona() {
+    if (! $this->krona) {
+      $this->krona = new \Revws\KronaIntegration();
+    }
+    return $this->krona;
   }
 
   private function assignReviewsData($productId) {
@@ -397,25 +407,11 @@ class Revws extends Module {
   }
 
   public function hookDataKickExtend($params) {
-    require_once(__DIR__.'/classes/integration/datakick.php');
     return \Revws\DatakickIntegration::integrate($params);
   }
 
   public function hookActionRegisterKronaAction($params) {
-    return [
-      'review_created' => [
-        'title'   => 'Review Created',
-        'message' => 'You received {points} Points for having a review created',
-      ],
-      'review_approved' => [
-        'title'   => 'Review Approved',
-        'message' => 'You received {points} Points for having a review approved',
-      ],
-      'review_rejected' => [
-        'title'   => 'Review Rejected',
-        'message' => 'You lost {points} Points for having a review rejected',
-      ],
-    ];
+    return $this->getKrona()->getActions();
   }
 
   public function hookDisplayRevwsReview($params) {
