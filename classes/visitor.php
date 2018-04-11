@@ -169,7 +169,11 @@ class Visitor {
     if ($this->isGuest()) {
       return false;
     }
-    $customer = (int)$this->getCustomerId();
+    return self::hasCustomerPurchasedProduct($this->getCustomerId(), $productId);
+  }
+
+  public static function hasCustomerPurchasedProduct($customerId, $productId) {
+    $customerId = (int)$customerId;
     $shop = (int)Shop::getContextShopID();
     $productId = (int)$productId;
     $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
@@ -178,7 +182,7 @@ class Visitor {
         FROM "._DB_PREFIX_."orders o
         INNER JOIN "._DB_PREFIX_."order_detail d ON (o.id_order = d.id_order AND o.id_shop=d.id_shop)
         INNER JOIN "._DB_PREFIX_."product_shop p ON (p.id_product = d.product_id and p.id_shop = d.id_shop)
-        WHERE o.id_customer = $customer
+        WHERE o.id_customer = $customerId
           AND o.id_shop = $shop
           AND o.delivery_date IS NOT NULL
           AND p.id_product = $productId

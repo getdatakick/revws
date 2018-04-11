@@ -26,15 +26,17 @@ type Props = InputProps & {
   onUploadYotpo: (File) => void
 }
 
+type ImportType = 'productcomments' | 'yotpo';
+
 type State = {
-  confirm: boolean
+  type: ?ImportType
 }
 
 class MigrateData extends React.PureComponent<Props, State> {
   static displayName = 'MigrateData';
 
   state = {
-    confirm: false
+    type: null
   }
 
   input = null;
@@ -42,11 +44,11 @@ class MigrateData extends React.PureComponent<Props, State> {
   render() {
     const { environment, baseUrl } = this.props;
     const disabled = !environment.productcomments;
-    const { confirm } = this.state;
+    const { type } = this.state;
     return (
       <div>
         <List>
-          <ListItem button onClick={this.toggleConfirm} disabled={disabled}>
+          <ListItem button onClick={this.confirmInstall('productcomments')} disabled={disabled}>
             <ListItemAvatar>
               <Avatar src={baseUrl+'views/img/productcomments.png'} alt={"Product comments"} />
             </ListItemAvatar>
@@ -54,9 +56,9 @@ class MigrateData extends React.PureComponent<Props, State> {
               primary={"Product comments"}
               secondary={__("Migrate reviews and criteria from product comments module")} />
           </ListItem>
-          <ListItem button onClick={() => this.input && this.input.open()}>
+          <ListItem button onClick={this.confirmInstall('yotpo')}>
             <ListItemAvatar>
-              <Avatar src={baseUrl+'views/img/productcomments.png'} alt={"Product comments"} />
+              <Avatar src={baseUrl+'views/img/yotpo.svg'} alt={"Yotpo reviews"} />
             </ListItemAvatar>
             <ListItemText
               primary={"Yotpo reviews"}
@@ -67,8 +69,8 @@ class MigrateData extends React.PureComponent<Props, State> {
         <Dialog
           fullWidth={true}
           maxWidth='md'
-          open={confirm}
-          onClose={this.toggleConfirm} >
+          open={!! type}
+          onClose={this.confirmInstall(null)} >
           <DialogTitle>
             {__('Are you sure?')}
           </DialogTitle>
@@ -78,7 +80,7 @@ class MigrateData extends React.PureComponent<Props, State> {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.toggleConfirm}>
+            <Button onClick={this.confirmInstall(null)}>
               {__('Cancel')}
             </Button>
             <Button onClick={this.onMigrate} color="accent">
@@ -96,15 +98,18 @@ class MigrateData extends React.PureComponent<Props, State> {
     );
   }
 
-  toggleConfirm = () => {
-    this.setState({
-      confirm: !this.state.confirm
-    });
+  confirmInstall = (type: ?ImportType) => () => {
+    this.setState({ type });
   }
 
   onMigrate = () => {
-    this.setState({ confirm: false });
-    this.props.onMigrate('productcomments', {});
+    const type = this.state.type;
+    this.setState({ type: null });
+    if (type === 'productcomments') {
+      this.props.onMigrate('productcomments', {});
+    } else if (type === 'yotpo') {
+      this.input && this.input.open();
+    }
   }
 
   onUploadFile = (files: Array<File>) => {

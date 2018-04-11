@@ -21,6 +21,7 @@ use \Revws\Utils;
 use \Revws\Shapes;
 use \Revws\FrontApp;
 use \Revws\CsvReader;
+use \Revws\Visitor;
 
 class AdminRevwsBackendController extends ModuleAdminController {
   public $module;
@@ -144,10 +145,68 @@ class AdminRevwsBackendController extends ModuleAdminController {
         throw new Exception("CSV does not contains column $key");
       }
     }
+    $this->module->executeSqlScript('migrate-yotpo');
+    $products = $this->getProducts([]);
+    $customers = $this->getCustomersByEmail();
+    $errors = [];
+    $success = 0;
+    $cnt = 0;
+    $siteReviews = 0;
     while ($line = $reader->fetch()) {
-      // TODO
+      $cnt++;
+      $productId = $line[$index['product_id']];
+      if ($productId === 'yotpo_site_reviews') {
+        $siteReviews++;
+        continue;
+      }
+      if (! isset($products[$productId])) {
+        $errors[] = "Line $cnt: prouduct with id '$productId' not found";
+        continue;
+      }
+      $review = new RevwsReview();
+      $review->display_name = $line[$index['display_name']];
+      $review->title = $line[$index['review_title']];
+      $review->content = $line[$index['review_content']];
+      $review->date_upd = date('Y-m-d H:i:s');
+      $review->date_add = (new \DateTime($line[$index['date']]))->format('Y-m-d H:i:s');
+      $review->id_product = $productId;
+      $review->id_lang = (int)Context::getContext()->language->id;
+      $review->validated = $line[$index['published']] === 'true';
+      $review->email = $line[$index['email']];
+      $review->reply = $line[$index['comment_content']];
+      $review->deleted = 0;
+      $review->id_guest = 0;
+      $review->id_customer = 0;
+      $review->verified_buyer = 0;
+      if (isset($customers[$review->email])) {
+        $review->id_customer = (int)$customers[$review->email];
+        $review->verified_buyer = Visitor::hasCustomerPurchasedProduct($review->id_customer, $review->id_product);
+      }
+      $review->grades = [
+        '1' => (int)$line[$index['review_score']]
+      ];
+      $ok = false;
+      $err = 'Unknown error';
+      try {
+        $ok = $review->save(null, false);
+      } catch (Exception $e) {
+        $err = $e->getMessage();
+      }
+      if ($ok) {
+        $success++;
+      } else {
+        $errors[] = "Line $cnt: failed to save review: $err";
+      }
     }
-    return true;
+    return [
+      'criteria' => $this->getCriteria(),
+      'result' => [
+        'total' => (int)$cnt,
+        'siteReviews' => (int)$siteReviews,
+        'success' => (int)$success,
+        'errors' => $errors,
+      ]
+    ];
   }
 
   private function approveReview($payload) {
@@ -226,6 +285,10 @@ class AdminRevwsBackendController extends ModuleAdminController {
         'email' => $data['email'],
       ];
     }, Customer::getCustomers(true));
+  }
+
+  private function getCustomersByEmail() {
+    return Utils::mapKeyValue('email', 'id_customer', Customer::getCustomers(true));
   }
 
   private function getProductInfo($options) {

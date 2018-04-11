@@ -33,7 +33,10 @@ class Utils {
       if ($keyField === '@key') {
         $id = (int)$key;
       } else {
-        $id = (int)$fields[$keyField];
+        $id = $fields[$keyField];
+        if (is_numeric($id)) {
+          $id = (int)$id;
+        }
       }
       if ($identity) {
         $value = $fields;
