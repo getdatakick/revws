@@ -32,11 +32,12 @@ class Visitor {
   private $id;
   private $firstName='';
   private $lastName='';
+  private $pseudonym='';
   private $email='';
   private $reactions = null;
   private $reviewedProducts = null;
 
-  public function __construct($context, Settings $settings) {
+  public function __construct($context, Settings $settings, $krona) {
     $this->settings = $settings;
     if ($context->customer->isLogged()) {
       $this->type = self::CUSTOMER;
@@ -45,6 +46,7 @@ class Visitor {
       $this->email = $customer->email;
       $this->firstName = $customer->firstname;
       $this->lastName = $customer->lastname;
+      $this->pseudonym = $settings->usePseudonym() ? $krona->getPseudonym($this->id) : '';
     } else {
       $this->type = self::GUEST;
       $this->id = (int)$context->cookie->id_guest;
@@ -73,6 +75,10 @@ class Visitor {
 
   public function getLastName() {
     return $this->lastName;
+  }
+
+  public function getPseudonym() {
+    return $this->pseudonym;
   }
 
   public function getEmail() {

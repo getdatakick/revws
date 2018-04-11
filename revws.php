@@ -26,12 +26,15 @@ require_once __DIR__.'/classes/settings.php';
 require_once __DIR__.'/classes/permissions.php';
 require_once __DIR__.'/classes/visitor-permissions.php';
 require_once __DIR__.'/classes/employee-permissions.php';
+require_once __DIR__.'/classes/no-permissions.php';
 require_once __DIR__.'/classes/shapes.php';
 require_once __DIR__.'/classes/visitor.php';
 require_once __DIR__.'/classes/review-query.php';
 require_once __DIR__.'/classes/notifications.php';
 require_once __DIR__.'/classes/actor.php';
 require_once __DIR__.'/classes/front-app.php';
+require_once __DIR__.'/classes/integration/datakick.php';
+require_once __DIR__.'/classes/integration/krona.php';
 
 require_once __DIR__.'/model/criterion.php';
 require_once __DIR__.'/model/review.php';
@@ -40,11 +43,12 @@ class Revws extends Module {
   private $permissions;
   private $visitor;
   private $settings;
+  private $krona;
 
   public function __construct() {
     $this->name = 'revws';
     $this->tab = 'administration';
-    $this->version = '1.0.10';
+    $this->version = '1.0.11';
     $this->author = 'DataKick';
     $this->need_instance = 0;
     $this->bootstrap = true;
@@ -96,7 +100,8 @@ class Revws extends Module {
       'displayFooterProduct',
       'discoverReviewModule',
       'datakickExtend',
-      'actionRegisterKronaAction'
+      'actionRegisterKronaAction',
+      'displayRevwsReview'
     ]);
   }
 
@@ -233,7 +238,7 @@ class Revws extends Module {
 
   public function getVisitor() {
     if (! $this->visitor) {
-      $this->visitor = new \Revws\Visitor($this->context, $this->getSettings());
+      $this->visitor = new \Revws\Visitor($this->context, $this->getSettings(), $this->getKrona());
     }
     return $this->visitor;
   }
@@ -247,6 +252,13 @@ class Revws extends Module {
       }
     }
     return $this->permissions;
+  }
+
+  public function getKrona() {
+    if (! $this->krona) {
+      $this->krona = new \Revws\KronaIntegration();
+    }
+    return $this->krona;
   }
 
   private function assignReviewsData($productId) {
@@ -396,25 +408,44 @@ class Revws extends Module {
   }
 
   public function hookDataKickExtend($params) {
-    require_once(__DIR__.'/classes/integration/datakick.php');
     return \Revws\DatakickIntegration::integrate($params);
   }
 
   public function hookActionRegisterKronaAction($params) {
-    return [
-      'review_created' => [
-        'title'   => 'Review Created',
-        'message' => 'You received {points} Points for having a review created',
-      ],
-      'review_approved' => [
-        'title'   => 'Review Approved',
-        'message' => 'You received {points} Points for having a review approved',
-      ],
-      'review_rejected' => [
-        'title'   => 'Review Rejected',
-        'message' => 'You lost {points} Points for having a review rejected',
-      ],
-    ];
+    return $this->getKrona()->getActions();
+  }
+
+  public function hookDisplayRevwsReview($params) {
+    if (isset($params['review'])) {
+      if (is_object($params['review'])) {
+        $review = $params['review'];
+      } else if (is_numeric($params['review'])) {
+        $review = new RevwsReview((int)$params['review']);
+        if (Validate::isLoadedObject($review)) {
+          $review->loadGrades();
+        } else {
+          $review = null;
+        }
+      }
+      if ($review) {
+        $displayReply = true;
+        if (isset($params['displayReply'])) {
+          $displayReply = !!$params['displayReply'];
+        }
+        $shopName = $displayReply ? Configuration::get('PS_SHOP_NAME') : null;
+        $displayCriteria = $this->getSettings()->getDisplayCriteriaPreference();
+        if (isset($params['displayCriteria'])) {
+          $displayCriteria = $params['displayCriteria'];
+        }
+        $this->context->smarty->assign('review', $review->toJSData(new \Revws\NoPermissions()));
+        $this->context->smarty->assign('shape', $this->getShapeSettings());
+        $this->context->smarty->assign('criteria', RevwsCriterion::getCriteria($this->context->language->id));
+        $this->context->smarty->assign('displayCriteria', $displayCriteria);
+        $this->context->smarty->assign('shopName', $shopName);
+        $this->context->smarty->assign('linkToProduct', $this->context->link->getProductLink($review->id_product));
+        return $this->display(__FILE__, 'single_review.tpl');
+      }
+    }
   }
 
   public function clearCache() {

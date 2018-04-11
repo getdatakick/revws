@@ -2,6 +2,7 @@
 
 import React from 'react';
 import type { ReviewFormErrors, NameFormatType, ReviewType, CriteriaType, GradingShapeType, CustomerInfoType } from 'common/types';
+import { equals, keys } from 'ramda';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
 import SelectProduct from 'back/components/select-product';
@@ -34,10 +35,11 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { onClose, allowEmptyReview } = this.props;
+    const { onClose, allowEmptyReview, criteria } = this.props;
     const { review } = this.state;
     const errors = review ? validateReview(allowEmptyReview, review) : null;
-    const invalid = !review || hasErrors(errors);
+    const grades = review ? equals(keys(criteria), keys(review.grades)) : false;
+    const invalid = !review || !grades || hasErrors(errors);
     return (
       <Dialog
         fullWidth={true}
@@ -110,7 +112,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
       email: customerInfo.email,
       grades: {},
       reply: null,
-      displayName: formatName(customerInfo.firstName, customerInfo.lastName, this.props.nameFormat),
+      displayName: formatName(customerInfo.firstName, customerInfo.lastName, customerInfo.pseudonym, this.props.nameFormat),
       title: '',
       content: null,
       underReview: true,

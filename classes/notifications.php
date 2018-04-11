@@ -29,7 +29,6 @@ use \Validate;
 use \Mail;
 use \Exception;
 use \Logger;
-use \Hook;
 
 class Notifications {
   private static $instance;
@@ -44,10 +43,6 @@ class Notifications {
       self::$instance = new Notifications();
     }
     return self::$instance;
-  }
-
-  private function __construct() {
-    // noop
   }
 
   // close connection, flush output and continue
@@ -76,12 +71,13 @@ class Notifications {
     if ($this->queue) {
       $module->clearCache();
       $settings = $module->getSettings();
+      $krona = $module->getKrona();
       foreach ($this->queue as $workItem) {
         $type = $workItem['type'];
         $id = $workItem['id'];
         $actor = $workItem['actor'];
         try {
-          call_user_func(array($this, $type), $id, $actor, $settings);
+          call_user_func(array($this, $type), $id, $actor, $settings, $krona);
         } catch (Exception $e) {
           self::log("failed to process $type: " . $e->getMessage());
         }
@@ -89,7 +85,7 @@ class Notifications {
     }
   }
 
-  private function processReviewCreated($id, $actor, $settings) {
+  private function processReviewCreated($id, $actor, $settings, $krona) {
     if ($actor === 'visitor') {
       $review = $this->getReview($id);
 
@@ -115,7 +111,7 @@ class Notifications {
         }
       }
 
-      $this->triggerKronaAction('review_created', $review);
+      $krona->reviewCreated($review);
     }
   }
 
@@ -133,7 +129,7 @@ class Notifications {
     }
   }
 
-  private function processReviewDeleted($id, $actor, $settings) {
+  private function processReviewDeleted($id, $actor, $settings, $krona) {
     if ($actor === 'visitor') {
       // send notification to administrator
       if ($settings->emailAdminReviewDeleted()) {
@@ -144,6 +140,8 @@ class Notifications {
           self::emailError('revws-admin-review-deleted', $id, $lang, $email);
         }
       }
+
+      $krona->reviewDeleted($review);
     }
     if ($actor === 'employee') {
       $review = $this->getReview($id);
@@ -157,11 +155,11 @@ class Notifications {
           }
         }
       }
-      $this->triggerKronaAction('review_rejected', $review);
+      $krona->reviewRejected($review);
     }
   }
 
-  private function processReviewApproved($id, $actor, $settings) {
+  private function processReviewApproved($id, $actor, $settings, $krona) {
     if ($actor === 'employee') {
       $review = $this->getReview($id);
       if ($settings->emailAuthorReviewApproved()) {
@@ -174,7 +172,7 @@ class Notifications {
           }
         }
       }
-      $this->triggerKronaAction('review_approved', $review);
+      $krona->reviewApproved($review);
     }
   }
 
@@ -356,16 +354,4 @@ class Notifications {
     }
     return $str;
   }
-
-  private function triggerKronaAction($action, $review) {
-    if ($review->isCustomer()) {
-      $data = [
-        'module_name' => 'revws',
-        'action_name' => $action,
-        'id_customer' => $review->getAuthorId()
-      ];
-      Hook::exec('actionExecuteKronaAction', $data);
-    }
-  }
-
 }

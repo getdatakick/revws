@@ -23,9 +23,7 @@
 *
 *}
 {strip}
-<div class="revws-review-list">
-{foreach from=$reviewsData.reviews.reviews item=review}
-  {include file="./private_review_list_item.tpl" review=$review shopName=$reviewsData.shopName shape=$reviewsData.theme.shape criteria=$reviewsData.criteria displayCriteria=$reviewsData.preferences.displayCriteria}
-{/foreach}
+<div class="revws-review-single">
+  {include file="./private_review_list_item.tpl" review=$review shape=$shape criteria=$criteria shopName=$shopName linkToProduct=$linkToProduct microdata=false}
 </div>
 {/strip}

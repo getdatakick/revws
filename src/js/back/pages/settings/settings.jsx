@@ -381,7 +381,8 @@ class Settings extends React.PureComponent<Props, State> {
 
   renderReview = () => {
     const settings = this.state.settings;
-    const func = "function revwsFormatName(firstname, lastname) {\n  // implement your custom logic\n  return 'fuzzy '+firstname;\n}";
+    const { krona } = this.props.data.environment;
+    const func = "function revwsFormatName(firstname, lastname, pseudonym) {\n  // implement your custom logic\n  return 'fuzzy '+firstname;\n}";
     return (
       <FormGroup>
         <FormControlLabel
@@ -425,6 +426,7 @@ class Settings extends React.PureComponent<Props, State> {
             <MenuItem value='lastName'>Doe</MenuItem>
             <MenuItem value='initials'>J.D.</MenuItem>
             <MenuItem value='initialLastName'>John D.</MenuItem>
+            {krona && <MenuItem value='pseudonym'>Krona Pseudonym</MenuItem>}
             <MenuItem value='custom'>{__('Custom')}</MenuItem>
           </TextField>
         </div>

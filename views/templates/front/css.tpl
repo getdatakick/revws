@@ -166,6 +166,9 @@ a .revws-grading {
   justify-content: space-between;
 }
 
+.revws-review-box {
+  width: 100%;
+}
 
 .revws-review-title {
   color: #222;
@@ -203,6 +206,7 @@ a .revws-grading {
   width: 100%;
   padding-bottom: 20px;
   display: flex;
+  flex-wrap: wrap;
 }
 
 .revws-review-criterion {
@@ -378,7 +382,7 @@ a .revws-grading {
     flex-direction: column;
     align-items: center;
   }
-  #revws-tab-content .revws-grading-product {
+  .revws-review .revws-grading-product {
     margin: 20px 0px;
   }
 
@@ -401,10 +405,10 @@ a .revws-grading {
   .revws-review-details {
     width: 100%;
   }
-  #revws-tab-content .revws-grading-product {
+  .revws-review .revws-grading-product {
     margin: 0px 20px;
   }
-  #revws-tab-content .revws-verified-buyer-badge {
+  .revws-review .revws-verified-buyer-badge {
     margin: 0px 5px;
   }
   .revws-review-details {

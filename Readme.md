@@ -22,9 +22,9 @@ During module development I've very closely cooperated with actual [merchants](h
 
 ## Compatibility
 
+- thirtybees 1.x.x
 - prestashop 1.6.x.x
-- thirtybees
-- prestashop 1.7.x.x is NOT supported at the moment
+- prestashop 1.7.x.x
 
 ## Screenshots
 

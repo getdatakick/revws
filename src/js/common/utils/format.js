@@ -15,19 +15,23 @@ const getInitial = (name: string) => {
   return name ? firstCharUpperCase(name) + '.' : '';
 };
 
-const customFormat = (firstName: string, lastName: string, functionName: string) => {
+const customFormat = (firstName: string, lastName: string, pseudonym: string, functionName: string) => {
   if (functionName && has(functionName, window) && isFunction(window[functionName])) {
-    return window[functionName](firstName, lastName);
+    return window[functionName](firstName, lastName, pseudonym);
   }
   console.error('Custom format function not found. Please create javascript function "'+functionName+'"');
   return (firstName +' '+lastName).trim();
 };
 
-export const formatName = (firstName: ?string, lastName: ?string, nameFormat: NameFormatType): string => {
+export const formatName = (firstName: ?string, lastName: ?string, pseudonym: ?string, nameFormat: NameFormatType): string => {
   firstName = (firstName || '').trim();
   lastName = (lastName || '').trim();
+  pseudonym = (pseudonym || '').trim();
   if (nameFormat === 'custom') {
-    return customFormat(firstName, lastName, 'revwsFormatName');
+    return customFormat(firstName, lastName, pseudonym, 'revwsFormatName');
+  }
+  if (nameFormat === 'pseudonym' && pseudonym) {
+    return pseudonym;
   }
   if (firstName || lastName) {
     switch (nameFormat) {

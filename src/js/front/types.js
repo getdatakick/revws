@@ -20,6 +20,7 @@ export type SettingsType = {
     id: number,
     firstName: ?string,
     lastName: ?string,
+    pseudonym: ?string,
     nameFormat: NameFormatType,
     email: string,
   },

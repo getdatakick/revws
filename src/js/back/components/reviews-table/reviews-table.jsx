@@ -104,6 +104,7 @@ class EnhancedTable extends React.Component<Props> {
       onAuthorClick, onReviewClick
     } = this.props;
     const columnsData = [
+      { id: 'id', disablePadding: false, label: __('ID') },
       { id: 'product', disablePadding: false, label: __('Product') },
       { id: 'author', disablePadding: true, label: __('Author') },
       { id: 'grade', disablePadding: false, label: __('Ratings') },
@@ -136,6 +137,9 @@ class EnhancedTable extends React.Component<Props> {
                     className={classnames(classes.row, this.getReviewRowClass(review))}
                     onClick={e => onReviewClick(id)}
                     hover>
+                    <TableCell padding="dense" style={{width: 30}}>
+                      { id }
+                    </TableCell>
                     <TableCell padding="dense">
                       { product }
                     </TableCell>
