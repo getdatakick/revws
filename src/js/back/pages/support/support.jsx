@@ -21,9 +21,9 @@ type Props = {
 
 const github='https://github.com/getdatakick/revws';
 const forum='https://forum.thirtybees.com/topic/1422/free-module-revws-product-reviews';
-const datakick = 'https://www.getdatakick.com/?utm_campaign=revws&utm_medium=web?utm_source=support';
-const contact = 'https://www.getdatakick.com/contact/?utm_campaign=revws&utm_medium=web?utm_source=support';
-const download = 'https://www.getdatakick.com/extras/revws-product-reviews/?utm_campaign=revws&utm_medium=web?utm_source=support';
+const datakick = 'https://www.getdatakick.com/?utm_campaign=revws&utm_medium=web&utm_source=support';
+const contact = 'https://www.getdatakick.com/contact/?utm_campaign=revws&utm_medium=web&utm_source=support';
+const download = 'https://www.getdatakick.com/extras/revws-product-reviews/?utm_campaign=revws&utm_medium=web&utm_source=support';
 const sendreviewrequest = 'https://forum.thirtybees.com/topic/1510/free-module-send-review-request';
 const krona = 'https://forum.thirtybees.com/topic/1505/free-module-loyalty-points-genzo_krona';
 const originThread = 'https://forum.thirtybees.com/topic/1235/i-m-going-to-create-a-free-module';
