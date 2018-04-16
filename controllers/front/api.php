@@ -18,6 +18,7 @@
 */
 
 use \Revws\Notifications;
+use \Revws\CSRFToken;
 
 class RevwsApiModuleFrontController extends ModuleFrontController {
   public $module;
@@ -40,6 +41,7 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     $error = null;
     $result = null;
     try {
+      $this->module->csrf()->validate();
       $result = $this->dispatchCommand(Tools::getValue('cmd'));
     } catch (Exception $e) {
       $error = $e->getMessage();
@@ -77,6 +79,10 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     if ($id > 0) {
       throw new Exception("Invalid request");
     }
+    if ($productId === 0) {
+      throw new Exception("Invalid product id");
+    }
+    $product = $this->getProductById($productId);
     $review = $this->getReviewPayload();
     $review->setValidated(! $settings->validateNewReviews());
     if (! $review->save()) {
@@ -169,6 +175,14 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
       throw new Exception('Review not found');
     }
     return $review;
+  }
+
+  private function getProductById($id) {
+    $product = new Product($id);
+    if (! Validate::isLoadedObject($product)) {
+      throw new Exception('Product not found');
+    }
+    return $product;
   }
 
   private function returnReview($id){

@@ -22,8 +22,10 @@ export const getSettings = (input: any): SettingsType => {
   const criteria = asObject(get('criteria', isObject, input));
   const canCreate = get('canCreate', isBoolean, input);
   const api = get('api', isString, input);
+  const csrf = get('csrf', isString, input);
 
   return {
+    csrf,
     shopName,
     api,
     loginUrl,

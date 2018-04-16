@@ -3,6 +3,7 @@
 import type { CriteriaType, DisplayCriteriaType, GradingShapeType, NameFormatType, ProductInfoType } from 'common/types';
 
 export type SettingsType = {
+  csrf: string,
   shopName: string,
   api: string,
   criteria: CriteriaType,

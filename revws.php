@@ -19,6 +19,7 @@
 define('REVWS_MODULE_DIR', dirname(__FILE__));
 
 require_once __DIR__.'/app-translation.php';
+require_once __DIR__.'/classes/csrf.php';
 require_once __DIR__.'/classes/csv-reader.php';
 require_once __DIR__.'/classes/color.php';
 require_once __DIR__.'/classes/utils.php';
@@ -44,6 +45,7 @@ class Revws extends Module {
   private $visitor;
   private $settings;
   private $krona;
+  private $csrfToken;
 
   public function __construct() {
     $this->name = 'revws';
@@ -309,6 +311,7 @@ class Revws extends Module {
   }
 
   public function hookHeader() {
+    $this->csrf();
     $this->includeCommonStyles($this->context->controller);
   }
 
@@ -486,6 +489,13 @@ class Revws extends Module {
     return $this->context->link->getPageLink('authentication', true, null, [
       'back' => $back
     ]);
+  }
+
+  public function csrf() {
+    if (! $this->csrfToken) {
+      $this->csrfToken = new \Revws\CSRFToken($this->context->cookie, $this->getSettings());
+    }
+    return $this->csrfToken;
   }
 
   public function getCSSFile() {

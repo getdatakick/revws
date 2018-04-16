@@ -43,6 +43,9 @@ export default (settings: SettingsType) => {
           action: 'command',
           cmd: cmd,
         }),
+        headers: {
+          'X-REVWS-TOKEN': settings.csrf,
+        },
         success,
         error
       });
