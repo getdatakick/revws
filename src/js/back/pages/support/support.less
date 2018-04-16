@@ -1,0 +1,47 @@
+
+
+.root {
+  font-size: 1.2em;
+}
+
+.link {
+  margin-bottom: 0.5em;
+  strong {
+    margin-right: 10px;
+  }
+}
+
+.inline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 50px;
+  svg {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
+}
+
+.note {
+  font-size: 1em;
+  color: #999;
+  margin-bottom: 1.5em;
+}
+
+.accent {
+  svg {
+    fill: #ff4081;
+  }
+}
+
+.link, .note {
+  a {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  text-decoration: none;
+  color: #3f51b5;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+}

@@ -104,8 +104,26 @@ export type UploadYotpoCsvAction = {
   file: File
 }
 
+export type CheckModuleVersionAction = {
+  type: 'CHECK_MODULE_VERSION'
+}
+
+export type CheckModuleVersionFailedAction = {
+  type: 'CHECK_MODULE_VERSION_FAILED'
+}
+
+
+export type SetLatestVersionAction = {
+  type: 'SET_LATEST_VERSION',
+  version: string,
+  ts: number
+};
+
 
 export type Action = (
+  CheckModuleVersionAction |
+  CheckModuleVersionFailedAction |
+  SetLatestVersionAction |
   GoToAction |
   LoadDataAction |
   SetDataAction |

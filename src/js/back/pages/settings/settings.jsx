@@ -4,7 +4,7 @@ import type { SettingsType, GlobalDataType } from 'back/types';
 import type { CriteriaType } from 'common/types';
 import ScrollSpy from 'react-scrollspy';
 import { prop, toPairs, path, last, merge, range, map, curry, equals, assocPath } from 'ramda';
-import Section from './section';
+import Section from 'back/components/section/section';
 import ShapeSelect from './shape-select';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
@@ -123,6 +123,11 @@ class Settings extends React.PureComponent<Props, State> {
         label: __('Migrate data'),
         subheader: __('Import review data and criteria settings from other modules'),
         content: this.renderMigrateData()
+      },
+      {
+        key: 'module',
+        label: __('Module update'),
+        content: this.renderModuleSettings()
       }
     ];
     const items = map(sectionKey, sections);
@@ -226,7 +231,7 @@ class Settings extends React.PureComponent<Props, State> {
           </div>
         </div>
 
-        <h2 className={styles.margin}>{__('Preview')}</h2>
+        <h3 className={styles.margin}>{__('Preview')}</h3>
         <Preview
           colors={colors}
           shopName={shopName}
@@ -560,7 +565,6 @@ class Settings extends React.PureComponent<Props, State> {
   renderProductComparison = () => {
     return (
       <FormGroup>
-        <h3>{__('Product comparison')}</h3>
         <FormControlLabel
           control={this.renderSwitch(['display', 'productComparison', 'show'])}
           label={__("Show average ratings on product comparison page")}
@@ -568,6 +572,22 @@ class Settings extends React.PureComponent<Props, State> {
       </FormGroup>
     );
   }
+
+  renderModuleSettings = () => {
+    return (
+      <FormGroup>
+        <FormControlLabel
+          control={this.renderSwitch(['module', 'checkModuleVersion'])}
+          label={__("Automatically check for new version")}
+        />
+        <div className={styles.note2}>
+          Please not that revws module <strong>will NOT be updated automatically</strong> to the new version.
+          You will only be notified about new version
+        </div>
+      </FormGroup>
+    );
+  }
+
 
   set = curry((path: Array<string>, value: any) => {
     const settings = assocPath(path, value, this.state.settings);

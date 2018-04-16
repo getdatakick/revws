@@ -3,6 +3,9 @@ import type { NameFormatType, LangString, LanguagesType, GradingShapeType, Shape
 export type { RoutingState, GoTo } from 'back/routing';
 
 export type SettingsType = {
+  module: {
+    checkModuleVersion: boolean
+  },
   theme: {
     shape: string,
     colors: ShapeColorsType,
@@ -79,6 +82,7 @@ export type EnvironmentType = {
 }
 
 export type GlobalDataType = {
+  version: string,
   api: string,
   shopName: string,
   baseUrl: string,
@@ -87,6 +91,8 @@ export type GlobalDataType = {
   },
   language: number,
   languages: LanguagesType,
+  platform: string,
+  platformVersion: string,
   environment: EnvironmentType
 }
 
@@ -122,3 +128,9 @@ export type Load = {
   record: string,
   options: LoadOptions
 };
+
+
+export type VersionCheck = {
+  version: ?string,
+  ts: ?number
+}

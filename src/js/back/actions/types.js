@@ -1,6 +1,10 @@
 // @flow
 
 export default {
+  checkModuleVersion: 'CHECK_MODULE_VERSION',
+  checkModuleVersionFailed: 'CHECK_MODULE_VERSION_FAILED',
+  setLatestVersion: 'SET_LATEST_VERSION',
+
   goTo: 'GO_TO',
 
   loadData: 'LOAD_DATA',

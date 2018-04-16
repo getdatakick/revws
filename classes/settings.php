@@ -28,6 +28,7 @@ class Settings {
   const SALT = 'REVWS_SALT';
   const SETTINGS = 'REVWS_SETTINGS';
   const VERSION = 'REVWS_VERSION';
+  const CHECK_VERSION = 'REVWS_CHECK_VERSION';
 
   private $data;
 
@@ -44,6 +45,9 @@ class Settings {
 
   private static function getDefaultSettings() {
     return [
+      'module' => [
+        'checkModuleVersion' => true
+      ],
       'theme' => [
         'shape' => Shapes::getDefaultShape(),
         'shapeSize' => [
@@ -126,7 +130,7 @@ class Settings {
   }
 
   public function reset() {
-    return $this->remove && $this->init();
+    return $this->remove() && $this->init();
   }
 
   public function getAppUrl($context, $module) {
@@ -327,6 +331,21 @@ class Settings {
     return $this->toDisplayCriteria($ret);
   }
 
+  public function getCheckModuleVersion() {
+    $ret = Configuration::get(self::CHECK_VERSION);
+    if ($ret) {
+      return json_decode($ret, true);
+    }
+    return [ 'ts' => null, 'version' => null ];
+  }
+
+  public function setCheckModuleVersion($version, $ts) {
+    Configuration::updateValue(self::CHECK_VERSION, json_encode([
+      'ts' => $ts,
+      'version' => $version
+    ]));
+  }
+
   private function toBool($val) {
     return !!$val;
   }
@@ -383,7 +402,9 @@ class Settings {
 
   public function remove() {
     $this->data = null;
-    return Configuration::deleteByName(self::SETTINGS);
+    Configuration::deleteByName(self::CHECK_VERSION);
+    Configuration::deleteByName(self::SETTINGS);
+    return true;
   }
 
   public function get($path=null) {

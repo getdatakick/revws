@@ -4,6 +4,9 @@ import React from 'react';
 import { equals, memoize } from 'ramda';
 import type { SettingsPage } from './settings';
 import { settingsRoute } from './settings';
+import type { SupportPage } from './support';
+import { supportRoute } from './support';
+export { supportPage } from './support';
 import type { ModerationPage } from './moderation';
 import { moderationRoute } from './moderation';
 export { moderationPage } from './moderation';
@@ -14,6 +17,7 @@ export { reviewsPage } from './reviews';
 
 export type RoutingState = (
   SettingsPage |
+  SupportPage |
   ModerationPage |
   ReviewsPage
 );
@@ -22,6 +26,7 @@ export type GoTo = (RoutingState) => void;
 
 const routes = {
   settings: settingsRoute,
+  support: supportRoute,
   moderation: moderationRoute,
   reviews: reviewsRoute,
 };

@@ -5,6 +5,7 @@ import Snackbar from 'back/pages/snackbar';
 import styles from './app.less';
 import AppTheme from 'common/components/theme/theme';
 import { getRoutingState } from 'back/selectors/routing-state';
+import { isNewVersionAvailable } from 'back/selectors/version';
 import { render } from 'back/routing';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
@@ -13,6 +14,7 @@ import Navigation from 'back/components/navigation/navigation';
 
 type Props = {
   routingState: RoutingState,
+  newVersionAvailable: boolean,
   goTo: GoTo,
   data: GlobalDataType
 };
@@ -21,12 +23,12 @@ class BackApp extends React.PureComponent<Props> {
   static displayName = 'BackApp';
 
   render() {
-    const { data, routingState, goTo } = this.props;
+    const { data, newVersionAvailable, routingState, goTo } = this.props;
     const snackbarPosition = { vertical: 'bottom', horizontal: 'right' };
     return (
       <AppTheme htmlFontSize={16}>
         <div className={styles.app}>
-          { this.renderNavigation(routingState) }
+          { this.renderNavigation(routingState, newVersionAvailable) }
           { render(routingState, { ...routingState, data, goTo }) }
           <Snackbar anchorOrigin={snackbarPosition} />
         </div>
@@ -34,10 +36,11 @@ class BackApp extends React.PureComponent<Props> {
     );
   }
 
-  renderNavigation = (routingState: RoutingState) => {
+  renderNavigation = (routingState: RoutingState, newVersionAvailable: boolean) => {
     if (routingState.showNavigation) {
       return (
         <Navigation
+          newVersionAvailable={newVersionAvailable}
           selected={routingState.type}
           goTo={this.props.goTo}
         />
@@ -47,7 +50,8 @@ class BackApp extends React.PureComponent<Props> {
 }
 
 const mapStateToProps = mapObject({
-  routingState: getRoutingState
+  routingState: getRoutingState,
+  newVersionAvailable: isNewVersionAvailable
 });
 
 const actions = { goTo };

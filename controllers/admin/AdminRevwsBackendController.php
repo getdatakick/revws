@@ -51,18 +51,22 @@ class AdminRevwsBackendController extends ModuleAdminController {
       'title' => $this->l('Product reviews'),
       'revws' => [
         'data' => [
+          'version' => $this->module->version,
           'api' => $this->context->link->getAdminLink('AdminRevwsBackend'),
           'shopName' => Configuration::get('PS_SHOP_NAME'),
           'baseUrl' => $this->getPath(''),
           'shapes' => Shapes::getAvailableShapes(),
           'languages' => $languages,
           'language' => $lang,
+          'platform' => (defined('_TB_VERSION_') ? 'thirtybees' : 'prestashop'),
+          'platformVersion' => _PS_VERSION_,
           'environment' => [
             'mailstream' => Module::isInstalled('mailstream'),
             'krona' => $this->module->getKrona()->isInstalled(),
             'productcomments' => Module::isInstalled('productcomments')
-          ]
+          ],
         ],
+        'versionCheck' => $settings->getCheckModuleVersion(),
         'criteria' => $this->getCriteria(),
         'settings' => $settings->get(),
         'translations' => $this->module->getBackTranslations(),
@@ -127,6 +131,8 @@ class AdminRevwsBackendController extends ModuleAdminController {
         return $this->migrateData($payload);
       case 'importYotpo':
         return $this->importYotpo();
+      case 'setLatestVersion':
+        return $this->setLatestVersion($payload);
       default:
         throw new Exception("Unknown command $cmd");
     }
@@ -334,6 +340,17 @@ class AdminRevwsBackendController extends ModuleAdminController {
       return true;
     }
     return false;
+  }
+
+  private function setLatestVersion($data) {
+    if (! isset($data['version'])) {
+      throw new Exception('Version not set');
+    }
+    if (! isset($data['ts'])) {
+      throw new Exception('Timestamp not set');
+    }
+    $this->module->getSettings()->setCheckModuleVersion($data['version'], $data['ts']);
+    return true;
   }
 
   private function migrateData($data) {

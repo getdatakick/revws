@@ -4,6 +4,22 @@ import { isEmpty, isObject, notNil, isString, isNumber } from 'common/utils/ramd
 import { curry, pipe, defaultTo, values, map, reduce, or } from 'ramda';
 import validator from 'validator';
 
+export const validateVersion = (version: ?string): ?string => {
+  if (! version) {
+    return "Invalid version";
+  }
+  const arr = version.split('.');
+  if (arr.length != 3) {
+    return "Invalid version";
+  }
+  for (var i = 0; i < arr.length; i++) {
+    if (validateIsNumber(arr[i])) {
+      return "Invalid version";
+    }
+  }
+  return null;
+};
+
 export const validateReview = (allowEmptyReviews: boolean, review: ReviewType): ReviewFormErrors => ({
   email: validateReviewEmail(review.email),
   displayName: validateDisplayName(review.displayName),

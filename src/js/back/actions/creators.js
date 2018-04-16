@@ -4,6 +4,9 @@ import type { Load, SettingsType, FullCriterion, FullCriteria } from 'back/types
 import type { ReviewType } from 'common/types';
 import type { RoutingState } from 'back/routing';
 import type {
+  CheckModuleVersionAction,
+  CheckModuleVersionFailedAction,
+  SetLatestVersionAction,
   GoToAction,
   SetSizeAction,
   SetSnackbarAction,
@@ -26,6 +29,9 @@ import type {
 } from './index';
 import Types from './types';
 
+export const checkModuleVersion = (): CheckModuleVersionAction => ({ type: Types.checkModuleVersion });
+export const checkModuleVersionFailed = (): CheckModuleVersionFailedAction => ({ type: Types.checkModuleVersionFailed });
+export const setLatestVersion = (version: string, ts: number): SetLatestVersionAction => ({ type: Types.setLatestVersion, version, ts });
 export const goTo = (routingState: RoutingState, updateHistory?:boolean = true): GoToAction => ({ type: Types.goTo, routingState, updateHistory });
 export const setSnackbar = (message: ?string): SetSnackbarAction => ({ type: Types.setSnackbar, message });
 export const setSize = (width: number, height: number): SetSizeAction => ({ type: Types.setSize, width, height });
