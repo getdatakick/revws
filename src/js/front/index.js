@@ -54,6 +54,14 @@ const startRevws = (init: any) => {
     }
   };
 
+
+  if (init.entityType === 'product' && init.canCreate && window.location.href.indexOf('post_review') > -1) {
+    store.dispatch({
+      type: 'TRIGGER_CREATE_REVIEW',
+      productId: init.entityId
+    });
+  }
+
   const initActions = init.initActions;
   if (initActions && isArray(initActions)) {
     forEach(action => {
