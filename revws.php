@@ -238,7 +238,7 @@ class Revws extends Module {
       $this->executeSqlScript('update-1_0_9', false);
     }
     if (version_compare($version, '1.0.13', '<')) {
-      if (is_callable($this, 'installControllers')) {
+      if (is_callable(array($this, 'installControllers'))) {
         $this->installControllers();
       }
     }
