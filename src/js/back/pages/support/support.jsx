@@ -115,7 +115,7 @@ class SupportPage extends React.PureComponent<Props> {
   )
 
   renderResult = () => {
-    const { notes, latestVersion, lastCheck, newVersionAvailable } = this.props;
+    const { notes, latestVersion, lastCheck, newVersionAvailable, data } = this.props;
     if (! latestVersion) {
       return (
         <div className={classnames(styles.note, styles.inline)}>
@@ -150,7 +150,10 @@ class SupportPage extends React.PureComponent<Props> {
     return (
       <div className={classnames(styles.note, styles.inline)}>
         <UpToDateIcon />
-        { __('Revws module is up-to-date. Last check %s', last) }
+        <span dangerouslySetInnerHTML={{
+          __html:  __('You have latest version <strong>%s</strong> of this module. Last check %s', data.version, last)
+        }} />
+
       </div>
     );
   }
