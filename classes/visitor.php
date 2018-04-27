@@ -49,6 +49,9 @@ class Visitor {
       $this->pseudonym = $settings->usePseudonym() ? $krona->getPseudonym($this->id) : '';
     } else {
       $this->type = self::GUEST;
+      if (! (int)$context->cookie->id_guest) {
+        $context->cookie->makeNewLog();
+      }
       $this->id = (int)$context->cookie->id_guest;
     }
   }
