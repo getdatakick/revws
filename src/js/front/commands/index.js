@@ -42,10 +42,8 @@ export default (settings: SettingsType) => {
         data: merge(payload, {
           action: 'command',
           cmd: cmd,
+          revwsToken: settings.csrf
         }),
-        headers: {
-          'X-REVWS-TOKEN': settings.csrf,
-        },
         success,
         error
       });

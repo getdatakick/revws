@@ -41,7 +41,7 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     $error = null;
     $result = null;
     try {
-      $this->module->csrf()->validate();
+      $this->module->csrf()->validate(Tools::getValue('revwsToken'));
       $result = $this->dispatchCommand(Tools::getValue('cmd'));
     } catch (Exception $e) {
       $error = $e->getMessage();
