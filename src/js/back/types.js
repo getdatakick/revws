@@ -83,6 +83,7 @@ export type EnvironmentType = {
 
 export type GlobalDataType = {
   version: string,
+  versionUrl: string,
   api: string,
   shopName: string,
   baseUrl: string,

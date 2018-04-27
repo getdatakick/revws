@@ -3,20 +3,23 @@ import type { Api } from 'common/types';
 import type { GlobalDataType } from 'back/types';
 import type { CheckModuleVersionAction } from 'back/actions';
 import { setLatestVersion, setSnackbar, checkModuleVersionFailed } from 'back/actions/creators';
-import { validateVersion } from 'common/utils/validation';
+import { validateVersion, isUrl } from 'common/utils/validation';
 import { versionNum } from 'common/utils/version';
 
 export const checkModuleVersion = (data: GlobalDataType) => (action: CheckModuleVersionAction, store: any, api: Api) => {
   const module = 'revws';
-  const { version, platform, platformVersion } = data;
+  const { versionUrl, version, platform, platformVersion } = data;
   const currentVersion = data.version;
+  if (! isUrl(versionUrl)) {
+    console.info('version check url not provided');
+    return;
+  }
   const error = err => {
     store.dispatch(checkModuleVersionFailed());
     console.info('Failed to check new version: ', err);
   };
-  const url = 'https://version.getdatakick.com/version';
   window.$.ajax({
-    url,
+    url: versionUrl,
     type: 'POST',
     dataType: 'json',
     data: JSON.stringify({ module, version: version, platform, platformVersion }),

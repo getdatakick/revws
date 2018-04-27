@@ -65,3 +65,13 @@ export const validateIsNumber = (input: any): ?string => {
   }
   return __("Invalid number");
 };
+
+export const isUrl = (input: string) => {
+  if (! input) {
+    return false;
+  }
+  if (! isString(input)) {
+    return false;
+  }
+  return validator.isURL(input);
+};

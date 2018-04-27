@@ -25,6 +25,7 @@ use \Exception;
 class Settings {
   const APP_URL = 'REVWS_APP_URL';
   const BACKEND_APP_URL = 'REVWS_BACK_APP_URL';
+  const VERSION_URL = 'REVWS_VERSION_URL';
   const SALT = 'REVWS_SALT';
   const SETTINGS = 'REVWS_SETTINGS';
   const VERSION = 'REVWS_VERSION';
@@ -147,6 +148,11 @@ class Settings {
       $url = $module->getPath('views/js/back_app.js');
     }
     return $url . "?CACHE_CONTROL";
+  }
+
+  public function getVersionUrl() {
+    $url = Configuration::get(self::VERSION_URL);
+    return $url ? $url : 'https://version.getdatakick.com/version';
   }
 
   public function getSalt() {
