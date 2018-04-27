@@ -7,7 +7,7 @@ import { getSettings } from 'back/selectors/settings';
 import { getFullCriteria } from 'back/selectors/criteria';
 import { saveReview } from 'back/actions/creators';
 import Reviews from './reviews';
-import { mergeCriteria } from 'back/utils';
+import { mergeCriteria } from 'back/utils/criteria';
 
 const mapStateToProps = mapObject({
   settings: getSettings,

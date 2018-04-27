@@ -7,6 +7,7 @@ type State = {
   version: string,
   latestVersion: ?string,
   lastCheck: ?number,
+  notes: ?string,
   checking: boolean
 }
 
@@ -15,6 +16,7 @@ const initialState = (version: string, versionCheck: VersionCheck): State => {
     version,
     latestVersion: versionCheck.version,
     lastCheck: versionCheck.ts,
+    notes: versionCheck.notes,
     checking: false
   };
 };
@@ -28,6 +30,7 @@ export default (version: string, versionCheck: VersionCheck) => {
         ...state,
         latestVersion: action.version,
         lastCheck: action.ts,
+        notes: action.notes,
         checking: false
       };
     }

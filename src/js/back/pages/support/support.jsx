@@ -2,6 +2,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import Section from 'back/components/section/section';
+import Markdown from 'back/components/markdown/markdown';
 import Button from 'material-ui/Button';
 import styles from './support.less';
 import type { GlobalDataType } from 'back/types';
@@ -14,6 +15,7 @@ type Props = {
   data: GlobalDataType,
   latestVersion: string,
   lastCheck: ?number,
+  notes: ?string,
   newVersionAvailable: boolean,
   checking: boolean,
   checkUpdate: ()=>void,
@@ -113,7 +115,7 @@ class SupportPage extends React.PureComponent<Props> {
   )
 
   renderResult = () => {
-    const { latestVersion, lastCheck, newVersionAvailable } = this.props;
+    const { notes, latestVersion, lastCheck, newVersionAvailable } = this.props;
     if (! latestVersion) {
       return (
         <div className={classnames(styles.note, styles.inline)}>
@@ -128,14 +130,22 @@ class SupportPage extends React.PureComponent<Props> {
     const last = moment(lastCheck || 0).fromNow();
 
     if (newVersionAvailable) {
-      return (
-        <div className={classnames(styles.note, styles.inline, styles.accent)}>
+      const ret = [
+        <div key='info' className={classnames(styles.note, styles.inline, styles.accent)}>
           <NewVersionIcon />
           <span dangerouslySetInnerHTML={{
             __html:  __('New version <strong>%s</strong> is available. Last check %s', latestVersion, last)
           }} />
         </div>
-      );
+      ];
+      if (notes) {
+        ret.push(
+          <div key='notes'>
+            <h3>{__('Changes in new version:')}</h3>
+            <Markdown className={styles.notes} content={notes} />
+          </div>);
+      }
+      return ret;
     }
     return (
       <div className={classnames(styles.note, styles.inline)}>

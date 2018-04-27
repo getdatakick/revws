@@ -7,7 +7,7 @@ import { getWidth } from 'back/selectors/ui';
 import { getSettings } from 'back/selectors/settings';
 import { setSettings } from 'back/actions/creators';
 import { getFullCriteria } from 'back/selectors/criteria';
-import { mergeCriteria } from 'back/utils';
+import { mergeCriteria } from 'back/utils/criteria';
 import Settings from './settings';
 
 const mapStateToProps = mapObject({

@@ -14,7 +14,8 @@ export const checkModuleVersion = (data: GlobalDataType) => (action: CheckModule
     store.dispatch(checkModuleVersionFailed());
     console.info('Failed to check new version: ', err);
   };
-  const url = 'https://version.getdatakick.com/version';
+  console.log('TODO');
+  const url = 'http://api.getdatakick.local/version';//'https://version.getdatakick.com/version';
   window.$.ajax({
     url,
     type: 'POST',
@@ -23,9 +24,10 @@ export const checkModuleVersion = (data: GlobalDataType) => (action: CheckModule
     success: (data) => {
       if (data && data.data && data.data.version) {
         const ver = data.data.version;
+        const notes = data.data.notes || '';
         const err = validateVersion(ver);
         if (! err) {
-          store.dispatch(setLatestVersion(ver, (new Date()).getTime()));
+          store.dispatch(setLatestVersion(ver, (new Date()).getTime(), notes));
           if (versionNum(ver) > versionNum(currentVersion)) {
             store.dispatch(setSnackbar(__('New module version is available')));
           }

@@ -116,7 +116,8 @@ export type CheckModuleVersionFailedAction = {
 export type SetLatestVersionAction = {
   type: 'SET_LATEST_VERSION',
   version: string,
-  ts: number
+  ts: number,
+  notes: string
 };
 
 

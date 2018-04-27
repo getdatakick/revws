@@ -349,7 +349,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
     if (! isset($data['ts'])) {
       throw new Exception('Timestamp not set');
     }
-    $this->module->getSettings()->setCheckModuleVersion($data['version'], $data['ts']);
+    $this->module->getSettings()->setCheckModuleVersion($data['version'], $data['ts'], $data['notes']);
     return true;
   }
 

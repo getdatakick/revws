@@ -8,5 +8,6 @@ const get = (key: string) => path(['version', key]);
 export const getLatestVersion = get('latestVersion');
 export const getLastCheck = get('lastCheck');
 export const getVersion = get('version');
+export const getNotes = get('notes');
 export const checkingVersion = get('checking');
 export const isNewVersionAvailable = (state: any) => versionNum(getLatestVersion(state)) > versionNum(getVersion(state));

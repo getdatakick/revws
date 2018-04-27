@@ -6,7 +6,7 @@ import { mapObject } from 'common/utils/redux';
 import { getSettings } from 'back/selectors/settings';
 import { getFullCriteria } from 'back/selectors/criteria';
 import Moderation from './moderation';
-import { mergeCriteria } from 'back/utils';
+import { mergeCriteria } from 'back/utils/criteria';
 
 const mapStateToProps = mapObject({
   settings: getSettings,
