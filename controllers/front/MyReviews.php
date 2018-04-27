@@ -24,10 +24,10 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
   public $module;
 
   public function __construct() {
-    parent::__construct();
-    $this->context = Context::getContext();
     $this->display_column_right = false;
     $this->display_column_left = false;
+    parent::__construct();
+    $this->context = Context::getContext();
   }
 
   public function initContent() {

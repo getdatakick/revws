@@ -50,7 +50,7 @@ class Revws extends Module {
   public function __construct() {
     $this->name = 'revws';
     $this->tab = 'administration';
-    $this->version = '1.0.12';
+    $this->version = '1.0.13';
     $this->author = 'DataKick';
     $this->need_instance = 0;
     $this->bootstrap = true;
@@ -59,6 +59,7 @@ class Revws extends Module {
     $this->description = $this->l('Product Reviews module');
     $this->confirmUninstall = $this->l('Are you sure you want to uninstall the module? All its data will be lost!');
     $this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.999');
+		$this->controllers = array('myreviews');
   }
 
   public function install($createTables=true) {
@@ -235,6 +236,9 @@ class Revws extends Module {
   private function migrate($version) {
     if (version_compare($version, '1.0.9', '<')) {
       $this->executeSqlScript('update-1_0_9', false);
+    }
+    if (version_compare($version, '1.0.13', '<')) {
+      $this->installControllers();
     }
   }
 
