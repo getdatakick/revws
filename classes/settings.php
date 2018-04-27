@@ -163,6 +163,7 @@ class Settings {
   }
 
   public function setVersion($version) {
+    Configuration::deleteByName(self::CHECK_VERSION);
     Configuration::updateValue(self::VERSION, $version);
   }
 
