@@ -59,7 +59,7 @@ class Revws extends Module {
     $this->description = $this->l('Product Reviews module');
     $this->confirmUninstall = $this->l('Are you sure you want to uninstall the module? All its data will be lost!');
     $this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.999');
-		$this->controllers = array('myreviews');
+		$this->controllers = array('MyReviews');
   }
 
   public function install($createTables=true) {
