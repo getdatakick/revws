@@ -356,7 +356,7 @@ class Revws extends Module {
 
   public function hookDisplayProductListReviews($params) {
     if ($this->getSettings()->showOnProductListing()) {
-      $productId = (int) $params['product']['id_product'];
+      $productId = self::getProductId($params['product']);
       list($grade, $count) = RevwsReview::getAverageGrade($productId);
       $this->context->smarty->assign('productId', $productId);
       $this->context->smarty->assign('grade', $grade);
@@ -477,11 +477,17 @@ class Revws extends Module {
   }
 
   private function getProductReviewsLink($product) {
+    $product = (int)$product;
+    if (! $product) {
+      return '';
+    }
     $link = $this->context->link->getProductLink($product);
-    if (strpos($link, '?') === false) {
-      $link .= '?show=reviews';
-    } else {
-      $link .= '&show=reviews';
+    if ($link) {
+      if (strpos($link, '?') === false) {
+        $link .= '?show=reviews';
+      } else {
+        $link .= '&show=reviews';
+      }
     }
     return $link;
   }
@@ -561,6 +567,19 @@ class Revws extends Module {
       @mkdir($dir);
     }
     @file_put_contents($filename, $css);
+  }
+
+  private static function getProductId($product) {
+    if (is_array($product) && isset($product['id_product'])) {
+      return (int)$product['id_product'];
+    }
+    if (is_object($product) && property_exists($product, 'id_product')) {
+      return (int)$product->id_product;
+    }
+    if (is_int($product)) {
+      return (int)$product;
+    }
+    return null;
   }
 
 }

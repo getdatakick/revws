@@ -103,6 +103,7 @@ class FrontApp {
       ],
       'api' => $context->link->getModuleLink('revws', 'api', [], true),
       'appJsUrl' => $set->getAppUrl($context, $this->module),
+      'version' => $this->module->version,
       'loginUrl' => $loginUrl,
       'theme' => [
         'shape' => $this->getShapeSettings(),
