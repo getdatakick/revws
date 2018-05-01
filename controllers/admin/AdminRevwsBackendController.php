@@ -395,6 +395,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
     $id = (int)$review->id;
     $records = RevwsReview::findReviews([
       'id' => $id,
+      'allLanguages' => true,
       'productInfo' => true,
       'customerInfo' => true,
     ]);

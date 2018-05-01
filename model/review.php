@@ -160,9 +160,9 @@ class RevwsReview extends ObjectModel {
     return $conn->delete('revws_review_reaction', "id_review = $id ");
   }
 
-  public static function findReviews($options, $lang=null, $shop=null) {
+  public static function findReviews($options) {
     $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
-    $query = new ReviewQuery($options, $lang, $shop);
+    $query = new ReviewQuery($options);
 
     // load reviews
     $reviews = [];

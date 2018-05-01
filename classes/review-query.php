@@ -22,13 +22,9 @@ use \Context;
 
 class ReviewQuery {
   private $options;
-  private $lang;
-  private $shop;
 
-  public function __construct($queryOptions, $lang=null, $shop=null) {
+  public function __construct($queryOptions) {
     $this->options = $queryOptions;
-    $this->lang = (int)($lang ? $lang : Context::getContext()->language->id);
-    $this->shop = (int)($shop ? $shop : Context::getContext()->shop->id);
   }
 
   public function getSql() {
@@ -85,7 +81,9 @@ class ReviewQuery {
   private function getTables() {
     $from = _DB_PREFIX_ . 'revws_review r';
     if ($this->includeProductInfo()) {
-      $from .= ' LEFT JOIN ' . _DB_PREFIX_ . 'product_lang pl ON (r.id_product = pl.id_product AND pl.id_shop = '.$this->shop.' AND pl.id_lang = '.$this->lang.')';
+      $shop = (int)$this->getShop();
+      $lang = (int)$this->getLanguage();
+      $from .= ' LEFT JOIN ' . _DB_PREFIX_ . "product_lang pl ON (r.id_product = pl.id_product AND pl.id_shop = $shop AND pl.id_lang = $lang)";
     }
     if ($this->includeCustomerInfo()) {
       $from .= ' LEFT JOIN ' . _DB_PREFIX_ . 'customer cust ON (r.id_customer = cust.id_customer)';
@@ -112,6 +110,9 @@ class ReviewQuery {
     }
     if ($this->hasOption('deleted')) {
       $cond[] = "r.deleted = " . $this->getBool('deleted');
+    }
+    if (! $this->hasOption('allLanguages')) {
+      $cond[] = "r.id_lang = " . $this->getLanguage();
     }
     if ($this->hasOption('validated')) {
       $validated = $this->getBool('validated');
@@ -233,6 +234,20 @@ class ReviewQuery {
 
   private function getBool($name) {
     return $this->getOption($name, false) ? 1 : 0;
+  }
+
+  private function getLanguage() {
+    if ($this->hasOption('language')) {
+      return $this->getInt('language');
+    }
+    return Context::getContext()->language->id;
+  }
+
+  private function getShop() {
+    if ($this->hasOption('shop')) {
+      return $this->getInt('shop');
+    }
+    return Context::getContext()->shop->id;
   }
 
 }

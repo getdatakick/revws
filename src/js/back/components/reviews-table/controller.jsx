@@ -90,6 +90,7 @@ class Controller extends React.PureComponent<Props, State> {
     loadData(uniqueId, merge(filters, {
       productInfo: true,
       customerInfo: true,
+      allLanguages: true,
       order: {
         direction: order,
         field: orderBy
