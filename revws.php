@@ -341,7 +341,7 @@ class Revws extends Module {
 
   private function setupAverageOnProductPage($productId) {
     $set = $this->getSettings();
-    list($grade, $count) = RevwsReview::getAverageGrade($productId);
+    list($grade, $count) = RevwsReview::getAverageGrade($set, $productId);
     $this->context->smarty->assign('productId', $productId);
     $this->context->smarty->assign('grade', $grade);
     $this->context->smarty->assign('reviewCount', $count);
@@ -355,29 +355,31 @@ class Revws extends Module {
 
 
   public function hookDisplayProductListReviews($params) {
-    if ($this->getSettings()->showOnProductListing()) {
+    $settings = $this->getSettings();
+    if ($settings->showOnProductListing()) {
       $productId = self::getProductId($params['product']);
-      list($grade, $count) = RevwsReview::getAverageGrade($productId);
+      list($grade, $count) = RevwsReview::getAverageGrade($settings, $productId);
       $this->context->smarty->assign('productId', $productId);
       $this->context->smarty->assign('grade', $grade);
       $this->context->smarty->assign('reviewCount', $count);
       $this->context->smarty->assign('shape', $this->getShapeSettings());
-      $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
+      $this->context->smarty->assign('shapeSize', $settings->getShapeSize());
       $this->context->smarty->assign('reviewsUrl', $this->getProductReviewsLink($productId));
       return $this->display(__FILE__, 'product_list.tpl', $this->getCacheId() . '|' . $productId);
     }
   }
 
   public function hookDisplayProductComparison($params) {
-    if ($this->getSettings()->showOnProductComparison()) {
+    $settings = $this->getSettings();
+    if ($settings->showOnProductComparison()) {
       $averages = [];
       foreach ($params['list_ids_product'] as $idProduct) {
         $productId = (int)$idProduct;
-        $averages[$productId] = RevwsReview::getAverageGrade($productId);
+        $averages[$productId] = RevwsReview::getAverageGrade($settings, $productId);
       }
       $this->context->smarty->assign('averages', $averages);
       $this->context->smarty->assign('shape', $this->getShapeSettings());
-      $this->context->smarty->assign('shapeSize', $this->getSettings()->getShapeSize());
+      $this->context->smarty->assign('shapeSize', $settings->getShapeSize());
       $this->context->smarty->assign('list_ids_product', $params['list_ids_product']);
       return $this->display(__FILE__, 'products_comparison.tpl');
     }

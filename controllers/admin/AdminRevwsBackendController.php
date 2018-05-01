@@ -313,7 +313,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
 
   private function getReviews($options) {
     $permissions = $this->module->getPermissions();
-    $ret = RevwsReview::findReviews($options);
+    $ret = RevwsReview::findReviews($this->module->getSettings(), $options);
     $ret['reviews'] = RevwsReview::mapReviews($ret['reviews'], $permissions);
     return $ret;
   }
@@ -393,7 +393,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
 
   private function returnReview($review) {
     $id = (int)$review->id;
-    $records = RevwsReview::findReviews([
+    $records = RevwsReview::findReviews($this->module->getSettings(), [
       'id' => $id,
       'allLanguages' => true,
       'productInfo' => true,

@@ -130,7 +130,7 @@ class Visitor {
       $this->reviewedProducts = [];
       $visitorType = $this->getType();
       $visitorId = $this->getId();
-      $reviews = RevwsReview::findReviews([
+      $reviews = RevwsReview::findReviews($this->settings, [
         'deleted' => false,
         $visitorType => (int)$visitorId
       ]);

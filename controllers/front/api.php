@@ -155,9 +155,9 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     $visitor = $this->module->getVisitor();
     $perms = $this->module->getPermissions();
     if ($entityType === 'product') {
-      $reviews = RevwsReview::getByProduct($entityId, $visitor, $set->getReviewsPerPage(), $page, $set->getReviewOrder());
+      $reviews = RevwsReview::getByProduct($entityId, $set, $visitor, $set->getReviewsPerPage(), $page, $set->getReviewOrder());
     } else if ($entityType === 'customer' && $visitor->isCustomer() && $visitor->getCustomerId() == $entityId) {
-      $reviews = RevwsReview::getByCustomer($entityId, $set->getCustomerReviewsPerPage(), $page);
+      $reviews = RevwsReview::getByCustomer($entityId, $set, $set->getCustomerReviewsPerPage(), $page);
     } else {
       throw new Exception('Invalid request');
     }

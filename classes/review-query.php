@@ -23,7 +23,8 @@ use \Context;
 class ReviewQuery {
   private $options;
 
-  public function __construct($queryOptions) {
+  public function __construct(Settings $settings, $queryOptions) {
+    $this->settings = $settings;
     $this->options = $queryOptions;
   }
 

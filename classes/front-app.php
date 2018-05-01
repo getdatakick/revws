@@ -137,14 +137,15 @@ class FrontApp {
     $set = $this->getSettings();
     $perPage = $set->getReviewsPerPage();
     $order = $set->getReviewOrder();
-    $reviews = RevwsReview::getByProduct($productId, $this->getVisitor(), $perPage, 0, $order);
+    $reviews = RevwsReview::getByProduct($productId, $set, $this->getVisitor(), $perPage, 0, $order);
     $reviews['reviews'] = RevwsReview::mapReviews($reviews['reviews'], $this->getPermissions());
     return $reviews;
   }
 
   public function getCustomerReviews($customerId) {
-    $perPage = $this->getSettings()->getCustomerReviewsPerPage();
-    $reviews = RevwsReview::getByCustomer($customerId, $perPage, 0);
+    $settings = $this->getSettings();
+    $perPage = $settings->getCustomerReviewsPerPage();
+    $reviews = RevwsReview::getByCustomer($customerId, $settings, $perPage, 0);
     $reviews['reviews'] = RevwsReview::mapReviews($reviews['reviews'], $this->getPermissions());
     return $reviews;
   }

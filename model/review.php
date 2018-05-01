@@ -160,9 +160,9 @@ class RevwsReview extends ObjectModel {
     return $conn->delete('revws_review_reaction', "id_review = $id ");
   }
 
-  public static function findReviews($options) {
+  public static function findReviews(Settings $settings, $options) {
     $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
-    $query = new ReviewQuery($options);
+    $query = new ReviewQuery($settings, $options);
 
     // load reviews
     $reviews = [];
@@ -197,8 +197,8 @@ class RevwsReview extends ObjectModel {
     ];
   }
 
-  public static function getByProduct($productId, Visitor $visitor, $pageSize, $page, $order) {
-    return self::findReviews([
+  public static function getByProduct($productId, Settings $settings, Visitor $visitor, $pageSize, $page, $order) {
+    return self::findReviews($settings, [
       'product' => $productId,
       'visitor' => $visitor,
       'validated' => true,
@@ -212,8 +212,8 @@ class RevwsReview extends ObjectModel {
     ]);
   }
 
-  public static function getByCustomer($customerId, $pageSize, $page) {
-    return self::findReviews([
+  public static function getByCustomer($customerId, Settings $settings, $pageSize, $page) {
+    return self::findReviews($settings, [
       'customer' => $customerId,
       'deleted' => false,
       'pageSize' => $pageSize,
@@ -298,8 +298,8 @@ class RevwsReview extends ObjectModel {
     }
   }
 
-  public static function getAverageGrade($productId) {
-    $query = new ReviewQuery([
+  public static function getAverageGrade(Settings $settings, $productId) {
+    $query = new ReviewQuery($settings, [
       'product' => (int)$productId,
       'validated' => true,
       'deleted' => false
