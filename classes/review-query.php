@@ -21,6 +21,7 @@ namespace Revws;
 use \Context;
 
 class ReviewQuery {
+  private $settings;
   private $options;
 
   public function __construct(Settings $settings, $queryOptions) {
@@ -112,7 +113,7 @@ class ReviewQuery {
     if ($this->hasOption('deleted')) {
       $cond[] = "r.deleted = " . $this->getBool('deleted');
     }
-    if (! $this->hasOption('allLanguages')) {
+    if ($this->settings->filterByLanguage() && !$this->hasOption('allLanguages')) {
       $cond[] = "r.id_lang = " . $this->getLanguage();
     }
     if ($this->hasOption('validated')) {

@@ -49,6 +49,9 @@ class Settings {
       'module' => [
         'checkModuleVersion' => true
       ],
+      'general' => [
+        'multilang' => true
+      ],
       'theme' => [
         'shape' => Shapes::getDefaultShape(),
         'shapeSize' => [
@@ -283,6 +286,10 @@ class Settings {
   public function getCustomerMaxRequests() {
     $ret = (int)$this->get(['display', 'myReviews', 'maxRequests']);
     return $ret === 0 ? 3 : $ret;
+  }
+
+  public function filterByLanguage() {
+    return $this->toBool($this->get(['general', 'multilang']));
   }
 
   public function getAdminEmailLanguage() {

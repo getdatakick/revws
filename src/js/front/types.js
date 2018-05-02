@@ -8,6 +8,7 @@ export type SettingsType = {
   api: string,
   criteria: CriteriaType,
   shape: GradingShapeType,
+  language: number,
   products: {
     [ number ]: ProductInfoType
   },

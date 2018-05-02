@@ -29,6 +29,7 @@ class ReviewPreview extends React.PureComponent<Props> {
     const review: ReviewType = {
       id: 1,
       authorType: 'customer',
+      language: 1,
       authorId: 1,
       productId: 1,
       product: null,

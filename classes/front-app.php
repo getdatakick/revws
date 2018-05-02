@@ -85,6 +85,7 @@ class FrontApp {
 
     return [
       'csrf' => $this->module->csrf()->getToken(),
+      'language' => $context->language->id,
       'shopName' => Configuration::get('PS_SHOP_NAME'),
       'translations' => $this->module->getFrontTranslations(),
       'entityType' => $entityType,

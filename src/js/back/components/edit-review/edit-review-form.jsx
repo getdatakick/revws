@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import type { ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType } from 'common/types';
-import { pathOr, assoc, keys } from 'ramda';
+import type { LanguagesType, ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType, LanguageType } from 'common/types';
+import { toPairs, pathOr, assoc, keys } from 'ramda';
 import { isArray } from 'common/utils/ramda';
 import TextField from 'material-ui/TextField';
 import Grid from 'material-ui/Grid';
@@ -10,10 +10,15 @@ import TextArea from 'common/components/text-area/text-area';
 import Checkbox from 'material-ui/Checkbox';
 import styles from './edit-review-form.less';
 import { FormControlLabel } from 'material-ui/Form';
+import { FormControl } from 'material-ui/Form';
+import { MenuItem } from 'material-ui/Menu';
+import { InputLabel } from 'material-ui/Input';
+import Select from 'material-ui/Select';
 
 type Props = {
   errors: ReviewFormErrors,
   language: number,
+  languages: LanguagesType,
   criteria: CriteriaType,
   usedCriteria: ?Array<number>,
   shape: GradingShapeType,
@@ -25,9 +30,10 @@ class EditReviewForm extends React.PureComponent<Props> {
   static displayName = 'EditReviewForm';
 
   render() {
-    const { review, errors, usedCriteria } = this.props;
-    const { title, content } = review;
+    const { review, errors, usedCriteria, languages } = this.props;
+    const { title, content, language } = review;
     const criteria = usedCriteria || keys(review.grades);
+    const langs = toPairs(languages);
     return (
       <div className={styles.root}>
         <Grid container spacing={40}>
@@ -59,6 +65,14 @@ class EditReviewForm extends React.PureComponent<Props> {
                   onChange={this.toggleVerifiedBuyer} />
               }
               label={__("Verified buyer")} />
+            <div className={styles.formControl}>
+              <FormControl>
+                <InputLabel>{__('Review language')}</InputLabel>
+                <Select value={language} onChange={this.update('language')}>
+                  { langs.map(this.renderLanguage) }
+                </Select>
+              </FormControl>
+            </div>
           </Grid>
           <Grid item md={6}>
             <h3>{__('Ratings')}</h3>
@@ -106,6 +120,13 @@ class EditReviewForm extends React.PureComponent<Props> {
     }
   }
 
+  renderLanguage = (pair: [string, LanguageType]) => {
+    const key = parseInt(pair[0], 10);
+    const name = pair[1].name;
+    return (
+      <MenuItem key={key} value={key}>{name}</MenuItem>
+    );
+  }
 
   update = (key: string) => (e: any) => {
     const { review, onUpdateReview } = this.props;

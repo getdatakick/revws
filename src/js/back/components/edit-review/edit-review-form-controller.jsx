@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import type { ProductInfoType, ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType } from 'common/types';
+import type { ProductInfoType, ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
 import type { Load } from 'back/types';
 import EditReviewForm from './edit-review-form';
 import type { ComponentType } from 'react';
@@ -14,6 +14,7 @@ type InputProps = {
   productId: number,
   errors: ReviewFormErrors,
   language: number,
+  languages: LanguagesType,
   criteria: CriteriaType,
   shape: GradingShapeType,
   review: ReviewType,

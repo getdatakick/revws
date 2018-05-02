@@ -21,6 +21,7 @@ class ModerationPage extends React.PureComponent<Props> {
       <ReviewsTable
         shopName={data.shopName}
         language={data.language}
+        languages={data.languages}
         title={__('Unapproved reviews')}
         emptyLabel={__('Nothing to approve')}
         shape={shape}

@@ -23,9 +23,11 @@ export const getSettings = (input: any): SettingsType => {
   const canCreate = get('canCreate', isBoolean, input);
   const api = get('api', isString, input);
   const csrf = get('csrf', isString, input);
+  const language = get('language', isNumber, input);
 
   return {
     csrf,
+    language,
     shopName,
     api,
     loginUrl,

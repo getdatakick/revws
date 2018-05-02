@@ -64,6 +64,11 @@ class Settings extends React.PureComponent<Props, State> {
   renderContent = (errors: any) => {
     const sections = [
       {
+        key: 'general',
+        label: __('General settings'),
+        content: this.renderGeneralSettings()
+      },
+      {
         key: 'reviews',
         label: __('Reviews'),
         content: this.renderReview()
@@ -584,6 +589,17 @@ class Settings extends React.PureComponent<Props, State> {
           Please not that revws module <strong>will NOT be updated automatically</strong> to the new version.
           You will only be notified about new version
         </div>
+      </FormGroup>
+    );
+  }
+
+  renderGeneralSettings = () => {
+    return (
+      <FormGroup>
+        <FormControlLabel
+          control={this.renderSwitch(['general', 'multilang'])}
+          label={__("Filter reviews by current language")}
+        />
       </FormGroup>
     );
   }

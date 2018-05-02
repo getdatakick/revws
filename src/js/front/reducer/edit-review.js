@@ -25,6 +25,7 @@ const defaultReview = (settings: SettingsType, product: ProductInfoType):ReviewT
     productId: product.id,
     authorType: settings.visitor.type,
     authorId: -1,
+    language: settings.language,
     customer: null,
     product: null,
     email,

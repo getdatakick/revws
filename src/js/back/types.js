@@ -6,6 +6,9 @@ export type SettingsType = {
   module: {
     checkModuleVersion: boolean
   },
+  general: {
+    multilang: boolean
+  },
   theme: {
     shape: string,
     colors: ShapeColorsType,

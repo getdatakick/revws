@@ -28,6 +28,7 @@ class ModerationPage extends React.PureComponent<Props> {
         <ReviewsTable
           shopName={data.shopName}
           language={data.language}
+          languages={data.languages}
           title={__('All reviews')}
           emptyLabel={__('No reviews')}
           shape={shape}
@@ -41,6 +42,7 @@ class ModerationPage extends React.PureComponent<Props> {
             shape={shape}
             shapeSize={shapeSize}
             language={data.language}
+            languages={data.languages}
             criteria={criteria}
             nameFormat={settings.review.displayName}
             allowEmptyReview={settings.review.allowEmpty}

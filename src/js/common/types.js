@@ -4,11 +4,13 @@ export type KeyValue = {
   [ number ]: string
 }
 
+export type LanguageType = {
+  code: string,
+  name: string
+};
+
 export type LanguagesType = {
-  [ number ]: {
-    code: string,
-    name: string
-  }
+  [ number ]: LanguageType
 }
 
 export type LangString = KeyValue;
@@ -41,6 +43,7 @@ export type GradingType = {
 
 export type ReviewType = {
   id: number,
+  language: number,
   productId: number,
   product: ?string,
   customer: ?string,

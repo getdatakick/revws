@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import type { ReviewFormErrors, NameFormatType, ReviewType, CriteriaType, GradingShapeType, CustomerInfoType } from 'common/types';
+import type { ReviewFormErrors, NameFormatType, ReviewType, CriteriaType, GradingShapeType, CustomerInfoType, LanguagesType } from 'common/types';
 import { equals, keys } from 'ramda';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
@@ -17,6 +17,7 @@ type Props = {
   shape: GradingShapeType,
   shapeSize: number,
   language: number,
+  languages: LanguagesType,
   criteria: CriteriaType,
   onSave: (ReviewType)=>void,
   onClose: ()=>void
@@ -74,7 +75,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
   }
 
   renderContent = (errors: ?ReviewFormErrors) => {
-    const { shape, language, criteria } = this.props;
+    const { shape, language, criteria, languages } = this.props;
     const { productId, review } = this.state;
     if (! productId) {
       return <SelectProduct onSelect={this.setProduct} />;
@@ -88,6 +89,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
           shape={shape}
           criteria={criteria}
           language={language}
+          languages={languages}
           errors={errors}
         />
       );
@@ -104,6 +106,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
     const productId = this.state.productId || 0;
     const review: ReviewType = {
       id: -1,
+      language: this.props.language,
       productId,
       authorType: 'customer',
       authorId: customerInfo.id,
