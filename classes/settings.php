@@ -30,6 +30,7 @@ class Settings {
   const SETTINGS = 'REVWS_SETTINGS';
   const VERSION = 'REVWS_VERSION';
   const CHECK_VERSION = 'REVWS_CHECK_VERSION';
+  const CSS_VERSION = 'REVWS_CSS_VERSION';
 
   private $data;
 
@@ -143,6 +144,14 @@ class Settings {
       $url = $context->shop->getBaseURI() . "modules/{$module->name}/views/js/front_app.js";
     }
     return $url . "?CACHE_CONTROL";
+  }
+
+  public function getCurrentCSSVersion() {
+    return Configuration::get(self::CSS_VERSION);
+  }
+
+  public function setCurrentCSSVersion($version) {
+    Configuration::updateValue(self::CSS_VERSION, $version);
   }
 
   public function getBackendAppUrl($module) {
