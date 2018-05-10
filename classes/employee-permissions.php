@@ -21,6 +21,14 @@ namespace Revws;
 use \RevwsReview;
 
 class EmployeePermissions implements Permissions {
+  static $instance = null;
+
+  public static function getInstance() {
+    if (! self::$instance) {
+      self::$instance = new EmployeePermissions();
+    }
+    return self::$instance;
+  }
 
   public function canCreateReview($productId) {
     return true;

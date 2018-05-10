@@ -34,6 +34,7 @@ require_once __DIR__.'/classes/review-query.php';
 require_once __DIR__.'/classes/notifications.php';
 require_once __DIR__.'/classes/actor.php';
 require_once __DIR__.'/classes/front-app.php';
+require_once __DIR__.'/classes/gdpr.php';
 require_once __DIR__.'/classes/integration/datakick.php';
 require_once __DIR__.'/classes/integration/krona.php';
 
@@ -58,7 +59,7 @@ class Revws extends Module {
     $this->displayName = $this->l('Revws - Product Reviews');
     $this->description = $this->l('Product Reviews module');
     $this->confirmUninstall = $this->l('Are you sure you want to uninstall the module? All its data will be lost!');
-    $this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.999');
+    $this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.7.999');
     $this->controllers = array('MyReviews');
   }
 
@@ -104,7 +105,10 @@ class Revws extends Module {
       'discoverReviewModule',
       'datakickExtend',
       'actionRegisterKronaAction',
-      'displayRevwsReview'
+      'displayRevwsReview',
+      'registerGDPRConsent',
+      'actionDeleteGDPRCustomer',
+      'actionExportGDPRData'
     ]);
   }
 
@@ -416,6 +420,31 @@ class Revws extends Module {
       'getReviewUrl' => ['Revws', 'getReviewUrl'],
       'canReviewProductSqlFragment' => ['RevwsReview', 'canReviewProductSqlFragment'],
     ];
+  }
+
+  public function hookRegisterGDPRConsent() {
+  }
+
+  public function hookActionExportGDPRData($customer) {
+    if (isset($customer['email']) && Validate::isEmail($customer['email'])) {
+      $email = $customer['email'];
+      $id = isset($customer['id']) ? $customer['id'] : null;
+      $gdpr = new \Revws\GDPR($this->getSettings(), $id, $email);
+      $data = $gdpr->getData();
+      if (!empty($data['reviews']) || !empty($data['reactions'])) {
+        $list = array_merge($data['reviews'], $data['reactions']);
+        return json_encode($list);
+      }
+    }
+  }
+
+  public function hookActionDeleteGDPRCustomer($customer) {
+    if (isset($customer['email']) && Validate::isEmail($customer['email'])) {
+      $email = $customer['email'];
+      $id = isset($customer['id']) ? $customer['id'] : null;
+      $gdpr = new \Revws\GDPR($this->getSettings(), $id, $email);
+      return json_encode($gdpr->deleteData());
+    }
   }
 
   public function hookDataKickExtend($params) {

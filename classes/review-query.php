@@ -104,6 +104,9 @@ class ReviewQuery {
     if ($this->hasOption('customer')) {
       $cond[] = "r.id_customer = " . $this->getInt('customer');
     }
+    if ($this->hasOption('email')) {
+      $cond[] = "r.email = '" . psql($this->getOption('email', '')) . "'";
+    }
     if ($this->hasOption('guest')) {
       $cond[] = "r.id_guest = " . $this->getInt('guest');
     }
