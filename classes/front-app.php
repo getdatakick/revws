@@ -82,10 +82,11 @@ class FrontApp {
       }
       $loginUrl = $this->module->getLoginUrl(null);
     }
+    $gdpr = $this->module->getGDPR();
 
     return [
       'csrf' => $this->module->csrf()->getToken(),
-      'language' => $context->language->id,
+      'language' => $visitor->getLanguage(),
       'shopName' => Configuration::get('PS_SHOP_NAME'),
       'translations' => $this->module->getFrontTranslations(),
       'entityType' => $entityType,
@@ -125,7 +126,12 @@ class FrontApp {
         'placement' => $set->getPlacement(),
         'displayCriteria' => $set->getDisplayCriteriaPreference()
       ],
-      'canCreate' => $canCreate
+      'gdpr' => [
+        'active' => $gdpr->isEnabled(),
+        'needConsent' => !$gdpr->hasConsent($visitor),
+        'text' => $gdpr->getConsentMessage($visitor)
+      ],
+      'canCreate' => $canCreate,
     ];
   }
 
@@ -185,7 +191,7 @@ class FrontApp {
 
 
   private function getLanguage() {
-    return $this->getContext()->language->id;
+    return $this->getVisitor()->getLanguage();
   }
 
   private function getVisitor() {

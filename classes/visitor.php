@@ -36,9 +36,11 @@ class Visitor {
   private $email='';
   private $reactions = null;
   private $reviewedProducts = null;
+  private $language;
 
   public function __construct($context, Settings $settings, $krona) {
     $this->settings = $settings;
+    $this->language = (int)$context->language->id;
     if ($context->customer->isLogged()) {
       $this->type = self::CUSTOMER;
       $this->id = (int)$context->customer->id;
@@ -173,6 +175,10 @@ class Visitor {
       return false;
     }
     return self::hasCustomerPurchasedProduct($this->getCustomerId(), $productId);
+  }
+
+  public function getLanguage() {
+    return $this->language;
   }
 
   public static function hasCustomerPurchasedProduct($customerId, $productId) {

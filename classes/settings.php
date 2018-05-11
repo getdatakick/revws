@@ -1,5 +1,4 @@
 <?php
-
 /**
 * Copyright (C) 2017 Petr Hucik <petr@getdatakick.com>
 *
@@ -20,6 +19,7 @@
 
 namespace Revws;
 use \Configuration;
+use \Language;
 use \Exception;
 
 class Settings {
@@ -30,7 +30,6 @@ class Settings {
   const SETTINGS = 'REVWS_SETTINGS';
   const VERSION = 'REVWS_VERSION';
   const CHECK_VERSION = 'REVWS_CHECK_VERSION';
-  const CSS_VERSION = 'REVWS_CSS_VERSION';
 
   private $data;
 
@@ -126,6 +125,9 @@ class Settings {
       ],
       'richSnippets' => [
         'enabled' => true
+      ],
+      'gdpr' => [
+        'implementation' => self::getDefaultGDPR()
       ]
     ];
   }
@@ -141,25 +143,19 @@ class Settings {
   public function getAppUrl($context, $module) {
     $url = Configuration::get(self::APP_URL);
     if (! $url) {
-      $url = $context->shop->getBaseURI() . "modules/{$module->name}/views/js/front_app.js";
+      $version = self::getUnderscoredVersion($module);
+      $url = $module->getPath("/views/js/front-{$version}.js");
     }
-    return $url . "?CACHE_CONTROL";
-  }
-
-  public function getCurrentCSSVersion() {
-    return Configuration::get(self::CSS_VERSION);
-  }
-
-  public function setCurrentCSSVersion($version) {
-    Configuration::updateValue(self::CSS_VERSION, $version);
+    return $url;
   }
 
   public function getBackendAppUrl($module) {
     $url = Configuration::get(self::BACKEND_APP_URL);
     if (! $url) {
-      $url = $module->getPath('views/js/back_app.js');
+      $version = self::getUnderscoredVersion($module);
+      $url = $module->getPath("views/js/back-{$version}.js");
     }
-    return $url . "?CACHE_CONTROL";
+    return $url;
   }
 
   public function getVersionUrl() {
@@ -370,6 +366,21 @@ class Settings {
     ]));
   }
 
+  public function getGDPRPreference() {
+    $ret = $this->get(['gdpr', 'implementation']);
+    if ($ret === 'basic') {
+      return $ret;
+    }
+    if ($ret === 'psgdpr' && PrestashopGDRP::isAvailable()) {
+      return $ret;
+    }
+    return 'none';
+  }
+
+  public function getGDPRConsentMessage() {
+    return $this->get(['gdpr', 'message']);
+  }
+
   private function toBool($val) {
     return !!$val;
   }
@@ -464,5 +475,16 @@ class Settings {
   public function set($value) {
     $this->data = $value;
     return Configuration::updateValue(self::SETTINGS, json_encode($value));
+  }
+
+  private static function getDefaultGDPR() {
+    if (PrestashopGDRP::isAvailable()) {
+      return 'psgdpr';
+    }
+    return 'basic';
+  }
+
+  private static function getUnderscoredVersion($module) {
+    return str_replace('.', '_', $module->version);
   }
 }

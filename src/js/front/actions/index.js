@@ -82,6 +82,11 @@ export type SetReviewsAction = {
   reviews: ReviewListType
 }
 
+export type AgreeGDPRAction = {
+  type: 'AGREE_GDPR',
+  agreed: boolean
+}
+
 export type Action = (
   SetReviewAction |
   TriggerCreateReviewAction |
@@ -98,5 +103,6 @@ export type Action = (
   TriggerVoteAction |
   SetSnackbarAction |
   LoadPageAction |
-  SetReviewsAction
+  SetReviewsAction |
+  AgreeGDPRAction
 );

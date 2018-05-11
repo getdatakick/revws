@@ -17,7 +17,8 @@ import type {
   TriggerReportReviewAction,
   ReviewRemovedAction,
   LoadPageAction,
-  SetReviewsAction
+  SetReviewsAction,
+  AgreeGDPRAction
 } from './index';
 import Types from './types';
 
@@ -40,3 +41,5 @@ export const reviewRemoved = (review: ReviewType): ReviewRemovedAction => ({ typ
 
 export const loadPage = (entityType: 'product' | 'customer', entityId: number, page: number): LoadPageAction => ({ type: Types.loadPage, entityType, entityId, page });
 export const setReviews = (reviews: ReviewListType): SetReviewsAction => ({ type: Types.setReviews, reviews });
+
+export const agreeGDPR = (agreed: boolean): AgreeGDPRAction => ({ type: Types.agreeGDPR, agreed });

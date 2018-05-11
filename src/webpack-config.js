@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 var Visualizer = require('webpack-visualizer-plugin');
 
-module.exports = function(prod) {
+module.exports = function(prod, version) {
   var plugins = [
     new webpack.ProvidePlugin({
       '__': ['translations', 'getTranslation']
@@ -23,6 +23,10 @@ module.exports = function(prod) {
     plugins.push(new webpack.optimize.UglifyJsPlugin({ sourceMap: true, }));
     plugins.push(new Visualizer());
   }
+
+  const ver = version.replace(/\./g, '_');
+  const frontName = prod ? 'front-'+ver : 'front_app';
+  const backName = prod ? 'back-'+ver : 'back_app';
 
   return {
     module: {
@@ -52,8 +56,8 @@ module.exports = function(prod) {
     },
 
     entry: {
-      'front_app': front,
-      'back_app': back
+      [frontName]: front,
+      [backName]: back
     },
 
     resolve: {

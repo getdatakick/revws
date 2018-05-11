@@ -59,7 +59,7 @@ function readTranslations(path) {
 
 gulp.task("devel", function() {
   gulp.src(['./index.html']).pipe(gulp.dest(deployDir));
-  var compiler = webpack(config(false));
+  var compiler = webpack(config(false, getVersion()));
   compiler.hot = true;
 
   new WebpackDevServer(compiler, {
@@ -90,7 +90,7 @@ gulp.task('clean', function(done) {
 gulp.task('build-javascript', function(done) {
   process.env.NODE_ENV = 'production';
   gulp.src('./js')
-    .pipe(webpackStream(config(true), webpack))
+    .pipe(webpackStream(config(true, getVersion()), webpack))
     .pipe(gulp.dest('./build'))
     .on('end', done);
 });
@@ -113,8 +113,9 @@ gulp.task('create-zip', function(done) {
 gulp.task('copy-text-files', function(done) {
   getLatestCommitHash(commit => {
     const version = getVersion();
-    const ext = ['php', 'tpl', 'css', 'js', 'sql', 'html', 'md', 'txt'];
+    const ext = ['php', 'tpl', 'js', 'sql', 'html', 'md', 'txt'];
     let sources = map(e => '../**/*.'+e, ext);
+    sources = append('../**/back.css', sources);
     sources = append('!../src/**', sources);
     sources = append('!../.tbstore/**', sources);
     return gulp
@@ -136,8 +137,9 @@ gulp.task('copy-binary-files', function(done) {
 });
 
 gulp.task('copy-build', function(done) {
+  const ver = getVersion().replace(/\./g, '_');
   return gulp
-    .src(['./build/front_app.js', './build/back_app.js'])
+    .src(['./build/front-'+ver+'.js', './build/back-'+ver+'.js'])
     .pipe(gulp.dest('./build/staging/revws/views/js'))
     .on('end', done);
 });

@@ -23,6 +23,10 @@ require_once __DIR__.'/classes/csrf.php';
 require_once __DIR__.'/classes/csv-reader.php';
 require_once __DIR__.'/classes/color.php';
 require_once __DIR__.'/classes/utils.php';
+require_once __DIR__.'/classes/gdpr/interface.php';
+require_once __DIR__.'/classes/gdpr/psgdpr.php';
+require_once __DIR__.'/classes/gdpr/basic.php';
+require_once __DIR__.'/classes/gdpr/gdpr.php';
 require_once __DIR__.'/classes/settings.php';
 require_once __DIR__.'/classes/permissions.php';
 require_once __DIR__.'/classes/visitor-permissions.php';
@@ -34,7 +38,6 @@ require_once __DIR__.'/classes/review-query.php';
 require_once __DIR__.'/classes/notifications.php';
 require_once __DIR__.'/classes/actor.php';
 require_once __DIR__.'/classes/front-app.php';
-require_once __DIR__.'/classes/gdpr.php';
 require_once __DIR__.'/classes/integration/datakick.php';
 require_once __DIR__.'/classes/integration/krona.php';
 
@@ -47,6 +50,7 @@ class Revws extends Module {
   private $settings;
   private $krona;
   private $csrfToken;
+  private $gdpr;
 
   public function __construct() {
     $this->name = 'revws';
@@ -59,7 +63,7 @@ class Revws extends Module {
     $this->displayName = $this->l('Revws - Product Reviews');
     $this->description = $this->l('Product Reviews module');
     $this->confirmUninstall = $this->l('Are you sure you want to uninstall the module? All its data will be lost!');
-    $this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.7.999');
+    $this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.999');
     $this->controllers = array('MyReviews');
   }
 
@@ -295,7 +299,7 @@ class Revws extends Module {
   public function hookDisplayProductTabContent() {
     $set = $this->getSettings();
     if ($this->getSettings()->getPlacement() === 'tab') {
-      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
+      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
       $reviewsData = $this->assignReviewsData((int)(Tools::getValue('id_product')));
       $emptyReviews = $reviewsData['reviews']['total'] == 0;
       $canCreate = $reviewsData['canCreate'];
@@ -309,7 +313,7 @@ class Revws extends Module {
   public function hookDisplayFooterProduct() {
     $set = $this->getSettings();
     if ($set->getPlacement() === 'block') {
-      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js?CACHE_CONTROL'));
+      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
       $reviewsData = $this->assignReviewsData((int)(Tools::getValue('id_product')));
       $emptyReviews = $reviewsData['reviews']['total'] == 0;
       $canCreate = $reviewsData['canCreate'];
@@ -429,8 +433,7 @@ class Revws extends Module {
     if (isset($customer['email']) && Validate::isEmail($customer['email'])) {
       $email = $customer['email'];
       $id = isset($customer['id']) ? $customer['id'] : null;
-      $gdpr = new \Revws\GDPR($this->getSettings(), $id, $email);
-      $data = $gdpr->getData();
+      $data = $this->getGDPR()->getData($id, $email);
       if (!empty($data['reviews']) || !empty($data['reactions'])) {
         $list = array_merge($data['reviews'], $data['reactions']);
         return json_encode($list);
@@ -442,8 +445,7 @@ class Revws extends Module {
     if (isset($customer['email']) && Validate::isEmail($customer['email'])) {
       $email = $customer['email'];
       $id = isset($customer['id']) ? $customer['id'] : null;
-      $gdpr = new \Revws\GDPR($this->getSettings(), $id, $email);
-      return json_encode($gdpr->deleteData());
+      return json_encode($this->getGDPR()->deleteData($id, $email));
     }
   }
 
@@ -541,15 +543,22 @@ class Revws extends Module {
     return $this->csrfToken;
   }
 
+  public function getGDPR() {
+    if (! $this->gdpr) {
+      $this->gdpr = new \Revws\GDPR($this->getSettings());
+    }
+    return $this->gdpr;
+  }
+
   public function getCSSFile() {
     $set = $this->getSettings();
     $version = $this->getCSSVersion($set);
-    $filename = REVWS_MODULE_DIR . '/views/css/revws.css';
-    if ($set->getCurrentCSSVersion() != $version || !file_exists($filename)) {
+    $name = "views/css/revws-$version.css";
+    $filename = REVWS_MODULE_DIR . '/' . $name;
+    if (!file_exists($filename)) {
       $this->generateCSS($set, $filename);
-      $set->setCurrentCSSVersion($version);
     }
-    return $this->getPath("views/css/revws.css?$version");
+    return $this->getPath($name);
   }
 
   private function getCSSVersion($set) {

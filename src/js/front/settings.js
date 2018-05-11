@@ -24,6 +24,7 @@ export const getSettings = (input: any): SettingsType => {
   const api = get('api', isString, input);
   const csrf = get('csrf', isString, input);
   const language = get('language', isNumber, input);
+  const gdpr = get('gdpr', isObject, input);
 
   return {
     csrf,
@@ -37,6 +38,7 @@ export const getSettings = (input: any): SettingsType => {
     shapeSize,
     visitor,
     preferences,
+    gdpr,
     canCreate
   };
 };

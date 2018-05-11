@@ -1,25 +1,65 @@
 <?php
+/**
+* Copyright (C) 2017 Petr Hucik <petr@getdatakick.com>
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@getdatakick.com so we can send you a copy immediately.
+*
+* @author    Petr Hucik <petr@getdatakick.com>
+* @copyright 2018 Petr Hucik
+* @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+*/
+
 namespace Revws;
 use \RevwsReview;
 use \RevwsCriterion;
 use \Db;
 
-class GDPR {
+class GDPR implements GDPRInterface {
   private $settings;
-  private $customerId;
-  private $email;
+  private $impl;
 
-  public function __construct($settings, $customerId, $email) {
+  public function __construct($settings) {
     $this->settings = $settings;
-    $this->customerId = (int)$customerId;
-    $this->email = $email;
+    $pref = $settings->getGDPRPreference();
+    if ($pref === 'basic') {
+      $this->impl = new BasicGDPR();
+    }
+    if ($pref === 'psgdpr' && PrestashopGDRP::isAvailable()) {
+      $this->impl = new PrestashopGDRP();
+    }
   }
 
-  public function deleteData() {
+  public function getConsentMessage(Visitor $visitor) {
+    return $this->impl ? $this->impl->getConsentMessage($visitor) : '';
+  }
+
+  public function logConsent(Visitor $visitor) {
+    if ($this->impl) {
+      $this->impl->logConsent($visitor);
+    }
+  }
+
+  public function hasConsent(Visitor $visitor) {
+    return $this->impl ? $this->impl->hasConsent($visitor) : true;
+  }
+
+  public function isEnabled() {
+    return !!$this->impl;
+  }
+
+  public function deleteData($customerId, $email) {
     $conn = Db::getInstance();
-    $cond = "email = '".pSQL($this->email)."'";
-    if ($this->isCustomer()) {
-      $cond .= " OR id_customer = " . $this->customerId;
+    $cond = "email = '".pSQL($email)."'";
+    if ($customerId) {
+      $cond .= " OR id_customer = " . $customerId;
     }
     $subselect = "SELECT id_review FROM "._DB_PREFIX_."revws_review WHERE $cond";
 
@@ -32,15 +72,15 @@ class GDPR {
       return $conn->getMsgError();
     }
     // delete votes
-    if ($this->isCustomer()) {
-      if (! $conn->execute("DELETE FROM "._DB_PREFIX_."revws_review_reaction WHERE id_customer = ".$this->customerId)) {
+    if ($customerId) {
+      if (! $conn->execute("DELETE FROM "._DB_PREFIX_."revws_review_reaction WHERE id_customer = ".$customerId)) {
         return $conn->getMsgError();
       }
     }
     return true;
   }
 
-  public function getData() {
+  public function getData($customerId, $email) {
     $criteria = RevwsCriterion::getCriteria(\Context::getContext()->language->id);
     $query = [
       'allLanguages' => true,
@@ -49,7 +89,7 @@ class GDPR {
     ];
 
     // retrieve review's by email
-    $reviewsByEmail = RevwsReview::findReviews($this->settings, array_merge($query, ['email' => $this->email]))['reviews'];
+    $reviewsByEmail = RevwsReview::findReviews($this->settings, array_merge($query, ['email' => $email]))['reviews'];
     $ret = [
       'reviews' => [],
       'reactions' => []
@@ -57,9 +97,9 @@ class GDPR {
     foreach ($reviewsByEmail as $key => $review) {
       $ret['reviews'][] = self::encodeReview($review, $criteria);
     }
-    if ($this->isCustomer()) {
+    if ($customerId) {
       // retrieve customer's review. They are probably all already in $ret array added via email search
-      $reviewsByCustomer = RevwsReview::findReviews($this->settings, array_merge($query, ['customer' => $this->customerId]))['reviews'];
+      $reviewsByCustomer = RevwsReview::findReviews($this->settings, array_merge($query, ['customer' => $customerId]))['reviews'];
       foreach ($reviewsByCustomer as $key => $review) {
         if (! isset($reviewsByEmail[$key])) {
           $ret['reviews'][] = self::encodeReview($review, $criteria);
@@ -67,7 +107,7 @@ class GDPR {
       }
 
       // find any customer reactions
-      $sql = "SELECT * FROM "._DB_PREFIX_."revws_review_reaction WHERE id_customer = " . $this->customerId;
+      $sql = "SELECT * FROM "._DB_PREFIX_."revws_review_reaction WHERE id_customer = " . $customerId;
       if ($res = Db::getInstance()->ExecuteS($sql)) {
         foreach ($res as $row) {
           $ret['reactions'][] = [
@@ -78,10 +118,6 @@ class GDPR {
       }
     }
     return $ret;
-  }
-
-  private function isCustomer() {
-    return !! $this->customerId;
   }
 
   private static function encodeReview($review, $criteria) {

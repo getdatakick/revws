@@ -22,5 +22,7 @@ export default {
   triggerVote: 'TRIGGER_VOTE',
 
   loadPage: 'LOAD_PAGE',
-  setReviews: 'SET_REVIEWS'
+  setReviews: 'SET_REVIEWS',
+
+  agreeGDPR: 'AGREE_GDPR'
 };

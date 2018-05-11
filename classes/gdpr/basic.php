@@ -18,24 +18,21 @@
 */
 
 namespace Revws;
-use \Context;
+use \Hook;
+use \Module;
+use \Db;
 
-class Actor {
-  private static $actor = null;
+class BasicGDPR implements GDPRInterface {
 
-  public static function setActor($actor) {
-    self::$actor = $actor;
+  public function getConsentMessage(Visitor $visitor) {
+    return '';
   }
 
-  public static function getActor() {
-    if (! self::$actor) {
-      $context = Context::getContext();
-      if ($context->employee && $context->employee->id) {
-        self::$actor = 'employee';
-      } else {
-        self::$actor = 'visitor';
-      }
-    }
-    return self::$actor;
+  public function hasConsent(Visitor $visitor) {
+    return false;
+  }
+
+  public function logConsent(Visitor $visitor) {
+    // no-op
   }
 }

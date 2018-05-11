@@ -326,7 +326,7 @@ class RevwsReview extends ObjectModel {
       'grades' => $this->grades,
       'grade' => round(Utils::calculateAverage($this->grades)),
       'title' => $this->title,
-      'language' => $this->id_lang,
+      'language' => (int)$this->id_lang,
       'content' => $this->content,
       'underReview' => !$this->validated,
       'reply' => $this->reply ? $this->reply : null,
@@ -383,7 +383,7 @@ class RevwsReview extends ObjectModel {
     $review->id_guest = $visitor->getGuestId();
     $review->id_customer = $visitor->getCustomerId();
     $review->id_product = (int)Tools::getValue('productId');
-    $review->id_lang = (int)Context::getContext()->language->id;
+    $review->id_lang = $visitor->getLanguage();
     $review->display_name = Tools::getValue('displayName');
     $review->email = Tools::getValue('email');
     $review->title = Tools::getValue('title');

@@ -35,6 +35,11 @@ export type SettingsType = {
     showSignInButton: boolean,
     displayCriteria: DisplayCriteriaType
   },
+  gdpr: {
+    active: boolean,
+    needConsent: boolean,
+    text: string
+  },
   loginUrl: string,
   canCreate: boolean
 }

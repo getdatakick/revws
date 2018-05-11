@@ -6,16 +6,20 @@ import EditReview from './edit-review-dialog/edit-review-dialog';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
 import { getStage, getReview } from 'front/selectors/edit-review';
-import { closeEditReview, saveReview, updateReviewDetails } from 'front/actions/creators';
+import { hasAgreed, needConsent } from 'front/selectors/gdpr';
+import { closeEditReview, saveReview, updateReviewDetails, agreeGDPR } from 'front/actions/creators';
 
 const mapStateToProps = mapObject({
   review: getReview,
+  agreed: hasAgreed,
+  needConsent: needConsent,
   stage: getStage
 });
 
 const actions = {
   onClose: closeEditReview,
   onSave: saveReview,
+  onAgree: agreeGDPR,
   onUpdateReview: updateReviewDetails,
 };
 

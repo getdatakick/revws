@@ -20,7 +20,6 @@
 </div>
 <script>
   (function(){
-    var attempt = 1;
     var started = false;
     function startRevwsApp() {
       if (started) {
@@ -31,15 +30,7 @@
         startRevws({$revws|json_encode});
       } else {
         console.log('['+attempt+'] startRevws not loaded yet, waiting...');
-        if (attempt === 1) {
-          var tag = document.createElement('script');
-          tag.src = '/modules/revws/views/js/back_app.js';
-          tag.onload = startRevwsApp;
-          var firstScriptTag = document.getElementsByTagName('script')[0];
-          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
-        }
-        attempt++;
-        setTimeout(startRevwsApp, 1000);
+        setTimeout(startRevwsApp, 500);
       }
     }
     startRevwsApp();

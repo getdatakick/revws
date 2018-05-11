@@ -7,6 +7,8 @@ import { map, propOr, assoc } from 'ramda';
 import TextField from 'material-ui/TextField';
 import Grading from 'common/components/grading/grading';
 import TextArea from 'common/components/text-area/text-area';
+import Checkbox from 'material-ui/Checkbox';
+import { FormControlLabel } from 'material-ui/Form';
 import { isLoggedIn } from 'front/settings';
 import styles from './edit-review-form.less';
 
@@ -16,6 +18,9 @@ type Props = {
   product: ProductInfoType,
   errors: ReviewFormErrors,
   review: ReviewType,
+  needConsent: boolean,
+  agreed: boolean,
+  onAgree: (boolean) => void,
   onUpdateReview: (ReviewType)=>void,
 }
 
@@ -54,6 +59,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
           error={!! errors.content}
           placeholder={__("Please enter review details")}
           onChange={this.update('content')} />
+        { this.renderConsent() }
       </div>
     );
   }
@@ -125,6 +131,35 @@ class EditReviewForm extends React.PureComponent<Props, State> {
       );
     }
     return ret;
+  }
+
+  renderConsent = () => {
+    const { review, settings, needConsent, agreed, onAgree } = this.props;
+    const editing = review.id != -1;
+    if (! settings.gdpr.active || editing) {
+      return;
+    }
+    if (needConsent) {
+      return (
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={agreed}
+              onChange={() => onAgree(!agreed)} />
+          }
+          label={(
+            <span className={styles.subtitle}>
+              {settings.gdpr.text || __('By submitting this review you agree to use of your data as outlined in our privacy policy')}
+            </span>
+          )} />
+      );
+    } else {
+      return (
+        <div className={styles.note}>
+          {__('You have already agreed on collecting and processing your personal informations')}
+        </div>
+      );
+    }
   }
 
   editAuthor = () => {

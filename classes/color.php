@@ -1,5 +1,4 @@
 <?php
-
 /**
 * Copyright (C) 2017 Petr Hucik <petr@getdatakick.com>
 *

@@ -26,6 +26,9 @@ type InputProps = {
   stage: EditStage,
   settings: SettingsType,
   review: ?ReviewType,
+  needConsent: boolean,
+  agreed: boolean,
+  onAgree: (boolean) => void,
   onUpdateReview: (ReviewType)=>void,
   onSave: (ReviewType)=>void,
   onClose: ()=>void
@@ -53,10 +56,10 @@ class EditReviewDialog extends React.PureComponent<Props> {
   }
 
   renderDialog = (product: ProductInfoType, review: ReviewType) => {
-    const { onClose, onSave, settings, stage } = this.props;
+    const { onClose, onSave, settings, stage, agreed } = this.props;
     const { name } = product;
     const errors = validateReview(settings.preferences.allowEmptyReviews, review);
-    const withErrors = hasErrors(errors);
+    const withErrors = hasErrors(errors) || !agreed;
     const saving = stage === 'saving';
     const saved = stage === 'saved' || stage === 'failed';
     const closeLabel = saved ? __('Close') : __('Cancel');
@@ -141,7 +144,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
   }
 
   renderForm = (review: ReviewType, product: ProductInfoType, errors: ReviewFormErrors) => {
-    const { width, settings, onUpdateReview } = this.props;
+    const { width, settings, onUpdateReview, agreed, onAgree, needConsent } = this.props;
     const smallDevice = width === 'sm' || width == 'xs';
     const image = product.image;
     const form = (
@@ -149,6 +152,9 @@ class EditReviewDialog extends React.PureComponent<Props> {
         product={product}
         settings={settings}
         review={review}
+        needConsent={needConsent}
+        agreed={agreed}
+        onAgree={onAgree}
         onUpdateReview={onUpdateReview}
         errors={errors} />
     );
