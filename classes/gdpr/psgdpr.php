@@ -19,6 +19,8 @@
 
 namespace Revws;
 use \Module;
+use \GDPRConsent;
+use \GDPRLog;
 
 class PrestashopGDRP implements GDPRInterface {
   const MODULE_NAME = 'psgdpr';
@@ -30,15 +32,37 @@ class PrestashopGDRP implements GDPRInterface {
   }
 
   public function __construct($revwsModuleId) {
-    $this->psgdpr = Module::getInstanceByName(self::MODULE_NAME);
     $this->revwsModuleId = $revwsModuleId;
   }
 
   public function getConsentMessage(Visitor $visitor) {
-    return \GDPRConsent::getConsentMessage($this->revwsModuleId, $visitor->getLanguage());
+    if (self::loadGDPR()) {
+      return GDPRConsent::getConsentMessage($this->revwsModuleId, $visitor->getLanguage());
+    }
   }
 
   public function logConsent(Visitor $visitor) {
-    \GDPRLog::addLog($visitor->getCustomerId(), 'consent', $this->revwsModuleId, $visitor->getGuestId());
+    if (self::loadGDPR()) {
+      GDPRLog::addLog($visitor->getCustomerId(), 'consent', $this->revwsModuleId, $visitor->getGuestId());
+    }
+  }
+
+  private static function loadGDPR() {
+    if (self::checkEnvironment()) {
+      return true;
+    }
+
+    if (self::isAvailable()) {
+      Module::getInstanceByName(self::MODULE_NAME);
+      return self::checkEnvironment();
+    }
+    return false;
+  }
+
+  private static function checkEnvironment() {
+    return (
+      is_callable(array('GDPRLog', 'addLog')) &&
+      is_callable(array('GDPRConsent', 'getConsentMessage'))
+    );
   }
 }
