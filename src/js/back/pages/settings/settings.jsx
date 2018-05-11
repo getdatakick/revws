@@ -606,7 +606,7 @@ class Settings extends React.PureComponent<Props, State> {
         <div className={styles.group}>
           <TextField
             select
-            label={__("General Data Protection Regulation")}
+            label={__('GDPR')}
             value={gdpr}
             fullWidth
             onChange={e => this.set(['gdpr', 'implementation'], e.target.value)}>

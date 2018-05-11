@@ -37,7 +37,8 @@ class PrestashopGDRP implements GDPRInterface {
 
   public function isEnabled() {
     if (self::loadGDPR()) {
-      return GDPRConsent::getConsentActive($this->revwsModuleId);
+      $active = GDPRConsent::getConsentActive($this->revwsModuleId);
+      return ($active === "1" || $active === true || $active === 1);
     }
     return false;
   }
