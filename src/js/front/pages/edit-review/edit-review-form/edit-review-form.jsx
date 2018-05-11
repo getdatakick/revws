@@ -11,6 +11,7 @@ import Checkbox from 'material-ui/Checkbox';
 import { FormControlLabel } from 'material-ui/Form';
 import { isLoggedIn } from 'front/settings';
 import styles from './edit-review-form.less';
+import { consentRequired } from 'front/utils/gdpr';
 
 
 type Props = {
@@ -134,8 +135,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
 
   renderConsent = () => {
     const { review, settings, agreed, onAgree } = this.props;
-    const editing = review.id != -1;
-    if (settings.gdpr.active && !editing) {
+    if (consentRequired(settings, review)) {
       const markup = {
         __html: settings.gdpr.text || __('By submitting this review you agree to use of your data as outlined in our privacy policy')
       };

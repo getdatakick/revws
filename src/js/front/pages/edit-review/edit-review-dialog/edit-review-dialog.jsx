@@ -17,6 +17,7 @@ import { validateReview, hasErrors } from 'common/utils/validation';
 import { find, assoc } from 'ramda';
 import { getProduct } from 'front/settings';
 import styles from './edit-review-dialog.less';
+import { consentRequired } from 'front/utils/gdpr';
 
 type Grades = {
   [ number ]: number
@@ -58,7 +59,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
     const { onClose, onSave, settings, stage, agreed } = this.props;
     const { name } = product;
     const errors = validateReview(settings.preferences.allowEmptyReviews, review);
-    const withErrors = hasErrors(errors) || !agreed;
+    const withErrors = hasErrors(errors) || (consentRequired(settings, review) && !agreed);
     const saving = stage === 'saving';
     const saved = stage === 'saved' || stage === 'failed';
     const closeLabel = saved ? __('Close') : __('Cancel');
