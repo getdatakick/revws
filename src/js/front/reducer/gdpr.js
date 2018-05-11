@@ -4,36 +4,25 @@ import Types from 'front/actions/types';
 import type { SettingsType } from 'front/types';
 
 type State = {
-  needConsent: boolean,
   agreed: boolean
 }
 
-const defaultState = (needConsent: boolean): State => ({
-  needConsent: needConsent,
-  agreed: !needConsent
-});
+const defaultState: State = {
+  agreed: false
+};
 
 export default (settings: SettingsType) => (state?: State, action:Action): State => {
-  state = state || defaultState(settings.gdpr.needConsent);
+  state = state || defaultState;
 
   if (action.type === Types.agreeGDPR) {
     return {
-      ...state,
       agreed: action.agreed
     };
   }
 
-  if (state.needConsent && action.type === Types.closeEditReview) {
+  if (action.type === Types.closeEditReview || action.type === Types.saveReviewCompleted) {
     return {
       agreed: false,
-      needConsent: true
-    };
-  }
-
-  if (state.needConsent && action.type === Types.saveReviewCompleted) {
-    return {
-      agreed: true,
-      needConsent: false
     };
   }
 

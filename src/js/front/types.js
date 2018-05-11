@@ -37,7 +37,6 @@ export type SettingsType = {
   },
   gdpr: {
     active: boolean,
-    needConsent: boolean,
     text: string
   },
   loginUrl: string,

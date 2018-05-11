@@ -18,9 +18,7 @@
 */
 
 namespace Revws;
-use \Hook;
 use \Module;
-use \Db;
 
 class PrestashopGDRP implements GDPRInterface {
   const MODULE_NAME = 'psgdpr';
@@ -40,11 +38,7 @@ class PrestashopGDRP implements GDPRInterface {
     return \GDPRConsent::getConsentMessage($this->revwsModuleId, $visitor->getLanguage());
   }
 
-  public function hasConsent(Visitor $visitor) {
-    return false;
-  }
-
   public function logConsent(Visitor $visitor) {
-    return false;
+    \GDPRLog::addLog($visitor->getCustomerId(), 'consent', $this->revwsModuleId, $visitor->getGuestId());
   }
 }

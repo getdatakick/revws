@@ -18,7 +18,6 @@ type Props = {
   product: ProductInfoType,
   errors: ReviewFormErrors,
   review: ReviewType,
-  needConsent: boolean,
   agreed: boolean,
   onAgree: (boolean) => void,
   onUpdateReview: (ReviewType)=>void,
@@ -134,12 +133,9 @@ class EditReviewForm extends React.PureComponent<Props, State> {
   }
 
   renderConsent = () => {
-    const { review, settings, needConsent, agreed, onAgree } = this.props;
+    const { review, settings, agreed, onAgree } = this.props;
     const editing = review.id != -1;
-    if (! settings.gdpr.active || editing) {
-      return;
-    }
-    if (needConsent) {
+    if (settings.gdpr.active && !editing) {
       return (
         <FormControlLabel
           control={
@@ -152,12 +148,6 @@ class EditReviewForm extends React.PureComponent<Props, State> {
               {settings.gdpr.text || __('By submitting this review you agree to use of your data as outlined in our privacy policy')}
             </span>
           )} />
-      );
-    } else {
-      return (
-        <div className={styles.note}>
-          {__('You have already agreed on collecting and processing your personal informations')}
-        </div>
       );
     }
   }

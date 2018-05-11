@@ -26,14 +26,14 @@ class GDPR implements GDPRInterface {
   private $settings;
   private $impl;
 
-  public function __construct($settings) {
-    $this->settings = $settings;
-    $pref = $settings->getGDPRPreference();
+  public function __construct($module) {
+    $this->settings = $module->getSettings();
+    $pref = $this->settings->getGDPRPreference();
     if ($pref === 'basic') {
       $this->impl = new BasicGDPR();
     }
     if ($pref === 'psgdpr' && PrestashopGDRP::isAvailable()) {
-      $this->impl = new PrestashopGDRP();
+      $this->impl = new PrestashopGDRP($module->id);
     }
   }
 
@@ -45,10 +45,6 @@ class GDPR implements GDPRInterface {
     if ($this->impl) {
       $this->impl->logConsent($visitor);
     }
-  }
-
-  public function hasConsent(Visitor $visitor) {
-    return $this->impl ? $this->impl->hasConsent($visitor) : true;
   }
 
   public function isEnabled() {

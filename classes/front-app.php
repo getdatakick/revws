@@ -128,7 +128,6 @@ class FrontApp {
       ],
       'gdpr' => [
         'active' => $gdpr->isEnabled(),
-        'needConsent' => !$gdpr->hasConsent($visitor),
         'text' => $gdpr->getConsentMessage($visitor)
       ],
       'canCreate' => $canCreate,

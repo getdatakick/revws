@@ -21,6 +21,5 @@ namespace Revws;
 
 interface GDPRInterface {
   function getConsentMessage(Visitor $visitor);
-  function hasConsent(Visitor $visitor);
   function logConsent(Visitor $visitor);
 }

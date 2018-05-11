@@ -545,7 +545,7 @@ class Revws extends Module {
 
   public function getGDPR() {
     if (! $this->gdpr) {
-      $this->gdpr = new \Revws\GDPR($this->getSettings());
+      $this->gdpr = new \Revws\GDPR($this);
     }
     return $this->gdpr;
   }

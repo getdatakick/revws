@@ -25,11 +25,8 @@ use \Db;
 class BasicGDPR implements GDPRInterface {
 
   public function getConsentMessage(Visitor $visitor) {
+    // use build-in message
     return '';
-  }
-
-  public function hasConsent(Visitor $visitor) {
-    return false;
   }
 
   public function logConsent(Visitor $visitor) {

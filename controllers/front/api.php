@@ -73,7 +73,6 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     $id = (int)Tools::getValue('id');
     $perms = $this->module->getPermissions();
     $settings = $this->module->getSettings();
-    $gdpr = $this->module->getGDPR();
     if (! $perms->canCreateReview($productId)) {
       throw new Exception("Permission denied");
     }
@@ -84,9 +83,7 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
       throw new Exception("Invalid product id");
     }
     $visitor = $this->module->getVisitor();
-    if (! $gdpr->hasConsent($visitor)) {
-      $gdpr->logConsent($visitor);
-    }
+    $this->module->getGDPR()->logConsent($visitor);
     $product = $this->getProductById($productId);
     $review = $this->getReviewPayload();
     $review->setValidated(! $settings->validateNewReviews());

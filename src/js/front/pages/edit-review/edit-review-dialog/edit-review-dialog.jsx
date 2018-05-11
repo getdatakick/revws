@@ -26,7 +26,6 @@ type InputProps = {
   stage: EditStage,
   settings: SettingsType,
   review: ?ReviewType,
-  needConsent: boolean,
   agreed: boolean,
   onAgree: (boolean) => void,
   onUpdateReview: (ReviewType)=>void,
@@ -144,7 +143,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
   }
 
   renderForm = (review: ReviewType, product: ProductInfoType, errors: ReviewFormErrors) => {
-    const { width, settings, onUpdateReview, agreed, onAgree, needConsent } = this.props;
+    const { width, settings, onUpdateReview, agreed, onAgree } = this.props;
     const smallDevice = width === 'sm' || width == 'xs';
     const image = product.image;
     const form = (
@@ -152,7 +151,6 @@ class EditReviewDialog extends React.PureComponent<Props> {
         product={product}
         settings={settings}
         review={review}
-        needConsent={needConsent}
         agreed={agreed}
         onAgree={onAgree}
         onUpdateReview={onUpdateReview}
