@@ -22,6 +22,7 @@ use \Revws\Shapes;
 use \Revws\FrontApp;
 use \Revws\CsvReader;
 use \Revws\Visitor;
+use \Revws\PrestashopGDRP;
 
 class AdminRevwsBackendController extends ModuleAdminController {
   public $module;
@@ -71,7 +72,8 @@ class AdminRevwsBackendController extends ModuleAdminController {
           'environment' => [
             'mailstream' => Module::isInstalled('mailstream'),
             'krona' => $this->module->getKrona()->isInstalled(),
-            'productcomments' => Module::isInstalled('productcomments')
+            'productcomments' => Module::isInstalled('productcomments'),
+            'psgdpr' => PrestashopGDRP::isAvailable()
           ],
         ],
         'versionCheck' => $settings->getCheckModuleVersion(),

@@ -48,7 +48,10 @@ class GDPR implements GDPRInterface {
   }
 
   public function isEnabled() {
-    return !!$this->impl;
+    if ($this->impl) {
+      return $this->impl->isEnabled();
+    }
+    return false;
   }
 
   public function deleteData($customerId, $email) {

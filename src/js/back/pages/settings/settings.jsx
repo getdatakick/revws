@@ -144,7 +144,7 @@ class Settings extends React.PureComponent<Props, State> {
             <ScrollSpy items={items} className={styles.sectionList} currentClassName={styles.activeSection}>
               { sections.map((section, i) => (
                 <li className={styles.sectionListItem} key={i}>
-                  <a href={'#'+sectionKey(section)}>{section.label}</a>
+                  <a href={'#'+sectionKey(section)}>{section.menuLabel || section.label}</a>
                 </li>
               )) }
             </ScrollSpy>
@@ -594,12 +594,27 @@ class Settings extends React.PureComponent<Props, State> {
   }
 
   renderGeneralSettings = () => {
+    const { psgdpr } = this.props.data.environment;
+    const gdpr = this.state.settings.gdpr.implementation;
     return (
       <FormGroup>
         <FormControlLabel
           control={this.renderSwitch(['general', 'multilang'])}
           label={__("Filter reviews by current language")}
         />
+        <div className={styles.space} />
+        <div className={styles.group}>
+          <TextField
+            select
+            label={__("General Data Protection Regulation")}
+            value={gdpr}
+            fullWidth
+            onChange={e => this.set(['gdpr', 'implementation'], e.target.value)}>
+            <MenuItem value='none'>{__('Submit reviews without consent')}</MenuItem>
+            <MenuItem value='basic'>{__('Simple consent')}</MenuItem>
+            {psgdpr && <MenuItem value='psgdpr'>{__('Official prestashop GDPR module')}</MenuItem>}
+          </TextField>
+        </div>
       </FormGroup>
     );
   }

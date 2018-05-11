@@ -75,13 +75,17 @@ export type SettingsType = {
   },
   richSnippets: {
     enabled: boolean
+  },
+  gdpr: {
+    implementation: 'none' | 'basic' | 'psgdpr'
   }
 }
 
 export type EnvironmentType = {
   productcomments: boolean,
   krona: boolean,
-  mailstream: boolean
+  mailstream: boolean,
+  psgdpr: boolean
 }
 
 export type GlobalDataType = {
