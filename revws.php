@@ -491,7 +491,12 @@ class Revws extends Module {
   }
 
   public function clearCache() {
-    $this->_clearCache('product-list.tpl');
+    if (version_compare(_PS_VERSION_, '1.6.1', '>=')) {
+      $this->_clearCache('product-list.tpl');
+    } else {
+      // clear complete smarty cache for old ps versions
+      Tools::clearSmartyCache();
+    }
   }
 
   public function getFrontTranslations() {

@@ -97,7 +97,7 @@ gulp.task('build-javascript', function(done) {
 
 gulp.task('copy-javascript', function(done) {
   gulp.src('./build/*.js')
-    .pipe(gulp.dest('../views/js'))
+    .pipe(gulp.dest('./build/staging/revws/views/js'))
     .on('end', done);
 });
 
