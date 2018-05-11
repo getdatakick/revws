@@ -136,6 +136,9 @@ class EditReviewForm extends React.PureComponent<Props, State> {
     const { review, settings, agreed, onAgree } = this.props;
     const editing = review.id != -1;
     if (settings.gdpr.active && !editing) {
+      const markup = {
+        __html: settings.gdpr.text || __('By submitting this review you agree to use of your data as outlined in our privacy policy')
+      };
       return (
         <FormControlLabel
           control={
@@ -144,9 +147,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
               onChange={() => onAgree(!agreed)} />
           }
           label={(
-            <span className={styles.subtitle}>
-              {settings.gdpr.text || __('By submitting this review you agree to use of your data as outlined in our privacy policy')}
-            </span>
+            <span className={styles.gdpr} dangerouslySetInnerHTML={markup} />
           )} />
       );
     }
