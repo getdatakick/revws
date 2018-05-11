@@ -427,3 +427,7 @@ a .revws-grading {
     padding-left: 0px;
   }
 }
+
+.revws-reset label {
+  text-align: left;
+}

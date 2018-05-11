@@ -6,7 +6,7 @@ import type { EditStage, CriterionType, ReviewType, ReviewFormErrors, ProductInf
 import type { SettingsType } from 'front/types';
 import Grading from 'common/components/grading/grading';
 import Button from 'material-ui/Button';
-import Dialog, { DialogActions, DialogContent, DialogTitle, withMobileDialog } from 'material-ui/Dialog';
+import Dialog, { DialogActions, DialogContent, DialogTitle, withMobileDialog } from 'common/components/dialog';
 import EditReviewForm from '../edit-review-form/edit-review-form';
 import Grid from 'material-ui/Grid';
 import Check from 'material-ui-icons/Check';

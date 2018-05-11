@@ -11,7 +11,7 @@ import Dialog, {
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from 'material-ui/Dialog';
+} from 'common/components/dialog';
 import Avatar from 'material-ui/Avatar';
 import Button from 'material-ui/Button';
 import Dropzone from 'react-dropzone';

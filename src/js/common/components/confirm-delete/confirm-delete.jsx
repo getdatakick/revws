@@ -3,7 +3,7 @@
 import React from 'react';
 import type { ComponentType } from 'react';
 import Button from 'material-ui/Button';
-import Dialog, { DialogActions, DialogContent, withMobileDialog } from 'material-ui/Dialog';
+import Dialog, { DialogActions, DialogContent, withMobileDialog } from 'common/components/dialog';
 import Question from 'material-ui-icons/HelpOutline';
 import styles from './confirm-delete.less';
 

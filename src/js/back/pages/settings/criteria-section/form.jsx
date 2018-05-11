@@ -8,7 +8,7 @@ import type { LanguagesType } from 'common/types';
 import MultiLangField from 'common/components/multilang/multilang';
 import { FormControlLabel } from 'material-ui/Form';
 import Button from 'material-ui/Button';
-import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
+import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog';
 import Switch from 'material-ui/Switch';
 import styles from './criteria-section.less';
 import Tabs from './tabs';

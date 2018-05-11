@@ -3,7 +3,7 @@
 import React from 'react';
 import type { DisplayCriteriaType, ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
 import Button from 'material-ui/Button';
-import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
+import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog';
 import EditReviewForm from './edit-review-form-controller';
 import ViewReviewForm from './view-review-form';
 import { validateReview, hasErrors } from 'common/utils/validation';

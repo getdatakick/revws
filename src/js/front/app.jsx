@@ -15,13 +15,21 @@ type Props = {
   id: number
 };
 
-class FrontApp extends React.PureComponent<Props> {
+type State = {
+  fontSize: number
+}
+
+class FrontApp extends React.PureComponent<Props, State> {
   static displayName = 'FrontApp';
+
+  state = {
+    fontSize: getFontSize()
+  }
 
   render() {
     const { settings, type, id } = this.props;
     return (
-      <AppTheme htmlFontSize={10}>
+      <AppTheme htmlFontSize={this.state.fontSize}>
         { type === 'product' ? (
           <ProductReviewList settings={settings} productId={id} />
         ) : (
@@ -34,5 +42,13 @@ class FrontApp extends React.PureComponent<Props> {
     );
   }
 }
+
+const getFontSize = () => {
+  const doc = document.documentElement;
+  if (doc) {
+    return parseFloat(getComputedStyle(doc).fontSize);
+  }
+  return 10;
+};
 
 export default FrontApp;

@@ -4,7 +4,7 @@ import React from 'react';
 import type { ReviewFormErrors, NameFormatType, ReviewType, CriteriaType, GradingShapeType, CustomerInfoType, LanguagesType } from 'common/types';
 import { equals, keys } from 'ramda';
 import Button from 'material-ui/Button';
-import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
+import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog';
 import SelectProduct from 'back/components/select-product';
 import SelectCustomer from 'back/components/select-customer';
 import EditReviewForm from 'back/components/edit-review/edit-review-form-controller';

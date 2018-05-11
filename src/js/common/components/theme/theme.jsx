@@ -20,7 +20,7 @@ class AppTheme extends React.PureComponent<Props> {
     const { zIndexBase, children, htmlFontSize } = this.props;
     const theme = createMuiTheme({
       typography: {
-        htmlFontSize
+        htmlFontSize: htmlFontSize
       },
       zIndex: {
         mobileStepper: zIndexBase + 1000,
@@ -33,7 +33,9 @@ class AppTheme extends React.PureComponent<Props> {
     });
     return (
       <MuiThemeProvider theme={theme}>
-        { children }
+        <div className="revws-reset">
+          { children }
+        </div>
       </MuiThemeProvider>
     );
   }
