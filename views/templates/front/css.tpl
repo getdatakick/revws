@@ -149,7 +149,7 @@ a .revws-grading {
 
 .revws-verified-buyer-badge:before {
   content: '';
-  background:url('{$cssSettings.imgs}/verified-buyer-badge.svg');
+  background:url('../img/verified-buyer-badge.svg');
   width: 14px;
   height: 14px;
   margin-right: 5px;
