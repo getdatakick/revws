@@ -26,7 +26,7 @@ class BackApp extends React.PureComponent<Props> {
     const { data, newVersionAvailable, routingState, goTo } = this.props;
     const snackbarPosition = { vertical: 'bottom', horizontal: 'right' };
     return (
-      <AppTheme htmlFontSize={16}>
+      <AppTheme>
         <div className={styles.app}>
           { this.renderNavigation(routingState, newVersionAvailable) }
           { render(routingState, { ...routingState, data, goTo }) }

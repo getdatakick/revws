@@ -2,18 +2,20 @@
 
 import React from 'react';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import { getFontSize } from 'common/utils/browser';
 
 type Props = {
   htmlFontSize: number,
+  zIndexBase: number,
   children: any,
-  zIndexBase?: number
 };
 
 class AppTheme extends React.PureComponent<Props> {
   static displayName = 'AppTheme';
 
   static defaultProps = {
-    zIndexBase: 1000000
+    htmlFontSize: getFontSize(),
+    zIndexBase: 17000000
   }
 
   render() {
