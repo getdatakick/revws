@@ -564,6 +564,10 @@ class Revws extends Module {
     $filename = REVWS_MODULE_DIR . '/' . $name;
     if (!file_exists($filename)) {
       $this->generateCSS($set, $filename);
+      if (! file_exists($filename)) {
+        // return fallback css file
+        return $this->getPath("views/css/fallback.css");
+      }
     }
     return $this->getPath($name);
   }
