@@ -411,7 +411,9 @@ class Revws extends Module {
   }
 
   public function getPath($relative) {
-    return $this->getPathUri() . $relative;
+    $uri = rtrim($this->getPathUri(), '/');
+    $rel = ltrim($relative, '/');
+    return "$uri/$rel";
   }
 
   public static function getReviewUrl($context, $productId) {
