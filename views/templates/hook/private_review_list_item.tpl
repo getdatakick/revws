@@ -50,10 +50,12 @@
         {if $showCriteria && $displayCriteria === 'inline'}
         <div class="revws-review-criteria revws-review-criteria-inline">
           {foreach from=$review.grades item=critValue key=critKey}
+          {if isset($criteria[$critKey])}
           <div class='revws-review-criterion'>
             <span class='revws-criterion-label'>{$criteria[$critKey].label}</span>
             {include file='./grading.tpl' grade=$critValue shape=$shape type='criterion'}
           </div>
+          {/if}
           {/foreach}
         </div>
         {/if}
@@ -74,12 +76,14 @@
         <table>
           <tbody>
             {foreach from=$review.grades item=critValue key=critKey}
+            {if isset($criteria[$critKey])}
             <tr>
               <td class="revws-criterion-label">{$criteria[$critKey].label}</td>
               <td class="revws-criterion-value">
                 {include file='./grading.tpl' grade=$critValue shape=$shape type='criterion'}
               </td>
             </tr>
+            {/if}
             {/foreach}
           </tbody>
         </table>
