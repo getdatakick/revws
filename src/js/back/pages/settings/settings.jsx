@@ -508,12 +508,33 @@ class Settings extends React.PureComponent<Props, State> {
   }
 
   renderProductList = () => {
+    const settings = this.state.settings;
+    const noReviews = settings.display.productList.noReviews;
     return (
       <FormGroup>
         <FormControlLabel
           control={this.renderSwitch(['display', 'productList', 'show'])}
           label={__("Show average ratings on product listing page")}
         />
+        <div className={styles.space} />
+        <div className={styles.group}>
+          <TextField
+            select
+            fullWidth
+            label={__("When no review exists for product")}
+            value={noReviews}
+            disabled={!settings.display.productList.show}
+            onChange={e => this.set(['display', 'productList', 'noReviews'], e.target.value)}>
+            <MenuItem value='omit'>{__("Don't render ratings")}</MenuItem>
+            <MenuItem value='hide'>{__('Render ratings, but make it invisible')}</MenuItem>
+            <MenuItem value='show'>{__("Render empty ratings")}</MenuItem>
+          </TextField>
+        </div>
+        <div className={styles.note2}>
+          {noReviews === 'omit' && __('No ratings markup will be rendered. Product blocks with and without ratings can have different height!')}
+          {noReviews === 'hide' && __('Ratings markup will be rendered, but it will be transparent. This is useful to align height of your product blocks')}
+          {noReviews === 'show' && __("Empty stars will be rendered if product hasn't been reviewed yet")}
+        </div>
       </FormGroup>
     );
   }

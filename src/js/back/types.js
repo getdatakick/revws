@@ -27,7 +27,8 @@ export type SettingsType = {
       showSignInButton: boolean,
     },
     productList: {
-      show: boolean
+      show: boolean,
+      noReviews: 'show' | 'hide' | 'omit'
     },
     productComparison: {
       show: boolean,

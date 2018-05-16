@@ -77,6 +77,7 @@ class Settings {
         ],
         'productList' => [
           'show' => true,
+          'noReviews' => 'omit'
         ],
         'productComparison' => [
           'show' => true,
@@ -220,6 +221,16 @@ class Settings {
 
   public function showOnProductListing() {
     return $this->toBool($this->get(['display', 'productList', 'show']));
+  }
+
+  public function productListNoReviewsBehavior() {
+    if ($this->showOnProductListing()) {
+      $val = $this->get(['display', 'productList', 'noReviews']);
+      if ($val === 'hide' || $val === 'omit' || $val === 'show') {
+        return $val;
+      }
+    }
+    return 'omit';
   }
 
   public function moderationEnabled() {

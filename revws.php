@@ -367,6 +367,7 @@ class Revws extends Module {
     if ($settings->showOnProductListing()) {
       $productId = self::getProductId($params['product']);
       list($grade, $count) = RevwsReview::getAverageGrade($settings, $productId);
+      $this->context->smarty->assign('omitEmpty', $settings->productListNoReviewsBehavior() === 'omit');
       $this->context->smarty->assign('productId', $productId);
       $this->context->smarty->assign('grade', $grade);
       $this->context->smarty->assign('reviewCount', $count);
@@ -600,7 +601,10 @@ class Revws extends Module {
         'list' => $set->getShapeSize(),
         'create' => $set->getShapeSize() * 5
       ],
-      'colors' => $colors
+      'colors' => $colors,
+      'productList' => [
+        'noReviews' => $set->productListNoReviewsBehavior()
+      ]
     ];
   }
 

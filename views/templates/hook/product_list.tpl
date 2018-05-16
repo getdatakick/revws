@@ -15,6 +15,7 @@
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
+{if $reviewCount>0 || !$omitEmpty}
 <div class="revws-product-list{if $reviewCount == 0} revws-product-list-empty{/if}">
   <a href="{$reviewsUrl}">
     {include file='./grading.tpl' grade=$grade shape=$shape type='list'}
@@ -27,3 +28,4 @@
     </div>
   </a>
 </div>
+{/if}

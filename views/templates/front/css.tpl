@@ -316,7 +316,11 @@ a .revws-grading {
 }
 
 .revws-product-list-empty {
+  {if $cssSettings.productList.noReviews == 'omit'}
   display: none;
+  {elseif $cssSettings.productList.noReviews == 'hide'}
+  opacity: 0;
+  {/if}
 }
 
 .revws-replies {
