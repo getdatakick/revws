@@ -41,14 +41,14 @@ class FrontApp {
     $visitor = $this->getVisitor();
     $perms = $this->getPermissions();
     $set = $this->getSettings();
+    $reviewedProducts = $visitor->getReviewedProducts();
+    $productsToReview = [];
     $loginUrl;
     if ($entityType == 'product') {
       $products = [
         $entityId => self::getProductData($entityId, $this->getLanguage(), $this->getPermissions())
       ];
       $reviews = $this->getProductReviews($entityId);
-      $canCreate = $products[$entityId]['canCreate'];
-      $productsToReview = [];
       if (! $visitor->hasWrittenReview($entityId)) {
         $productsToReview[] = $entityId;
       }
@@ -56,8 +56,6 @@ class FrontApp {
     } else {
       $products = [];
       $reviews = $this->getCustomerReviews($entityId);
-      $canCreate = false;
-      $reviewedProducts = $visitor->getReviewedProducts();
       foreach ($reviewedProducts as $productId) {
         $productId = (int)$productId;
         if (! isset($products[$productId])) {
@@ -79,6 +77,9 @@ class FrontApp {
           } catch (Exception $ignore) {
           }
         }
+        if (! $visitor->hasWrittenReview($reviewProduct) && isset($products[$reviewProduct]) && !in_array($reviewProduct, $productsToReview)) {
+          $productsToReview[] = $reviewProduct;
+        }
       }
       $loginUrl = $this->module->getLoginUrl(null);
     }
@@ -93,6 +94,7 @@ class FrontApp {
       'entityId' => $entityId,
       'products' => $products,
       'productsToReview' => $productsToReview,
+      'reviewedProducts' => $reviewedProducts,
       'reviews' => $reviews,
       'visitor' => [
         'type' => $visitor->getType(),
@@ -130,8 +132,7 @@ class FrontApp {
         'mode' => $set->getGDPRPreference(),
         'active' => $gdpr->isEnabled(),
         'text' => $gdpr->getConsentMessage($visitor)
-      ],
-      'canCreate' => $canCreate,
+      ]
     ];
   }
 
@@ -184,8 +185,7 @@ class FrontApp {
       'name' => $productName,
       'url' => $product->getLink(),
       'image' => $image,
-      'criteria' => RevwsCriterion::getByProduct($productId),
-      'canCreate' => $permissions->canCreateReview($productId)
+      'criteria' => RevwsCriterion::getByProduct($productId)
     ];
   }
 

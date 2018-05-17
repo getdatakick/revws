@@ -31,12 +31,14 @@
     </div>
     {/if}
   {else}
-    {if $canCreate}
+    {if $canReview}
       <a class="revws-product-extra-link" href="#" data-revws-create-trigger="{$productId}">
         {l s='Be the first to write a review!' mod='revws'}
       </a>
     {else}
-      {if $isGuest && $reviewsData.preferences.showSignInButton}
+      {if $hasReviewed}
+        {l s='Your review hasn\'t been approved yet' mod='revws'}
+      {elseif $isGuest && $reviewsData.preferences.showSignInButton}
         <a class="revws-product-extra-link" href="{$loginLink}">
           {l s='Sign in to write a review' mod='revws'}
         </a>

@@ -39,6 +39,5 @@ export type SettingsType = {
     active: boolean,
     text: string
   },
-  loginUrl: string,
-  canCreate: boolean
+  loginUrl: string
 }

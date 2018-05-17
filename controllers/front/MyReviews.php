@@ -45,14 +45,11 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
     $params = $this->getParams();
     $reviewProduct = (isset($params['review-product'])) ? (int)$params['review-product'] : null;
     $reviewsData = $frontApp->getData('customer', $visitor->getCustomerId(), $reviewProduct);
-    if ($reviewProduct && isset($reviewsData['products'][$reviewProduct])) {
-      $toReview = $reviewsData['products'][$reviewProduct];
-      if ($toReview['canCreate']) {
-        $reviewsData['initActions'] = [[
-          'type' => 'TRIGGER_CREATE_REVIEW',
-          'productId' => $reviewProduct
-        ]];
-      }
+    if ($reviewProduct && isset($reviewsData['products'][$reviewProduct]) && in_array($reviewProduct, $reviewsData['productsToReview'])) {
+      $reviewsData['initActions'] = [[
+        'type' => 'TRIGGER_CREATE_REVIEW',
+        'productId' => $reviewProduct
+      ]];
     }
     $this->context->smarty->assign('reviewsData', $reviewsData);
     $this->context->smarty->assign('microdata', $this->module->getSettings()->emitRichSnippets());

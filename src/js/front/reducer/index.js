@@ -7,17 +7,18 @@ import createEditReview from './edit-review';
 import createReviewList from './review-list';
 import snackbar from './snackbar';
 import deleteReview from './delete-review';
-import createProductsToReview from './products-to-review';
+import createVisitorReviews from './visitor-reviews';
 import createGDPR from './gdpr';
 
 const createReducer = (
   settings: SettingsType,
   reviews: ReviewListType,
-  toReview: Array<number>
+  toReview: Array<number>,
+  reviewed: Array<number>
 ) => {
   const editReview = createEditReview(settings);
   const reviewList = createReviewList(reviews);
-  const productsToReview = createProductsToReview(settings, toReview);
+  const visitorReviews = createVisitorReviews(settings, toReview, reviewed);
   const gdpr = createGDPR(settings);
   return combineReducers({
     gdpr,
@@ -25,7 +26,7 @@ const createReducer = (
     snackbar,
     editReview,
     deleteReview,
-    productsToReview
+    visitorReviews
   });
 };
 

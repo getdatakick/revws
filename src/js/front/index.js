@@ -13,6 +13,7 @@ import { isObject, isArray } from 'common/utils/ramda';
 import { asObject } from 'common/utils/input';
 import Types from 'front/actions/types';
 import { setTranslation } from 'translations';
+import { canReviewProduct } from 'front/utils/product';
 
 const startRevws = (init: any) => {
   setTranslation(asObject(init.translations));
@@ -30,7 +31,7 @@ const startRevws = (init: any) => {
     middlewares.push(logger);
   }
 
-  const reducer = createReducer(settings, reviews, init.productsToReview);
+  const reducer = createReducer(settings, reviews, init.productsToReview, init.reviewedProducts);
   const store = createStore(reducer, applyMiddleware(...middlewares));
   const isAction = (action: any) => {
     return (action && isObject(action) && has('type', action) && contains(action.type, values(Types)));
@@ -55,7 +56,7 @@ const startRevws = (init: any) => {
   };
 
 
-  if (init.entityType === 'product' && init.canCreate && window.location.href.indexOf('post_review') > -1) {
+  if (init.entityType === 'product' && window.location.href.indexOf('post_review') > -1 && canReviewProduct(settings, init.entityId)) {
     store.dispatch({
       type: 'TRIGGER_CREATE_REVIEW',
       productId: init.entityId

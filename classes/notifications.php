@@ -132,6 +132,7 @@ class Notifications {
   private function processReviewDeleted($id, $actor, $settings, $krona) {
     if ($actor === 'visitor') {
       // send notification to administrator
+      $review = $this->getReview($id);
       if ($settings->emailAdminReviewDeleted()) {
         $lang = $settings->getAdminEmailLanguage();
         $email = $settings->getAdminEmail();
@@ -140,7 +141,6 @@ class Notifications {
           self::emailError('revws-admin-review-deleted', $id, $lang, $email);
         }
       }
-
       $krona->reviewDeleted($review);
     }
     if ($actor === 'employee') {

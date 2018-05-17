@@ -300,10 +300,10 @@ class Revws extends Module {
     $set = $this->getSettings();
     if ($this->getSettings()->getPlacement() === 'tab') {
       $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
-      $reviewsData = $this->assignReviewsData((int)(Tools::getValue('id_product')));
+      $reviewId = (int)(Tools::getValue('id_product'));
+      $reviewsData = $this->assignReviewsData($reviewId);
       $emptyReviews = $reviewsData['reviews']['total'] == 0;
-      $canCreate = $reviewsData['canCreate'];
-      if ($emptyReviews && !$canCreate && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
+      if ($emptyReviews && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
         return;
       }
       return $this->display(__FILE__, 'product_tab_content.tpl');
@@ -314,10 +314,10 @@ class Revws extends Module {
     $set = $this->getSettings();
     if ($set->getPlacement() === 'block') {
       $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
-      $reviewsData = $this->assignReviewsData((int)(Tools::getValue('id_product')));
+      $reviewId = (int)(Tools::getValue('id_product'));
+      $reviewsData = $this->assignReviewsData($reviewId);
       $emptyReviews = $reviewsData['reviews']['total'] == 0;
-      $canCreate = $reviewsData['canCreate'];
-      if ($emptyReviews && !$canCreate && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
+      if ($emptyReviews && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
         return;
       }
       return $this->display(__FILE__, 'product_footer.tpl');
@@ -353,9 +353,10 @@ class Revws extends Module {
     $this->context->smarty->assign('productId', $productId);
     $this->context->smarty->assign('grade', $grade);
     $this->context->smarty->assign('reviewCount', $count);
+    $this->context->smarty->assign('hasReviewed', $this->getVisitor()->hasWrittenReview($productId));
     $this->context->smarty->assign('shape', $this->getShapeSettings());
     $this->context->smarty->assign('shapeSize', $set->getShapeSize());
-    $this->context->smarty->assign('canCreate', $this->getPermissions()->canCreateReview($productId));
+    $this->context->smarty->assign('canReview', $this->getPermissions()->canCreateReview($productId));
     $this->context->smarty->assign('isGuest', $this->getVisitor()->isGuest());
     $this->context->smarty->assign('loginLink', $this->getLoginUrl($productId));
     $this->context->smarty->assign('microdata', $set->emitRichSnippets());

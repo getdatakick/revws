@@ -98,8 +98,7 @@ export type ProductInfoType = {
   name: string,
   url: string,
   image: string,
-  criteria: Array<number>,
-  canCreate: boolean
+  criteria: Array<number>
 }
 
 

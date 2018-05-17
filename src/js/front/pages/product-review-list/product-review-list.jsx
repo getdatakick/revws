@@ -6,7 +6,7 @@ import List from './list';
 import Paging from 'common/components/review-list-paging/review-list-paging';
 
 type Props = {
-  canCreate: boolean,
+  canReview: boolean,
   productId: number,
   reviewList: ReviewListType,
   settings: SettingsType,
@@ -62,9 +62,9 @@ class FrontAppReviewList extends React.PureComponent<Props> {
   }
 
   renderWriteReview = () => {
-    const { canCreate, settings } = this.props;
+    const { canReview, settings } = this.props;
     const { loginUrl } = settings;
-    if (canCreate) {
+    if (canReview) {
       return this.renderCreateButton(__('Write your review!'));
     }
     if (this.showSignInButton()) {
@@ -79,9 +79,9 @@ class FrontAppReviewList extends React.PureComponent<Props> {
   }
 
   renderEmptyState = () => {
-    const { canCreate, settings } = this.props;
+    const { canReview, settings } = this.props;
     const { loginUrl } = settings;
-    if (canCreate) {
+    if (canReview) {
       return this.renderCreateButton(__('Be the first to write a review!'));
     }
     if (this.showSignInButton()) {

@@ -7,13 +7,18 @@ import ReviewList from './product-review-list';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
 import { getReviews, isLoading } from 'front/selectors/review-list';
-import { productsToReview } from 'front/selectors/products-to-review';
+import { getReviewedProducts } from 'front/selectors/visitor-reviews';
 import { loadPage, triggerVoteReview, triggerReportReview, triggerEditReview, triggerCreateReview, triggerDeleteReview } from 'front/actions/creators';
+
+type PassedProps = {
+  settings: SettingsType,
+  productId: number
+};
 
 const mapStateToProps = mapObject({
   reviewList: getReviews,
-  productsToReview,
   loading: isLoading,
+  reviewedProducts: getReviewedProducts
 });
 
 const actions = {
@@ -25,12 +30,13 @@ const actions = {
   loadPage: (entityId, page) => loadPage('product', entityId, page)
 };
 
-const merge = (props, actions, passed) => {
-  const { productsToReview, ...own } = props;
-  const { productId, settings } = passed;
-  const canCreate = settings.canCreate && contains(productId, productsToReview);
+const merge = (props, actions, passed: PassedProps) => {
+  const { reviewedProducts, ...own } = props;
+  const { settings, productId } = passed;
+  const forbidden = settings.visitor.type === 'guest' && !settings.preferences.allowGuestReviews;
+  const canReview = !forbidden && !contains(productId, reviewedProducts);
   return {
-    canCreate,
+    canReview,
     ...own,
     ...actions,
     ...passed
@@ -38,9 +44,6 @@ const merge = (props, actions, passed) => {
 };
 
 const connectRedux = connect(mapStateToProps, actions, merge);
-const ConnectedComponent: ComponentType<{
-  settings: SettingsType,
-  productId: number
-}> = connectRedux(ReviewList);
+const ConnectedComponent: ComponentType<PassedProps> = connectRedux(ReviewList);
 
 export default ConnectedComponent;

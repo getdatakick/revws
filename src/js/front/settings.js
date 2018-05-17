@@ -2,7 +2,7 @@
 import type { ReviewListType } from 'common/types';
 import type { SettingsType } from 'front/types';
 import {  has, prop } from 'ramda';
-import { isObject, isString, isArray, isNumber, isBoolean } from 'common/utils/ramda';
+import { isObject, isString, isArray, isNumber } from 'common/utils/ramda';
 import { asObject } from 'common/utils/input';
 import { fixReviews } from 'common/utils/reviews';
 
@@ -20,7 +20,6 @@ export const getSettings = (input: any): SettingsType => {
   const preferences = get('preferences', isObject, input);
   const products = asObject(get('products', isObject, input));
   const criteria = asObject(get('criteria', isObject, input));
-  const canCreate = get('canCreate', isBoolean, input);
   const api = get('api', isString, input);
   const csrf = get('csrf', isString, input);
   const language = get('language', isNumber, input);
@@ -38,8 +37,7 @@ export const getSettings = (input: any): SettingsType => {
     shapeSize,
     visitor,
     preferences,
-    gdpr,
-    canCreate
+    gdpr
   };
 };
 

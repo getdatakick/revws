@@ -23,10 +23,11 @@
 *
 *}
 {strip}
+{assign "canReview" !($reviewsData.visitor.type === 'guest' && !$reviewsData.preferences.allowGuestReviews) && in_array($productId, $reviewsData.productsToReview)}
 {if $reviewsData.reviews.total > 0}
   {include file="./private_review_list.tpl" reviewsData=$reviewsData}
   {include file="./private_review_list_paging.tpl" reviewsData=$reviewsData}
-  {if $reviewsData.canCreate}
+  {if $canReview}
     <div class="form-group">
       <a class="btn btn-primary" data-revws-create-trigger="{$productId}">
         {l s='Write your review!' mod='revws'}
@@ -42,7 +43,7 @@
     {/if}
   {/if}
 {else}
-  {if $reviewsData.canCreate}
+  {if $canReview}
     <div class="form-group">
       <a class="btn btn-primary" data-revws-create-trigger="{$productId}">
         {l s='Be the first to write a review!' mod='revws'}
