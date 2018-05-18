@@ -23,17 +23,16 @@
 *
 *}
 {assign "showCriteria" count($review.grades) > 1}
-{assign "emitMicrodata" isset($microdata) && !!$microdata}
 {strip}
-<div class="revws-review {if $review.underReview}revws-review-under-review {/if}{if $review.verifiedBuyer}revws-verified-buyer {/if}" {if $emitMicrodata}itemprop="review" itemscope itemtype="http://schema.org/Review"{/if}>
+<div class="revws-review {if $review.underReview}revws-review-under-review {/if}{if $review.verifiedBuyer}revws-verified-buyer {/if}" {if $microdata}itemprop="review" itemscope itemtype="http://schema.org/Review"{/if}>
   <div class="revws-review-author">
-    <div class="revws-review-author-name" {if $emitMicrodata}itemprop="author"{/if}>{$review.displayName|escape:'html':'UTF-8'}</div>
+    <div class="revws-review-author-name" {if $microdata}itemprop="author"{/if}>{$review.displayName|escape:'html':'UTF-8'}</div>
     {if $review.verifiedBuyer}
       <div class="revws-verified-buyer-badge">{l s="Verified purchase" mod='revws'}</div>
     {/if}
     {if count($review.grades) > 0}
     {include file='./grading.tpl' grade=$review.grade shape=$shape type='product'}
-    {if $emitMicrodata}
+    {if $microdata}
     <div class="revws-hidden" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
       <meta itemprop="worstRating" content="1">
       <meta itemprop="ratingValue" content="{$review.grade|string_format:"%.2f"}">
@@ -41,7 +40,7 @@
     </div>
     {/if}
     {/if}
-    <div class="revws-review-date" {if $emitMicrodata}itemprop="datePublished" content="{$review.date|date_format:"%Y-%m-%d"}"{/if}>{dateFormat date=$review.date|escape:'html':'UTF-8' full=0}</div>
+    <div class="revws-review-date" {if $microdata}itemprop="datePublished" content="{$review.date|date_format:"%Y-%m-%d"}"{/if}>{dateFormat date=$review.date|escape:'html':'UTF-8' full=0}</div>
   </div>
 
   <div class="revws-review-details">
@@ -59,7 +58,7 @@
           {/foreach}
         </div>
         {/if}
-        <p class="revws-review-title" {if $emitMicrodata}itemprop="name"{/if}>
+        <p class="revws-review-title" {if $microdata}itemprop="name"{/if}>
           {if isset($linkToProduct) && $linkToProduct}
           <a href="{$linkToProduct}">{$review.title}</a>
           {else}
@@ -69,7 +68,7 @@
         {if $review.underReview}
         <div class="revws-under-review">{l s="This review hasn't been approved yet" mod='revws'}</div>
         {/if}
-        <p class="revws-review-content" {if $emitMicrodata}itemprop="description"{/if}>{$review.content|escape:'html':'UTF-8'|nl2br}</p>
+        <p class="revws-review-content" {if $microdata}itemprop="description"{/if}>{$review.content|escape:'html':'UTF-8'|nl2br}</p>
       </div>
       {if $showCriteria && $displayCriteria === 'side'}
       <div class="revws-review-criteria revws-review-criteria-block">

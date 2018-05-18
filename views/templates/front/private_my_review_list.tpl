@@ -24,12 +24,12 @@
 *}
 {strip}
 <div class="revws-review-list">
-  {if $reviewsData.productsToReview}
+  {if $visitor.productsToReview}
   <h1 class="page-heading">{l s='Could you review these products?' mod='revws'}</h1>
   <div class='revws-review-requests'>
-  {foreach from=$reviewsData.productsToReview item=productId}
+  {foreach from=$visitor.productsToReview item=productId}
     {if $productId@iteration <= $reviewsData.preferences.customerMaxRequests}
-    {assign "product" $reviewsData.products[$productId]}
+    {assign "product" $reviewEntities.products[$productId]}
     <div class='revws-review-request'>
       <img src="{$product.image}" />
       <h3 class='revws-review-request-name'>
@@ -41,9 +41,9 @@
   </div>
   {/if}
   <h1 class="page-heading">{l s='Your reviews' mod='revws'}</h1>
-  {if $reviewsData.reviews.reviews}
-  {foreach from=$reviewsData.reviews.reviews item=review}
-    {assign "product" $reviewsData.products[$review.productId]}
+  {if $reviewList.reviews}
+  {foreach from=$reviewList.reviews item=review}
+    {assign "product" $reviewEntities.products[$review.productId]}
     <div class="revws-review-with-product">
       <div>
         <a href="{$product.url}">
@@ -54,7 +54,15 @@
         <h2>
           <a href="{$product.url}">{$product.name|escape:'html':'UTF-8'}</a>
         </h2>
-        {include file="../hook/private_review_list_item.tpl" review=$review shopName=$reviewsData.shopName shape=$reviewsData.theme.shape criteria=$reviewsData.criteria displayCriteria=$reviewsData.preferences.displayCriteria}
+        {include
+          file="../hook/private_review_list_item.tpl"
+          review=$review
+          shopName=$reviewsData.shopName
+          shape=$reviewsData.theme.shape
+          criteria=$reviewsData.criteria
+          displayCriteria=$reviewsData.preferences.displayCriteria
+          microdata=false
+        }
       </div>
     </div>
   {/foreach}

@@ -37,6 +37,7 @@ require_once __DIR__.'/classes/visitor.php';
 require_once __DIR__.'/classes/review-query.php';
 require_once __DIR__.'/classes/notifications.php';
 require_once __DIR__.'/classes/actor.php';
+require_once __DIR__.'/classes/review-list.php';
 require_once __DIR__.'/classes/front-app.php';
 require_once __DIR__.'/classes/integration/datakick.php';
 require_once __DIR__.'/classes/integration/krona.php';
@@ -51,6 +52,7 @@ class Revws extends Module {
   private $krona;
   private $csrfToken;
   private $gdpr;
+  private $frontApp;
 
   public function __construct() {
     $this->name = 'revws';
@@ -96,6 +98,7 @@ class Revws extends Module {
 
   public function registerHooks() {
     return $this->setupHooks([
+      'displayMobileHeader',
       'header',
       'displayProductTab',
       'displayProductTabContent',
@@ -277,13 +280,20 @@ class Revws extends Module {
     return $this->krona;
   }
 
-  private function assignReviewsData($productId) {
-    $frontApp = new \Revws\FrontApp($this);
-    $reviewsData = $frontApp->getData('product', $productId);
-    $this->context->smarty->assign('reviewsData', $reviewsData);
-    $this->context->smarty->assign('microdata', $this->getSettings()->emitRichSnippets());
-    Media::addJsDef([ 'revwsData' => $reviewsData ]);
-    return $reviewsData;
+  private function getProductReviewList() {
+    $productId = (int)(Tools::getValue('id_product'));
+    $frontApp = $this->getFrontApp();
+    $frontApp->addEntity('product', $productId);
+    $list = $frontApp->addList('reviewList', 'product', $productId);
+    $visitor = $this->getVisitor();
+    $settings = $this->getSettings();
+    $this->context->smarty->assign([
+      'reviewList' => $list->getData(),
+      'productId' => $productId,
+      'visitor' => $frontApp->getVisitorData(),
+      'reviewsData' => $frontApp->getStaticData()
+    ]);
+    return $list;
   }
 
   private function getShapeSettings() {
@@ -299,11 +309,8 @@ class Revws extends Module {
   public function hookDisplayProductTabContent() {
     $set = $this->getSettings();
     if ($this->getSettings()->getPlacement() === 'tab') {
-      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
-      $reviewId = (int)(Tools::getValue('id_product'));
-      $reviewsData = $this->assignReviewsData($reviewId);
-      $emptyReviews = $reviewsData['reviews']['total'] == 0;
-      if ($emptyReviews && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
+      $list = $this->getProductReviewList();
+      if ($list->isEmpty() && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
         return;
       }
       return $this->display(__FILE__, 'product_tab_content.tpl');
@@ -313,15 +320,16 @@ class Revws extends Module {
   public function hookDisplayFooterProduct() {
     $set = $this->getSettings();
     if ($set->getPlacement() === 'block') {
-      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
-      $reviewId = (int)(Tools::getValue('id_product'));
-      $reviewsData = $this->assignReviewsData($reviewId);
-      $emptyReviews = $reviewsData['reviews']['total'] == 0;
-      if ($emptyReviews && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
+      $list = $this->getProductReviewList();
+      if ($list->isEmpty() && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
         return;
       }
       return $this->display(__FILE__, 'product_footer.tpl');
     }
+  }
+
+  public function hookDisplayMobileHeader() {
+    $this->hookHeader();
   }
 
   public function hookHeader() {
@@ -538,10 +546,9 @@ class Revws extends Module {
     return $this->context->link->getModuleLink('revws', 'MyReviews');
   }
 
-  public function getLoginUrl($product) {
-    $back = $product ? $this->getProductReviewsLink($product) : $this->getMyReviewsUrl();
+  public function getLoginUrl() {
     return $this->context->link->getPageLink('authentication', true, null, [
-      'back' => $back
+      'back' => ''
     ]);
   }
 
@@ -624,6 +631,15 @@ class Revws extends Module {
       @mkdir($dir);
     }
     @file_put_contents($filename, $css);
+  }
+
+  public function getFrontApp() {
+    if (! $this->frontApp) {
+      $this->frontApp = new \Revws\FrontApp($this);
+      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
+      Media::addJsDef([ 'revwsData' => $this->frontApp ]);
+    }
+    return $this->frontApp;
   }
 
   private static function getProductId($product) {

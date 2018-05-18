@@ -15,13 +15,28 @@ import Types from 'front/actions/types';
 import { setTranslation } from 'translations';
 import { canReviewProduct } from 'front/utils/product';
 
-const startRevws = (init: any) => {
-  setTranslation(asObject(init.translations));
-  const dev = process.env.NODE_ENV !== 'production';
+const getDomNode = () => {
   const node = document.getElementById('revws-app');
+  if (node) {
+    return node;
+  }
+  const body = document.body;
+  if (body) {
+    const created = document.createElement('div');
+    created.setAttribute("id", "revws-app");
+    created.style.display = 'none';
+    body.append(created);
+    return created;
+  }
+};
+
+const startRevws = (init: any) => {
+  const node = getDomNode();
   if (! node) {
     return;
   }
+  setTranslation(asObject(init.translations));
+  const dev = process.env.NODE_ENV !== 'production';
 
   const settings = getSettings(init);
   const reviews = getReviews(init);

@@ -24,6 +24,15 @@
 *}
 {strip}
 <div class="revws-review-single">
-  {include file="./private_review_list_item.tpl" review=$review shape=$shape criteria=$criteria shopName=$shopName linkToProduct=$linkToProduct microdata=false}
+  {include
+    file="./private_review_list_item.tpl"
+    review=$review
+    shape=$shape
+    criteria=$criteria
+    shopName=$shopName
+    linkToProduct=$linkToProduct
+    displayCriteria=$displayCriteria
+    microdata=false
+  }
 </div>
 {/strip}

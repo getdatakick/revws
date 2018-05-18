@@ -12,9 +12,13 @@
 
 <div id="myreviews">
   <div id="revws-tab-content">
-    <div id="revws-app">
-      {include file="./private_my_review_list.tpl" reviewsData=$reviewsData}
-    </div>
+    {include
+      file="./private_my_review_list.tpl"
+      reviewsData=$reviewsData
+      reviewList=$reviewList
+      reviewEntities=$reviewEntities
+      visitor=$visitor
+    }
   </div>
 </div>
 

@@ -23,9 +23,22 @@
 *
 *}
 {strip}
+{if $reviewList}
 <div class="revws-review-list">
-{foreach from=$reviewsData.reviews.reviews item=review}
-  {include file="./private_review_list_item.tpl" review=$review shopName=$reviewsData.shopName shape=$reviewsData.theme.shape criteria=$reviewsData.criteria displayCriteria=$reviewsData.preferences.displayCriteria}
+{foreach from=$reviewList.reviews item=review}
+  {include
+    file="./private_review_list_item.tpl"
+    review=$review
+    shopName=$reviewsData.shopName
+    shape=$reviewsData.theme.shape
+    criteria=$reviewsData.criteria
+    displayCriteria=$displayCriteria
+    microdata=$microdata
+  }
 {/foreach}
 </div>
+{if $reviewList.pages > 1}
+  {include file="./private_review_list_paging.tpl" }
+{/if}
+{/if}
 {/strip}

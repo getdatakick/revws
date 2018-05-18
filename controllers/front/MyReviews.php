@@ -40,20 +40,29 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
   }
 
   private function renderContent(Visitor $visitor) {
-    $this->addJS($this->module->getPath('views/js/front_bootstrap.js'));
-    $frontApp = new FrontApp($this->module);
+    $frontApp = $this->module->getFrontApp();
+    $customerId = $visitor->getCustomerId();
+    $list = $frontApp->addList('myReviews', 'customer', $customerId);
+
+
     $params = $this->getParams();
     $reviewProduct = (isset($params['review-product'])) ? (int)$params['review-product'] : null;
-    $reviewsData = $frontApp->getData('customer', $visitor->getCustomerId(), $reviewProduct);
-    if ($reviewProduct && isset($reviewsData['products'][$reviewProduct]) && in_array($reviewProduct, $reviewsData['productsToReview'])) {
-      $reviewsData['initActions'] = [[
+    /*
+    TODO
+    $data = $frontApp->getData('customer', $visitor->getCustomerId(), $reviewProduct);
+    if ($reviewProduct && isset($data['products'][$reviewProduct]) && in_array($reviewProduct, $data['productsToReview'])) {
+      $data['initActions'] = [[
         'type' => 'TRIGGER_CREATE_REVIEW',
         'productId' => $reviewProduct
       ]];
     }
-    $this->context->smarty->assign('reviewsData', $reviewsData);
-    $this->context->smarty->assign('microdata', $this->module->getSettings()->emitRichSnippets());
-    Media::addJsDef([ 'revwsData' => $reviewsData ]);
+    */
+    $this->context->smarty->assign([
+      'reviewList' => $list->getData(),
+      'visitor' => $frontApp->getVisitorData(),
+      'reviewEntities' => $frontApp->getEntitites(),
+      'reviewsData' => $frontApp->getStaticData()
+    ]);
     $this->setTemplate('my-reviews.tpl');
   }
 

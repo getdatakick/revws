@@ -174,6 +174,9 @@ a .revws-grading {
   color: #222;
   font-weight: bold;
   font-size: 16px;
+}
+
+.revws-review-title a {
   cursor: pointer;
 }
 

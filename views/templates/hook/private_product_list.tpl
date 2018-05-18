@@ -23,10 +23,15 @@
 *
 *}
 {strip}
-{assign "canReview" !($reviewsData.visitor.type === 'guest' && !$reviewsData.preferences.allowGuestReviews) && in_array($productId, $reviewsData.productsToReview)}
-{if $reviewsData.reviews.total > 0}
-  {include file="./private_review_list.tpl" reviewsData=$reviewsData}
-  {include file="./private_review_list_paging.tpl" reviewsData=$reviewsData}
+{assign "canReview" !($visitor.type === 'guest' && !$reviewsData.preferences.allowGuestReviews) && !in_array($productId, $visitor.reviewedProducts)}
+{if $reviewList.total > 0}
+  {include
+    file="./private_review_list.tpl"
+    reviewList=$reviewList
+    reviewsData=$reviewsData
+    displayCriteria=$reviewsData.preferences.displayCriteria
+    microdata=$reviewsData.preferences.microdata
+  }
   {if $canReview}
     <div class="form-group">
       <a class="btn btn-primary" data-revws-create-trigger="{$productId}">
@@ -34,7 +39,7 @@
       </a>
     </div>
   {else}
-    {if $reviewsData.visitor.type === 'guest'}
+    {if $visitor.type === 'guest'}
     <div class="form-group">
       <a class="btn btn-primary" href="{$reviewsData.loginUrl}">
         {l s='Sign in to write a review' mod='revws'}
@@ -50,7 +55,7 @@
       </a>
     </div>
   {else}
-    {if $reviewsData.visitor.type === 'guest' && $reviewsData.preferences.showSignInButton}
+    {if $visitor.type === 'guest' && $reviewsData.preferences.showSignInButton}
       <div class="form-group">
         <a class="btn btn-primary" href="{$reviewsData.loginUrl}">
           {l s='Sign in to write a review' mod='revws'}

@@ -22,7 +22,6 @@
 *
 *
 *}
-{if $reviewsData.reviews.pages > 1}
 <div class="revws-paging">
   <div class="revws-page-prev revws-disabled">
     <svg width="24" height="24" focusable="false" viewBox="0 0 24 24">
@@ -35,4 +34,3 @@
     </svg>
   </div>
 </div>
-{/if}
