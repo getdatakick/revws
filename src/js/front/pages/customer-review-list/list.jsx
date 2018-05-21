@@ -1,14 +1,16 @@
 // @flow
 import React from 'react';
 import type { ReviewListType, ReviewType } from 'common/types';
-import type { SettingsType } from 'front/types';
+import type { SettingsType, EntitiesType } from 'front/types';
 import ReviewListItem from 'common/components/review-list-item/review-list-item';
 import { CircularProgress } from 'material-ui/Progress';
+import { getProduct } from 'front/utils/entities';
 import { map, F } from 'ramda';
 
 type Props = {
   reviewList: ReviewListType,
   settings: SettingsType,
+  entities: EntitiesType,
   loading: boolean,
   onEdit: (ReviewType)=>void,
   onDelete: (ReviewType)=>void,
@@ -33,8 +35,8 @@ class CustomerReviewList extends React.PureComponent<Props> {
   }
 
   renderReview = (review: ReviewType) => {
-    const { settings, onEdit, onDelete } = this.props;
-    const product = settings.products[review.productId];
+    const { settings, onEdit, onDelete, entities } = this.props;
+    const product = getProduct(entities, review.productId);
     return (
       <div key={review.id} className="revws-review-with-product">
         <div>

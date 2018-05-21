@@ -62,7 +62,8 @@ export type ReviewType = {
   canVote: boolean,
   canEdit: boolean,
   canDelete: boolean,
-  canReport: boolean
+  canReport: boolean,
+  loading?: boolean
 }
 
 export type ReviewListType = {

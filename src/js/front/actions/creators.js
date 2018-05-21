@@ -1,6 +1,7 @@
 // @flow
 
-import type { ReviewListType, ReviewType } from 'common/types';
+import type { ReviewType } from 'common/types';
+import type { ListConditions } from 'front/types';
 import type {
   CloseEditReviewAction,
   SaveReviewAction,
@@ -16,7 +17,7 @@ import type {
   TriggerVoteAction,
   TriggerReportReviewAction,
   ReviewRemovedAction,
-  LoadPageAction,
+  LoadListAction,
   SetReviewsAction,
   AgreeGDPRAction
 } from './index';
@@ -39,7 +40,7 @@ export const deleteReview = (review: ReviewType): DeleteReviewAction => ({ type:
 export const closeDeleteReview = (): CloseDeleteReviewAction => ({ type: Types.closeDeleteReview });
 export const reviewRemoved = (review: ReviewType): ReviewRemovedAction => ({ type: Types.reviewRemoved, review });
 
-export const loadPage = (entityType: 'product' | 'customer', entityId: number, page: number): LoadPageAction => ({ type: Types.loadPage, entityType, entityId, page });
-export const setReviews = (reviews: ReviewListType): SetReviewsAction => ({ type: Types.setReviews, reviews });
+export const loadList = (listId: string, conditions: ListConditions, page: number): LoadListAction => ({ type: Types.loadList, listId, conditions, page });
+export const setReviews = (reviews: Array<ReviewType>): SetReviewsAction => ({ type: Types.setReviews, reviews });
 
 export const agreeGDPR = (agreed: boolean): AgreeGDPRAction => ({ type: Types.agreeGDPR, agreed });

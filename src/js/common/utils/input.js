@@ -1,7 +1,7 @@
 // @flow
 import { isObject, isArray } from './ramda';
 
-export const asObject = (input: ?any): {} => {
+export const asObject = (input: ?any): any => {
   if (! input) {
     return {};
   }

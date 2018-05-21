@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import type { ReviewListType, ReviewType } from 'common/types';
-import type { SettingsType } from 'front/types';
+import type { SettingsType, VisitorType } from 'front/types';
 import List from './list';
 import Paging from 'common/components/review-list-paging/review-list-paging';
 
@@ -9,9 +9,10 @@ type Props = {
   canReview: boolean,
   productId: number,
   reviewList: ReviewListType,
+  visitor: VisitorType,
   settings: SettingsType,
   loading: boolean,
-  loadPage: (number, number)=>void,
+  loadPage: (number)=>void,
   onEdit: (ReviewType)=>void,
   onCreate: (number)=>void,
   onDelete: (ReviewType)=>void,
@@ -46,7 +47,7 @@ class FrontAppReviewList extends React.PureComponent<Props> {
   }
 
   renderPaging = () => {
-    const { productId, loading, loadPage } = this.props;
+    const { loading, loadPage } = this.props;
     const { page, pages } = this.props.reviewList;
     if (pages > 1) {
       return (
@@ -55,7 +56,7 @@ class FrontAppReviewList extends React.PureComponent<Props> {
           page={page}
           pages={pages}
           loading={loading}
-          loadPage={page => loadPage(productId, page)} />
+          loadPage={loadPage} />
       );
     }
     return null;
@@ -112,8 +113,8 @@ class FrontAppReviewList extends React.PureComponent<Props> {
   }
 
   showSignInButton = () => {
-    const { preferences, visitor } = this.props.settings;
-    return visitor.type === 'guest' && preferences.showSignInButton;
+    const { settings, visitor } = this.props;
+    return visitor.type === 'guest' && settings.preferences.showSignInButton;
   }
 }
 

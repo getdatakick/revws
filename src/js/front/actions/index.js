@@ -1,5 +1,6 @@
 // @flow
-import type { ReviewListType, ReviewType } from 'common/types';
+import type { ReviewType } from 'common/types';
+import type { ListConditions } from 'front/types';
 
 export type SetReviewAction = {
   type: 'SET_REVIEW',
@@ -70,16 +71,16 @@ export type SetSnackbarAction = {
   message: ?string
 }
 
-export type LoadPageAction = {
-  type: 'LOAD_PAGE',
-  entityType: 'product' | 'customer',
-  entityId: number,
+export type LoadListAction = {
+  type: 'LOAD_LIST',
+  listId: string,
+  conditions: ListConditions,
   page: number
 }
 
 export type SetReviewsAction = {
   type: 'SET_REVIEWS',
-  reviews: ReviewListType
+  reviews: Array<ReviewType>
 }
 
 export type AgreeGDPRAction = {

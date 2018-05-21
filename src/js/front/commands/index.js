@@ -10,14 +10,14 @@ import { saveReview } from './save-review';
 import { deleteReview } from './delete-review';
 import { voteReview } from './vote-review';
 import { reportAbuse } from './report-review';
-import { loadPage } from './load-page';
+import { loadList } from './load-list';
 
 const commands = {
   [ Types.saveReview ]: saveReview,
   [ Types.deleteReview ]: deleteReview,
   [ Types.triggerVote]: voteReview,
   [ Types.triggerReportReview]: reportAbuse,
-  [ Types.loadPage]: loadPage
+  [ Types.loadList]: loadList
 };
 
 export default (settings: SettingsType) => {

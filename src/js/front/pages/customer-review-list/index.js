@@ -5,14 +5,16 @@ import type { SettingsType } from 'front/types';
 import ReviewList from './customer-review-list';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
-import { getReviews, isLoading } from 'front/selectors/review-list';
+//import { getReviews, isLoading } from 'front/selectors/review-list';
 import { loadPage, triggerEditReview, triggerCreateReview, triggerDeleteReview } from 'front/actions/creators';
 import { getProductsToReview } from 'front/selectors/visitor-reviews';
+import { getEntities } from 'front/selectors/entities';
 
 const mapStateToProps = mapObject({
-  reviewList: getReviews,
-  loading: isLoading,
+//  reviewList: getReviews,
+//  loading: isLoading,
   productsToReview: getProductsToReview,
+  entities: getEntities
 });
 
 const actions = {

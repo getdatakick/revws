@@ -82,9 +82,6 @@ a .revws-grading {
 }
 
 /* review layout */
-#revws-tab-content {
-  margin: 0 0 20px 0;
-}
 
 .revws-review-list {
   position: relative;

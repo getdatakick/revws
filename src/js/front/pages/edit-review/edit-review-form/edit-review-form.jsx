@@ -2,20 +2,21 @@
 import React from 'react';
 import classnames from 'classnames';
 import type { ReviewType, ReviewFormErrors, ProductInfoType } from 'common/types';
-import type { SettingsType } from 'front/types';
+import type { SettingsType, VisitorType } from 'front/types';
 import { map, propOr, assoc } from 'ramda';
 import TextField from 'material-ui/TextField';
 import Grading from 'common/components/grading/grading';
 import TextArea from 'common/components/text-area/text-area';
 import Checkbox from 'material-ui/Checkbox';
 import { FormControlLabel } from 'material-ui/Form';
-import { isLoggedIn } from 'front/settings';
+import { isLoggedIn, isGuest } from 'front/utils/visitor';
 import styles from './edit-review-form.less';
 import { consentRequired } from 'front/utils/gdpr';
 
 
 type Props = {
   settings: SettingsType,
+  visitor: VisitorType,
   product: ProductInfoType,
   errors: ReviewFormErrors,
   review: ReviewType,
@@ -85,10 +86,10 @@ class EditReviewForm extends React.PureComponent<Props, State> {
   }
 
   renderAuthor = () => {
-    const { settings, review } = this.props;
+    const { review, visitor } = this.props;
     const editing = review.id != -1;
     const editAuthor = this.state.editAuthor;
-    if (!editAuthor && (editing || isLoggedIn(settings))) {
+    if (!editAuthor && (editing || isLoggedIn(visitor))) {
       return this.renderAuthorShort(review);
     } else {
       return this.renderAuthorInputs();
@@ -102,7 +103,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
   );
 
   renderAuthorInputs = () => {
-    const { review, errors, settings } = this.props;
+    const { review, errors, visitor } = this.props;
     const ret = [
       <div key="space" className={styles.marginBottom} />,
       <TextField
@@ -116,7 +117,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
         error={!! errors.displayName}
         fullWidth />
     ];
-    if (! isLoggedIn(settings)) {
+    if (isGuest(visitor)) {
       ret.push(
         <TextField
           key="email"

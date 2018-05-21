@@ -21,7 +21,7 @@ export default {
   triggerReportReview: 'TRIGGER_REPORT_REVIEW',
   triggerVote: 'TRIGGER_VOTE',
 
-  loadPage: 'LOAD_PAGE',
+  loadList: 'LOAD_LIST',
   setReviews: 'SET_REVIEWS',
 
   agreeGDPR: 'AGREE_GDPR'

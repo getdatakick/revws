@@ -1,10 +1,8 @@
 // @flow
 import type { Action } from 'front/actions';
-import type { EditStage, ReviewType, ProductInfoType } from 'common/types';
-import type { SettingsType } from 'front/types';
+import type { EditStage, ReviewType } from 'common/types';
+import type { VisitorType } from 'front/types';
 import { formatName } from 'common/utils/format';
-import { zipObj, repeat } from 'ramda';
-import { getProduct } from 'front/settings';
 import Types from 'front/actions/types';
 
 type State = {
@@ -17,19 +15,19 @@ const defaultState: State = {
   stage: 'edit'
 };
 
-const defaultReview = (settings: SettingsType, product: ProductInfoType):ReviewType => {
-  const { email, firstName, lastName, pseudonym, nameFormat } = settings.visitor;
+const defaultReview = (visitor: VisitorType, productId: number):ReviewType => {
+  const { email, firstName, lastName, pseudonym, nameFormat, type, language} = visitor;
 
   return {
     id: -1,
-    productId: product.id,
-    authorType: settings.visitor.type,
+    productId,
+    authorType: type,
     authorId: -1,
-    language: settings.language,
+    language,
     customer: null,
     product: null,
     email,
-    grades: zipObj(product.criteria, repeat(0, product.criteria.length)),
+    grades: {},
     reply: null,
     displayName: formatName(firstName, lastName, pseudonym, nameFormat),
     title: '',
@@ -45,14 +43,14 @@ const defaultReview = (settings: SettingsType, product: ProductInfoType):ReviewT
   };
 };
 
-export default (settings: SettingsType) => {
+export default (visitor: VisitorType) => {
   return (state?: State, action:Action): State => {
     state = state || defaultState;
 
     if (action.type === Types.triggerCreateReview) {
       return {
         ...state,
-        review: defaultReview(settings, getProduct(action.productId, settings)),
+        review: defaultReview(visitor, action.productId),
       };
     }
 

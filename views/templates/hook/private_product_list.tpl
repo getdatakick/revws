@@ -23,6 +23,7 @@
 *
 *}
 {strip}
+<div id="revws-portal-{$reviewList.id}">
 {assign "canReview" !($visitor.type === 'guest' && !$reviewsData.preferences.allowGuestReviews) && !in_array($productId, $visitor.reviewedProducts)}
 {if $reviewList.total > 0}
   {include
@@ -66,4 +67,5 @@
     {/if}
   {/if}
 {/if}
+</div>
 {/strip}

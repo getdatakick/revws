@@ -52,16 +52,14 @@ class ReviewPreview extends React.PureComponent<Props> {
 
     return (
       <Bootstrap key={size} className={styles.preview}>
-        <div id="revws-tab-content">
-          <ReviewListItem
-            shopName={shopName}
-            shape={shape}
-            shapeSize={size}
-            review={review}
-            criteria={criteria}
-            displayCriteria={displayCriteria}
-            colors={colors} />
-        </div>
+        <ReviewListItem
+          shopName={shopName}
+          shape={shape}
+          shapeSize={size}
+          review={review}
+          criteria={criteria}
+          displayCriteria={displayCriteria}
+          colors={colors} />
       </Bootstrap>
     );
   }

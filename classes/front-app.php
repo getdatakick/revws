@@ -36,17 +36,38 @@ class FrontApp implements JsonSerializable {
   private $visitorData = null;
   private $entities = null;
   private $extraProducts = [];
+  private $initActions = [];
+  private $widgets = [];
 
   public function __construct($module) {
     $this->module = $module;
   }
 
-  public function addList($id, $type, $entity) {
-    $list = new ReviewList($this->module, $type, $entity);
+  public function addList($type, $entity) {
+    $id = "$type-$entity";
+    $list = new ReviewList($this->module, $id, $type, $entity);
     $this->lists[$id] = $list;
     if ($this->entities) {
       $this->entities = $this->loadEntities($this->entities);
     };
+    return $list;
+  }
+
+  public function addInitAction($action) {
+    $this->initActions[] = $action;
+  }
+
+  public function addWidget($widget) {
+    $this->widgets[] = $widget;
+  }
+
+  public function addProductListWidget($productId) {
+    $list = $this->addList('product', $productId);
+    $this->addWidget([
+      'type' => 'productList',
+      'productId' => $productId,
+      'listId' => $list->getId()
+    ]);
     return $list;
   }
 
@@ -56,7 +77,10 @@ class FrontApp implements JsonSerializable {
       'settings' => $this->getStaticData(),
       'reviews' => $this->getReviews(),
       'entities' => $this->getEntitites(),
-      'lists' => $this->getLists()
+      'lists' => $this->getLists(),
+      'widgets' => $this->widgets,
+      'translations' => $this->module->getFrontTranslations(),
+      'initActions' => $this->initActions
     ];
   }
 
@@ -72,6 +96,7 @@ class FrontApp implements JsonSerializable {
         'pseudonym' => $visitor->getPseudonym(),
         'nameFormat' => $settings->getNamePreference(),
         'email' => $visitor->getEmail(),
+        'language' => $visitor->getLanguage(),
         'productsToReview' => $visitor->getProductsToReview(),
         'reviewedProducts' => $visitor->getReviewedProducts(),
       ];
@@ -93,9 +118,7 @@ class FrontApp implements JsonSerializable {
         'appJsUrl' => $set->getAppUrl($context, $this->module),
         'loginUrl' => $this->module->getLoginUrl(),
         'csrf' => $this->module->csrf()->getToken(),
-        'language' => $visitor->getLanguage(),
         'shopName' => Configuration::get('PS_SHOP_NAME'),
-        'translations' => $this->module->getFrontTranslations(),
         'theme' => [
           'shape' => $this->getShapeSettings(),
           'shapeSize' => [
@@ -151,14 +174,14 @@ class FrontApp implements JsonSerializable {
 
   public function getLists() {
     $lists = [];
-    foreach ($this->lists as $list) {
+    foreach ($this->lists as $key => $list) {
       $data = $list->getData();
       $copy = $data;
       $copy['reviews'] = [];
       foreach ($data['reviews'] as $review) {
         $copy['reviews'][] = (int)$review['id'];
       }
-      $lists[] = $copy;
+      $lists[$key] = $copy;
     }
     return $lists;
   }
@@ -202,7 +225,7 @@ class FrontApp implements JsonSerializable {
     return Shapes::getShape($this->getSettings()->getShape());
   }
 
-  private static function getProductData($productId, $lang, Permissions $permissions) {
+  public static function getProductData($productId, $lang, Permissions $permissions) {
     $productId = (int)$productId;
     $lang = (int)$lang;
     $context = Context::getContext();

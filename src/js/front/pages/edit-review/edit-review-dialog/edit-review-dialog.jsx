@@ -3,7 +3,7 @@
 import React from 'react';
 import type { ComponentType } from 'react';
 import type { EditStage, CriterionType, ReviewType, ReviewFormErrors, ProductInfoType } from 'common/types';
-import type { SettingsType } from 'front/types';
+import type { SettingsType, EntitiesType, VisitorType } from 'front/types';
 import Grading from 'common/components/grading/grading';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle, withMobileDialog } from 'common/components/dialog';
@@ -15,7 +15,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import { fixUrl } from 'common/utils/url';
 import { validateReview, hasErrors } from 'common/utils/validation';
 import { find, assoc } from 'ramda';
-import { getProduct } from 'front/settings';
+import { getProduct } from 'front/utils/entities';
 import styles from './edit-review-dialog.less';
 import { consentRequired } from 'front/utils/gdpr';
 
@@ -26,6 +26,8 @@ type Grades = {
 type InputProps = {
   stage: EditStage,
   settings: SettingsType,
+  visitor: VisitorType,
+  entities: EntitiesType,
   review: ?ReviewType,
   agreed: boolean,
   onAgree: (boolean) => void,
@@ -41,7 +43,7 @@ type Props = InputProps & {
 
 class EditReviewDialog extends React.PureComponent<Props> {
   render() {
-    const { settings, onClose, review, fullScreen } = this.props;
+    const { entities, onClose, review, fullScreen } = this.props;
     return (
       <Dialog
         fullScreen={fullScreen}
@@ -50,7 +52,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
         open={!! review}
         disableBackdropClick={true}
         onClose={onClose} >
-        { review ? this.renderDialog(getProduct(review.productId, settings), review) : '' }
+        { review ? this.renderDialog(getProduct(entities, review.productId), review) : '' }
       </Dialog>
     );
   }
@@ -102,7 +104,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
     }
     const criterion = isNew ? this.getUnsetCriterion(product.criteria, grades) : null;
     if (criterion) {
-      return this.renderGrading(criterion, review);
+      return this.renderGrading(criterion, review, product);
     }
     return this.renderForm(review, product, errors);
   }
@@ -115,14 +117,14 @@ class EditReviewDialog extends React.PureComponent<Props> {
     return null;
   }
 
-  renderGrading = (criterion: CriterionType, review: ReviewType) => {
+  renderGrading = (criterion: CriterionType, review: ReviewType, product: ProductInfoType) => {
     const { width, settings, onUpdateReview } = this.props;
     const grades = review.grades;
     const smallDevice = width === 'sm' || width == 'xs';
     const size = settings.shapeSize.create / (smallDevice ? 2 : 1);
     return (
       <div className={styles.single}>
-        { this.renderProductImage(review) }
+        { this.renderProductImage(product) }
         <h2>{ criterion.label }</h2>
         <Grading
           shape={settings.shape}
@@ -133,9 +135,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
     );
   }
 
-  renderProductImage = (review: ReviewType) => {
-    const settings = this.props.settings;
-    const product = settings.products[review.productId];
+  renderProductImage = (product: ProductInfoType) => {
     return (
       <div className={styles.productImage}>
         <img src={fixUrl(product.image)} alt={product.name} />
@@ -144,12 +144,13 @@ class EditReviewDialog extends React.PureComponent<Props> {
   }
 
   renderForm = (review: ReviewType, product: ProductInfoType, errors: ReviewFormErrors) => {
-    const { width, settings, onUpdateReview, agreed, onAgree } = this.props;
+    const { width, settings, onUpdateReview, agreed, onAgree, visitor } = this.props;
     const smallDevice = width === 'sm' || width == 'xs';
     const image = product.image;
     const form = (
       <EditReviewForm
         product={product}
+        visitor={visitor}
         settings={settings}
         review={review}
         agreed={agreed}
@@ -160,7 +161,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
     return (smallDevice || !image) ? form : (
       <Grid container spacing={8} className={styles.minHeight}>
         <Grid item sm={4}>
-          { this.renderProductImage(review) }
+          { this.renderProductImage(product) }
         </Grid>
         <Grid item sm={8}>
           { form}
@@ -190,11 +191,6 @@ class EditReviewDialog extends React.PureComponent<Props> {
           color={color} />
       </div>
     );
-  }
-
-  getProduct = (review: ReviewType): ProductInfoType => {
-    const { settings } = this.props;
-    return settings.products[review.productId];
   }
 }
 

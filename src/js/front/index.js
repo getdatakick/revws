@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import type { InitDataType } from 'front/types';
 import { forEach, values, has, contains } from 'ramda';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
@@ -8,12 +9,10 @@ import logger from 'redux-logger';
 import createReducer from 'front/reducer';
 import createCommands from 'front/commands';
 import App from 'front/app';
-import { getSettings, getReviews } from 'front/settings';
-import { isObject, isArray } from 'common/utils/ramda';
-import { asObject } from 'common/utils/input';
+import { parseInitData } from 'front/utils/init';
+import { isObject } from 'common/utils/ramda';
 import Types from 'front/actions/types';
 import { setTranslation } from 'translations';
-import { canReviewProduct } from 'front/utils/product';
 
 const getDomNode = () => {
   const node = document.getElementById('revws-app');
@@ -30,23 +29,22 @@ const getDomNode = () => {
   }
 };
 
-const startRevws = (init: any) => {
+const startRevws = (init: InitDataType) => {
   const node = getDomNode();
-  if (! node) {
+  if (!node) {
     return;
   }
-  setTranslation(asObject(init.translations));
+  const { settings, reviews, visitor, translations, widgets, entities, lists, initActions } = parseInitData(init);
+  setTranslation(translations);
   const dev = process.env.NODE_ENV !== 'production';
 
-  const settings = getSettings(init);
-  const reviews = getReviews(init);
   const commandsMiddleware = createCommands(settings);
   const middlewares = [ commandsMiddleware ];
   if (dev) {
     middlewares.push(logger);
   }
 
-  const reducer = createReducer(settings, reviews, init.productsToReview, init.reviewedProducts);
+  const reducer = createReducer(settings, visitor, reviews, lists, entities);
   const store = createStore(reducer, applyMiddleware(...middlewares));
   const isAction = (action: any) => {
     return (action && isObject(action) && has('type', action) && contains(action.type, values(Types)));
@@ -54,10 +52,7 @@ const startRevws = (init: any) => {
 
   render((
     <Provider store={store}>
-      <App
-        type={init.entityType}
-        id={init.entityId}
-        settings={settings}/>
+      <App visitor={visitor} settings={settings} widgets={widgets} />
     </Provider>
   ), node);
 
@@ -71,21 +66,13 @@ const startRevws = (init: any) => {
   };
 
 
-  if (init.entityType === 'product' && window.location.href.indexOf('post_review') > -1 && canReviewProduct(settings, init.entityId)) {
-    store.dispatch({
-      type: 'TRIGGER_CREATE_REVIEW',
-      productId: init.entityId
-    });
-  }
+  forEach(action => {
+    if (isAction(action)) {
+      store.dispatch(action);
+    }
+  }, initActions);
 
-  const initActions = init.initActions;
-  if (initActions && isArray(initActions)) {
-    forEach(action => {
-      if (isAction(action)) {
-        store.dispatch(action);
-      }
-    }, initActions);
-  }
+  store.dispatch({ type: 'REVWS_STARTED' });
 };
 
 if (document.readyState === 'complete') {

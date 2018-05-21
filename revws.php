@@ -284,7 +284,13 @@ class Revws extends Module {
     $productId = (int)(Tools::getValue('id_product'));
     $frontApp = $this->getFrontApp();
     $frontApp->addEntity('product', $productId);
-    $list = $frontApp->addList('reviewList', 'product', $productId);
+    if (isset($_GET['post_review']) && $this->getPermissions()->canCreateReview($productId)) {
+      $frontApp->addInitAction([
+        'type' => 'TRIGGER_CREATE_REVIEW',
+        'productId' => $productId
+      ]);
+    }
+    $list = $frontApp->addProductListWidget($productId);
     $visitor = $this->getVisitor();
     $settings = $this->getSettings();
     $this->context->smarty->assign([
@@ -522,6 +528,7 @@ class Revws extends Module {
   }
 
   public function includeCommonStyles($controller) {
+    die('xxx');
     $controller->addCSS('https://fonts.googleapis.com/css?family=Roboto:300,400,500', 'all');
     $controller->addCSS($this->getCSSFile(), 'all', null, false);
   }
@@ -636,7 +643,7 @@ class Revws extends Module {
   public function getFrontApp() {
     if (! $this->frontApp) {
       $this->frontApp = new \Revws\FrontApp($this);
-      $this->context->controller->addJS($this->getPath('views/js/front_bootstrap.js'));
+      $this->context->controller->addJS($this->getPath('views/js/revws_bootstrap.js'));
       Media::addJsDef([ 'revwsData' => $this->frontApp ]);
     }
     return $this->frontApp;
@@ -654,5 +661,4 @@ class Revws extends Module {
     }
     return null;
   }
-
 }

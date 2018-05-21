@@ -23,14 +23,22 @@ use \RevwsReview;
 use \JsonSerializable;
 
 class ReviewList implements JsonSerializable {
+  // TODO: refactor out
   private $entityType;
   private $entityId;
+  // END TODO
+  private $id;
   private $list = null;
 
-  public function __construct($module, $entityType, $entityId) {
+  public function __construct($module, $id, $entityType, $entityId) {
     $this->module = $module;
+    $this->id = $id;
     $this->entityType = $entityType;
     $this->entityId = $entityId;
+  }
+
+  public function getId() {
+    return $this->id;
   }
 
   public function jsonSerialize() {
@@ -49,7 +57,9 @@ class ReviewList implements JsonSerializable {
 
   public function getData() {
     $this->ensureLoaded();
-    return $this->list;
+    $list = $this->list;
+    $list['id'] = $this->id;
+    return $list;
   }
 
   private function ensureLoaded() {

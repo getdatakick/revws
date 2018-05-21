@@ -32,17 +32,15 @@ class EditReviewForm extends React.PureComponent<Props> {
     const { shopName, criteria, review, shape, shapeSize, displayCriteria, onUpdateReview } = this.props;
     return (
       <Bootstrap className={styles.preview}>
-        <div id="revws-tab-content">
-          <ReviewListItem
-            criteria={criteria}
-            displayCriteria={displayCriteria}
-            shopName={shopName}
-            shape={shape}
-            shapeSize={shapeSize}
-            review={merge(review, caps)}
-            onSaveReply={reply => onUpdateReview(assoc('reply', reply, review))}
-          />
-        </div>
+        <ReviewListItem
+          criteria={criteria}
+          displayCriteria={displayCriteria}
+          shopName={shopName}
+          shape={shape}
+          shapeSize={shapeSize}
+          review={merge(review, caps)}
+          onSaveReply={reply => onUpdateReview(assoc('reply', reply, review))}
+        />
       </Bootstrap>
     );
   }

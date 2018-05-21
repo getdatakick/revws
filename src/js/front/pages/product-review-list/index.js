@@ -1,23 +1,27 @@
 
 // @flow
 import type { ComponentType } from 'react';
-import type { SettingsType } from 'front/types';
+import type { SettingsType, VisitorType } from 'front/types';
 import { contains } from 'ramda';
 import ReviewList from './product-review-list';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
-import { getReviews, isLoading } from 'front/selectors/review-list';
+import { getLists } from 'front/selectors/lists';
+import { getReviews } from 'front/selectors/reviews';
 import { getReviewedProducts } from 'front/selectors/visitor-reviews';
-import { loadPage, triggerVoteReview, triggerReportReview, triggerEditReview, triggerCreateReview, triggerDeleteReview } from 'front/actions/creators';
+import { getReviewList } from 'front/utils/list';
+import { loadList, triggerVoteReview, triggerReportReview, triggerEditReview, triggerCreateReview, triggerDeleteReview } from 'front/actions/creators';
 
 type PassedProps = {
   settings: SettingsType,
+  visitor: VisitorType,
+  listId: string,
   productId: number
 };
 
 const mapStateToProps = mapObject({
-  reviewList: getReviews,
-  loading: isLoading,
+  lists: getLists,
+  reviews: getReviews,
   reviewedProducts: getReviewedProducts
 });
 
@@ -27,18 +31,27 @@ const actions = {
   onDelete: triggerDeleteReview,
   onVote: triggerVoteReview,
   onReport: triggerReportReview,
-  loadPage: (entityId, page) => loadPage('product', entityId, page)
+  loadList: loadList,
 };
 
 const merge = (props, actions, passed: PassedProps) => {
-  const { reviewedProducts, ...own } = props;
-  const { settings, productId } = passed;
-  const forbidden = settings.visitor.type === 'guest' && !settings.preferences.allowGuestReviews;
+  const { reviewedProducts, lists, reviews  } = props;
+  const { settings, visitor, listId, productId } = passed;
+  const { loadList, ...restActions } = actions;
+  const list = lists[listId];
+  const loading = list.loading;
+  const reviewList = getReviewList(list, reviews);
+  const forbidden = visitor.type === 'guest' && !settings.preferences.allowGuestReviews;
   const canReview = !forbidden && !contains(productId, reviewedProducts);
+  const loadPage = (page: number) => loadList(listId, {
+    produt: productId
+  }, page);
   return {
     canReview,
-    ...own,
-    ...actions,
+    reviewList,
+    loading,
+    loadPage,
+    ...restActions,
     ...passed
   };
 };

@@ -18,6 +18,7 @@
 */
 use \Revws\Settings;
 use \Revws\Visitor;
+use \Revws\Permissions;
 use \Revws\FrontApp;
 
 class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
@@ -33,30 +34,27 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
   public function initContent() {
     parent::initContent();
     if ($this->isLoggedIn()) {
-      $this->renderContent($this->module->getVisitor());
+      $this->renderContent($this->module->getVisitor(), $this->module->getPermissions());
     } else {
       Tools::redirect('index.php?controller=authentication&back='.urlencode($this->selfLink()));
     }
   }
 
-  private function renderContent(Visitor $visitor) {
+  private function renderContent(Visitor $visitor, Permissions $permissions) {
     $frontApp = $this->module->getFrontApp();
     $customerId = $visitor->getCustomerId();
-    $list = $frontApp->addList('myReviews', 'customer', $customerId);
+    $list = $frontApp->addList('customer', $customerId);
 
 
     $params = $this->getParams();
     $reviewProduct = (isset($params['review-product'])) ? (int)$params['review-product'] : null;
-    /*
-    TODO
-    $data = $frontApp->getData('customer', $visitor->getCustomerId(), $reviewProduct);
-    if ($reviewProduct && isset($data['products'][$reviewProduct]) && in_array($reviewProduct, $data['productsToReview'])) {
-      $data['initActions'] = [[
+    if ($reviewProduct && $permissions->canCreateReview($reviewProduct)) {
+      $frontApp->addInitAction([
         'type' => 'TRIGGER_CREATE_REVIEW',
         'productId' => $reviewProduct
-      ]];
+      ]);
     }
-    */
+
     $this->context->smarty->assign([
       'reviewList' => $list->getData(),
       'visitor' => $frontApp->getVisitorData(),

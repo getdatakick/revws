@@ -1,6 +1,6 @@
 // @flow
 
-import type { CriteriaType, DisplayCriteriaType, GradingShapeType, NameFormatType, ProductInfoType } from 'common/types';
+import type { ReviewType, CriteriaType, DisplayCriteriaType, GradingShapeType, NameFormatType, ProductInfoType } from 'common/types';
 
 export type SettingsType = {
   csrf: string,
@@ -8,23 +8,10 @@ export type SettingsType = {
   api: string,
   criteria: CriteriaType,
   shape: GradingShapeType,
-  language: number,
-  products: {
-    [ number ]: ProductInfoType
-  },
   shapeSize: {
     product: number,
     list: number,
     create: number
-  },
-  visitor: {
-    type: 'customer' | 'guest',
-    id: number,
-    firstName: ?string,
-    lastName: ?string,
-    pseudonym: ?string,
-    nameFormat: NameFormatType,
-    email: string,
   },
   preferences: {
     allowEmptyReviews: boolean,
@@ -40,4 +27,78 @@ export type SettingsType = {
     text: string
   },
   loginUrl: string
+}
+
+export type VisitorType = {
+  type: 'customer' | 'guest',
+  id: number,
+  language: number,
+  firstName: ?string,
+  lastName: ?string,
+  pseudonym: ?string,
+  nameFormat: NameFormatType,
+  email: string,
+  reviewedProducts: Array<number>,
+  productsToReview: Array<number>
+};
+
+export type EntitiesType = {
+  products: {
+    [ number ]: ProductInfoType
+  }
+}
+
+export type ListConditions = {
+  product?: number,
+  customer?: number
+}
+
+export type ListType = {
+  id: string,
+  pageSize: number,
+  page: number,
+  pages: number,
+  total: number,
+  reviews: Array<number>
+}
+
+export type ListsType = {
+  [ string ]: ListType
+}
+
+export type ReviewsType = {
+  [ number ]: ReviewType
+};
+
+export type TranslationsType = {
+  [ string ]: string
+};
+
+export type ProductListWidgetType = {
+  type: 'productList',
+  productId: number,
+  listId: string
+}
+
+export type MyReviewsWidgetType = {
+  type: 'myReviews',
+  listId: string
+}
+
+export type WidgetType = (
+  ProductListWidgetType |
+  MyReviewsWidgetType
+);
+
+export type WidgetsType = Array<WidgetType>;
+
+export type InitDataType = {
+  translations: TranslationsType,
+  settings: SettingsType,
+  visitor: VisitorType,
+  entities: EntitiesType,
+  lists: ListsType,
+  reviews: ReviewsType,
+  widgets: WidgetsType,
+  initActions: Array<any>
 }

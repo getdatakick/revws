@@ -1,6 +1,6 @@
 (function() {
   var tag = document.createElement('script');
-  tag.src = window.revwsData.appJsUrl;
+  tag.src = window.revwsData.settings.appJsUrl;
   tag.setAttribute('defer', '');
   tag.setAttribute('async', '');
   var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -8,7 +8,7 @@
 
   // returns true, if reviews are displayed in tab.
   var displayedInTab = function() {
-    return (window.revwsData && window.revwsData.preferences.placement === 'tab');
+    return (window.revwsData && window.revwsData.settings.preferences.placement === 'tab');
   }
 
   if (! window.revws) {

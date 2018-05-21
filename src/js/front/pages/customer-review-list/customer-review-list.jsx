@@ -1,12 +1,14 @@
 // @flow
 import React from 'react';
 import type { ReviewListType, ReviewType } from 'common/types';
-import type { SettingsType } from 'front/types';
+import type { EntitiesType, SettingsType } from 'front/types';
 import { slice } from 'ramda';
 import List from './list';
+import { getProduct } from 'front/utils/entities';
 import Paging from 'common/components/review-list-paging/review-list-paging';
 
 type Props = {
+  entities: EntitiesType,
   productsToReview: Array<number>,
   customerId: number,
   reviewList: ReviewListType,
@@ -32,11 +34,12 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
   }
 
   renderList = () => {
-    const { settings, reviewList, loading, onEdit, onDelete } = this.props;
+    const { settings, reviewList, loading, onEdit, onDelete, entities } = this.props;
     const isEmpty = reviewList.total === 0;
     return isEmpty ? this.renderEmptyState() : (
       <div>
         <List
+          entities={entities}
           settings={settings}
           reviewList={reviewList}
           loading={loading}
@@ -80,8 +83,8 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
   }
 
   renderRequest = (productId: number) => {
-    const { settings, onCreate } = this.props;
-    const product = settings.products[productId];
+    const { entities, onCreate } = this.props;
+    const product = getProduct(entities, productId);
     if (product) {
       return (
         <div key={productId} className='revws-review-request' onClick={e => onCreate(productId)}>
