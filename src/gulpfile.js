@@ -116,6 +116,7 @@ gulp.task('copy-text-files', function(done) {
     const ext = ['php', 'tpl', 'js', 'sql', 'html', 'md', 'txt'];
     let sources = map(e => '../**/*.'+e, ext);
     sources = append('../**/back.css', sources);
+    sources = append('../**/fallback.css', sources);
     sources = append('!../src/**', sources);
     sources = append('!../.tbstore/**', sources);
     return gulp

@@ -96,7 +96,8 @@ class Revws extends Module {
 
   public function registerHooks() {
     return $this->setupHooks([
-      'header',
+      'displayHeader',
+      'displayMobileHeader',
       'displayProductTab',
       'displayProductTabContent',
       'displayRightColumnProduct',
@@ -124,8 +125,14 @@ class Revws extends Module {
     $id = $this->id;
     $install = [];
     $delete = [];
+    $aliases = Hook::getHookAliasList();
     foreach ($hooks as $hook) {
-      $install[strtolower($hook)] = $hook;
+      $key = strtolower($hook);
+      if (isset($aliases[$key])) {
+        $hook = $aliases[$key];
+        $key = strtolower($hook);
+      }
+      $install[$key] = $hook;
     }
     $sql = 'SELECT DISTINCT LOWER(h.name) AS `hook` FROM '._DB_PREFIX_.'hook h INNER JOIN '._DB_PREFIX_.'hook_module hm ON (h.id_hook = hm.id_hook) WHERE hm.id_module = '.(int)$id;
     foreach (Db::getInstance()->executeS($sql) as $row) {
@@ -322,6 +329,18 @@ class Revws extends Module {
       }
       return $this->display(__FILE__, 'product_footer.tpl');
     }
+  }
+
+  public function hookDisplayHeader() {
+    $this->hookHeader();
+  }
+
+  public function hookDisplayMobileHeader() {
+    $this->hookHeader();
+  }
+
+  public function hookMobileHeader() {
+    $this->hookHeader();
   }
 
   public function hookHeader() {
