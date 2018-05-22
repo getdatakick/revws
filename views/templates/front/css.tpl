@@ -115,6 +115,7 @@ a .revws-grading {
 }
 
 .revws-review {
+  position: relative;
   display: flex;
   flex-direction: row;
   margin: 10px 0px;

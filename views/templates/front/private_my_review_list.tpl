@@ -73,5 +73,8 @@
     </div>
     {/if}
   </div>
+  {if $reviewList.pages > 1}
+    {include file="../hook/private_review_list_paging.tpl" }
+  {/if}
 </div>
 {/strip}
