@@ -42,12 +42,14 @@ const merge = (props, actions, passed: PassedProps) => {
   const loading = list.loading;
   const reviewList = getReviewList(list, reviews);
   const forbidden = visitor.type === 'guest' && !settings.preferences.allowGuestReviews;
-  const canReview = !forbidden && !contains(productId, reviewedProducts);
+  const hasReviewed = contains(productId, reviewedProducts);
+  const canReview = !forbidden && !hasReviewed;
   const loadPage = (page: number) => {
     const conditions = { product: productId };
     return loadList(listId, conditions, page, list.pageSize, list.order, list.orderDir);
   };
   return {
+    hasReviewed,
     canReview,
     reviewList,
     loading,
