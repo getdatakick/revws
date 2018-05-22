@@ -23,7 +23,8 @@ const getDomNode = () => {
   if (body) {
     const created = document.createElement('div');
     created.setAttribute("id", "revws-app");
-    created.style.display = 'none';
+    created.style.height = '0';
+    created.style.width = '0';
     body.append(created);
     return created;
   }

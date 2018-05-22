@@ -63,15 +63,14 @@ class FrontAppReviewList extends React.PureComponent<Props> {
   }
 
   renderWriteReview = () => {
-    const { canReview, settings } = this.props;
-    const { loginUrl } = settings;
+    const { canReview } = this.props;
     if (canReview) {
       return this.renderCreateButton(__('Write your review!'));
     }
     if (this.showSignInButton()) {
       return (
         <div className="form-group">
-          <a className="btn btn-primary" href={loginUrl}>
+          <a className="btn btn-primary" href={this.getLoginUrl()}>
             {__('Sign in to write a review')}
           </a>
         </div>
@@ -80,15 +79,14 @@ class FrontAppReviewList extends React.PureComponent<Props> {
   }
 
   renderEmptyState = () => {
-    const { canReview, settings } = this.props;
-    const { loginUrl } = settings;
+    const { canReview } = this.props;
     if (canReview) {
       return this.renderCreateButton(__('Be the first to write a review!'));
     }
     if (this.showSignInButton()) {
       return (
         <div className="form-group">
-          <a className="btn btn-primary" href={loginUrl}>
+          <a className="btn btn-primary" href={this.getLoginUrl()}>
             {__('Sign in to write a review')}
           </a>
         </div>
@@ -116,6 +114,8 @@ class FrontAppReviewList extends React.PureComponent<Props> {
     const { settings, visitor } = this.props;
     return visitor.type === 'guest' && settings.preferences.showSignInButton;
   }
+
+  getLoginUrl = () => this.props.settings.loginUrl + encodeURIComponent(window.location.href);
 }
 
 export default FrontAppReviewList;

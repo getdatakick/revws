@@ -42,10 +42,7 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
 
   private function renderContent(Visitor $visitor, Permissions $permissions) {
     $frontApp = $this->module->getFrontApp();
-    $customerId = $visitor->getCustomerId();
-    $list = $frontApp->addList('customer', $customerId);
-
-
+    $list = $frontApp->addMyReviewsWidget();
     $params = $this->getParams();
     $reviewProduct = (isset($params['review-product'])) ? (int)$params['review-product'] : null;
     if ($reviewProduct && $permissions->canCreateReview($reviewProduct)) {

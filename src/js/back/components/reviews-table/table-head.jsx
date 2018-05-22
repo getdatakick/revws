@@ -2,26 +2,27 @@
 
 import React from 'react';
 import { TableHead, TableRow, TableSortLabel, TableCell } from 'material-ui/Table';
+import type { ListOrder, ListOrderDirection } from 'common/types';
 import Tooltip from 'material-ui/Tooltip';
 
-type Column = {
+export type Column = {
   id: string,
   label: string,
   disablePadding?: boolean,
-  disableSort?: boolean
+  sort?: ListOrder
 }
 
 type Props = {
   columns: Array<Column>,
-  onRequestSort: (string)=>void,
-  order: 'asc' | 'desc',
-  orderBy: ?string,
+  onRequestSort: (ListOrder)=>void,
+  orderDir: ListOrderDirection,
+  order: ListOrder,
 };
 
 class EnhancedTableHead extends React.PureComponent<Props> {
 
   render() {
-    const { columns, order, orderBy } = this.props;
+    const { columns, order, orderDir } = this.props;
 
     return (
       <TableHead>
@@ -31,7 +32,7 @@ class EnhancedTableHead extends React.PureComponent<Props> {
               key={column.id}
               padding={column.disablePadding ? 'none' : 'dense'}
               numeric={column.id === 'actions'}
-              sortDirection={orderBy === column.id ? order : false} >
+              sortDirection={order === column.id ? orderDir : false} >
               { this.renderLabel(column) }
             </TableCell>
           ))}
@@ -41,21 +42,21 @@ class EnhancedTableHead extends React.PureComponent<Props> {
   }
 
   renderLabel = (column: Column) => {
-    const { onRequestSort, order, orderBy } = this.props;
-    const { disableSort, label, id } = column;
-    return disableSort ? label : (
+    const { onRequestSort, order, orderDir } = this.props;
+    const { sort, label } = column;
+    return sort ? (
       <Tooltip
         title={__("Sort")}
         placement='bottom-start'
         enterDelay={300} >
         <TableSortLabel
-          active={orderBy === id}
-          direction={order}
-          onClick={() => onRequestSort(id)} >
+          active={order === sort}
+          direction={orderDir}
+          onClick={() => onRequestSort(sort)} >
           { label }
         </TableSortLabel>
       </Tooltip>
-    );
+    ) : label ;
   }
 }
 

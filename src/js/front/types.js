@@ -1,6 +1,6 @@
 // @flow
 
-import type { ReviewType, CriteriaType, DisplayCriteriaType, GradingShapeType, NameFormatType, ProductInfoType } from 'common/types';
+import type { ReviewType, CriteriaType, DisplayCriteriaType, GradingShapeType, NameFormatType, ProductInfoType, ListOrder, ListOrderDirection } from 'common/types';
 
 export type SettingsType = {
   csrf: string,
@@ -59,6 +59,9 @@ export type ListType = {
   page: number,
   pages: number,
   total: number,
+  order: ListOrder,
+  orderDir: ListOrderDirection,
+  conditions: ListConditions,
   reviews: Array<number>
 }
 

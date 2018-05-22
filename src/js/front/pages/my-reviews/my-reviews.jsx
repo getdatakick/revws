@@ -14,7 +14,7 @@ type Props = {
   reviewList: ReviewListType,
   settings: SettingsType,
   loading: boolean,
-  loadPage: (number, number)=>void,
+  loadPage: (number)=>void,
   onEdit: (ReviewType)=>void,
   onCreate: (number)=>void,
   onDelete: (ReviewType)=>void,
@@ -51,7 +51,7 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
   }
 
   renderPaging = () => {
-    const { customerId, loading, loadPage } = this.props;
+    const { loading, loadPage } = this.props;
     const { page, pages } = this.props.reviewList;
     if (pages > 1) {
       return (
@@ -60,7 +60,7 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
           page={page}
           pages={pages}
           loading={loading}
-          loadPage={page => loadPage(customerId, page)} />
+          loadPage={loadPage} />
       );
     }
     return null;

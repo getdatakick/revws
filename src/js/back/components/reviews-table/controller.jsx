@@ -1,9 +1,9 @@
 // @flow
 
-import type { ReviewListType, GradingShapeType, ReviewType, CriteriaType, DisplayCriteriaType, LanguagesType } from 'common/types';
+import type { ReviewListType, GradingShapeType, ReviewType, CriteriaType, DisplayCriteriaType, LanguagesType, ListOrder, ListOrderDirection } from 'common/types';
 import type { LoadOptions } from 'back/types';
 import { notNil } from 'common/utils/ramda';
-import { find, propEq, reject, merge, equals, has } from 'ramda';
+import { prop, find, propEq, reject, merge, equals, has } from 'ramda';
 import React from 'react';
 import ReviewsTable from 'back/components/reviews-table/reviews-table';
 import EditReviewDialog from 'back/components/edit-review/edit-review-dialog';
@@ -40,18 +40,10 @@ type State = {
   edit: ?number,
   page: number,
   pageSize: number,
-  order: 'asc' | 'desc',
-  orderBy: string,
+  orderDir: ListOrderDirection,
+  order: ListOrder,
   filters: Filters
 }
-
-const defaultData: ReviewListType = {
-  total: 0,
-  page: 0,
-  pages: 1,
-  pageSize: 10,
-  reviews: []
-};
 
 class Controller extends React.PureComponent<Props, State> {
   static displayName = 'Controller';
@@ -60,8 +52,8 @@ class Controller extends React.PureComponent<Props, State> {
     edit: null,
     page: 0,
     pageSize: 10,
-    orderBy: 'date',
-    order: 'desc',
+    order: 'date',
+    orderDir: 'desc',
     filters: this.props.filters
   };
 
@@ -87,14 +79,14 @@ class Controller extends React.PureComponent<Props, State> {
 
   loadPage = (state: State) => {
     const { uniqueId, loadData } = this.props;
-    const { orderBy, order, pageSize, page, filters } = state;
+    const { order, orderDir, pageSize, page, filters } = state;
     loadData(uniqueId, merge(filters, {
       productInfo: true,
       customerInfo: true,
       allLanguages: true,
       order: {
-        direction: order,
-        field: orderBy
+        direction: orderDir,
+        field: order
       },
       page,
       pageSize
@@ -103,8 +95,7 @@ class Controller extends React.PureComponent<Props, State> {
 
   getList = (props: Props): ReviewListType => {
     const { data, uniqueId } = props;
-    const dataDesc: ReviewListType = has(uniqueId, data) ? data[uniqueId] : defaultData;
-    return dataDesc;
+    return prop(uniqueId, data);
   };
 
   render() {
@@ -117,7 +108,7 @@ class Controller extends React.PureComponent<Props, State> {
 
   renderList(list: ReviewListType) {
     const { languages, criteria, emptyLabel, title, shape, approveReview, deleteReview, undeleteReview, language, shapeSize, shopName, displayCriteria } = this.props;
-    const { edit, page, pageSize, order, orderBy } = this.state;
+    const { edit, page, pageSize, order, orderDir } = this.state;
     const { total, reviews } = list;
     const filtered = this.filter(reviews);
     const diff = reviews.length - filtered.length;
@@ -131,10 +122,10 @@ class Controller extends React.PureComponent<Props, State> {
           data={filtered}
           total={total - diff}
           page={page}
+          orderDir={orderDir}
           order={order}
-          orderBy={orderBy}
           rowsPerPage={pageSize}
-          onSetOrder={(orderBy, order) => this.setState({ order, orderBy })}
+          onSetOrder={(order, orderDir) => this.setState({ order, orderDir })}
           onChangeRowsPerPage={pageSize => this.setState({ pageSize })}
           onChangePage={page => this.setState({ page })}
           onReviewClick={this.onReviewClick}

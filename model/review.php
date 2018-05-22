@@ -193,31 +193,39 @@ class RevwsReview extends ObjectModel {
       'page' => $page,
       'pages' => $pageSize > 0 ? ceil($count / $pageSize) : 1,
       'pageSize' => $pageSize,
+      'order' => $query->getOrderField(),
+      'orderDir' => $query->getOrderDirection(),
       'reviews' => $reviews
     ];
   }
 
-  public static function getByProduct($productId, Settings $settings, Visitor $visitor, $pageSize, $page, $order) {
+  public static function getByProduct($productId, Settings $settings, Visitor $visitor, $pageSize, $page, $order, $orderDir) {
     return self::findReviews($settings, [
       'product' => $productId,
+      'deleted' => false,
       'visitor' => $visitor,
       'validated' => true,
-      'deleted' => false,
       'pageSize' => $pageSize,
       'page' => $page,
       'order' => [
         'field' => $order,
-        'direction' => 'desc'
+        'direction' => $orderDir
       ]
     ]);
   }
 
-  public static function getByCustomer($customerId, Settings $settings, $pageSize, $page) {
+  public static function getByCustomer($customerId, Settings $settings, $pageSize, $page, $order, $orderDir) {
     return self::findReviews($settings, [
       'customer' => $customerId,
       'deleted' => false,
+      'visitor' => $visitor,
+      'validated' => true,
       'pageSize' => $pageSize,
       'page' => $page,
+      'order' => [
+        'field' => $order,
+        'direction' => $orderDir
+      ]
     ]);
   }
 
@@ -313,13 +321,11 @@ class RevwsReview extends ObjectModel {
 
   public function toJSData(Permissions $permissions) {
     $canEdit = $permissions->canEdit($this);
-    return [
+    $ret = [
       'id' => (int)$this->id,
       'productId' => (int)$this->id_product,
-      'product' => $this->product,
       'authorType' => $this->getAuthorType(),
       'authorId' => $this->getAuthorId(),
-      'customer' => $this->customer,
       'displayName' => $this->display_name,
       'date' => $this->date_add,
       'email' => $canEdit ? $this->email : '',
@@ -337,6 +343,13 @@ class RevwsReview extends ObjectModel {
       'canEdit' => $canEdit,
       'canDelete' => $permissions->canDelete($this)
     ];
+    if ($this->customer) {
+      $ret['customer'] = $this->customer;
+    }
+    if ($this->product) {
+      $ret['product'] = $this->product;
+    }
+    return $ret;
   }
 
   public static function mapReviews($reviews, Permissions $perm) {

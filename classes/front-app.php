@@ -45,7 +45,18 @@ class FrontApp implements JsonSerializable {
 
   public function addList($type, $entity) {
     $id = "$type-$entity";
-    $list = new ReviewList($this->module, $id, $type, $entity);
+    $settings = $this->getSettings();
+    if ($type === 'product') {
+      $pageSize = $settings->getReviewsPerPage();
+      $order = $settings->getReviewOrder();
+    } else if ($type === 'customer') {
+      $pageSize = $settings->getCustomerReviewsPerPage();
+      $order = 'id';
+    } else {
+      throw new Exception("Invalid entity type $type");
+    }
+    $conditions = [ $type => (int)$entity ];
+    $list = new ReviewList($this->module, $id, $conditions, 0, $pageSize, $order, 'desc');
     $this->lists[$id] = $list;
     if ($this->entities) {
       $this->entities = $this->loadEntities($this->entities);
@@ -66,6 +77,17 @@ class FrontApp implements JsonSerializable {
     $this->addWidget([
       'type' => 'productList',
       'productId' => $productId,
+      'listId' => $list->getId()
+    ]);
+    return $list;
+  }
+
+  public function addMyReviewsWidget() {
+    $customerId = $this->getVisitor()->getCustomerId();
+    $list = $this->addList('customer', $customerId);
+    $this->addWidget([
+      'type' => 'myReviews',
+      'customerId' => $customerId,
       'listId' => $list->getId()
     ]);
     return $list;
@@ -196,12 +218,7 @@ class FrontApp implements JsonSerializable {
   private function loadEntities($entities=null) {
     $products = is_null($entities) ? [] : $entities['products'];
     foreach ($this->lists as $list) {
-      foreach ($list->getReviews() as $review) {
-        $productId = (int)$review['productId'];
-        if (! isset($products[$productId])) {
-          $products[$productId] = self::getProductData($productId, $this->getLanguage(), $this->getPermissions());
-        }
-      }
+      $products = $list->getProductEntities($products);
     }
     $visitorData = $this->getVisitorData();
     foreach ($visitorData['productsToReview'] as $productId) {
@@ -220,6 +237,7 @@ class FrontApp implements JsonSerializable {
       'products' => $products
     ];
   }
+
 
   public function getShapeSettings() {
     return Shapes::getShape($this->getSettings()->getShape());

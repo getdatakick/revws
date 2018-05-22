@@ -22,7 +22,10 @@ export default {
   triggerVote: 'TRIGGER_VOTE',
 
   loadList: 'LOAD_LIST',
+  loadListFailed: 'LOAD_LIST_FAILED',
+  setList: 'SET_LIST',
   setReviews: 'SET_REVIEWS',
+  mergeEntities: 'MERGE_ENTITIES',
 
   agreeGDPR: 'AGREE_GDPR'
 };

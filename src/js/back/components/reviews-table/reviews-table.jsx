@@ -1,7 +1,7 @@
 // @flow
 
 import type { ComponentType } from 'react';
-import type { GradingShapeType, ReviewType } from 'common/types';
+import type { GradingShapeType, ReviewType, ListOrder, ListOrderDirection } from 'common/types';
 import React from 'react';
 import classnames from 'classnames';
 import { withStyles } from 'material-ui/styles';
@@ -26,9 +26,10 @@ import EnhancedTableHead from './table-head';
 import EnhancedTableToolbar from './table-toolbar';
 import Grading from 'common/components/grading/grading';
 import { hasRatings, averageGrade } from 'common/utils/reviews';
+import type { Column } from './table-head';
 
 type InputProps = {
-  onSetOrder: (orderBy: string, order: 'desc' | 'asc') => void,
+  onSetOrder: (ListOrder, ListOrderDirection) => void,
   onChangePage: (number) => void,
   onChangeRowsPerPage: (number) => void,
   onReviewClick: (number) => void,
@@ -41,8 +42,8 @@ type InputProps = {
   emptyLabel: string,
   shape: GradingShapeType,
   // list data
-  order: 'asc' | 'desc',
-  orderBy: ?string,
+  order: ListOrder,
+  orderDir: ListOrderDirection,
   page: number,
   rowsPerPage: number,
   total: number,
@@ -100,17 +101,17 @@ class EnhancedTable extends React.Component<Props> {
 
   render() {
     const {
-      shape, emptyLabel, title, classes, total, data, order, orderBy, rowsPerPage, page, onChangePage, onChangeRowsPerPage,
+      shape, emptyLabel, title, classes, total, data, order, orderDir, rowsPerPage, page, onChangePage, onChangeRowsPerPage,
       onAuthorClick, onReviewClick
     } = this.props;
-    const columnsData = [
-      { id: 'id', disablePadding: false, label: __('ID') },
-      { id: 'product', disablePadding: false, label: __('Product') },
-      { id: 'author', disablePadding: true, label: __('Author') },
-      { id: 'grade', disablePadding: false, label: __('Ratings') },
-      { id: 'title', disablePadding: true, label: __('Review title') },
-      { id: 'content', disablePadding: true, label: __('Review content') },
-      { id: 'actions', disablePadding: false, label: __('Actions'), disableSort: true },
+    const columnsData: Array<Column> = [
+      { id: 'id', sort: 'id', disablePadding: false, label: __('ID') },
+      { id: 'product', sort: 'product', disablePadding: false, label: __('Product') },
+      { id: 'author', sort: 'author', disablePadding: true, label: __('Author') },
+      { id: 'grade', sort: 'grade', disablePadding: false, label: __('Ratings') },
+      { id: 'title', sort: 'title', disablePadding: true, label: __('Review title') },
+      { id: 'content', sort: 'content', disablePadding: true, label: __('Review content') },
+      { id: 'actions', disablePadding: false, label: __('Actions') },
     ];
     return (
       <Paper className={classes.root}>
@@ -120,7 +121,7 @@ class EnhancedTable extends React.Component<Props> {
             <EnhancedTableHead
               columns={columnsData}
               order={order}
-              orderBy={orderBy}
+              orderDir={orderDir}
               onRequestSort={this.handleRequestSort}
               rowCount={total}
             />
@@ -229,9 +230,9 @@ class EnhancedTable extends React.Component<Props> {
     return actions;
   }
 
-  handleRequestSort = (property: string) => {
-    const { order, onSetOrder } = this.props;
-    onSetOrder(property, order === 'desc' ? 'asc' : 'desc');
+  handleRequestSort = (order: ListOrder) => {
+    const { orderDir, onSetOrder } = this.props;
+    onSetOrder(order, orderDir === 'desc' ? 'asc' : 'desc');
   };
 
   getReviewRowClass = (review: ReviewType) => {

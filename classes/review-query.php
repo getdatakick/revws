@@ -117,7 +117,7 @@ class ReviewQuery {
       $cond[] = "r.deleted = " . $this->getBool('deleted');
     }
     if ($this->settings->filterByLanguage() && !$this->hasOption('allLanguages')) {
-      $cond[] = "r.id_lang = " . $this->getLanguage();
+      $cond[] = "r.id_lang = " . (int)$this->getLanguage();
     }
     if ($this->hasOption('validated')) {
       $validated = $this->getBool('validated');
@@ -141,15 +141,25 @@ class ReviewQuery {
     return '1';
   }
 
-  private function getOrder() {
-    $field = 'r.id_review';
-    $dir = 'DESC';
+  public function getOrderField() {
     if ($this->hasOption('order')) {
-      $order = $this->getOption('order');
-      $dir = $order['direction'] === 'asc' ? 'ASC' : 'DESC';
-      $field = $this->getOrderByField($order['field']);
+      return $this->getOption('order')['field'];
     }
-    if ($field != 'r.id_review') {
+    return 'id';
+  }
+
+  public function getOrderDirection() {
+    if ($this->hasOption('order')) {
+      return $this->getOption('order')['direction'];
+    }
+    return 'desc';
+  }
+
+  private function getOrder() {
+    $fieldId = $this->getOrderField();
+    $field = $this->getOrderByField($fieldId);
+    $dir = strtoupper($this->getOrderDirection());
+    if ($field != 'id') {
       return "$field $dir, r.id_review DESC";
     }
     return "$field $dir";
@@ -171,6 +181,7 @@ class ReviewQuery {
         return 'r.content';
       case 'grade':
         return $this->getAverageGradeSubselect();
+      case 'id':
       default:
         return 'r.id_review';
     }

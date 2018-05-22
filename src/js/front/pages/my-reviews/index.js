@@ -1,57 +1,54 @@
 
 // @flow
 import type { ComponentType } from 'react';
-import type { SettingsType, VisitorType } from 'front/types';
-import { contains } from 'ramda';
-import ReviewList from './product-review-list';
+import type { SettingsType } from 'front/types';
+import ReviewList from './my-reviews';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
 import { getLists } from 'front/selectors/lists';
 import { getReviews } from 'front/selectors/reviews';
-import { getReviewedProducts } from 'front/selectors/visitor-reviews';
 import { getReviewList } from 'front/utils/list';
-import { loadList, triggerVoteReview, triggerReportReview, triggerEditReview, triggerCreateReview, triggerDeleteReview } from 'front/actions/creators';
+import { loadList, triggerEditReview, triggerCreateReview, triggerDeleteReview } from 'front/actions/creators';
+import { getProductsToReview } from 'front/selectors/visitor-reviews';
+import { getEntities } from 'front/selectors/entities';
 
 type PassedProps = {
   settings: SettingsType,
-  visitor: VisitorType,
   listId: string,
-  productId: number
+  customerId: number
 };
 
 const mapStateToProps = mapObject({
   lists: getLists,
   reviews: getReviews,
-  reviewedProducts: getReviewedProducts
+  productsToReview: getProductsToReview,
+  entities: getEntities
 });
 
 const actions = {
   onEdit: triggerEditReview,
   onCreate: triggerCreateReview,
   onDelete: triggerDeleteReview,
-  onVote: triggerVoteReview,
-  onReport: triggerReportReview,
   loadList: loadList,
 };
 
 const merge = (props, actions, passed: PassedProps) => {
-  const { reviewedProducts, lists, reviews  } = props;
-  const { settings, visitor, listId, productId } = passed;
+  const { lists, reviews, ...restProps  } = props;
+  const { listId, customerId } = passed;
   const { loadList, ...restActions } = actions;
   const list = lists[listId];
   const loading = list.loading;
   const reviewList = getReviewList(list, reviews);
-  const forbidden = visitor.type === 'guest' && !settings.preferences.allowGuestReviews;
-  const canReview = !forbidden && !contains(productId, reviewedProducts);
   const loadPage = (page: number) => {
-    const conditions = { product: productId };
+    const conditions = { customer: customerId };
     return loadList(listId, conditions, page, list.pageSize, list.order, list.orderDir);
   };
   return {
-    canReview,
+    canReview: false,
     reviewList,
     loading,
     loadPage,
+    ...restProps,
     ...restActions,
     ...passed
   };

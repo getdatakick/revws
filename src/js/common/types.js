@@ -66,11 +66,16 @@ export type ReviewType = {
   loading?: boolean
 }
 
+export type ListOrder = 'date' | 'usefulness' | 'author' | 'product' | 'title' | 'content' | 'grade' | 'id';
+export type ListOrderDirection = 'desc' | 'asc';
+
 export type ReviewListType = {
   pageSize: number,
   page: number,
   pages: number,
   total: number,
+  order: ListOrder,
+  orderDir: ListOrderDirection,
   reviews: Array<ReviewType>
 }
 

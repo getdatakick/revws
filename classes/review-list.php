@@ -23,18 +23,22 @@ use \RevwsReview;
 use \JsonSerializable;
 
 class ReviewList implements JsonSerializable {
-  // TODO: refactor out
-  private $entityType;
-  private $entityId;
-  // END TODO
   private $id;
+  private $conditions;
+  private $page;
+  private $pageSize;
+  private $order;
+  private $orderDir;
   private $list = null;
 
-  public function __construct($module, $id, $entityType, $entityId) {
+  public function __construct($module, $id, $conditions, $page, $pageSize, $order, $orderDir) {
     $this->module = $module;
     $this->id = $id;
-    $this->entityType = $entityType;
-    $this->entityId = $entityId;
+    $this->conditions = $conditions;
+    $this->page = $page;
+    $this->pageSize = $pageSize;
+    $this->order = $order;
+    $this->orderDir = $orderDir;
   }
 
   public function getId() {
@@ -59,38 +63,49 @@ class ReviewList implements JsonSerializable {
     $this->ensureLoaded();
     $list = $this->list;
     $list['id'] = $this->id;
+    $list['conditions'] = $this->conditions;
     return $list;
   }
 
   private function ensureLoaded() {
     if (is_null($this->list)) {
-      if ($this->entityType == 'product') {
-        $this->list = self::getProductReviews($this->module, $this->entityId);
-      } else {
-        $this->list = self::getCustomerReviews($this->module, $this->entityId);
+      $settings = $this->module->getSettings();
+      $visitor = $this->module->getVisitor();
+      $permissions = $this->module->getPermissions();
+      $options = array_merge($this->conditions, [
+        'deleted' => false,
+        'visitor' => $visitor,
+        'validated' => true,
+        'pageSize' => $this->pageSize,
+        'page' => $this->page,
+        'order' => [
+          'field' => $this->order,
+          'direction' => $this->orderDir
+        ]
+      ]);
+      $list = RevwsReview::findReviews($settings, $options);
+      $list['reviews'] = RevwsReview::mapReviews($list['reviews'], $permissions);
+      $this->list = $list;
+    }
+    return $this->list;
+  }
+
+  public function getProductEntities($products=[]) {
+    $reviews = $this->getReviews();
+    $language = $this->module->getVisitor()->getLanguage();
+    $perm = $this->module->getPermissions();
+    foreach ($reviews as $review) {
+      $productId = (int)$review['productId'];
+      if (! isset($products[$productId])) {
+        $products[$productId] = FrontApp::getProductData($productId, $language, $perm);
       }
     }
+    return $products;
   }
 
-  private static function getProductReviews($module, $productId) {
-    $settings = $module->getSettings();
-    $visitor = $module->getVisitor();
-    $permissions = $module->getPermissions();
-    $perPage = $settings->getReviewsPerPage();
-    $order = $settings->getReviewOrder();
-    $list = RevwsReview::getByProduct($productId, $settings, $visitor, $perPage, 0, $order);
-    $list['reviews'] = RevwsReview::mapReviews($list['reviews'], $permissions);
-    return $list;
+  public function getEntitites() {
+    return [
+      'products' => $this->getProductEntities()
+    ];
   }
-
-  private static function getCustomerReviews($module, $customerId) {
-    $settings = $module->getSettings();
-    $visitor = $module->getVisitor();
-    $permissions = $module->getPermissions();
-    $perPage = $settings->getCustomerReviewsPerPage();
-    $list = RevwsReview::getByCustomer($customerId, $settings, $perPage, 0);
-    $list['reviews'] = RevwsReview::mapReviews($list['reviews'], $permissions);
-    return $list;
-  }
-
 }

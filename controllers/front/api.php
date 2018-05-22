@@ -19,6 +19,7 @@
 
 use \Revws\Notifications;
 use \Revws\CSRFToken;
+use \Revws\ReviewList;
 
 class RevwsApiModuleFrontController extends ModuleFrontController {
   public $module;
@@ -61,8 +62,8 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
         return $this->vote();
       case 'report':
         return $this->reportAbuse();
-      case 'loadReviews':
-        return $this->loadReviews();
+      case 'loadList':
+        return $this->loadList();
       default:
         throw new Exception("Unknown command $cmd");
     }
@@ -149,22 +150,24 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     return false;
   }
 
-  private function loadReviews() {
+  private function loadList() {
     $page = (int)Tools::getValue('page');
-    $entityType = Tools::getValue('entityType');
-    $entityId = (int)Tools::getValue('entityId');
-    $set = $this->module->getSettings();
-    $visitor = $this->module->getVisitor();
-    $perms = $this->module->getPermissions();
-    if ($entityType === 'product') {
-      $reviews = RevwsReview::getByProduct($entityId, $set, $visitor, $set->getReviewsPerPage(), $page, $set->getReviewOrder());
-    } else if ($entityType === 'customer' && $visitor->isCustomer() && $visitor->getCustomerId() == $entityId) {
-      $reviews = RevwsReview::getByCustomer($entityId, $set, $set->getCustomerReviewsPerPage(), $page);
-    } else {
-      throw new Exception('Invalid request');
+    $pageSize = (int)Tools::getValue('pageSize');
+    $order = Tools::getValue('order');
+    $orderDir = Tools::getValue('orderDir');
+    if ($orderDir != 'asc' && $orderDir != 'desc') {
+      throw new Exception('Invalid parameter orderDir');
     }
-    $reviews['reviews'] = RevwsReview::mapReviews($reviews['reviews'], $perms);
-    return $reviews;
+    $listId = Tools::getValue('listId');
+    $conditions = Tools::getValue('conditions');
+    if (! is_array($conditions)) {
+      throw new Exception('Invalid parameter condition');
+    }
+    $list = new ReviewList($this->module, $listId, $conditions, $page, $pageSize, $order, $orderDir);
+    return [
+      'list' => $list,
+      'entities' => $list->getEntitites()
+    ];
   }
 
   private function getReviewPayload() {

@@ -1,7 +1,7 @@
 // @flow
 
-import type { ReviewType } from 'common/types';
-import type { ListConditions } from 'front/types';
+import type { ReviewType, ListOrder, ListOrderDirection } from 'common/types';
+import type { ListConditions, ListType, EntitiesType } from 'front/types';
 import type {
   CloseEditReviewAction,
   SaveReviewAction,
@@ -18,8 +18,11 @@ import type {
   TriggerReportReviewAction,
   ReviewRemovedAction,
   LoadListAction,
+  LoadListFailedAction,
+  SetListAction,
   SetReviewsAction,
-  AgreeGDPRAction
+  AgreeGDPRAction,
+  MergeEntitiesAction
 } from './index';
 import Types from './types';
 
@@ -40,7 +43,10 @@ export const deleteReview = (review: ReviewType): DeleteReviewAction => ({ type:
 export const closeDeleteReview = (): CloseDeleteReviewAction => ({ type: Types.closeDeleteReview });
 export const reviewRemoved = (review: ReviewType): ReviewRemovedAction => ({ type: Types.reviewRemoved, review });
 
-export const loadList = (listId: string, conditions: ListConditions, page: number): LoadListAction => ({ type: Types.loadList, listId, conditions, page });
+export const loadList = (listId: string, conditions: ListConditions, page: number, pageSize: number, order: ListOrder, orderDir: ListOrderDirection): LoadListAction => ({ type: Types.loadList, listId, conditions, page, pageSize, order, orderDir });
+export const loadListFailed = (listId: string): LoadListFailedAction => ({ type: Types.loadListFailed, listId });
+export const setList = (list: ListType): SetListAction => ({ type: Types.setList, list });
 export const setReviews = (reviews: Array<ReviewType>): SetReviewsAction => ({ type: Types.setReviews, reviews });
+export const mergeEntities = (entities: EntitiesType): MergeEntitiesAction => ({ type: Types.mergeEntities, entities });
 
 export const agreeGDPR = (agreed: boolean): AgreeGDPRAction => ({ type: Types.agreeGDPR, agreed });
