@@ -83,10 +83,7 @@ class FrontAppReviewList extends React.PureComponent<Props> {
   }
 
   renderEmptyState = () => {
-    const { canReview, hasReviewed } = this.props;
-    if (hasReviewed) {
-      return;
-    }
+    const { canReview } = this.props;
     if (canReview) {
       return this.renderCreateButton(__('Be the first to write a review!'));
     }
