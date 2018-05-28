@@ -25,7 +25,7 @@
 {strip}
 <div class="revws-review-single">
   {include
-    file="./private_review_list_item.tpl"
+    file=revws::getWidgetTemplate('list/item')
     review=$review
     shape=$shape
     criteria=$criteria

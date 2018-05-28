@@ -12,7 +12,7 @@
 
 <div id="myreviews">
   {include
-    file="./private_my_review_list.tpl"
+    file=revws::getWidgetTemplate('my-reviews/my-reviews')
     reviewsData=$reviewsData
     reviewList=$reviewList
     reviewEntities=$reviewEntities

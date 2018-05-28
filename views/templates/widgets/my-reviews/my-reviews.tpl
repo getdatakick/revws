@@ -56,7 +56,7 @@
             <a href="{$product.url}">{$product.name|escape:'html':'UTF-8'}</a>
           </h2>
           {include
-            file="../hook/private_review_list_item.tpl"
+            file=revws::getWidgetTemplate('list/item')
             review=$review
             shopName=$reviewsData.shopName
             shape=$reviewsData.theme.shape
@@ -74,7 +74,7 @@
     {/if}
   </div>
   {if $reviewList.pages > 1}
-    {include file="../hook/private_review_list_paging.tpl" }
+    {include file=revws::getWidgetTemplate('list/paging') }
   {/if}
 </div>
 {/strip}

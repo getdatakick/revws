@@ -27,7 +27,7 @@
 <div class="revws-review-list">
 {foreach from=$reviewList.reviews item=review}
   {include
-    file="./private_review_list_item.tpl"
+    file=revws::getWidgetTemplate('list/item')
     review=$review
     shopName=$reviewsData.shopName
     shape=$reviewsData.theme.shape
@@ -38,7 +38,7 @@
 {/foreach}
 </div>
 {if $reviewList.pages > 1}
-  {include file="./private_review_list_paging.tpl" }
+  {include file=revws::getWidgetTemplate('list/paging') }
 {/if}
 {/if}
 {/strip}

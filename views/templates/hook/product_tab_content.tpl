@@ -16,7 +16,8 @@
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
 <div id="idTabRevws">
-  {include file="./private_product_list.tpl"
+  {include
+    file=revws::getWidgetTemplate('product-reviews/product-reviews')
     reviewList=$reviewList
     productId=$productId
     visitor=$visitor
