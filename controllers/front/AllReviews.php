@@ -1,4 +1,5 @@
-{*
+<?php
+/**
 * Copyright (C) 2017 Petr Hucik <petr@getdatakick.com>
 *
 * NOTICE OF LICENSE
@@ -14,18 +15,22 @@
 * @author    Petr Hucik <petr@getdatakick.com>
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
-*}
-{if $reviewCount>0 || !$omitEmpty}
-<div class="revws-product-list{if $reviewCount == 0} revws-product-list-empty{/if}">
-  <a href="{$reviewsUrl}">
-    {include file=revws::getWidgetTemplate('grading') grade=$grade shape=$shape type='list'}
-    <div class="revws-count-text">
-      {if $reviewCount == 1}
-        {l s='one review' mod='revws'}
-      {else}
-        {l s='%1$d reviews' sprintf=[$reviewCount] mod='revws'}
-      {/if}
-    </div>
-  </a>
-</div>
-{/if}
+*/
+use \Revws\Settings;
+use \Revws\Visitor;
+use \Revws\Permissions;
+use \Revws\FrontApp;
+
+class RevwsAllReviewsModuleFrontController extends ModuleFrontController {
+  public $module;
+
+  public function __construct() {
+    parent::__construct();
+    $this->context = Context::getContext();
+  }
+
+  public function initContent() {
+    parent::initContent();
+    $this->setTemplate('all-reviews.tpl');
+  }
+}

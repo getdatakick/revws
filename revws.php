@@ -57,7 +57,7 @@ class Revws extends Module {
   public function __construct() {
     $this->name = 'revws';
     $this->tab = 'administration';
-    $this->version = '1.0.15';
+    $this->version = '1.0.16';
     $this->author = 'DataKick';
     $this->need_instance = 0;
     $this->bootstrap = true;
@@ -99,6 +99,7 @@ class Revws extends Module {
   public function registerHooks() {
     return $this->setupHooks([
       'displayHeader',
+      'moduleRoutes',
       'displayMobileHeader',
       'displayProductTab',
       'displayProductTabContent',
@@ -425,7 +426,10 @@ class Revws extends Module {
 
   public function hookDisplayCustomerAccount($params) {
     if ($this->getSettings()->showOnCustomerAccount()) {
-      $this->context->smarty->assign('iconClass', $this->getSettings()->getCustomerAccountIcon());
+      $this->context->smarty->assign([
+        'iconClass' => $this->getSettings()->getCustomerAccountIcon(),
+        'myReviewsUrl' => $this->getUrl('MyReviews')
+      ]);
       return $this->display(__FILE__, 'my-account.tpl');
     }
   }
@@ -446,14 +450,14 @@ class Revws extends Module {
     return "$uri/$rel";
   }
 
-  public static function getReviewUrl($context, $productId) {
-    return $context->link->getModuleLink('revws', 'MyReviews', ['review-product' => (int)$productId ]);
+  public function getReviewUrl($context, $productId) {
+    return $this->getUrl('MyReviews', ['review-product' => (int)$productId ]);
   }
 
   public function hookDiscoverReviewModule() {
     return [
       'name' => $this->name,
-      'getReviewUrl' => ['Revws', 'getReviewUrl'],
+      'getReviewUrl' => [$this, 'getReviewUrl'],
       'canReviewProductSqlFragment' => ['RevwsReview', 'canReviewProductSqlFragment'],
     ];
   }
@@ -522,6 +526,40 @@ class Revws extends Module {
     }
   }
 
+  public function hookModuleRoutes() {
+    $prefix = 'reviews';
+    return [
+      'module-revws-AllReviews' => [
+        'controller' => 'AllReviews',
+        'rule' => "$prefix",
+        'keywords' => [],
+        'params' => [
+          'fc' => 'module',
+          'module' => $this->name,
+          'controller' => 'AllReviews',
+        ]
+      ],
+      'module-revws-MyReviews' => [
+        'controller' => 'MyReviews',
+        'rule' => "$prefix/my-reviews",
+        'keywords' => [],
+        'params' => [
+          'fc' => 'module',
+          'module' => $this->name,
+          'controller' => 'MyReviews',
+        ]
+      ]
+    ];
+  }
+
+  public function getUrl($controller, $params=[]) {
+    return $this->context->link->getModuleLink($this->name, $controller, $params);
+  }
+
+  public static function getWidgetTemplate($name) {
+    return "modules/revws/views/templates/widgets/$name.tpl";
+  }
+
   public function clearCache() {
     if (version_compare(_PS_VERSION_, '1.6.1', '>=')) {
       $this->_clearCache('product-list.tpl');
@@ -560,10 +598,6 @@ class Revws extends Module {
       }
     }
     return $link;
-  }
-
-  private function getMyReviewsUrl() {
-    return $this->context->link->getModuleLink('revws', 'MyReviews');
   }
 
   public function getLoginUrl() {

@@ -25,8 +25,6 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
   public $module;
 
   public function __construct() {
-    $this->display_column_right = false;
-    $this->display_column_left = false;
     parent::__construct();
     $this->context = Context::getContext();
   }
@@ -66,7 +64,7 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
   }
 
   private function selfLink() {
-    return $this->context->link->getModuleLink('revws', 'MyReviews', $this->getParams());
+    return $this->module->getUrl('MyReviews', $this->getParams());
   }
 
   private function getParams() {
