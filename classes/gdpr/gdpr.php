@@ -38,7 +38,10 @@ class GDPR implements GDPRInterface {
   }
 
   public function getConsentMessage(Visitor $visitor) {
-    return $this->impl ? $this->impl->getConsentMessage($visitor) : '';
+    if ($this->isEnabled($visitor)) {
+      return $this->impl->getConsentMessage($visitor);
+    }
+    return '';
   }
 
   public function logConsent(Visitor $visitor) {
@@ -47,9 +50,12 @@ class GDPR implements GDPRInterface {
     }
   }
 
-  public function isEnabled() {
+  public function isEnabled(Visitor $visitor) {
     if ($this->impl) {
-      return $this->impl->isEnabled();
+      if ($visitor->isCustomer() && !$this->settings->isConsentRequiredForCustomers()) {
+        return false;
+      }
+      return $this->impl->isEnabled($visitor);
     }
     return false;
   }

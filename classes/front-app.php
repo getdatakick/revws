@@ -163,7 +163,7 @@ class FrontApp implements JsonSerializable {
         ],
         'gdpr' => [
           'mode' => $set->getGDPRPreference(),
-          'active' => $gdpr->isEnabled(),
+          'active' => $gdpr->isEnabled($visitor),
           'text' => $gdpr->getConsentMessage($visitor)
         ]
       ];

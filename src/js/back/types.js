@@ -78,7 +78,8 @@ export type SettingsType = {
     enabled: boolean
   },
   gdpr: {
-    implementation: 'none' | 'basic' | 'psgdpr'
+    implementation: 'none' | 'basic' | 'psgdpr',
+    requiredForCustomers: boolean
   }
 }
 
