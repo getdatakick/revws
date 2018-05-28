@@ -616,7 +616,8 @@ class Settings extends React.PureComponent<Props, State> {
 
   renderGeneralSettings = () => {
     const { psgdpr } = this.props.data.environment;
-    const gdpr = this.state.settings.gdpr.implementation;
+    const implementation = this.state.settings.gdpr.implementation || 'none';
+    const useGDPR = implementation != 'none';
     return (
       <FormGroup>
         <FormControlLabel
@@ -628,7 +629,7 @@ class Settings extends React.PureComponent<Props, State> {
           <TextField
             select
             label={__('GDPR')}
-            value={gdpr}
+            value={implementation || 'none'}
             fullWidth
             onChange={e => this.set(['gdpr', 'implementation'], e.target.value)}>
             <MenuItem value='none'>{__('Submit reviews without consent')}</MenuItem>
@@ -636,6 +637,11 @@ class Settings extends React.PureComponent<Props, State> {
             {psgdpr && <MenuItem value='psgdpr'>{__('Official prestashop GDPR module')}</MenuItem>}
           </TextField>
         </div>
+        <FormControlLabel
+          control={this.renderCheckbox(['gdpr', 'requiredForCustomers'], !useGDPR)}
+          disabled={! useGDPR}
+          label={__("consent is required even for logged-in customers")}
+        />
       </FormGroup>
     );
   }

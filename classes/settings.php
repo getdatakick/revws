@@ -128,7 +128,8 @@ class Settings {
         'enabled' => true
       ],
       'gdpr' => [
-        'implementation' => self::getDefaultGDPR()
+        'implementation' => self::getDefaultGDPR(),
+        'requiredForCustomers' => true
       ]
     ];
   }
@@ -386,6 +387,10 @@ class Settings {
       return $ret;
     }
     return 'none';
+  }
+
+  public function isConsentRequiredForCustomers() {
+    return $this->get(['gdpr', 'requiredForCustomers']);
   }
 
   public function getGDPRConsentMessage() {

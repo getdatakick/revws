@@ -29,7 +29,7 @@ class BasicGDPR implements GDPRInterface {
     return '';
   }
 
-  public function isEnabled() {
+  public function isEnabled(Visitor $visitor) {
     return true;
   }
 
