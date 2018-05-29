@@ -16,7 +16,7 @@ const updateUrl = (id, list) => {
     const location = window.location;
     const pageSizeParam = 'revws-' + id + '-page-size';
     const pageParam = 'revws-' + id + '-page';
-    const searchParams = reject(param => param.indexOf(pageSizeParam) === 0 || param.indexOf(pageParam) == 0, location.search.replace('?', '').split('&'));
+    const searchParams = reject(param => !param || param.indexOf(pageSizeParam) === 0 || param.indexOf(pageParam) == 0, location.search.replace('?', '').split('&'));
     searchParams.push(pageSizeParam+'='+list.pageSize);
     searchParams.push(pageParam+'='+(list.page+1));
     const search = sortBy(identity, searchParams).join('&');
