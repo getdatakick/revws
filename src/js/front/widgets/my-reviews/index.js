@@ -34,14 +34,13 @@ const actions = {
 
 const merge = (props, actions, passed: PassedProps) => {
   const { lists, reviews, ...restProps  } = props;
-  const { listId, customerId } = passed;
+  const { listId } = passed;
   const { loadList, ...restActions } = actions;
   const list = lists[listId];
   const loading = list.loading;
   const reviewList = getReviewList(list, reviews);
   const loadPage = (page: number) => {
-    const conditions = { customer: customerId };
-    return loadList(listId, conditions, page, list.pageSize, list.order, list.orderDir);
+    return loadList(listId, list.conditions, page, list.pageSize, list.order, list.orderDir);
   };
   return {
     canReview: false,

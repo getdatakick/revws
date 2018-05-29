@@ -22,22 +22,23 @@
 *
 *
 *}
+{assign "reviewStyleFile" revws::getWidgetTemplate("list/$reviewStyle")}
 {strip}
 {if $reviewList}
 <div class="revws-review-list">
 {foreach from=$reviewList.reviews item=review}
   {include
-    file=revws::getWidgetTemplate('list/item')
+    file=$reviewStyleFile
     review=$review
-    shopName=$reviewsData.shopName
-    shape=$reviewsData.theme.shape
-    criteria=$reviewsData.criteria
+    shopName=$shopName
+    shape=$shape
+    criteria=$criteria
     displayCriteria=$displayCriteria
     microdata=$microdata
   }
 {/foreach}
 </div>
-{if $reviewList.pages > 1}
+{if $allowPaging && $reviewList.pages > 1}
   {include file=revws::getWidgetTemplate('list/paging') }
 {/if}
 {/if}

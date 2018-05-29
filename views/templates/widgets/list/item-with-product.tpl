@@ -22,17 +22,27 @@
 *
 *
 *}
+{assign "product" $reviewEntities.products[$review.productId]}
 {strip}
-<div class="revws-review-single">
-  {include
-    file=revws::getWidgetTemplate('list/item')
-    review=$review
-    shape=$shape
-    criteria=$criteria
-    shopName=$shopName
-    linkToProduct=$linkToProduct
-    displayCriteria=$displayCriteria
-    microdata=false
-  }
+<div class="revws-review-with-product">
+  <div>
+    <a href="{$product.url}">
+      <img src="{$product.image}" alt="{$product.name|escape:'html':'UTF-8'}"></img>
+    </a>
+  </div>
+  <div class="revws-review-wrapper">
+    <h2>
+      <a href="{$product.url}">{$product.name|escape:'html':'UTF-8'}</a>
+    </h2>
+    {include
+      file=revws::getWidgetTemplate('list/item')
+      review=$review
+      shopName=$shopName
+      criteria=$criteria
+      shape=$shape
+      displayCriteria=$displayCriteria
+      microdata=false
+    }
+  </div>
 </div>
 {/strip}

@@ -1,14 +1,14 @@
 // @flow
 import React from 'react';
 import type { ReviewListType, ReviewType } from 'common/types';
-import type { SettingsType, VisitorType } from 'front/types';
-import List from './list';
-import Paging from 'common/components/review-list-paging/review-list-paging';
+import type { SettingsType, VisitorType, EntitiesType } from 'front/types';
+import List from '../review-list/review-list';
 
 type Props = {
   hasReviewed: boolean,
   canReview: boolean,
   productId: number,
+  entities: EntitiesType,
   reviewList: ReviewListType,
   visitor: VisitorType,
   settings: SettingsType,
@@ -25,11 +25,13 @@ class FrontAppReviewList extends React.PureComponent<Props> {
   static displayName = 'FrontAppReviewList';
 
   render() {
-    const { settings, reviewList, loading, onEdit, onDelete, onReport, onVote } = this.props;
+    const { loadPage, settings, entities, reviewList, loading, onEdit, onDelete, onReport, onVote } = this.props;
     const isEmpty = reviewList.total === 0;
     return isEmpty ? this.renderEmptyState() : (
       <div>
         <List
+          reviewStyle='item'
+          entities={entities}
           shopName={settings.shopName}
           shape={settings.shape}
           shapeSize={settings.shapeSize.product}
@@ -40,27 +42,13 @@ class FrontAppReviewList extends React.PureComponent<Props> {
           onReport={onReport}
           criteria={settings.criteria}
           displayCriteria={settings.preferences.displayCriteria}
-          onVote={onVote} />
-        { this.renderPaging() }
+          displayReply={true}
+          onVote={onVote}
+          allowPaging={true}
+          loadPage={loadPage} />
         { this.renderWriteReview() }
       </div>
     );
-  }
-
-  renderPaging = () => {
-    const { loading, loadPage } = this.props;
-    const { page, pages } = this.props.reviewList;
-    if (pages > 1) {
-      return (
-        <Paging
-          key='paging'
-          page={page}
-          pages={pages}
-          loading={loading}
-          loadPage={loadPage} />
-      );
-    }
-    return null;
   }
 
   renderWriteReview = () => {

@@ -1,4 +1,8 @@
-(function() {
+(function revwsBootstrap() {
+  if (! window.revwsData) {
+    setTimeout(revwsBootstrap, 1000);
+    return;
+  }
   var tag = document.createElement('script');
   tag.src = window.revwsData.settings.appJsUrl;
   tag.setAttribute('defer', '');
@@ -30,15 +34,20 @@
     $('#idTabRevws').removeClass('block_hidden_only_for_screen');
     $('a[href^="#idTab"]').removeClass('selected');
     $('a[href="#idTabRevws"]').addClass('selected');
+    $('a[href="#idTabRevws"]').trigger('click');
   };
 
   var scrollToReviews = function() {
     if (displayedInTab()) {
       openTab();
     }
-    $('html, body').animate({
-      scrollTop: $("#idTabRevws").offset().top - 80
-    }, 500);
+    var $elem = $("#idTabRevws");
+    if (! $elem.length) {
+      $elem = $(".revws-review-list");
+    }
+    if ($elem.length) {
+      $('html, body').animate({ scrollTop: $elem.offset().top - 80 }, 500);
+    }
   }
 
   $(function() {

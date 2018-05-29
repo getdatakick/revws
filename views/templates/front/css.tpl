@@ -85,6 +85,7 @@ a .revws-grading {
 
 .revws-review-list {
   position: relative;
+  overflow-x: auto;
 }
 
 .revws-loading {
@@ -349,6 +350,10 @@ a .revws-grading {
 .revws-review-with-product .revws-review-wrapper {
   width: 100%;
   padding-left: 40px;
+}
+
+.revws-review-with-product img {
+  max-width: 200px;
 }
 
 .revws-review-with-product .revws-review {

@@ -38,30 +38,10 @@ class FrontApp implements JsonSerializable {
   private $extraProducts = [];
   private $initActions = [];
   private $widgets = [];
+  private $customCount = 0;
 
   public function __construct($module) {
     $this->module = $module;
-  }
-
-  public function addList($type, $entity) {
-    $id = "$type-$entity";
-    $settings = $this->getSettings();
-    if ($type === 'product') {
-      $pageSize = $settings->getReviewsPerPage();
-      $order = $settings->getReviewOrder();
-    } else if ($type === 'customer') {
-      $pageSize = $settings->getCustomerReviewsPerPage();
-      $order = 'id';
-    } else {
-      throw new Exception("Invalid entity type $type");
-    }
-    $conditions = [ $type => (int)$entity ];
-    $list = new ReviewList($this->module, $id, $conditions, 0, $pageSize, $order, 'desc');
-    $this->lists[$id] = $list;
-    if ($this->entities) {
-      $this->entities = $this->loadEntities($this->entities);
-    };
-    return $list;
   }
 
   public function addInitAction($action) {
@@ -73,7 +53,13 @@ class FrontApp implements JsonSerializable {
   }
 
   public function addProductListWidget($productId) {
-    $list = $this->addList('product', $productId);
+    $id = 'product-reviews';
+    $settings = $this->getSettings();
+    $conditions = [ 'product' => (int)$productId ];
+    $pageSize = $this->getPageSize($id, $settings->getReviewsPerPage());
+    $order = $settings->getReviewOrder();
+    $page = $this->getPage($id, 0);
+    $list = $this->addList(new ReviewList($this->module, $id, $conditions, $page, $pageSize, $order, 'desc'));
     $this->addWidget([
       'type' => 'productList',
       'productId' => $productId,
@@ -83,13 +69,35 @@ class FrontApp implements JsonSerializable {
   }
 
   public function addMyReviewsWidget() {
+    $id = 'my-reviews';
     $customerId = $this->getVisitor()->getCustomerId();
-    $list = $this->addList('customer', $customerId);
+    $settings = $this->getSettings();
+    $conditions = [ 'customer' => (int)$customerId ];
+    $pageSize = $this->getPageSize($id, $settings->getCustomerReviewsPerPage());
+    $order = 'id';
+    $page = $this->getPage($id, 0);
+    $list = $this->addList(new ReviewList($this->module, $id, $conditions, $page, $pageSize, $order, 'desc'));
     $this->addWidget([
       'type' => 'myReviews',
       'customerId' => $customerId,
       'listId' => $list->getId()
     ]);
+    return $list;
+  }
+
+  public function addCustomListWidget($id, $conditions, $preferences=[], $pageSize=5, $order='date', $orderDir='desc') {
+    $page = $this->getPage($id, 0);
+    $pageSize = $this->getPageSize($id, $pageSize);
+    $list = $this->addList(new ReviewList($this->module, $id, $conditions, $page, $pageSize, $order, $orderDir));
+    $this->customCount++;
+    $this->addWidget(array_merge([
+      'type' => 'list',
+      'listId' => $list->getId(),
+      'reviewStyle' => 'item',
+      'displayReply' => true,
+      'displayCriteria' => $this->getSettings()->getDisplayCriteriaPreference(),
+      'allowPaging' => true
+    ], $preferences));
     return $list;
   }
 
@@ -275,6 +283,9 @@ class FrontApp implements JsonSerializable {
     ];
   }
 
+  public function generateListId() {
+    return 'custom-' . ($this->customCount + 1);
+  }
 
   private function getLanguage() {
     return $this->getVisitor()->getLanguage();
@@ -294,6 +305,36 @@ class FrontApp implements JsonSerializable {
 
   private function getContext() {
     return $this->module->getContext();
+  }
+
+  private function addList($list) {
+    $id = $list->getId();
+    $this->lists[$id] = $list;
+    if ($this->entities) {
+      $this->entities = $this->loadEntities($this->entities);
+    };
+    return $list;
+  }
+
+  private function getPageSize($listId, $default) {
+    return $this->getParameterValue($listId, 'page-size', $default);
+  }
+
+  private function getPage($listId, $default) {
+    return $this->getParameterValue($listId, 'page', ($default+1)) - 1;
+  }
+
+  private function getParameterValue($listId, $name, $default) {
+    $url = explode('?', $_SERVER['REQUEST_URI']);
+    if (isset($url[1])) {
+      $queryString = $url[1];
+      parse_str($queryString, $queryStringParams);
+      $id = "revws-$listId-$name";
+      if (isset($queryStringParams[$id])) {
+        return (int)$queryStringParams[$id];
+      }
+    }
+    return $default;
   }
 
 }

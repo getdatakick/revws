@@ -15,15 +15,20 @@
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-<section id="revws-section" class="page-product-box">
-  <h3 class="page-product-heading">{l s='Reviews' mod='revws'}</h3>
-  <div id="idTabRevws">
+{strip}
+<div id="revws-portal-{$reviewList.id}">
+  {if $reviewList.reviews}
     {include
-      file=revws::getWidgetTemplate('product-reviews/product-reviews')
+      file=revws::getWidgetTemplate('list/list')
+      reviewStyle=$reviewStyle
       reviewList=$reviewList
-      productId=$productId
-      visitor=$visitor
-      reviewsData=$reviewsData
+      displayCriteria=$displayCriteria
+      shopName=$shopName
+      shape=$shape
+      criteria=$criteria
+      allowPaging=$allowPaging
+      microdata=false
     }
-  </div>
-</section>
+  {/if}
+</div>
+{/strip}

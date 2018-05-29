@@ -1,11 +1,11 @@
 // @flow
 import React from 'react';
+import { F } from 'ramda';
 import type { ReviewListType, ReviewType } from 'common/types';
 import type { EntitiesType, SettingsType } from 'front/types';
 import { slice } from 'ramda';
-import List from './list';
 import { getProduct } from 'front/utils/entities';
-import Paging from 'common/components/review-list-paging/review-list-paging';
+import List from '../review-list/review-list';
 
 type Props = {
   entities: EntitiesType,
@@ -34,36 +34,29 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
   }
 
   renderList = () => {
-    const { settings, reviewList, loading, onEdit, onDelete, entities } = this.props;
+    const { loadPage, settings, reviewList, loading, onEdit, onDelete, entities } = this.props;
     const isEmpty = reviewList.total === 0;
     return isEmpty ? this.renderEmptyState() : (
       <div>
         <List
+          reviewStyle='item-with-product'
           entities={entities}
-          settings={settings}
+          shopName={settings.shopName}
+          shape={settings.shape}
+          shapeSize={settings.shapeSize.product}
           reviewList={reviewList}
           loading={loading}
           onDelete={onDelete}
-          onEdit={onEdit} />
-        { this.renderPaging() }
+          onEdit={onEdit}
+          onReport={F}
+          criteria={settings.criteria}
+          displayCriteria={settings.preferences.displayCriteria}
+          displayReply={true}
+          onVote={F}
+          allowPaging={true}
+          loadPage={loadPage} />
       </div>
     );
-  }
-
-  renderPaging = () => {
-    const { loading, loadPage } = this.props;
-    const { page, pages } = this.props.reviewList;
-    if (pages > 1) {
-      return (
-        <Paging
-          key='paging'
-          page={page}
-          pages={pages}
-          loading={loading}
-          loadPage={loadPage} />
-      );
-    }
-    return null;
   }
 
   renderRequests = () => {

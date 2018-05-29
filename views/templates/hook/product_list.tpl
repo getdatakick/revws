@@ -18,7 +18,7 @@
 {if $reviewCount>0 || !$omitEmpty}
 <div class="revws-product-list{if $reviewCount == 0} revws-product-list-empty{/if}">
   <a href="{$reviewsUrl}">
-    {include file=revws::getWidgetTemplate('grading') grade=$grade shape=$shape type='list'}
+    {include file=revws::getWidgetTemplate('grading/grading') grade=$grade shape=$shape type='list'}
     <div class="revws-count-text">
       {if $reviewCount == 1}
         {l s='one review' mod='revws'}

@@ -31,14 +31,14 @@
       <div class="revws-verified-buyer-badge">{l s="Verified purchase" mod='revws'}</div>
     {/if}
     {if count($review.grades) > 0}
-    {include file=revws::getWidgetTemplate('grading') grade=$review.grade shape=$shape type='product'}
-    {if $microdata}
-    <div class="revws-hidden" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
-      <meta itemprop="worstRating" content="1">
-      <meta itemprop="ratingValue" content="{$review.grade|string_format:"%.2f"}">
-      <meta itemprop="bestRating" content="5">
-    </div>
-    {/if}
+      {include file=revws::getWidgetTemplate('grading/grading') grade=$review.grade shape=$shape type='product'}
+      {if $microdata}
+        <div class="revws-hidden" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+          <meta itemprop="worstRating" content="1">
+          <meta itemprop="ratingValue" content="{$review.grade|string_format:"%.2f"}">
+          <meta itemprop="bestRating" content="5">
+        </div>
+      {/if}
     {/if}
     <div class="revws-review-date" {if $microdata}itemprop="datePublished" content="{$review.date|date_format:"%Y-%m-%d"}"{/if}>{dateFormat date=$review.date|escape:'html':'UTF-8' full=0}</div>
   </div>
@@ -52,7 +52,7 @@
           {if isset($criteria[$critKey])}
           <div class='revws-review-criterion'>
             <span class='revws-criterion-label'>{$criteria[$critKey].label}</span>
-            {include file=revws::getWidgetTemplate('grading') grade=$critValue shape=$shape type='criterion'}
+            {include file=revws::getWidgetTemplate('grading/grading') grade=$critValue shape=$shape type='criterion'}
           </div>
           {/if}
           {/foreach}
@@ -79,7 +79,7 @@
             <tr>
               <td class="revws-criterion-label">{$criteria[$critKey].label}</td>
               <td class="revws-criterion-value">
-                {include file=revws::getWidgetTemplate('grading') grade=$critValue shape=$shape type='criterion'}
+                {include file=revws::getWidgetTemplate('grading/grading') grade=$critValue shape=$shape type='criterion'}
               </td>
             </tr>
             {/if}

@@ -2,12 +2,13 @@
 
 import type { SettingsType, VisitorType, WidgetsType, WidgetType } from 'front/types';
 import React from 'react';
-import ProductReviewList from 'front/pages/product-review-list';
-import MyReviews from 'front/pages/my-reviews';
-import EditReview from 'front/pages/edit-review';
+import ProductReviewList from 'front/widgets/product-review-list';
+import MyReviews from 'front/widgets/my-reviews';
+import ReviewList from 'front/widgets/review-list';
+import EditReview from 'front/widgets/edit-review';
 import Portal from 'common/components/portal/portal';
-import DeleteReview from 'front/pages/delete-review';
-import Snackbar from 'front/pages/snackbar';
+import DeleteReview from 'front/widgets/delete-review';
+import Snackbar from 'front/widgets/snackbar';
 import AppTheme from 'common/components/theme/theme';
 
 type Props = {
@@ -53,6 +54,17 @@ class FrontApp extends React.PureComponent<Props> {
             settings={settings}
             listId={listId}
             customerId={visitor.id} />
+        </Portal>
+      );
+    }
+    if (widget.type === 'list') {
+      const { listId } = widget;
+      return (
+        <Portal nodeId={`revws-portal-${listId}`} key={i}>
+          <ReviewList
+            widget={widget}
+            settings={settings}
+            listId={listId} />
         </Portal>
       );
     }

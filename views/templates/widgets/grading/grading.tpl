@@ -14,6 +14,13 @@
 * @author    Petr Hucik <petr@getdatakick.com>
 * @copyright 2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+*
+*
+*                             WARNING
+*
+*   do NOT MODIFY this template unless you modify javascript as well
+*
+*
 *}
 <div class="revws-grading revws-grading-{$type}">
   {section name="i" start=0 loop=5 step=1}

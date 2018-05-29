@@ -20,6 +20,7 @@ type Props = {
   shapeSize: number,
   criteria: CriteriaType,
   displayCriteria: DisplayCriteriaType,
+  displayReply: boolean,
   review: ReviewType,
   onEdit: (ReviewType)=>void,
   onSaveReply?: (?string)=>void,
@@ -36,6 +37,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
   static displayName = 'ReviewListItem';
 
   static defaultProps = {
+    displayReply: true,
     onEdit: F,
     onDelete: F,
     onVote: F,
@@ -154,13 +156,13 @@ class ReviewListItem extends React.PureComponent<Props, State> {
   }
 
   renderReplies = () => {
-    const { review, onSaveReply } = this.props;
+    const { displayReply, review, onSaveReply } = this.props;
     const { editReply } = this.state;
     if (! isNil(editReply)) {
       return this.renderEditReply(editReply || '');
     }
     if (review.reply) {
-      return this.renderReply(review.reply);
+      return displayReply && this.renderReply(review.reply);
     }
     if (onSaveReply) {
       return this.renderReplyPlaceholder();

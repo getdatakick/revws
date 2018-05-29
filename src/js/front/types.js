@@ -2,6 +2,8 @@
 
 import type { ReviewType, CriteriaType, DisplayCriteriaType, GradingShapeType, NameFormatType, ProductInfoType, ListOrder, ListOrderDirection } from 'common/types';
 
+export type ReviewDisplayStyle = 'item' | 'item-with-product';
+
 export type SettingsType = {
   csrf: string,
   shopName: string,
@@ -88,9 +90,19 @@ export type MyReviewsWidgetType = {
   listId: string
 }
 
+export type CustomListWidgetType = {
+  type: 'list',
+  listId: string,
+  reviewStyle: ReviewDisplayStyle,
+  displayReply: boolean,
+  displayCriteria: DisplayCriteriaType,
+  allowPaging: boolean
+}
+
 export type WidgetType = (
   ProductListWidgetType |
-  MyReviewsWidgetType
+  MyReviewsWidgetType |
+  CustomListWidgetType
 );
 
 export type WidgetsType = Array<WidgetType>;

@@ -29,10 +29,15 @@
 {if $reviewList.total > 0}
   {include
     file=revws::getWidgetTemplate('list/list')
+    reviewStyle='item'
     reviewList=$reviewList
     reviewsData=$reviewsData
+    shopName=$reviewsData.shopName
+    shape=$reviewsData.theme.shape
+    criteria=$reviewsData.criteria
     displayCriteria=$reviewsData.preferences.displayCriteria
     microdata=$reviewsData.preferences.microdata
+    allowPaging=true
   }
   {if !$hasReviewed}
     {if $canReview}

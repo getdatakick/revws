@@ -161,7 +161,7 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     $listId = Tools::getValue('listId');
     $conditions = Tools::getValue('conditions');
     if (! is_array($conditions)) {
-      throw new Exception('Invalid parameter condition');
+      $conditions = [];
     }
     $list = new ReviewList($this->module, $listId, $conditions, $page, $pageSize, $order, $orderDir);
     return [

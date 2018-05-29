@@ -10,6 +10,7 @@ import { getLists } from 'front/selectors/lists';
 import { getReviews } from 'front/selectors/reviews';
 import { getReviewedProducts } from 'front/selectors/visitor-reviews';
 import { getReviewList } from 'front/utils/list';
+import { getEntities } from 'front/selectors/entities';
 import { loadList, triggerVoteReview, triggerReportReview, triggerEditReview, triggerCreateReview, triggerDeleteReview } from 'front/actions/creators';
 
 type PassedProps = {
@@ -21,6 +22,7 @@ type PassedProps = {
 
 const mapStateToProps = mapObject({
   lists: getLists,
+  entities: getEntities,
   reviews: getReviews,
   reviewedProducts: getReviewedProducts
 });
@@ -35,7 +37,7 @@ const actions = {
 };
 
 const merge = (props, actions, passed: PassedProps) => {
-  const { reviewedProducts, lists, reviews  } = props;
+  const { reviewedProducts, lists, reviews, entities  } = props;
   const { settings, visitor, listId, productId } = passed;
   const { loadList, ...restActions } = actions;
   const list = lists[listId];
@@ -45,8 +47,7 @@ const merge = (props, actions, passed: PassedProps) => {
   const hasReviewed = contains(productId, reviewedProducts);
   const canReview = !forbidden && !hasReviewed;
   const loadPage = (page: number) => {
-    const conditions = { product: productId };
-    return loadList(listId, conditions, page, list.pageSize, list.order, list.orderDir);
+    return loadList(listId, list.conditions, page, list.pageSize, list.order, list.orderDir);
   };
   return {
     hasReviewed,
@@ -54,6 +55,7 @@ const merge = (props, actions, passed: PassedProps) => {
     reviewList,
     loading,
     loadPage,
+    entities,
     ...restActions,
     ...passed
   };

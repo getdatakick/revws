@@ -31,6 +31,16 @@ class RevwsAllReviewsModuleFrontController extends ModuleFrontController {
 
   public function initContent() {
     parent::initContent();
+    $frontApp = $this->module->getFrontApp();
+    $list = $frontApp->addCustomListWidget('all-reviews', [], [
+      'reviewStyle' => 'item-with-product'
+    ]);
+    $this->context->smarty->assign([
+      'reviewList' => $list->getData(),
+      'visitor' => $frontApp->getVisitorData(),
+      'reviewEntities' => $frontApp->getEntitites(),
+      'reviewsData' => $frontApp->getStaticData()
+    ]);
     $this->setTemplate('all-reviews.tpl');
   }
 }
