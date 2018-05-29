@@ -94,8 +94,18 @@ class Controller extends React.PureComponent<Props, State> {
   }
 
   getList = (props: Props): ReviewListType => {
-    const { data, uniqueId } = props;
-    return prop(uniqueId, data);
+    const { data, uniqueId  } = props;
+    const list = prop(uniqueId, data);
+    const { order, orderDir, pageSize, page } = this.state;
+    return list || {
+      pageSize,
+      page,
+      order,
+      orderDir,
+      total: 0,
+      pages: 0,
+      reviews: []
+    };
   };
 
   render() {
