@@ -427,8 +427,8 @@ class RevwsReview extends ObjectModel {
     $review->title = $json['title'];
     $review->content = $json['content'];
     $review->date_upd = new \DateTime();
-    $review->product = $json['product'];
-    $review->customer = $json['customer'];
+    $review->product = isset($json['product']) ? $json['product'] : null;
+    $review->customer = isset($json['customer']) ? $json['customer'] : null;
     $review->email = $json['email'];
     $review->reply = $json['reply'] ? str_replace('\\', '\\\\', $json['reply']) : null;
     $review->validated = !$json['underReview'];

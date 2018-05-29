@@ -34,7 +34,6 @@
     $('#idTabRevws').removeClass('block_hidden_only_for_screen');
     $('a[href^="#idTab"]').removeClass('selected');
     $('a[href="#idTabRevws"]').addClass('selected');
-    $('a[href="#idTabRevws"]').trigger('click');
   };
 
   var scrollToReviews = function() {
