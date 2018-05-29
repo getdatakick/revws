@@ -43,7 +43,7 @@
   <h1 class="page-heading">{l s='Your reviews' mod='revws'}</h1>
   {if $reviewList.reviews}
     {include
-      file=revws::getWidgetTemplate('list/list')
+      file='modules/revws/views/templates/widgets/list/list.tpl'
       reviewStyle='item-with-product'
       reviewList=$reviewList
       displayCriteria=$reviewsData.preferences.displayCriteria

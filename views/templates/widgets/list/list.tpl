@@ -22,24 +22,35 @@
 *
 *
 *}
-{assign "reviewStyleFile" revws::getWidgetTemplate("list/$reviewStyle")}
 {strip}
 {if $reviewList}
 <div class="revws-review-list">
 {foreach from=$reviewList.reviews item=review}
-  {include
-    file=$reviewStyleFile
-    review=$review
-    shopName=$shopName
-    shape=$shape
-    criteria=$criteria
-    displayCriteria=$displayCriteria
-    microdata=$microdata
-  }
+  {if $reviewStyle === 'item'}
+    {include
+      file='modules/revws/views/templates/widgets/list/item.tpl'
+      review=$review
+      shopName=$shopName
+      shape=$shape
+      criteria=$criteria
+      displayCriteria=$displayCriteria
+      microdata=$microdata
+    }
+  {else}
+    {include
+      file='modules/revws/views/templates/widgets/list/item-with-product.tpl'
+      review=$review
+      shopName=$shopName
+      shape=$shape
+      criteria=$criteria
+      displayCriteria=$displayCriteria
+      microdata=$microdata
+    }
+  {/if}
 {/foreach}
 </div>
 {if $allowPaging && $reviewList.pages > 1}
-  {include file=revws::getWidgetTemplate('list/paging') }
+  {include file='modules/revws/views/templates/widgets/list/paging.tpl' }
 {/if}
 {/if}
 {/strip}

@@ -642,11 +642,6 @@ class Revws extends Module {
     return $this->context->link->getModuleLink($this->name, $controller, $params);
   }
 
-  public static function getWidgetTemplate($name) {
-    return "modules/revws/views/templates/widgets/$name.tpl";
-  }
-
-
   public static function getPageUrl($list, $increment) {
     $pages = (int)$list['pages'];
     $page = (int)$list['page'] + (int)$increment + 1;

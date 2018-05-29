@@ -19,7 +19,7 @@
   <h3 class="page-product-heading">{l s='Reviews' mod='revws'}</h3>
   <div id="idTabRevws">
     {include
-      file=revws::getWidgetTemplate('product-reviews/product-reviews')
+      file='modules/revws/views/templates/widgets/product-reviews/product-reviews.tpl'
       reviewList=$reviewList
       productId=$productId
       visitor=$visitor

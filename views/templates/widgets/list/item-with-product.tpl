@@ -35,7 +35,7 @@
       <a href="{$product.url}">{$product.name|escape:'html':'UTF-8'}</a>
     </h2>
     {include
-      file=revws::getWidgetTemplate('list/item')
+      file='modules/revws/views/templates/widgets/list/item.tpl'
       review=$review
       shopName=$shopName
       criteria=$criteria

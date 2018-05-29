@@ -25,7 +25,7 @@
         {if $count == 0}
           {l s='no review' mod='revws'}
         {else}
-          {include file=revws::getWidgetTemplate('grading/grading') grade=$grade shape=$shape type='list'}
+          {include file='modules/revws/views/templates/widgets/grading/grading.tpl' grade=$grade shape=$shape type='list'}
           <div class="revws-count-text">
             {if $count == 1}
               {l s='one review' mod='revws'}

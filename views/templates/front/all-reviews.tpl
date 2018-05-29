@@ -11,7 +11,7 @@
 {if $reviewList.total > 0}
 <div id="revws-portal-{$reviewList.id}">
   {include
-    file=revws::getWidgetTemplate('list/list')
+    file='modules/revws/views/templates/widgets/list/list.tpl'
     reviewStyle='item-with-product'
     reviewList=$reviewList
     displayCriteria=$reviewsData.preferences.displayCriteria

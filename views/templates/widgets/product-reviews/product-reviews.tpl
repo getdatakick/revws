@@ -28,7 +28,7 @@
 {assign "canReview" !($visitor.type === 'guest' && !$reviewsData.preferences.allowGuestReviews) && !$hasReviewed}
 {if $reviewList.total > 0}
   {include
-    file=revws::getWidgetTemplate('list/list')
+    file='modules/revws/views/templates/widgets/list/list.tpl'
     reviewStyle='item'
     reviewList=$reviewList
     reviewsData=$reviewsData

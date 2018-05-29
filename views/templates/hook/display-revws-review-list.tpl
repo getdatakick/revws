@@ -19,7 +19,7 @@
 <div id="revws-portal-{$reviewList.id}">
   {if $reviewList.reviews}
     {include
-      file=revws::getWidgetTemplate('list/list')
+      file='modules/revws/views/templates/widgets/list/list.tpl'
       reviewStyle=$reviewStyle
       reviewList=$reviewList
       displayCriteria=$displayCriteria
