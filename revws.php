@@ -391,6 +391,7 @@ class Revws extends Module {
     $this->context->smarty->assign('isGuest', $this->getVisitor()->isGuest());
     $this->context->smarty->assign('loginLink', $this->getLoginUrl($productId));
     $this->context->smarty->assign('microdata', $set->emitRichSnippets());
+    $this->context->smarty->assign('showSignInButton', $set->showSignInButton());
   }
 
 
