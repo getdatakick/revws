@@ -16,7 +16,7 @@
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
 <tr class="comparison_header active">
-  <td><b>{l s='Reviews' mod='productcomments'}</b></td>
+  <td><b>{l s='Reviews' mod='revws'}</b></td>
   {foreach from=$list_ids_product item=productId}
     <td class='comparison_infos'>
       <div class="revws-comparison">
