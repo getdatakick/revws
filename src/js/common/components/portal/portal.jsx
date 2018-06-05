@@ -34,9 +34,7 @@ class Portal extends React.PureComponent<Props> {
   }
 
   render() {
-    if (this.domNode) {
-      return ReactDOM.createPortal(this.props.children, this.domNode);
-    }
+    return this.domNode ? ReactDOM.createPortal(this.props.children, this.domNode) : null;
   }
 }
 
