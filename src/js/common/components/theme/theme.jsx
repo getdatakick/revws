@@ -8,6 +8,7 @@ type Props = {
   htmlFontSize: number,
   zIndexBase: number,
   children: any,
+  fontFamily?: string
 };
 
 class AppTheme extends React.PureComponent<Props> {
@@ -15,14 +16,15 @@ class AppTheme extends React.PureComponent<Props> {
 
   static defaultProps = {
     htmlFontSize: getFontSize(),
-    zIndexBase: 17000000
+    zIndexBase: 17000000,
   }
 
   render() {
-    const { zIndexBase, children, htmlFontSize } = this.props;
+    const { zIndexBase, children, htmlFontSize, fontFamily } = this.props;
     const theme = createMuiTheme({
       typography: {
-        htmlFontSize: htmlFontSize
+        htmlFontSize: htmlFontSize,
+        fontFamily
       },
       zIndex: {
         mobileStepper: zIndexBase + 1000,

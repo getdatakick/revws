@@ -23,7 +23,7 @@ class FrontApp extends React.PureComponent<Props> {
   render() {
     const { settings, visitor, widgets } = this.props;
     return (
-      <AppTheme>
+      <AppTheme fontFamily='inherit'>
         { widgets.map(this.renderWidget) }
         <EditReview visitor={visitor} settings={settings} />
         <DeleteReview />
