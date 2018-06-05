@@ -348,12 +348,15 @@ a .revws-grading {
 }
 
 .revws-review-with-product .revws-review-wrapper {
-  width: 100%;
-  padding-left: 40px;
+  flex-shrink: 1;
+  flex-grow: 1;
 }
 
 .revws-review-with-product img {
   max-width: 200px;
+  padding-right: 40px;
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 
 .revws-review-with-product .revws-review {
@@ -435,6 +438,13 @@ a .revws-grading {
   }
   .revws-review-criteria .revws-criterion-label {
     padding-left: 0px;
+  }
+  .revws-review-with-product {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .revws-review-with-product h2 {
+    text-align: center;
   }
 }
 
