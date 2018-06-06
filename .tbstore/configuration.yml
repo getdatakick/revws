@@ -13,7 +13,7 @@ images:
   - image-3.png
   - image-4.png
   - image-5.png
-license: MIT
+license: AFL 3.0
 php_version:
   - 5.4
   - 5.5

@@ -19,29 +19,27 @@ Before we build ```revws``` module, we need to install its dependencies. Simply 
 This needs to be done only once, or whenever new dependency is added to the project.
 
 ```
-cd src;
 npm install;
 ```
 
 ## Build process
 
-To build ```revws``` module, go to ```src``` directory, and run
+To build ```revws``` module execute following command:
 
 ```
 gulp release
 ```
 
-This will generate file ```rewvs-1_x_x.zip``` in ```src/build``` directory. This is a valid prestashop module.
+This will generate file ```rewvs-x_x_x.zip``` in ```build``` directory. This is a valid prestashop module.
 
 ## Development process
 
 If you want to modify react.js app, building module after each change would take too much time. It's better if you follow this process:
 
-1. go to ```src``` directory
-2. execute command ```gulp``` - this will build react app, and created dev server running on localhost, port 8080
-3. this dev server hosts two javascript files http://localhost:8080/front_app.js and http://localhost:8080/back_app.js . When you change
+1. execute command ```gulp``` - this will build react app, and created dev server running on localhost, port 8080
+2. this dev server hosts two javascript files http://localhost:8080/front_app.js and http://localhost:8080/back_app.js . When you change
 source code, these files are automatically recompiled.
-4. now we need to ask ```revws``` module to use javascript files from our dev server, instead of files that comes with module. To do so, we need to enter two entries to ```PREFIX_configuration``` table. Use following sql (replace PREFIX with your database prefix):
+3. now we need to ask ```revws``` module to use javascript files from our dev server, instead of files that comes with module. To do so, we need to enter two entries to ```PREFIX_configuration``` table. Use following sql (replace PREFIX with your database prefix):
 
 ```
 INSERT INTO PREFIX_configuration(name, value, date_add, date_upd) VALUES
