@@ -71,7 +71,6 @@ class AdminRevwsBackendController extends ModuleAdminController {
           'platform' => $platform,
           'platformVersion' => $platformVersion,
           'environment' => [
-            'mailstream' => Module::isInstalled('mailstream'),
             'krona' => $this->module->getKrona()->isInstalled(),
             'productcomments' => Module::isInstalled('productcomments'),
             'psgdpr' => PrestashopGDRP::isAvailable()

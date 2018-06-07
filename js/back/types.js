@@ -86,7 +86,6 @@ export type SettingsType = {
 export type EnvironmentType = {
   productcomments: boolean,
   krona: boolean,
-  mailstream: boolean,
   psgdpr: boolean
 }
 
