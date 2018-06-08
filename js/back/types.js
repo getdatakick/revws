@@ -100,7 +100,7 @@ export type GlobalDataType = {
   },
   language: number,
   languages: LanguagesType,
-  platform: string,
+  platform: 'thirtybees' | 'prestashop',
   platformVersion: string,
   environment: EnvironmentType
 }

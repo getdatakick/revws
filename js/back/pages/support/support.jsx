@@ -34,7 +34,8 @@ class SupportPage extends React.PureComponent<Props> {
   static displayName = 'SupportPage';
 
   render() {
-    const { checking, checkUpdate } = this.props;
+    const { checking, checkUpdate, data } = this.props;
+    const isThirtybees = data.platform === 'thirtybees';
     return (
       <div className={styles.root}>
         <Section id="update" label={__('Update module')} indent={false}>
@@ -73,17 +74,21 @@ class SupportPage extends React.PureComponent<Props> {
             import your review data from generic data files.
           </div>
 
-          <h3>Customer Loyalty module</h3>
-          <div className={classnames(styles.note, styles.link)}>
-            Revws module is integrated with <a target="_blank" rel='noreferrer' href={krona}>Loyalty Points - Genzo Krona</a> module.
-            This module let you set up your own rewards strategy &mdash; give your customers an incentive to post reviews.
-          </div>
+          { isThirtybees && (
+            <div>
+              <h3>Customer Loyalty module</h3>
+              <div className={classnames(styles.note, styles.link)}>
+                Revws module is integrated with <a target="_blank" rel='noreferrer' href={krona}>Loyalty Points - Genzo Krona</a> module.
+                This module let you set up your own rewards strategy &mdash; give your customers an incentive to post reviews.
+              </div>
 
-          <h3>Send review requests by email</h3>
-          <div className={classnames(styles.note, styles.link)}>
-            You can also use <a target="_blank" rel='noreferrer' href={sendreviewrequest}>Send Review Request module</a>. This one
-            will send an email to the customers who have purchased product, asking them for a review. Amazing tool to get those reviews.
-          </div>
+              <h3>Send review requests by email</h3>
+              <div className={classnames(styles.note, styles.link)}>
+                You can also use <a target="_blank" rel='noreferrer' href={sendreviewrequest}>Send Review Request module</a>. This one
+                will send an email to the customers who have purchased product, asking them for a review. Amazing tool to get those reviews.
+              </div>
+            </div>
+          )}
         </Section>
 
         <Section id="author" label={__('Contact')} indent={false}>
