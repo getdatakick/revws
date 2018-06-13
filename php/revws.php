@@ -485,7 +485,9 @@ class Revws extends Module {
     if (isset($customer['email']) && Validate::isEmail($customer['email'])) {
       $email = $customer['email'];
       $id = isset($customer['id']) ? $customer['id'] : null;
-      return json_encode($this->getGDPR()->deleteData($id, $email));
+      $ret = json_encode($this->getGDPR()->deleteData($id, $email));
+      $this->clearCache();
+      return $ret;
     }
   }
 
