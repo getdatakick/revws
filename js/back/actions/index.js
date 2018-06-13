@@ -118,7 +118,6 @@ export type CheckModuleVersionFailedAction = {
   type: 'CHECK_MODULE_VERSION_FAILED'
 }
 
-
 export type SetLatestVersionAction = {
   type: 'SET_LATEST_VERSION',
   version: string,
@@ -126,6 +125,9 @@ export type SetLatestVersionAction = {
   notes: string
 };
 
+export type ExportReviewsAction = {
+  type: 'EXPORT_REVIEWS'
+};
 
 export type Action = (
   CheckModuleVersionAction |
@@ -150,5 +152,6 @@ export type Action = (
   ReviewCreatedAction |
   ReviewDeletedAction |
   MigrateDataAction |
-  UploadYotpoCsvAction
+  UploadYotpoCsvAction |
+  ExportReviewsAction
 );

@@ -40,6 +40,7 @@ require_once __DIR__.'/classes/notifications.php';
 require_once __DIR__.'/classes/actor.php';
 require_once __DIR__.'/classes/review-list.php';
 require_once __DIR__.'/classes/front-app.php';
+require_once __DIR__.'/classes/backup.php';
 require_once __DIR__.'/classes/integration/datakick.php';
 require_once __DIR__.'/classes/integration/krona.php';
 

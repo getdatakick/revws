@@ -26,7 +26,8 @@ type Props = {
   criteria: CriteriaType,
   settings: SettingsType,
   pageWidth: number,
-  saveSettings: (SettingsType)=>void
+  saveSettings: (SettingsType)=>void,
+  exportReviews: ()=>void
 };
 
 type State = {
@@ -124,10 +125,16 @@ class Settings extends React.PureComponent<Props, State> {
         content: this.renderCriteria()
       },
       {
-        key: 'migrate',
-        label: __('Migrate data'),
+        key: 'import',
+        label: __('Import data'),
         subheader: __('Import review data and criteria settings from other modules'),
         content: this.renderMigrateData()
+      },
+      {
+        key: 'export',
+        label: __('Export data'),
+        subheader: __('Download all your reviews data as XML file'),
+        content: this.renderExportData()
       },
       {
         key: 'module',
@@ -371,6 +378,14 @@ class Settings extends React.PureComponent<Props, State> {
         environment={environment}
         baseUrl={baseUrl}
       />
+    );
+  }
+
+  renderExportData = () => {
+    return (
+      <Button color="primary" onClick={this.props.exportReviews}>
+        {__('Export reviews')}
+      </Button>
     );
   }
 

@@ -18,6 +18,7 @@ import { deleteReview } from './delete-review';
 import { undeleteReview } from './undelete-review';
 import { migrateData } from './migrate-data';
 import { uploadYotpoCsv } from './upload-yopto';
+import { exportReviews } from './export-reviews';
 
 export default (data: GlobalDataType) => {
   const commands = {
@@ -32,7 +33,8 @@ export default (data: GlobalDataType) => {
     [ Types.undeleteReview ]: undeleteReview,
     [ Types.approveReview ]: approveReview,
     [ Types.migrateData ]: migrateData,
-    [ Types.uploadYotpoCsv ]: uploadYotpoCsv
+    [ Types.uploadYotpoCsv ]: uploadYotpoCsv,
+    [ Types.exportReviews ]: exportReviews,
   };
 
   const url = fixUrl(data.api);

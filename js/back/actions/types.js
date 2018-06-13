@@ -29,5 +29,6 @@ export default {
   saveReview: 'SAVE_REVIEW',
 
   migrateData: 'MIGRATE_DATA',
-  uploadYotpoCsv: 'UPLOAD_YOTPO_CSV'
+  uploadYotpoCsv: 'UPLOAD_YOTPO_CSV',
+  exportReviews: 'EXPORT_REVIEWS'
 };

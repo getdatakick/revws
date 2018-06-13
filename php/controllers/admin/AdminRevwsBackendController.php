@@ -24,6 +24,7 @@ use \Revws\FrontApp;
 use \Revws\CsvReader;
 use \Revws\Visitor;
 use \Revws\PrestashopGDRP;
+use \Revws\Backup;
 
 class AdminRevwsBackendController extends ModuleAdminController {
   public $module;
@@ -141,6 +142,8 @@ class AdminRevwsBackendController extends ModuleAdminController {
         return $this->migrateData($payload);
       case 'importYotpo':
         return $this->importYotpo();
+      case 'export':
+        return $this->export();
       case 'setLatestVersion':
         return $this->setLatestVersion($payload);
       default:
@@ -408,6 +411,11 @@ class AdminRevwsBackendController extends ModuleAdminController {
       echo json_encode(['success'=>true, 'result' => $result]);
     }
     Notifications::getInstance()->closeConnectionAndProcess($this->module);
+  }
+
+  private function export() {
+    $backup = new Backup($this->module->getSettings(), []);
+    return $backup->getXml();
   }
 
 
