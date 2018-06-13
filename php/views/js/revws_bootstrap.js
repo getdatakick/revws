@@ -54,7 +54,7 @@
     if (s.indexOf('show=reviews') > -1) {
       scrollToReviews();
     }
-    $('a[href=#idTabRevws]').click(function(e) {
+    $('a[href="#idTabRevws"]').click(function(e) {
       e.preventDefault();
       scrollToReviews();
     });
