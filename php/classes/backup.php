@@ -22,6 +22,7 @@ use \RevwsReview;
 use \RevwsCriterion;
 use \DOMDocument;
 use \Language;
+use \Context;
 
 class Backup {
   private $settings;
@@ -80,39 +81,52 @@ class Backup {
     $global->value = $crit->global ? 'true' : 'false';
     $node->appendChild($global);
 
-    $labels = $domtree->createElement('labels');
-    $node->appendChild($labels);
+    $label = $domtree->createAttribute('label');
+    $curLang = self::getCurrentLanguage();
+    $curLangLabel = isset($crit->label[$curLang]) ? $crit->label[$curLang] : "";
+    $label->value = $curLangLabel;
+    $node->appendChild($label);
+
+    $labels = $domtree->createElement('translations');
+    $hasTranslations = false;
     foreach ($crit->label as $key=>$value) {
-      $lang = self::getLanguage($key);
-      $label = $domtree->createElement('label');
-      $langAttr = $domtree->createAttribute('language');
-      $langAttr->value = $lang;
-      $label->appendChild($langAttr);
-      $text = $domtree->createTextNode($value);
-      $label->appendChild($text);
-      $labels->appendChild($label);
+      if ($key != $curLang && $value != $curLangLabel) {
+        $hasTranslations = true;
+        $lang = self::getLanguage($key);
+        $label = $domtree->createElement($lang);
+        $text = $domtree->createTextNode($value);
+        $label->appendChild($text);
+        $labels->appendChild($label);
+      }
+    }
+    if ($hasTranslations) {
+      $node->appendChild($labels);
     }
 
-    $products = $domtree->createElement('products');
-    $node->appendChild($products);
+    if ($crit->products) {
+      $products = $domtree->createElement('products');
+      $node->appendChild($products);
 
-    foreach ($crit->products as $productId) {
-      $product = $domtree->createElement('product');
-      $id = $domtree->createAttribute('id');
-      $id->value = $productId;
-      $product->appendChild($id);
-      $products->appendChild($product);
+      foreach ($crit->products as $productId) {
+        $product = $domtree->createElement('product');
+        $id = $domtree->createAttribute('id');
+        $id->value = $productId;
+        $product->appendChild($id);
+        $products->appendChild($product);
+      }
     }
 
-    $categories = $domtree->createElement('categories');
-    $node->appendChild($categories);
+    if ($crit->categories) {
+      $categories = $domtree->createElement('categories');
+      $node->appendChild($categories);
 
-    foreach ($crit->categories as $categoryId) {
-      $category = $domtree->createElement('category');
-      $id = $domtree->createAttribute('id');
-      $id->value = $categoryId;
-      $category->appendChild($id);
-      $categories->appendChild($category);
+      foreach ($crit->categories as $categoryId) {
+        $category = $domtree->createElement('category');
+        $id = $domtree->createAttribute('id');
+        $id->value = $categoryId;
+        $category->appendChild($id);
+        $categories->appendChild($category);
+      }
     }
 
     return $node;
@@ -207,5 +221,9 @@ class Backup {
 
   private static function getLanguage($id) {
     return Language::getLanguage($id)['iso_code'];
+  }
+
+  private static function getCurrentLanguage() {
+    return Context::getContext()->language->id;
   }
 }
