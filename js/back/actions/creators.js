@@ -24,6 +24,7 @@ import type {
   SaveReviewAction,
   ReviewUpdatedAction,
   ReviewCreatedAction,
+  ReviewDeletedAction,
   MigrateDataAction,
   UploadYotpoCsvAction
 } from './index';
@@ -47,12 +48,14 @@ export const loadData = (types: { [ string ]: Load }): LoadDataAction => ({ type
 export const setData = (payload: any): SetDataAction => ({ type: Types.setData, payload });
 
 export const approveReview = (id: number): ApproveReviewAction => ({ type: Types.approveReview, id });
-export const deleteReview = (id: number): DeleteReviewAction => ({ type: Types.deleteReview, id });
+export const deleteReview = (id: number): DeleteReviewAction => ({ type: Types.deleteReview, id, permanently: false });
+export const deletePermReview = (id: number): DeleteReviewAction => ({ type: Types.deleteReview, id, permanently: true });
 export const undeleteReview = (id: number): UndeleteReviewAction => ({ type: Types.undeleteReview, id });
 
 export const saveReview = (review: ReviewType): SaveReviewAction => ({ type: Types.saveReview, review });
 export const reviewUpdated = (review: ReviewType): ReviewUpdatedAction => ({ type: Types.reviewUpdated, review });
 export const reviewCreated = (review: ReviewType): ReviewCreatedAction => ({ type: Types.reviewCreated, review });
+export const reviewDeleted = (id: number): ReviewDeletedAction => ({ type: Types.reviewDeleted, id });
 
 export const migrateData = (source: string, payload: any): MigrateDataAction => ({ type: Types.migrateData, source, payload });
 export const uploadYotpoCsv = (file: File): UploadYotpoCsvAction => ({ type: Types.uploadYotpoCsv, file });

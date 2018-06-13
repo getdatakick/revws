@@ -126,9 +126,9 @@ class AdminRevwsBackendController extends ModuleAdminController {
       case 'approveReview':
         return $this->approveReview($payload);
       case 'deleteReview':
-        return $this->deleteReview($payload, true);
+        return $this->deleteReview($payload);
       case 'undeleteReview':
-        return $this->deleteReview($payload, false);
+        return $this->undeleteReview($payload);
       case 'saveSettings':
         return $this->saveSettings($payload);
       case 'deleteCriterion':
@@ -229,21 +229,39 @@ class AdminRevwsBackendController extends ModuleAdminController {
     $review = $this->getReviewById($payload['id']);
     $review->validated = true;
     if (! $review->save()) {
-      throw new Exception("Failed to save review");
+      throw new Exception("Failed to approve review");
     }
     return $this->returnReview($review);
   }
 
-  private function deleteReview($payload, $deleted) {
+  private function deleteReview($payload) {
     $review = $this->getReviewById($payload['id']);
-    $review->deleted = $deleted;
-    if (! $deleted && !$this->module->getSettings()->moderationEnabled()) {
+    if ((bool)$payload['permanently']) {
+      if ($review->delete()) {
+        return true;
+      } else {
+        throw new Exception("Failed to delete review");
+      }
+    } else {
+      $review->deleted = true;
+      $review->validated = false;
+      if (! $review->save()) {
+        throw new Exception("Failed to mark review as deleted");
+      }
+    }
+    return $this->returnReview($review);
+  }
+
+  private function undeleteReview($payload) {
+    $review = $this->getReviewById($payload['id']);
+    $review->deleted = false;
+    if (!$this->module->getSettings()->moderationEnabled()) {
       $review->validated = true;
     } else {
       $review->validated = false;
     }
     if (! $review->save()) {
-      throw new Exception("Failed to save review");
+      throw new Exception("Failed to undelete review");
     }
     return $this->returnReview($review);
   }

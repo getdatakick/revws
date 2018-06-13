@@ -2,16 +2,12 @@
 
 import type { ReviewListType, GradingShapeType, ReviewType, CriteriaType, DisplayCriteriaType, LanguagesType, ListOrder, ListOrderDirection } from 'common/types';
 import type { LoadOptions } from 'back/types';
+import type { Filters } from './types';
 import { notNil } from 'common/utils/ramda';
 import { prop, find, propEq, reject, merge, equals, has } from 'ramda';
 import React from 'react';
 import ReviewsTable from 'back/components/reviews-table/reviews-table';
 import EditReviewDialog from 'back/components/edit-review/edit-review-dialog';
-
-type Filters = {
-  deleted?: boolean,
-  validated?: boolean
-}
 
 export type InputProps = {
   shopName: string,
@@ -32,6 +28,7 @@ type Props = InputProps & {
   loadData: (string, LoadOptions) => void,
   approveReview: (id: number) => void,
   deleteReview: (id: number) => void,
+  deletePermReview: (id: number) => void,
   undeleteReview: (id: number) => void,
   saveReview: (ReviewType) => void
 };
@@ -117,8 +114,11 @@ class Controller extends React.PureComponent<Props, State> {
   }
 
   renderList(list: ReviewListType) {
-    const { languages, criteria, emptyLabel, title, shape, approveReview, deleteReview, undeleteReview, language, shapeSize, shopName, displayCriteria } = this.props;
-    const { edit, page, pageSize, order, orderDir } = this.state;
+    const {
+      languages, criteria, emptyLabel, title, shape, approveReview, deleteReview, undeleteReview,
+      language, shapeSize, shopName, displayCriteria, deletePermReview
+    } = this.props;
+    const { edit, page, pageSize, order, orderDir, filters } = this.state;
     const { total, reviews } = list;
     const filtered = this.filter(reviews);
     const diff = reviews.length - filtered.length;
@@ -143,7 +143,10 @@ class Controller extends React.PureComponent<Props, State> {
           approveReview={approveReview}
           deleteReview={deleteReview}
           undeleteReview={undeleteReview}
+          deletePermReview={deletePermReview}
           emptyLabel={emptyLabel || 'Nothing found'}
+          filters={filters}
+          onChangeFilters={this.onChangeFilters}
         />
         <EditReviewDialog
           shopName={shopName}
@@ -160,6 +163,10 @@ class Controller extends React.PureComponent<Props, State> {
         />
       </div>
     );
+  }
+
+  onChangeFilters = (filters: Filters) => {
+    this.setState({ filters });
   }
 
   filter = (reviews: Array<ReviewType>) => {

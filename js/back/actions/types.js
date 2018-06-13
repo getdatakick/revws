@@ -22,6 +22,7 @@ export default {
 
   reviewUpdated: 'REVIEW_UPDATED',
   reviewCreated: 'REVIEW_CREATED',
+  reviewDeleted: 'REVIEW_DELETED',
   approveReview: 'APPROVE_REVIEW',
   deleteReview: 'DELETE_REVIEW',
   undeleteReview: 'UNDELETE_REVIEW',

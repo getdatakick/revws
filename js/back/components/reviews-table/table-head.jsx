@@ -4,13 +4,7 @@ import React from 'react';
 import { TableHead, TableRow, TableSortLabel, TableCell } from 'material-ui/Table';
 import type { ListOrder, ListOrderDirection } from 'common/types';
 import Tooltip from 'material-ui/Tooltip';
-
-export type Column = {
-  id: string,
-  label: string,
-  disablePadding?: boolean,
-  sort?: ListOrder
-}
+import type { Column } from './types';
 
 type Props = {
   columns: Array<Column>,

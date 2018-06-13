@@ -21,6 +21,20 @@ const updateReviews = (reviewId, func, state) => map(data => {
   return data;
 }, state);
 
+const deleteReview = (reviewId, state) => map(data => {
+  if (data.reviews) {
+    const index = findIndex(propEq('id', reviewId), data.reviews);
+    if (index > -1) {
+      return {
+        ...data,
+        reviews: reject(propEq('id', reviewId), data.reviews),
+        total: data.total - 1
+      };
+    }
+  }
+  return data;
+}, state);
+
 const resetReviews = reject(has('reviews'));
 
 export default (state?: State, action:Action): State => {
@@ -33,6 +47,9 @@ export default (state?: State, action:Action): State => {
   }
   if (action.type === Types.reviewCreated) {
     return resetReviews(state);
+  }
+  if (action.type === Types.reviewDeleted) {
+    return deleteReview(action.id, state);
   }
   return state;
 };

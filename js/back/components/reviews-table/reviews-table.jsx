@@ -26,7 +26,7 @@ import EnhancedTableHead from './table-head';
 import EnhancedTableToolbar from './table-toolbar';
 import Grading from 'common/components/grading/grading';
 import { hasRatings, averageGrade } from 'common/utils/reviews';
-import type { Column } from './table-head';
+import type { Filters, Column } from './types';
 
 type InputProps = {
   onSetOrder: (ListOrder, ListOrderDirection) => void,
@@ -37,6 +37,10 @@ type InputProps = {
   approveReview: (id: number) => void,
   deleteReview: (id: number) => void,
   undeleteReview: (id: number) => void,
+  deletePermReview: (id: number) => void,
+  // filters
+  filters: Filters,
+  onChangeFilters: (Filters)=>void,
   //
   title: string,
   emptyLabel: string,
@@ -102,7 +106,7 @@ class EnhancedTable extends React.Component<Props> {
   render() {
     const {
       shape, emptyLabel, title, classes, total, data, order, orderDir, rowsPerPage, page, onChangePage, onChangeRowsPerPage,
-      onAuthorClick, onReviewClick
+      onAuthorClick, onReviewClick, filters, onChangeFilters
     } = this.props;
     const columnsData: Array<Column> = [
       { id: 'id', sort: 'id', disablePadding: false, label: __('ID') },
@@ -115,7 +119,11 @@ class EnhancedTable extends React.Component<Props> {
     ];
     return (
       <Paper className={classes.root}>
-        <EnhancedTableToolbar title={title} total={total} />
+        <EnhancedTableToolbar
+          title={title}
+          total={total}
+          filters={filters}
+          onChangeFilters={onChangeFilters} />
         <div className={classes.tableWrapper}>
           <Table className={classes.table}>
             <EnhancedTableHead
@@ -198,14 +206,25 @@ class EnhancedTable extends React.Component<Props> {
   }
 
   renderActions = (review: ReviewType) => {
-    const { classes, approveReview, deleteReview, undeleteReview } = this.props;
+    const { classes, approveReview, deleteReview, deletePermReview, undeleteReview } = this.props;
     const iconClass = classes.icon;
     const actions = [];
+    const action = (func: (number)=>void) => e => {
+      e.stopPropagation();
+      func(review.id);
+    };
     if (review.deleted) {
       actions.push(
         <Tooltip key="undelete" title={__('Undelete')}>
-          <IconButton className={iconClass} onClick={e => { e.stopPropagation(); undeleteReview(review.id);}}>
+          <IconButton className={iconClass} onClick={action(undeleteReview)}>
             <UndeleteButton />
+          </IconButton>
+        </Tooltip>
+      );
+      actions.push(
+        <Tooltip key="delete" title={__('Delete permanently')}>
+          <IconButton className={iconClass} onClick={action(deletePermReview)}>
+            <RejectButton />
           </IconButton>
         </Tooltip>
       );
@@ -213,7 +232,7 @@ class EnhancedTable extends React.Component<Props> {
       if (review.underReview) {
         actions.push(
           <Tooltip key="approve" title={__('Approve')}>
-            <IconButton className={iconClass} onClick={e => { e.stopPropagation(); approveReview(review.id);}}>
+            <IconButton className={iconClass} onClick={action(approveReview)}>
               <ApproveIcon />
             </IconButton>
           </Tooltip>
@@ -221,7 +240,7 @@ class EnhancedTable extends React.Component<Props> {
       }
       actions.push(
         <Tooltip key="reject" title={__('Delete')}>
-          <IconButton className={iconClass} onClick={e => { e.stopPropagation(); deleteReview(review.id);}}>
+          <IconButton className={iconClass} onClick={action(deleteReview)}>
             <RejectButton />
           </IconButton>
         </Tooltip>

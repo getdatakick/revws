@@ -70,7 +70,8 @@ export type ApproveReviewAction = {
 
 export type DeleteReviewAction = {
   type: 'DELETE_REVIEW',
-  id: number
+  id: number,
+  permanently: boolean
 }
 
 export type UndeleteReviewAction = {
@@ -91,6 +92,11 @@ export type ReviewUpdatedAction = {
 export type ReviewCreatedAction = {
   type: 'REVIEW_CREATED',
   review: ReviewType
+}
+
+export type ReviewDeletedAction = {
+  type: 'REVIEW_DELETED',
+  id: number
 }
 
 export type MigrateDataAction = {
@@ -142,6 +148,7 @@ export type Action = (
   SaveReviewAction |
   ReviewUpdatedAction |
   ReviewCreatedAction |
+  ReviewDeletedAction |
   MigrateDataAction |
   UploadYotpoCsvAction
 );
