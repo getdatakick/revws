@@ -309,6 +309,13 @@ class Revws extends Module {
       'visitor' => $frontApp->getVisitorData(),
       'reviewsData' => $frontApp->getStaticData()
     ]);
+    if ($settings->emitRichSnippets()) {
+      list($grade, $count) = RevwsReview::getAverageGrade($settings, $productId);
+      $this->context->smarty->assign([
+        'avgGrade' => $grade,
+        'reviewCount' => $count
+      ]);
+    }
     return $list;
   }
 

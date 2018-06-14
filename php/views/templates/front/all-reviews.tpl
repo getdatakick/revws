@@ -35,7 +35,7 @@
     shopName=$reviewsData.shopName
     shape=$reviewsData.theme.shape
     criteria=$reviewsData.criteria
-    microdata=$reviewsData.preferences.microdata
+    microdata=false
     allowPaging=true
   }
 </div>

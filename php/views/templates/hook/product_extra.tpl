@@ -24,12 +24,6 @@
         {l s='(read %1$d reviews)' sprintf=[$reviewCount] mod='revws'}
       </div>
     </a>
-    {if $microdata}
-    <div class="revws-hidden" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-      Rated <span itemprop="ratingValue">{$grade|string_format:"%.2f"}</span>/5
-      based on <span itemprop="reviewCount">{$reviewCount}</span> customer reviews
-    </div>
-    {/if}
   {else}
     {if $canReview}
       <a class="revws-product-extra-link" href="#" data-revws-create-trigger="{$productId}">

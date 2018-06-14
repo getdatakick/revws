@@ -16,6 +16,11 @@
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
 {strip}
+{if $reviewsData.preferences.microdata && $reviewCount>0}
+<div class="revws-hidden" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+  Rated <span itemprop="ratingValue">{$avgGrade|string_format:"%.2f"}</span>/5 based on <span itemprop="reviewCount">{$reviewCount}</span> customer reviews
+</div>
+{/if}
 <div id="revws-portal-{$reviewList.id}">
 {assign "hasReviewed" in_array($productId, $visitor.reviewedProducts)}
 {assign "canReview" !($visitor.type === 'guest' && !$reviewsData.preferences.allowGuestReviews) && !$hasReviewed}
