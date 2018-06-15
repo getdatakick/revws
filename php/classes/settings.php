@@ -367,14 +367,15 @@ class Settings {
     if ($ret) {
       return json_decode($ret, true);
     }
-    return [ 'ts' => null, 'version' => null, 'notes' => null ];
+    return [ 'ts' => null, 'version' => null, 'notes' => null, 'paid' => null ];
   }
 
-  public function setCheckModuleVersion($version, $ts, $notes) {
+  public function setCheckModuleVersion($version, $ts, $notes, $paid) {
     Configuration::updateValue(self::CHECK_VERSION, json_encode([
       'ts' => $ts,
       'version' => $version,
-      'notes' => $notes
+      'notes' => $notes,
+      'paid' => $paid
     ]));
   }
 

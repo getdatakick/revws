@@ -33,7 +33,7 @@ import Types from './types';
 
 export const checkModuleVersion = (): CheckModuleVersionAction => ({ type: Types.checkModuleVersion });
 export const checkModuleVersionFailed = (): CheckModuleVersionFailedAction => ({ type: Types.checkModuleVersionFailed });
-export const setLatestVersion = (version: string, ts: number, notes: string): SetLatestVersionAction => ({ type: Types.setLatestVersion, version, ts, notes });
+export const setLatestVersion = (version: string, ts: number, notes: string, paid: ?string): SetLatestVersionAction => ({ type: Types.setLatestVersion, version, ts, notes, paid });
 export const goTo = (routingState: RoutingState, updateHistory?:boolean = true): GoToAction => ({ type: Types.goTo, routingState, updateHistory });
 export const setSnackbar = (message: ?string): SetSnackbarAction => ({ type: Types.setSnackbar, message });
 export const setSize = (width: number, height: number): SetSizeAction => ({ type: Types.setSize, width, height });

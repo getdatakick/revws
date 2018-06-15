@@ -8,6 +8,7 @@ type State = {
   latestVersion: ?string,
   lastCheck: ?number,
   notes: ?string,
+  paid: ?string,
   checking: boolean
 }
 
@@ -17,6 +18,7 @@ const initialState = (version: string, versionCheck: VersionCheck): State => {
     latestVersion: versionCheck.version,
     lastCheck: versionCheck.ts,
     notes: versionCheck.notes,
+    paid: versionCheck.paid,
     checking: false
   };
 };
@@ -31,6 +33,7 @@ export default (version: string, versionCheck: VersionCheck) => {
         latestVersion: action.version,
         lastCheck: action.ts,
         notes: action.notes,
+        paid: action.paid,
         checking: false
       };
     }

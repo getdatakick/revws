@@ -142,5 +142,6 @@ export type Load = {
 export type VersionCheck = {
   version: ?string,
   ts: ?number,
-  notes?: ?string
+  notes?: ?string,
+  paid?: ?string,
 }

@@ -13,9 +13,10 @@ import moment from 'moment';
 
 type Props = {
   data: GlobalDataType,
-  latestVersion: string,
+  latestVersion: ?string,
   lastCheck: ?number,
   notes: ?string,
+  paidNotes: ?string,
   newVersionAvailable: boolean,
   checking: boolean,
   checkUpdate: ()=>void,
@@ -26,6 +27,7 @@ const forum='https://forum.thirtybees.com/topic/1422/free-module-revws-product-r
 const datakick = 'https://www.getdatakick.com/?utm_campaign=revws&utm_medium=web&utm_source=support';
 const contact = 'https://www.getdatakick.com/contact/?utm_campaign=revws&utm_medium=web&utm_source=support';
 const download = 'https://www.getdatakick.com/extras/revws-product-reviews/?utm_campaign=revws&utm_medium=web&utm_source=support';
+const upgrade = 'https://www.getdatakick.com/extras/revws-product-reviews/?utm_campaign=revws&utm_medium=web&utm_source=upgrade';
 const sendreviewrequest = 'https://forum.thirtybees.com/topic/1510/free-module-send-review-request';
 const krona = 'https://forum.thirtybees.com/topic/1505/free-module-loyalty-points-genzo_krona';
 const originThread = 'https://forum.thirtybees.com/topic/1235/i-m-going-to-create-a-free-module';
@@ -34,7 +36,7 @@ class SupportPage extends React.PureComponent<Props> {
   static displayName = 'SupportPage';
 
   render() {
-    const { checking, checkUpdate, data } = this.props;
+    const { checking, checkUpdate, data, paidNotes } = this.props;
     const isThirtybees = data.platform === 'thirtybees';
     return (
       <div className={styles.root}>
@@ -45,6 +47,13 @@ class SupportPage extends React.PureComponent<Props> {
           </Button>
           <Button href={download} color="default">{__('Download latest version')}</Button>
         </Section>
+
+        { paidNotes && (
+          <Section id="paid" label={__('Upgrade to premium')} indent={false}>
+            <Markdown className={styles.paid} content={paidNotes} />
+            <Button raised href={upgrade} color="accent">{__('Upgrade now')}</Button>
+          </Section>
+        )}
 
         <Section id="forum" label={__('Bug reporting')} indent={false}>
           <div className={styles.note}>

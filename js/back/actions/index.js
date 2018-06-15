@@ -122,7 +122,8 @@ export type SetLatestVersionAction = {
   type: 'SET_LATEST_VERSION',
   version: string,
   ts: number,
-  notes: string
+  notes: string,
+  paid: ?string
 };
 
 export type ExportReviewsAction = {
