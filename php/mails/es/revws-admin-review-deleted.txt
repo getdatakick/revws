@@ -1,0 +1,14 @@
+Asunto: Un comentario ha sido eliminado - {shop_name}
+
+Hola!
+
+Esto es para hacerle saber que el comentario {review_id} con la calificación {ratings} por {product_name} fue eliminado por el revisor.
+
+Si desea preguntarle al revisor por qué, aquí están sus detalles:
+
+Correo electronico: {author_email}
+Nombre: {author_name}
+Nombre en el comentario: {display_name}
+
+Your DataKick Review Module
+

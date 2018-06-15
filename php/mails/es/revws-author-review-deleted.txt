@@ -1,0 +1,18 @@
+Asunto: Su comentario fue rechazado - {shop_name}
+
+Hola,
+
+Gracias por tomarse el tiempo para enviar su comentario. Sin embargo, creemos que este comentario no es apropiado y, por lo tanto, no lo aprobamos.
+
+Como recordatorio, este fue su comentario:
+
+Producto: {product_name}
+Calificaciones: {ratings}
+Titulo: {title}
+Contenido: {content}
+Nombre en el comentario: {display_name}
+
+Por favor, siéntase libre de escribirnos si cree que esto fue un error.
+
+Saludos coordiales,
+{shop_name}

@@ -1,0 +1,12 @@
+Asunto:  Un comentario fue actualizado - {shop_name}
+
+Hola!
+
+Comentario {review_id} por {product_name} fue actualizado y ahora se lee de la siguiente manera:
+
+Calificacion: {ratings}
+Titulo: {title}
+Contenido: {content}
+Comentario ID: {review_id}
+
+Your DataKick Review Module

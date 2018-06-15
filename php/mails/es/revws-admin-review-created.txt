@@ -1,0 +1,15 @@
+Asunto: Tienes un nuevo comentario! - {shop_name}
+
+Hola!
+
+Tienes un nuevo comentario!
+
+Aqui estan los detalles:
+
+Producto: {product_name}
+Calificacion: {ratings}
+Titulo: {title}
+Contenido: {content}
+Comentario ID: {review_id}
+
+Your DataKick Review Module

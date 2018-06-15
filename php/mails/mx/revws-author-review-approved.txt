@@ -1,0 +1,19 @@
+Asunto: Tu comentario ha sido aprobado
+ - {shop_name}
+
+Hola!
+
+Muchas gracias por tu comentario!
+
+Ha sido aprobado ahora. Estamos muy agradecidos de que se haya tomado el tiempo para comentar nuestro producto.
+
+Como recordatorio, este es su comentario:
+
+Producto: {product_name}
+Clasificacion: {ratings}
+Titulo: {title}
+Contenido: {content}
+Nombre en el comentario: {display_name}
+
+¡Gracias de nuevo! Realmente apreciamos el comentario.
+{shop_name}

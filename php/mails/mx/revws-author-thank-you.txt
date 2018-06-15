@@ -1,0 +1,18 @@
+Asunto: {shop_name} Gracias por tu comentario.
+
+Hola!
+
+¡Muchas gracias por tu comentario! Estamos muy agradecidos de que se haya tomado el tiempo de enviar un comentario.
+
+Como recordatorio, este fue su comentario:
+
+Producto: {product_name}
+Calificaciones: {ratings}
+Titulo: {title}
+Contenidot: {content}
+Nombre en el comentario: {display_name}
+
+¡Gracias de nuevo! Realmente apreciamos el comentario. 
+{shop_name}
+
+

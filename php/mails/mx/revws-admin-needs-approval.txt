@@ -1,0 +1,12 @@
+Asunto: Un comentario necesita aprobación
+ - {shop_name}
+
+Hola!
+
+Tienes un comentario para {product_name}.
+
+Comentario {review_id} con la calificación {ratings} ahora está esperando su aprobación antes de que se publique.
+
+¡Apúrate a tu sitio y échale un vistazo!
+
+Your DataKick Review Module
