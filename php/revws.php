@@ -637,9 +637,29 @@ class Revws extends Module {
           'controller' => 'AllReviews',
         ]
       ],
+      'module-revws-AllReviews2' => [
+        'controller' => 'AllReviews',
+        'rule' => "$prefix/",
+        'keywords' => [],
+        'params' => [
+          'fc' => 'module',
+          'module' => $this->name,
+          'controller' => 'AllReviews',
+        ]
+      ],
       'module-revws-MyReviews' => [
         'controller' => 'MyReviews',
         'rule' => "$prefix/my-reviews",
+        'keywords' => [],
+        'params' => [
+          'fc' => 'module',
+          'module' => $this->name,
+          'controller' => 'MyReviews',
+        ]
+      ],
+      'module-revws-MyReviews2' => [
+        'controller' => 'MyReviews',
+        'rule' => "$prefix/my-reviews/",
         'keywords' => [],
         'params' => [
           'fc' => 'module',
