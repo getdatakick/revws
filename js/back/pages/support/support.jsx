@@ -135,7 +135,7 @@ class SupportPage extends React.PureComponent<Props> {
         <div className={classnames(styles.note, styles.inline)}>
           <NewVersionIcon />
           <span dangerouslySetInnerHTML={{
-            __html:  __('No information available. Please click on <strong>Check for updates</strong> button to check for new version of this module')
+            __html:  replaceTags(__('No information available. Please click on [strong]Check for updates[/strong] button to check for new version of this module'))
           }} />
         </div>
       );
@@ -148,7 +148,7 @@ class SupportPage extends React.PureComponent<Props> {
         <div key='info' className={classnames(styles.note, styles.inline, styles.accent)}>
           <NewVersionIcon />
           <span dangerouslySetInnerHTML={{
-            __html:  __('New version <strong>%s</strong> is available. Last check %s', latestVersion, last)
+            __html:  replaceTags(__('New version [strong]%s[/strong] is available. Last check %s', latestVersion, last))
           }} />
         </div>
       ];
@@ -165,13 +165,14 @@ class SupportPage extends React.PureComponent<Props> {
       <div className={classnames(styles.note, styles.inline)}>
         <UpToDateIcon />
         <span dangerouslySetInnerHTML={{
-          __html:  __('You have latest version <strong>%s</strong> of this module. Last check %s', data.version, last)
+          __html:  replaceTags(__('You have latest version [strong]%s[/strong] of this module. Last check %s', data.version, last))
         }} />
 
       </div>
     );
   }
-
 }
+
+const replaceTags = (str) => str.replace(/\[([a-z\/]+)\]/g, "<$1>");
 
 export default SupportPage;

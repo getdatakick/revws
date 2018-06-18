@@ -134,6 +134,9 @@ gulp.task('copy-build', function(done) {
 });
 
 gulp.task('create-index', function(done) {
+  if (!fs.existsSync('./build/staging/revws/translations')){
+    fs.mkdirSync('./build/staging/revws/translations');
+  }
   var folders = getFolders('./build/staging/revws');
   var tasks = folders.map(folder => gulp.src('php/index.php').pipe(gulp.dest(folder)));
   return merge(tasks);
@@ -186,7 +189,17 @@ gulp.task('create-translations', function(done) {
     .on('end', done);
 });
 
-gulp.task('translate', gulp.series('extract-front-translations', 'extract-back-translations', 'create-translations'));
+gulp.task('merge-translations-keys', function(done) {
+  exec('php ./utils/merge-keys.php', (err, stdout, stderr) => {
+    if (err) {
+      throw new Error(err);
+    }
+    console.log(stdout.replace(/\s$/g, ""));
+    done();
+  });
+});
+
+gulp.task('translate', gulp.series('extract-front-translations', 'extract-back-translations', 'create-translations', 'merge-translations-keys'));
 
 gulp.task('stage', gulp.series('copy-text-files', 'copy-binary-files', 'copy-build', 'create-index', 'create-config-xml', 'translate'));
 

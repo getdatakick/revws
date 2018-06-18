@@ -21,6 +21,7 @@
 <script>
   (function(){
     var started = false;
+    var attempt = 0;
     function startRevwsApp() {
       if (started) {
         return;
@@ -29,6 +30,7 @@
         started = true;
         startRevws({$revws|json_encode});
       } else {
+        attempt++;
         console.log('['+attempt+'] startRevws not loaded yet, waiting...');
         setTimeout(startRevwsApp, 500);
       }
