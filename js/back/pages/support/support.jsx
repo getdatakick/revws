@@ -39,7 +39,7 @@ class SupportPage extends React.PureComponent<Props> {
   render() {
     const { checking, checkUpdate, data, paidNotes } = this.props;
     const isThirtybees = data.platform === 'thirtybees';
-    const forum = !isThirtybees ? tbForum : psForum;
+    const forum = isThirtybees ? tbForum : psForum;
     return (
       <div className={styles.root}>
         <Section id="update" label={__('Update module')} indent={false}>
