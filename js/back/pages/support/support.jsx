@@ -23,7 +23,8 @@ type Props = {
 };
 
 const github='https://github.com/getdatakick/revws';
-const forum='https://forum.thirtybees.com/topic/1422/free-module-revws-product-reviews';
+const tbForum='https://forum.thirtybees.com/topic/1422/free-module-revws-product-reviews';
+const psForum='https://www.prestashop.com/forums/topic/663108-free-module-revws-product-reviews-ps16ps17';
 const datakick = 'https://www.getdatakick.com/?utm_campaign=revws&utm_medium=web&utm_source=support';
 const contact = 'https://www.getdatakick.com/contact/?utm_campaign=revws&utm_medium=web&utm_source=support';
 const download = 'https://www.getdatakick.com/extras/revws-product-reviews/?utm_campaign=revws&utm_medium=web&utm_source=support';
@@ -38,6 +39,7 @@ class SupportPage extends React.PureComponent<Props> {
   render() {
     const { checking, checkUpdate, data, paidNotes } = this.props;
     const isThirtybees = data.platform === 'thirtybees';
+    const forum = !isThirtybees ? tbForum : psForum;
     return (
       <div className={styles.root}>
         <Section id="update" label={__('Update module')} indent={false}>
