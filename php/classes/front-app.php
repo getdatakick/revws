@@ -255,7 +255,7 @@ class FrontApp implements JsonSerializable {
     $productId = (int)$productId;
     $lang = (int)$lang;
     $context = Context::getContext();
-    $product = new Product($productId);
+    $product = new Product($productId, false, $lang);
     if (! Validate::isLoadedObject($product)) {
       return [
         'id' => $productId,
@@ -265,13 +265,13 @@ class FrontApp implements JsonSerializable {
         'criteria' => []
       ];
     }
-    $productName = $product->name[$lang];
+    $productName = $product->name;
     $link = $context->link;
     $res = Product::getCover($productId, $context);
     $image = null;
     if ($res) {
       $imageId = (int)$res['id_image'];
-      $rewrite = $product->link_rewrite[$lang];
+      $rewrite = $product->link_rewrite;
       $image = $link->getImageLink($rewrite, $imageId, ImageType::getFormatedName('home'));
     }
     return [
