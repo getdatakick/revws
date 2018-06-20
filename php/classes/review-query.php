@@ -41,7 +41,7 @@ class ReviewQuery {
 
   public function getAverageGradeSql() {
     return "
-      SELECT (SUM(ra.grade) / COUNT(distinct r.id_review)) AS grade, COUNT(distinct r.id_review) as cnt
+      SELECT (SUM(ra.grade) / COUNT(1)) AS grade, COUNT(distinct r.id_review) as cnt
         FROM " . _DB_PREFIX_ . "revws_review r
         LEFT JOIN " . _DB_PREFIX_ . "revws_review_grade ra ON (r.id_review = ra.id_review)
         WHERE {$this->getConditions()}
