@@ -112,7 +112,6 @@ class Revws extends Module {
       'displayCustomerAccount',
       'displayMyAccountBlock',
       'displayFooterProduct',
-      'discoverReviewModule',
       'datakickExtend',
       'actionRegisterKronaAction',
       'displayRevwsReview',
@@ -458,18 +457,6 @@ class Revws extends Module {
     $uri = rtrim($this->getPathUri(), '/');
     $rel = ltrim($relative, '/');
     return "$uri/$rel";
-  }
-
-  public function getReviewUrl($context, $productId) {
-    return $this->getUrl('MyReviews', ['review-product' => (int)$productId ]);
-  }
-
-  public function hookDiscoverReviewModule() {
-    return [
-      'name' => $this->name,
-      'getReviewUrl' => [$this, 'getReviewUrl'],
-      'canReviewProductSqlFragment' => ['RevwsReview', 'canReviewProductSqlFragment'],
-    ];
   }
 
   public function hookRegisterGDPRConsent() {
