@@ -107,6 +107,11 @@ function mergeKeys($file, $keys) {
       $allKeys[$key] = "";
     }
   }
+  foreach ($existing as $key => $value) {
+    if ($value && !isset($allKeys[$key])) {
+      $allKeys[$key] = $value;
+    }
+  }
   file_put_contents($file, json_encode($allKeys, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
   return $translated;
 }
