@@ -331,8 +331,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
   private function getProductInfo($options) {
     $id = (int)$options['id'];
     $lang = $this->context->language->id;
-    $permissions = $this->module->getPermissions();
-    return FrontApp::getProductData($id, $lang, $permissions);
+    return FrontApp::getProductData($id, $lang);
   }
 
   private function getCategories($options) {

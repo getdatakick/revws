@@ -232,13 +232,13 @@ class FrontApp implements JsonSerializable {
     foreach ($visitorData['productsToReview'] as $productId) {
       $productId = (int)$productId;
       if (! isset($products[$productId])) {
-        $products[$productId] = self::getProductData($productId, $this->getLanguage(), $this->getPermissions());
+        $products[$productId] = self::getProductData($productId, $this->getLanguage());
       }
     }
     foreach ($this->extraProducts as $productId) {
       $productId = (int)$productId;
       if (! isset($products[$productId])) {
-        $products[$productId] = self::getProductData($productId, $this->getLanguage(), $this->getPermissions());
+        $products[$productId] = self::getProductData($productId, $this->getLanguage());
       }
     }
     return [
@@ -251,7 +251,7 @@ class FrontApp implements JsonSerializable {
     return Shapes::getShape($this->getSettings()->getShape());
   }
 
-  public static function getProductData($productId, $lang, Permissions $permissions) {
+  public static function getProductData($productId, $lang) {
     $productId = (int)$productId;
     $lang = (int)$lang;
     $context = Context::getContext();

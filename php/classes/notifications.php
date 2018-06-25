@@ -236,7 +236,7 @@ class Notifications {
   }
 
   private function getCommonData(RevwsReview $review, $lang) {
-    $productData = FrontApp::getProductData($review->id_product, $lang, new EmployeePermissions());
+    $productData = FrontApp::getProductData($review->id_product, $lang);
     $authorName = $review->display_name;
     if ($review->isCustomer()) {
       $customer = $this->getCustomer($review);
