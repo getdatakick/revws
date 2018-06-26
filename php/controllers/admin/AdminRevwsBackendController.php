@@ -76,6 +76,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
             'productcomments' => Module::isInstalled('productcomments'),
             'psgdpr' => PrestashopGDRP::isAvailable()
           ],
+          'warnings' => $this->getWarnings()
         ],
         'versionCheck' => $settings->getCheckModuleVersion(),
         'criteria' => $this->getCriteria(),
@@ -445,6 +446,77 @@ class AdminRevwsBackendController extends ModuleAdminController {
 
   private function getCriteria() {
     return array_map(array('RevwsCriterion', 'toJSData'), RevwsCriterion::getFullCriteria());
+  }
+
+  private function getWarnings() {
+    // check email templates
+    $warnings = [];
+    if (! $this->isCssFolderWriteable()) {
+      $warnings[] = [
+        'icon' => 'warning',
+        'message' => sprintf($this->l('Directory %s is not writable'), REVWS_MODULE_DIR . '/views/css/'),
+        'hint' => $this->l('This directory must be writable in order to generate CSS files')
+      ];
+    }
+    $warnings = array_merge($warnings, $this->getMissingEmailTemplates());
+    return $warnings;
+  }
+
+  private function getMissingEmailTemplates() {
+    $templates = [];
+    $missing = [];
+    foreach (@scandir(_PS_ROOT_DIR_ . $this->module->getPath('mails/en/')) as $file) {
+      $split = explode('.', $file);
+      $ext = end($split);
+      if ($ext === 'txt' || $ext === 'html') {
+        $templates[] = $file;
+      }
+    }
+    $pathsToCheck = $this->getEmailTemplatePaths();
+    $source = rtrim(_PS_ROOT_DIR_, DIRECTORY_SEPARATOR) . $this->module->getPath('mails/en/');
+    foreach (Language::getLanguages() as $lang) {
+      $isoCode = $lang['iso_code'];
+      foreach ($templates as $template) {
+        if (! self::emailTemplateExists($isoCode, $template, $pathsToCheck)) {
+          $target = rtrim(_PS_THEME_DIR_, DIRECTORY_SEPARATOR) . $this->module->getPath("mails/$isoCode/");
+          $missing[] = [
+            'icon' => 'email',
+            'message' => sprintf($this->l('Email template %s is not translated for language %s'), $template, $lang['name']),
+            'hint' => sprintf($this->l('To fix this problem, copy file %s to %s, and then translate it'), $source.$template, $target.$template)
+          ];
+        }
+      }
+    }
+    return $missing;
+  }
+
+  private static function emailTemplateExists($isoCode, $template, $pathsToCheck) {
+    foreach ($pathsToCheck as $path) {
+      $file = $path . $isoCode . DIRECTORY_SEPARATOR . $template;
+      if (@file_exists($file)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private function getEmailTemplatePaths() {
+    $relative = $this->module->getPath('mails/');
+    $rootDir = rtrim(_PS_ROOT_DIR_, DIRECTORY_SEPARATOR);
+    $themeDir = rtrim(_PS_THEME_DIR_, DIRECTORY_SEPARATOR);
+    return [
+      $themeDir . $relative,
+      $rootDir . $relative,
+      $themeDir . '/mails/'
+    ];
+  }
+
+  private function isCssFolderWriteable() {
+    $dir = REVWS_MODULE_DIR . '/views/css/';
+    if (! is_dir($dir)) {
+      @mkdir($dir);
+    }
+    return @is_writable($dir);
   }
 
 }

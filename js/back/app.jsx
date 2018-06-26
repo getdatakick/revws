@@ -38,10 +38,12 @@ class BackApp extends React.PureComponent<Props> {
 
   renderNavigation = (routingState: RoutingState, newVersionAvailable: boolean) => {
     if (routingState.showNavigation) {
+      const warnings = this.props.data.warnings;
       return (
         <Navigation
           newVersionAvailable={newVersionAvailable}
           selected={routingState.type}
+          warnings={warnings ? warnings.length : 0}
           goTo={this.props.goTo}
         />
       );

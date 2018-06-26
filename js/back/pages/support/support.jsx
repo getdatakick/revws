@@ -7,8 +7,10 @@ import Button from 'material-ui/Button';
 import styles from './support.less';
 import type { GlobalDataType } from 'back/types';
 import CheckIcon from 'material-ui-icons/Cached';
+import List from 'material-ui/List';
 import UpToDateIcon from 'material-ui-icons/Done';
 import NewVersionIcon from 'material-ui-icons/InfoOutline';
+import Warning from './warning';
 import moment from 'moment';
 
 type Props = {
@@ -42,6 +44,8 @@ class SupportPage extends React.PureComponent<Props> {
     const forum = isThirtybees ? tbForum : psForum;
     return (
       <div className={styles.root}>
+        {this.renderWarnings()}
+
         <Section id="update" label={__('Update module')} indent={false}>
           { checking ? this.renderChecking() : this.renderResult() }
           <Button color='primary' onClick={checkUpdate} disabled={checking}>
@@ -121,6 +125,23 @@ class SupportPage extends React.PureComponent<Props> {
         </Section>
       </div>
     );
+  }
+
+  renderWarnings = () => {
+    const warnings = this.props.data.warnings;
+    if (warnings && warnings.length) {
+      return (
+        <Section id="warnings" label={__('Detected problems')} indent={false}>
+          <div className={classnames(styles.note, styles.inline)}>
+            {__("We have detected following problems. This module might not work correctly unless they are fixed")}
+          </div>
+
+          <List>
+            {warnings.map((warn, i) => <Warning key={i} {...warn} />)}
+          </List>
+        </Section>
+      );
+    }
   }
 
   renderChecking = () => (

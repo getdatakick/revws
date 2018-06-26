@@ -2,6 +2,12 @@
 import type { NameFormatType, LangString, LanguagesType, GradingShapeType, ShapeColorsType, DisplayCriteriaType } from 'common/types';
 export type { RoutingState, GoTo } from 'back/routing';
 
+export type WarningMessageType = {
+  icon: 'email' | 'warning',
+  message: string,
+  hint: string
+};
+
 export type SettingsType = {
   module: {
     checkModuleVersion: boolean
@@ -102,7 +108,8 @@ export type GlobalDataType = {
   languages: LanguagesType,
   platform: 'thirtybees' | 'prestashop',
   platformVersion: string,
-  environment: EnvironmentType
+  environment: EnvironmentType,
+  warnings?: Array<WarningMessageType>
 }
 
 export type FullCriterion = {

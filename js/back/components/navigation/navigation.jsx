@@ -12,30 +12,22 @@ import Badge from 'common/components/badge/badge';
 type Props = {
   selected: string,
   goTo: GoTo,
-  newVersionAvailable: boolean
+  newVersionAvailable: boolean,
+  warnings: number
 };
 
 class Navigation extends React.PureComponent<Props> {
   static displayName = 'Navigation';
 
   render() {
-    const { selected, newVersionAvailable } = this.props;
-    let support = __("Support");
-    if (newVersionAvailable) {
-      support = (
-        <div className={styles.tab}>
-          {support}
-          <Badge>1</Badge>
-        </div>
-      );
-    }
+    const { selected, newVersionAvailable, warnings } = this.props;
     return (
       <div className={styles.root}>
         <div className={styles.left}>
           <Tabs value={selected} onChange={this.onChangeTab}>
             <Tab value='moderation' label={__("Moderation")} />
             <Tab value='reviews' label={__("Reviews")} />
-            <Tab value='support' label={support} />
+            <Tab value='support' label={this.renderSupportLabel(newVersionAvailable, warnings)} />
           </Tabs>
         </div>
         <div className={styles.right}>
@@ -43,6 +35,19 @@ class Navigation extends React.PureComponent<Props> {
         </div>
       </div>
     );
+  }
+
+  renderSupportLabel = (newVersionAvailable: boolean, warnings: number) => {
+    const count = warnings + (newVersionAvailable ? 1 : 0);
+    if (count) {
+      return (
+        <div className={styles.tab}>
+          {__("Support")}
+          <Badge>{count}</Badge>
+        </div>
+      );
+    }
+    return __("Support");
   }
 
   renderActions = (value: string) => {
