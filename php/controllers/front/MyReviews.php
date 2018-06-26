@@ -45,6 +45,7 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
     $params = $this->getParams();
     $reviewProduct = (isset($params['review-product'])) ? (int)$params['review-product'] : null;
     if ($reviewProduct && $permissions->canCreateReview($reviewProduct)) {
+      $frontApp->addEntity('product', $reviewProduct);
       $frontApp->addInitAction([
         'type' => 'TRIGGER_CREATE_REVIEW',
         'productId' => $reviewProduct
