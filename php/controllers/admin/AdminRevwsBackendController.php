@@ -76,7 +76,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
             'productcomments' => Module::isInstalled('productcomments'),
             'psgdpr' => PrestashopGDRP::isAvailable()
           ],
-          'drilldownTokens' => $this->getDrilldownTokens(),
+          'drilldownUrls' => $this->getDrilldownTokens(),
           'warnings' => $this->getWarnings()
         ],
         'versionCheck' => $settings->getCheckModuleVersion(),
