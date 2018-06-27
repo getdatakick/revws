@@ -2,11 +2,6 @@
 import type { NameFormatType, LangString, LanguagesType, GradingShapeType, ShapeColorsType, DisplayCriteriaType } from 'common/types';
 export type { RoutingState, GoTo } from 'back/routing';
 
-export type WarningMessageType = {
-  icon: 'email' | 'warning',
-  message: string,
-  hint: string
-};
 
 export type SettingsType = {
   module: {
@@ -109,6 +104,7 @@ export type GlobalDataType = {
   platform: 'thirtybees' | 'prestashop',
   platformVersion: string,
   environment: EnvironmentType,
+  drilldownUrls: DrilldownUrls,
   warnings?: Array<WarningMessageType>
 }
 
@@ -145,10 +141,24 @@ export type Load = {
   options: LoadOptions
 };
 
-
 export type VersionCheck = {
   version: ?string,
   ts: ?number,
   notes?: ?string,
   paid?: ?string,
 }
+
+export type WarningMessageIconType = (
+  'email' |
+  'warning'
+);
+
+export type WarningMessageType = {
+  icon: WarningMessageIconType,
+  message: string,
+  hint: string
+};
+
+export type DrilldownUrls = {
+  [ string ] : string
+};

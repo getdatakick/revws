@@ -76,6 +76,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
             'productcomments' => Module::isInstalled('productcomments'),
             'psgdpr' => PrestashopGDRP::isAvailable()
           ],
+          'drilldownTokens' => $this->getDrilldownTokens(),
           'warnings' => $this->getWarnings()
         ],
         'versionCheck' => $settings->getCheckModuleVersion(),
@@ -517,6 +518,22 @@ class AdminRevwsBackendController extends ModuleAdminController {
       @mkdir($dir);
     }
     return @is_writable($dir);
+  }
+
+  private function getDrilldownTokens() {
+    return [
+      'editProduct' => $this->getAdminLink('AdminProducts', ['id_product' => '{ID}', 'updateproduct' => 1]),
+      'viewCustomer' => $this->getAdminLink('AdminCustomers', ['id_customer' => '{ID}', 'viewcustomer' => 1]),
+      'editCustomer' => $this->getAdminLink('AdminCustomers', ['id_customer' => '{ID}', 'updatecustomer' => 1]),
+      'viewOrder' => $this->getAdminLink('AdminOrders', ['id_order' => '{ID}', 'vieworder' => 1])
+    ];
+  }
+
+  private function getAdminLink($controller, $params) {
+    $link = $this->context->link;
+    $idLang = $this->context->language->id;
+    $params = array_merge($params, ['token' => Tools::getAdminTokenLite($controller) ]);
+    return Dispatcher::getInstance()->createUrl($controller, $idLang, $params, false);
   }
 
 }
