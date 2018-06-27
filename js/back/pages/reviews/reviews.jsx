@@ -38,6 +38,7 @@ class ModerationPage extends React.PureComponent<Props> {
           filters={{
             deleted: false
           }}
+          drilldownUrls={data.drilldownUrls}
           uniqueId='allReviews' />
         { createReview && (
           <CreateReview

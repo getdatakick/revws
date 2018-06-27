@@ -1,7 +1,7 @@
 // @flow
 
 import type { ReviewListType, GradingShapeType, ReviewType, CriteriaType, DisplayCriteriaType, LanguagesType, ListOrder, ListOrderDirection } from 'common/types';
-import type { LoadOptions } from 'back/types';
+import type { DrilldownUrls, LoadOptions } from 'back/types';
 import type { Filters } from './types';
 import { notNil } from 'common/utils/ramda';
 import { prop, find, propEq, reject, merge, equals, has } from 'ramda';
@@ -20,7 +20,8 @@ export type InputProps = {
   uniqueId: string,
   title: string,
   emptyLabel?: string,
-  filters: Filters
+  filters: Filters,
+  drilldownUrls: DrilldownUrls
 }
 
 type Props = InputProps & {
@@ -116,7 +117,7 @@ class Controller extends React.PureComponent<Props, State> {
   renderList(list: ReviewListType) {
     const {
       languages, criteria, emptyLabel, title, shape, approveReview, deleteReview, undeleteReview,
-      language, shapeSize, shopName, displayCriteria, deletePermReview
+      language, shapeSize, shopName, displayCriteria, deletePermReview, drilldownUrls
     } = this.props;
     const { edit, page, pageSize, order, orderDir, filters } = this.state;
     const { total, reviews } = list;
@@ -147,6 +148,7 @@ class Controller extends React.PureComponent<Props, State> {
           emptyLabel={emptyLabel || 'Nothing found'}
           filters={filters}
           onChangeFilters={this.onChangeFilters}
+          drilldownUrls={drilldownUrls}
         />
         <EditReviewDialog
           shopName={shopName}

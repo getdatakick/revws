@@ -2,6 +2,7 @@
 
 import type { ComponentType } from 'react';
 import type { GradingShapeType, ReviewType, ListOrder, ListOrderDirection } from 'common/types';
+import type { DrilldownUrls } from 'back/types';
 import React from 'react';
 import classnames from 'classnames';
 import { withStyles } from 'material-ui/styles';
@@ -26,6 +27,7 @@ import EnhancedTableHead from './table-head';
 import EnhancedTableToolbar from './table-toolbar';
 import Grading from 'common/components/grading/grading';
 import { hasRatings, averageGrade } from 'common/utils/reviews';
+import { viewCustomerUrl, editProductUrl } from 'back/utils/drilldown';
 import type { Filters, Column } from './types';
 
 type InputProps = {
@@ -52,6 +54,7 @@ type InputProps = {
   rowsPerPage: number,
   total: number,
   // page data
+  drilldownUrls: DrilldownUrls,
   data: Array<ReviewType>,
 }
 
@@ -98,6 +101,14 @@ const styles = theme => ({
   },
   icon: {
     width: 28
+  },
+  drilldown: {
+    textDecoration: 'none',
+    color: 'inherit',
+    '&:hover': {
+      color: '#000',
+      textDecoration: 'underline',
+    }
   }
 });
 
@@ -106,7 +117,7 @@ class EnhancedTable extends React.Component<Props> {
   render() {
     const {
       shape, emptyLabel, title, classes, total, data, order, orderDir, rowsPerPage, page, onChangePage, onChangeRowsPerPage,
-      onAuthorClick, onReviewClick, filters, onChangeFilters
+      onAuthorClick, onReviewClick, filters, onChangeFilters, drilldownUrls
     } = this.props;
     const columnsData: Array<Column> = [
       { id: 'id', sort: 'id', disablePadding: false, label: __('ID') },
@@ -135,10 +146,18 @@ class EnhancedTable extends React.Component<Props> {
             />
             <TableBody>
               {data.map((review: ReviewType) => {
-                const { id, product, title, content, customer, displayName, authorType, authorId, verifiedBuyer  } = review;
+                const { id, product, productId, title, content, customer, displayName, authorType, authorId, verifiedBuyer  } = review;
                 const ratings = hasRatings(review) ;
                 const grade = averageGrade(review);
                 const { icon, type } = getAuthorInfo(classes, authorType, verifiedBuyer);
+                let author = customer || displayName;
+                if (authorType === 'customer') {
+                  author = (
+                    <a className={classes.drilldown} href={viewCustomerUrl(drilldownUrls, authorId)} target="_blank" onClick={stop}>
+                      { author }
+                    </a>
+                  );
+                }
                 return (
                   <TableRow
                     tabIndex={-1}
@@ -150,13 +169,15 @@ class EnhancedTable extends React.Component<Props> {
                       { id }
                     </TableCell>
                     <TableCell padding="dense">
-                      { product }
+                      <a className={classes.drilldown} href={editProductUrl(drilldownUrls, productId)} target="_blank" onClick={stop}>
+                        { product }
+                      </a>
                     </TableCell>
                     <TableCell padding="none">
                       <Tooltip placement='bottom-start' title={type}>
                         <div className={classes.customer} onClick={e => onAuthorClick(authorType, authorId, e)}>
                           { icon }
-                          { customer || displayName}
+                          { author }
                         </div>
                       </Tooltip>
                     </TableCell>
@@ -282,6 +303,8 @@ const getAuthorInfo = (css: any, authorType: string, verified: boolean) => {
   }
   return { icon, type };
 };
+
+const stop = (e) => e.stopPropagation();
 
 const Component: ComponentType<InputProps> = withStyles(styles)(EnhancedTable);
 export default Component;
