@@ -30,5 +30,7 @@ export default {
 
   migrateData: 'MIGRATE_DATA',
   uploadYotpoCsv: 'UPLOAD_YOTPO_CSV',
-  exportReviews: 'EXPORT_REVIEWS'
+  exportReviews: 'EXPORT_REVIEWS',
+
+  refreshData: 'REFRESH_DATA'
 };

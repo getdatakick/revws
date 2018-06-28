@@ -39,6 +39,9 @@ const resetReviews = reject(has('reviews'));
 
 export default (state?: State, action:Action): State => {
   state = state || defaultState;
+  if (action.type === Types.refreshData) {
+    return defaultState;
+  }
   if (action.type === Types.setData) {
     return merge(state, action.payload);
   }

@@ -130,6 +130,10 @@ export type ExportReviewsAction = {
   type: 'EXPORT_REVIEWS'
 };
 
+export type RefreshDataAction = {
+  type: 'REFRESH_DATA'
+};
+
 export type Action = (
   CheckModuleVersionAction |
   CheckModuleVersionFailedAction |
@@ -154,5 +158,6 @@ export type Action = (
   ReviewDeletedAction |
   MigrateDataAction |
   UploadYotpoCsvAction |
-  ExportReviewsAction
+  ExportReviewsAction |
+  RefreshDataAction
 );

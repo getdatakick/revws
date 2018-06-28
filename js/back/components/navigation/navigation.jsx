@@ -1,16 +1,19 @@
 // @flow
 import React from 'react';
-import type { GoTo } from 'back/types';
+import type { GoTo, RoutingState } from 'back/types';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import { moderationPage, reviewsPage, supportPage } from 'back/routing';
 import styles from './navigation.less';
 import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
 import AddIcon from 'material-ui-icons/Add';
+import ListIcon from 'material-ui-icons/List';
+import ImportExportIcon from 'material-ui-icons/ImportExport';
 import Tooltip from 'material-ui/Tooltip';
 import Badge from 'common/components/badge/badge';
 
 type Props = {
-  selected: string,
+  routingState: RoutingState,
   goTo: GoTo,
   newVersionAvailable: boolean,
   warnings: number
@@ -20,7 +23,8 @@ class Navigation extends React.PureComponent<Props> {
   static displayName = 'Navigation';
 
   render() {
-    const { selected, newVersionAvailable, warnings } = this.props;
+    const { routingState, newVersionAvailable, warnings } = this.props;
+    const selected = routingState.type;
     return (
       <div className={styles.root}>
         <div className={styles.left}>
@@ -31,7 +35,7 @@ class Navigation extends React.PureComponent<Props> {
           </Tabs>
         </div>
         <div className={styles.right}>
-          { this.renderActions(selected) }
+          { this.renderActions(routingState) }
         </div>
       </div>
     );
@@ -50,17 +54,36 @@ class Navigation extends React.PureComponent<Props> {
     return __("Support");
   }
 
-  renderActions = (value: string) => {
+  renderActions = (routingState: RoutingState) => {
     const { goTo } = this.props;
-    if (value === 'reviews') {
-      return (
-        <Tooltip title={__('Create review')}>
-          <Button fab mini color="accent" onClick={() => goTo(reviewsPage(true))}>
-            <AddIcon />
-          </Button>
-        </Tooltip>
-      );
+    const ret = [];
+    if (routingState.type === 'reviews') {
+      if (routingState.subpage === 'data') {
+        ret.push(
+          <Tooltip key='importexport' title={__('Show review list')}>
+            <IconButton onClick={() => goTo(reviewsPage('list'))}>
+              <ListIcon />
+            </IconButton>
+          </Tooltip>
+        );
+      } else {
+        ret.push(
+          <Tooltip key='importexport' title={__('Import and export reviews')}>
+            <IconButton onClick={() => goTo(reviewsPage('data'))}>
+              <ImportExportIcon />
+            </IconButton>
+          </Tooltip>
+        );
+        ret.push(
+          <Tooltip key='create' title={__('Create review')}>
+            <Button fab mini color="accent" onClick={() => goTo(reviewsPage('create'))}>
+              <AddIcon />
+            </Button>
+          </Tooltip>
+        );
+      }
     }
+    return ret;
   }
 
   onChangeTab = (e: any, value: string) => {

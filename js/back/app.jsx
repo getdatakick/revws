@@ -42,7 +42,7 @@ class BackApp extends React.PureComponent<Props> {
       return (
         <Navigation
           newVersionAvailable={newVersionAvailable}
-          selected={routingState.type}
+          routingState={routingState}
           warnings={warnings ? warnings.length : 0}
           goTo={this.props.goTo}
         />

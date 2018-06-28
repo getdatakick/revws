@@ -450,8 +450,9 @@ class AdminRevwsBackendController extends ModuleAdminController {
   }
 
   private function getWarnings() {
-    // check email templates
     $warnings = [];
+
+    // check whether css folder is writable
     if (! $this->isCssFolderWriteable()) {
       $warnings[] = [
         'icon' => 'warning',
@@ -459,6 +460,17 @@ class AdminRevwsBackendController extends ModuleAdminController {
         'hint' => $this->l('This directory must be writable in order to generate CSS files')
       ];
     }
+
+    // check that review criteria exists
+    if (! RevwsCriterion::getFullCriteria()) {
+      $warnings[] = [
+        'icon' => 'warning',
+        'message' => sprintf($this->l('No review criteria defined'), REVWS_MODULE_DIR . '/views/css/'),
+        'hint' => $this->l('Please go to settings page and create at least one review criterion')
+      ];
+    }
+
+    // check email templates
     $warnings = array_merge($warnings, $this->getMissingEmailTemplates());
     return $warnings;
   }

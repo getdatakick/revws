@@ -16,7 +16,6 @@ import Preview from './review-preview';
 import MenuItem from 'material-ui/Menu/MenuItem';
 import TextField from 'material-ui/TextField';
 import CriteriaSection from './criteria-section';
-import MigrateData from './migrate-data';
 import { hasErrors, validateIsNumber, validateReviewEmail } from 'common/utils/validation';
 import styles from './style.less';
 import ColorPicker from 'common/components/color-picker/trigger';
@@ -27,7 +26,6 @@ type Props = {
   settings: SettingsType,
   pageWidth: number,
   saveSettings: (SettingsType)=>void,
-  exportReviews: ()=>void
 };
 
 type State = {
@@ -85,7 +83,7 @@ class Settings extends React.PureComponent<Props, State> {
         content: this.renderProductDetail(errors)
       },
       {
-        key: 'product-detail',
+        key: 'product-listing',
         label: __('Product listing page'),
         content: this.renderProductList()
       },
@@ -123,23 +121,6 @@ class Settings extends React.PureComponent<Props, State> {
         key: 'criteria',
         label: __('Review criteria'),
         content: this.renderCriteria()
-      },
-      {
-        key: 'import',
-        label: __('Import data'),
-        subheader: __('Import review data and criteria settings from other modules'),
-        content: this.renderMigrateData()
-      },
-      {
-        key: 'export',
-        label: __('Export data'),
-        subheader: __('Download all your reviews data as XML file'),
-        content: this.renderExportData()
-      },
-      {
-        key: 'module',
-        label: __('Module update'),
-        content: this.renderModuleSettings()
       }
     ];
     const items = map(sectionKey, sections);
@@ -371,24 +352,6 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderMigrateData = () => {
-    const { environment, baseUrl } = this.props.data;
-    return (
-      <MigrateData
-        environment={environment}
-        baseUrl={baseUrl}
-      />
-    );
-  }
-
-  renderExportData = () => {
-    return (
-      <Button color="primary" onClick={this.props.exportReviews}>
-        {__('Export reviews')}
-      </Button>
-    );
-  }
-
   renderSwitch = (key: Array<string>) => (
     <Switch
       key={last(key)}
@@ -614,27 +577,16 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderModuleSettings = () => {
-    return (
-      <FormGroup>
-        <FormControlLabel
-          control={this.renderSwitch(['module', 'checkModuleVersion'])}
-          label={__("Automatically check for new version")}
-        />
-        <div className={styles.note2}>
-          Please not that revws module <strong>will NOT be updated automatically</strong> to the new version.
-          You will only be notified about new version
-        </div>
-      </FormGroup>
-    );
-  }
-
   renderGeneralSettings = () => {
     const { psgdpr } = this.props.data.environment;
     const implementation = this.state.settings.gdpr.implementation || 'none';
     const useGDPR = implementation != 'none';
     return (
       <FormGroup>
+        <FormControlLabel
+          control={this.renderSwitch(['module', 'checkModuleVersion'])}
+          label={__("Automatically check for new version")}
+        />
         <FormControlLabel
           control={this.renderSwitch(['general', 'multilang'])}
           label={__("Filter reviews by current language")}

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
 import { getSettings } from 'back/selectors/settings';
 import { getFullCriteria } from 'back/selectors/criteria';
-import { saveReview } from 'back/actions/creators';
+import { exportReviews, saveReview } from 'back/actions/creators';
 import Reviews from './reviews';
 import { mergeCriteria } from 'back/utils/criteria';
 
@@ -15,7 +15,8 @@ const mapStateToProps = mapObject({
 });
 
 const actions = {
-  saveReview
+  saveReview,
+  exportReviews
 };
 
 const connectRedux = connect(mapStateToProps, actions, mergeCriteria);

@@ -10,8 +10,6 @@ const mapStateToProps = (state) => ({
   data: state.data
 });
 
-
-
 const actions = {
   approveReview,
   deleteReview,
