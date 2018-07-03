@@ -304,7 +304,8 @@ class Revws extends Module {
       'reviewList' => $list->getData(),
       'productId' => $productId,
       'visitor' => $frontApp->getVisitorData(),
-      'reviewsData' => $frontApp->getStaticData()
+      'reviewsData' => $frontApp->getStaticData(),
+      'allReviewsUrl' => $this->getUrl('AllReviews')
     ]);
     if ($settings->emitRichSnippets()) {
       list($grade, $count) = RevwsReview::getAverageGrade($settings, $productId);

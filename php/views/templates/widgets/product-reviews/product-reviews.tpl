@@ -76,4 +76,7 @@
   {/if}
 {/if}
 </div>
+<div class="revws-hidden">
+  <a href="{$allReviewsUrl}">{l s='Reviews' mod='revws'}</a>
+</div>
 {/strip}
