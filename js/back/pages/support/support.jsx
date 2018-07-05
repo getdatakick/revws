@@ -12,6 +12,7 @@ import UpToDateIcon from 'material-ui-icons/Done';
 import NewVersionIcon from 'material-ui-icons/InfoOutline';
 import Warning from './warning';
 import moment from 'moment';
+import TextWithTags from 'common/components/text-with-tags/text-with-tags';
 
 type Props = {
   data: GlobalDataType,
@@ -157,9 +158,9 @@ class SupportPage extends React.PureComponent<Props> {
       return (
         <div className={classnames(styles.note, styles.inline)}>
           <NewVersionIcon />
-          <span dangerouslySetInnerHTML={{
-            __html:  replaceTags(__('No information available. Please click on [strong]Check for updates[/strong] button to check for new version of this module'))
-          }} />
+          <TextWithTags
+            text={__('No information available. Please click on [1]Check for updates[/1] button to check for new version of this module')}
+            tags={['strong']} />
         </div>
       );
     }
@@ -170,9 +171,9 @@ class SupportPage extends React.PureComponent<Props> {
       const ret = [
         <div key='info' className={classnames(styles.note, styles.inline, styles.accent)}>
           <NewVersionIcon />
-          <span dangerouslySetInnerHTML={{
-            __html:  replaceTags(__('New version [strong]%s[/strong] is available. Last check %s', latestVersion, last))
-          }} />
+          <TextWithTags
+            text={__('New version [1]%s[/1] is available. Last check %s', latestVersion, last)}
+            tags={['strong']} />
         </div>
       ];
       if (notes) {
@@ -187,15 +188,13 @@ class SupportPage extends React.PureComponent<Props> {
     return (
       <div className={classnames(styles.note, styles.inline)}>
         <UpToDateIcon />
-        <span dangerouslySetInnerHTML={{
-          __html:  replaceTags(__('You have latest version [strong]%s[/strong] of this module. Last check %s', data.version, last))
-        }} />
+        <TextWithTags
+          text={__('You have latest version [1]%s[/1] of this module. Last check %s', data.version, last)}
+          tags={['strong']} />
 
       </div>
     );
   }
 }
-
-const replaceTags = (str) => str.replace(/\[([a-z\/]+)\]/g, "<$1>");
 
 export default SupportPage;
