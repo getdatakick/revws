@@ -112,6 +112,6 @@ function mergeKeys($file, $keys) {
       $allKeys[$key] = $value;
     }
   }
-  file_put_contents($file, json_encode($allKeys, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+  file_put_contents($file, json_encode($allKeys, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "\n");
   return $translated;
 }
