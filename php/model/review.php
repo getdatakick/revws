@@ -233,13 +233,6 @@ class RevwsReview extends ObjectModel {
     ]);
   }
 
-  public static function canReviewProductSqlFragment($productIdSql, $customerIdSql) {
-    // customer can review if
-    //  - not yet reviewed
-    //  - TODO - exists review criterion
-    return "NOT EXISTS(SELECT 1 FROM `"._DB_PREFIX_."revws_review` `r` WHERE `r`.`id_product` = $productIdSql AND `r`.`id_customer` = $customerIdSql)";
-  }
-
   public function setValidated($validated) {
     $this->validated = $validated;
   }
