@@ -47,7 +47,7 @@ class CsvReader {
 
   private function fetchLine() {
     if ($this->finished)
-    return false;
+      return false;
     $line = fgets($this->input);
     if ($line === false) {
       $this->finished = true;
@@ -57,6 +57,9 @@ class CsvReader {
     if ($this->convertFrom) {
       $line = mb_convert_encoding($line, $this->outputEncoding, $this->convertFrom);
     }
+    if (trim($line) === '') {
+      return $this->fetchLine() ;
+    };
     return $line;
   }
 
