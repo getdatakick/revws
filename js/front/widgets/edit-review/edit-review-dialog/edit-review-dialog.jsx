@@ -2,9 +2,8 @@
 
 import React from 'react';
 import type { ComponentType } from 'react';
-import type { EditStage, CriterionType, ReviewType, ReviewFormErrors, ProductInfoType } from 'common/types';
+import type { EditStage, CriterionType, ReviewType, ReviewFormErrors, ProductInfoType, GradingType } from 'common/types';
 import type { SettingsType, EntitiesType, VisitorType } from 'front/types';
-import Grading from 'common/components/grading/grading';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle, withMobileDialog } from 'common/components/dialog';
 import EditReviewForm from '../edit-review-form/edit-review-form';
@@ -14,14 +13,11 @@ import ErrorOutline from 'material-ui-icons/ErrorOutline';
 import { CircularProgress } from 'material-ui/Progress';
 import { fixUrl } from 'common/utils/url';
 import { validateReview, hasErrors } from 'common/utils/validation';
-import { find, assoc } from 'ramda';
+import { reject, isNil, find, prop, map } from 'ramda';
 import { getProduct } from 'front/utils/entities';
 import styles from './edit-review-dialog.less';
+import Grades from './grades';
 import { consentRequired } from 'front/utils/gdpr';
-
-type Grades = {
-  [ number ]: number
-}
 
 type InputProps = {
   stage: EditStage,
@@ -102,36 +98,30 @@ class EditReviewDialog extends React.PureComponent<Props> {
     if (stage === 'saved' || stage === 'failed') {
       return this.renderSaved(isNew, stage === 'saved');
     }
-    const criterion = isNew ? this.getUnsetCriterion(product.criteria, grades) : null;
-    if (criterion) {
-      return this.renderGrading(criterion, review, product);
+    if (isNew && this.hasUnsetCriterion(product.criteria, grades)) {
+      return this.renderGrading(review, product);
     }
     return this.renderForm(review, product, errors);
   }
 
-  getUnsetCriterion = (criteria: Array<number>, grades: Grades): ?CriterionType => {
-    const key = find(k => !grades[k], criteria);
-    if (key) {
-      return this.props.settings.criteria[key];
-    }
-    return null;
+  hasUnsetCriterion = (criteria: Array<any>, grades: GradingType): ?CriterionType => {
+    return !!find(k => !grades[k], criteria);
   }
 
-  renderGrading = (criterion: CriterionType, review: ReviewType, product: ProductInfoType) => {
+  renderGrading = (review: ReviewType, product: ProductInfoType) => {
     const { width, settings, onUpdateReview } = this.props;
     const grades = review.grades;
     const smallDevice = width === 'sm' || width == 'xs';
     const size = settings.shapeSize.create / (smallDevice ? 2 : 1);
+    const criteria = reject(isNil, map(key => prop(key, settings.criteria), product.criteria));
     return (
-      <div className={styles.single}>
-        { this.renderProductImage(product) }
-        <h2>{ criterion.label }</h2>
-        <Grading
-          shape={settings.shape}
-          size={size}
-          grade={0}
-          onSetGrade={grade => onUpdateReview({ ...review, grades: assoc(criterion.id, grade, grades)})} />
-      </div>
+      <Grades
+        product={product}
+        criteria={criteria}
+        grades={grades}
+        size={size}
+        shape={settings.shape}
+        onSetGrades={grades => onUpdateReview({...review, grades})}/>
     );
   }
 
