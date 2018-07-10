@@ -29,6 +29,7 @@ class Grades extends React.PureComponent<Props, State> {
   render() {
     const { product, criteria } = this.props;
     const { slide } = this.state;
+    const cnt = criteria.length;
     const style = {
       width: (criteria.length * 100) + '%',
       left: (-slide * 100) + '%'
@@ -43,9 +44,11 @@ class Grades extends React.PureComponent<Props, State> {
             { criteria.map(this.renderSlide) }
           </div>
         </div>
-        <ul className={styles.dots}>
-          { criteria.map(this.renderDot)}
-        </ul>
+        {cnt > 1 && (
+          <ul className={styles.dots}>
+            { criteria.map(this.renderDot)}
+          </ul>
+        )}
       </div>
     );
   }
