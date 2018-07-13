@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import debounce from 'debounce';
 import type { ComponentType } from 'react';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, withMobileDialog } from 'common/components/dialog';
@@ -41,7 +42,7 @@ class DeleteReviewConfirm<T> extends React.PureComponent<Props<T>> {
           <Button onClick={onClose}>
             {__('Cancel')}
           </Button>
-          <Button onClick={this.onDelete} color="accent">
+          <Button onClick={debounce(this.onDelete, 300, true)} color="accent">
             { deleteLabel }
           </Button>
         </DialogActions>

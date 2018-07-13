@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import debounce from 'debounce';
 import type { ComponentType } from 'react';
 import type { EditStage, CriterionType, ReviewType, ReviewFormErrors, ProductInfoType, GradingType } from 'common/types';
 import type { SettingsType, EntitiesType, VisitorType } from 'front/types';
@@ -68,9 +69,12 @@ class EditReviewDialog extends React.PureComponent<Props> {
       </Button>
     ];
 
+    const save = debounce(() => onSave(review), 300, true);
+    const disabled = saving || withErrors;
+
     if (! saved) {
       buttons.push(
-        <Button key="create" disabled={saving || withErrors} onClick={() => onSave(review)} color="accent">
+        <Button key="create" disabled={disabled} onClick={save} color="accent">
           { isNew ? __('Create review') : __('Update review') }
         </Button>
       );

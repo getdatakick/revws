@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import debounce from 'debounce';
 import classnames from 'classnames';
 import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType } from 'common/types';
 import { F, isNil, sortBy, prop, values, filter, has } from 'ramda';
@@ -203,7 +204,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
           <Button onClick={this.stopEditReply}>
             {__('Cancel')}
           </Button>
-          <Button color='accent' onClick={this.saveReply}>
+          <Button color='accent' onClick={debounce(this.saveReply, 300, true)}>
             {__('Save')}
           </Button>
         </div>
