@@ -166,6 +166,7 @@ class FrontApp implements JsonSerializable {
             'create' => $set->getShapeSize() * 5
           ]
         ],
+        'dateFormat' => $context->language->date_format_lite,
         'criteria' => RevwsCriterion::getCriteria($this->getLanguage()),
         'preferences' => [
           'allowEmptyReviews' => $set->allowEmptyReviews(),

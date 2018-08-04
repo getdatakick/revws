@@ -31,6 +31,7 @@ const getSettings = (input: any): SettingsType => {
   const api = get('api', isString, input);
   const csrf = get('csrf', isString, input);
   const gdpr = get('gdpr', isObject, input);
+  const dateFormat = get('dateFormat', isString, input);
 
   return {
     csrf,
@@ -40,6 +41,7 @@ const getSettings = (input: any): SettingsType => {
     criteria,
     shape,
     shapeSize,
+    dateFormat,
     preferences,
     gdpr
   };

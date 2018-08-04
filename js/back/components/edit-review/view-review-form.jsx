@@ -13,6 +13,7 @@ type Props = {
   criteria: CriteriaType,
   shape: GradingShapeType,
   shapeSize: number,
+  dateFormat: string,
   review: ReviewType,
   displayCriteria: DisplayCriteriaType,
   onUpdateReview: (ReviewType)=>void,
@@ -29,7 +30,7 @@ class EditReviewForm extends React.PureComponent<Props> {
   static displayName = 'EditReviewForm';
 
   render() {
-    const { shopName, criteria, review, shape, shapeSize, displayCriteria, onUpdateReview } = this.props;
+    const { shopName, criteria, review, shape, shapeSize, displayCriteria, onUpdateReview, dateFormat } = this.props;
     return (
       <Bootstrap className={styles.preview}>
         <ReviewListItem
@@ -38,6 +39,7 @@ class EditReviewForm extends React.PureComponent<Props> {
           shopName={shopName}
           shape={shape}
           shapeSize={shapeSize}
+          dateFormat={dateFormat}
           review={merge(review, caps)}
           onSaveReply={reply => onUpdateReview(assoc('reply', reply, review))}
         />

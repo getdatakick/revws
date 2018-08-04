@@ -71,6 +71,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
           'language' => $lang,
           'platform' => $platform,
           'platformVersion' => $platformVersion,
+          'dateFormat' => $this->context->language->date_format_lite,
           'environment' => [
             'krona' => $this->module->getKrona()->isInstalled(),
             'productcomments' => Module::isInstalled('productcomments'),

@@ -9,6 +9,7 @@ type Props = {
   product: ProductInfoType,
   colors?: ShapeColorsType,
   shapeSize: number,
+  dateFormat: string,
   criteria: CriteriaType,
   displayCriteria: DisplayCriteriaType,
   review: ReviewType,
@@ -25,7 +26,7 @@ class ReviewListItemWithProduct extends React.PureComponent<Props> {
   static defaultProps = {};
 
   render() {
-    const { product, shopName, shape, colors, shapeSize, criteria, displayCriteria, review, onEdit, onDelete, onVote, onReport } = this.props;
+    const { product, shopName, shape, colors, shapeSize, criteria, displayCriteria, review, onEdit, onDelete, onVote, onReport, dateFormat } = this.props;
     return (
       <div className="revws-review-with-product">
         <div>
@@ -42,6 +43,7 @@ class ReviewListItemWithProduct extends React.PureComponent<Props> {
             shape={shape}
             colors={colors}
             shapeSize={shapeSize}
+            dateFormat={dateFormat}
             criteria={criteria}
             displayCriteria={displayCriteria}
             review={review}

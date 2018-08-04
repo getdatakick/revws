@@ -13,11 +13,13 @@ import Textarea from 'common/components/text-area/text-area';
 import InlineCriteria from 'common/components/criteria/inline';
 import BlockCriteria from 'common/components/criteria/block';
 import Button from 'material-ui/Button';
+import formatDate from 'locutus/php/datetime/date';
 
 type Props = {
   shopName: string,
   shape: GradingShapeType,
   colors?: ShapeColorsType,
+  dateFormat: string,
   shapeSize: number,
   criteria: CriteriaType,
   displayCriteria: DisplayCriteriaType,
@@ -56,7 +58,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { colors, shape, shapeSize, onReport, onEdit, onDelete, onVote, review, criteria, displayCriteria } = this.props;
+    const { colors, shape, shapeSize, onReport, onEdit, onDelete, onVote, review, criteria, displayCriteria, dateFormat } = this.props;
     const { displayName, date, title, underReview, verifiedBuyer, content, canVote, canReport, grades, canEdit, canDelete, loading } = review;
     const classes = classnames('revws-review', {
       'revws-review-under-review': underReview,
@@ -85,7 +87,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
           <div className="revws-review-author-name">{ displayName }</div>
           {verifiedBuyer && <div className="revws-verified-buyer-badge">{__("Verified purchase")}</div>}
           {stars}
-          <div className="revws-review-date">{formatDate(date)}</div>
+          <div className="revws-review-date">{formatDate(dateFormat, date)}</div>
         </div>
 
         <div className="revws-review-details">
@@ -261,15 +263,6 @@ class ReviewListItem extends React.PureComponent<Props, State> {
     return ret;
   }
 }
-
-const formatDate = (date: Date): string => {
-  var month = pad(date.getMonth()+1);
-  var day = pad(date.getDate());
-  var year = date.getFullYear();
-  return month + "/" + day + "/" + year;
-};
-
-const pad = (value) => ('00'+value).substr(-2);
 
 const getCriteriaToRender = (criteria, grades) => {
   const list = sortBy(prop('id'), values(criteria));

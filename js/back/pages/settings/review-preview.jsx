@@ -10,6 +10,7 @@ type Props = {
   shopName: string,
   colors: ShapeColorsType,
   shape: GradingShapeType,
+  dateFormat: string,
   displayCriteria: DisplayCriteriaType,
   size: number,
   canVote: boolean,
@@ -20,7 +21,7 @@ class ReviewPreview extends React.PureComponent<Props> {
   static displayName = 'ReviewPreview';
 
   render() {
-    const { shape, size, colors, canVote, canReport, shopName, displayCriteria } = this.props;
+    const { shape, size, colors, canVote, canReport, shopName, displayCriteria, dateFormat } = this.props;
     const criteria: CriteriaType = indexBy(prop('id'), [
       { id: 1, label: __('Quality'), value: 5},
       { id: 2, label: __('Shipping'), value: 3}
@@ -56,6 +57,7 @@ class ReviewPreview extends React.PureComponent<Props> {
           shopName={shopName}
           shape={shape}
           shapeSize={size}
+          dateFormat={dateFormat}
           review={review}
           criteria={criteria}
           displayCriteria={displayCriteria}

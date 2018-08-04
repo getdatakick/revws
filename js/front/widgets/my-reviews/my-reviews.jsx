@@ -44,6 +44,7 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
           shopName={settings.shopName}
           shape={settings.shape}
           shapeSize={settings.shapeSize.product}
+          dateFormat={settings.dateFormat}
           reviewList={reviewList}
           loading={loading}
           onDelete={onDelete}

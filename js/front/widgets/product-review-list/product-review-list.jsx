@@ -33,6 +33,7 @@ class FrontAppReviewList extends React.PureComponent<Props> {
           reviewStyle='item'
           entities={entities}
           shopName={settings.shopName}
+          dateFormat={settings.dateFormat}
           shape={settings.shape}
           shapeSize={settings.shapeSize.product}
           reviewList={reviewList}

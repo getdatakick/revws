@@ -17,6 +17,7 @@ type Props = {
   language: number,
   languages: LanguagesType,
   criteria: CriteriaType,
+  dateFormat: string,
   displayCriteria: DisplayCriteriaType,
   shape: GradingShapeType,
   shapeSize: number,
@@ -146,7 +147,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
   }
 
   renderViewMode = (review: ReviewType) => {
-    const { onSave, criteria, language, shape, shapeSize, shopName, displayCriteria } = this.props;
+    const { onSave, criteria, language, shape, shapeSize, shopName, displayCriteria, dateFormat } = this.props;
     return (
       <ViewReviewForm
         onUpdateReview={review => {
@@ -157,6 +158,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
         review={review}
         shape={shape}
         shapeSize={shapeSize}
+        dateFormat={dateFormat}
         language={language}
         displayCriteria={displayCriteria}
         criteria={criteria} />

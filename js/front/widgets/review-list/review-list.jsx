@@ -15,6 +15,7 @@ type Props = {
   shopName: string,
   shape: GradingShapeType,
   shapeSize: number,
+  dateFormat: string,
   reviewList: ReviewListType,
   criteria: CriteriaType,
   displayCriteria: DisplayCriteriaType,
@@ -49,10 +50,11 @@ class ReviewList extends React.PureComponent<Props> {
   }
 
   renderReview = (review: ReviewType) => {
-    const { displayReply, shape, shapeSize, onReport, onVote, onEdit, onDelete, shopName, displayCriteria, criteria } = this.props;
+    const { displayReply, shape, shapeSize, onReport, onVote, onEdit, onDelete, shopName, displayCriteria, criteria, dateFormat } = this.props;
     return (
       <ReviewListItem
         key={review.id}
+        dateFormat={dateFormat}
         shape={shape}
         shapeSize={shapeSize}
         shopName={shopName}
@@ -68,7 +70,7 @@ class ReviewList extends React.PureComponent<Props> {
   }
 
   renderReviewWithProduct = (review: ReviewType) => {
-    const { entities, shape, shapeSize, onReport, onVote, onEdit, onDelete, shopName, displayCriteria, criteria } = this.props;
+    const { entities, shape, shapeSize, onReport, onVote, onEdit, onDelete, shopName, displayCriteria, criteria, dateFormat } = this.props;
     const product = getProduct(entities, review.productId);
     return (
       <ReviewListItemWithProduct
@@ -76,6 +78,7 @@ class ReviewList extends React.PureComponent<Props> {
         key={review.id}
         shape={shape}
         shapeSize={shapeSize}
+        dateFormat={dateFormat}
         shopName={shopName}
         onEdit={onEdit}
         onDelete={onDelete}

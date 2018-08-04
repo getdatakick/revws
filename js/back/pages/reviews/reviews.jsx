@@ -47,6 +47,7 @@ class ReviewsPage extends React.PureComponent<Props> {
           emptyLabel={__('No reviews')}
           shape={shape}
           shapeSize={shapeSize}
+          dateFormat={data.dateFormat}
           criteria={criteria}
           displayCriteria={settings.review.displayCriteria}
           filters={{

@@ -99,6 +99,7 @@ export type GlobalDataType = {
   shapes: {
     [ string ]: GradingShapeType
   },
+  dateFormat: string,
   language: number,
   languages: LanguagesType,
   platform: 'thirtybees' | 'prestashop',

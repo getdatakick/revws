@@ -17,6 +17,7 @@ export type InputProps = {
   displayCriteria: DisplayCriteriaType,
   shape: GradingShapeType,
   shapeSize: number,
+  dateFormat: string,
   uniqueId: string,
   title: string,
   emptyLabel?: string,
@@ -117,7 +118,7 @@ class Controller extends React.PureComponent<Props, State> {
   renderList(list: ReviewListType) {
     const {
       languages, criteria, emptyLabel, title, shape, approveReview, deleteReview, undeleteReview,
-      language, shapeSize, shopName, displayCriteria, deletePermReview, drilldownUrls
+      language, shapeSize, shopName, displayCriteria, deletePermReview, drilldownUrls, dateFormat
     } = this.props;
     const { edit, page, pageSize, order, orderDir, filters } = this.state;
     const { total, reviews } = list;
@@ -159,6 +160,7 @@ class Controller extends React.PureComponent<Props, State> {
           criteria={criteria}
           shape={shape}
           shapeSize={shapeSize}
+          dateFormat={dateFormat}
           onSave={this.onSaveReview}
           displayCriteria={displayCriteria}
           onClose={() => this.setState({ edit: null })}

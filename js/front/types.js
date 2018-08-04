@@ -15,6 +15,7 @@ export type SettingsType = {
     list: number,
     create: number
   },
+  dateFormat: string,
   preferences: {
     allowEmptyReviews: boolean,
     allowGuestReviews: boolean,
