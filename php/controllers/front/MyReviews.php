@@ -28,6 +28,7 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
   public function __construct() {
     parent::__construct();
     $this->context = Context::getContext();
+    $this->php_self = 'module-revws-MyReviews';
   }
 
   public function initContent() {
