@@ -52,6 +52,7 @@ const merge = (props, actions, passed: PassedProps) => {
     displayReply: widget.displayReply,
     shape: settings.shape,
     shapeSize: settings.shapeSize.product,
+    dateFormat: settings.dateFormat,
     criteria: settings.criteria,
     displayCriteria: widget.displayCriteria,
     reviewStyle: widget.reviewStyle,
