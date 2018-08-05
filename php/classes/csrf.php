@@ -40,7 +40,7 @@ class CSRFToken {
     $passedToken = strtolower($token);
     $cookieToken = strtolower($this->token);
     if ($cookieToken != $passedToken) {
-      throw new \Exception("Invalid CSRF Token:\ncookie: $cookieToken\npassed: $passedToken\n");
+      throw new \Exception("Invalid CSRF Token:\ncookie: $cookieToken\npassed: $passedToken\n", 900001);
     }
   }
 

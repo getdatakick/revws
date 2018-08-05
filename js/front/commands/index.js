@@ -21,32 +21,69 @@ const commands = {
 };
 
 export default (settings: SettingsType) => {
+  let revwsToken = settings.csrf;
+
+  const refreshToken = () => new Promise((resolve, reject) => {
+    window.$.ajax({
+      url: fixUrl(settings.api),
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'command',
+        cmd: 'refreshToken'
+      },
+      success: (data) => {
+        if (data.success) {
+          revwsToken = data.result;
+          resolve(data.result);
+        } else {
+          reject(data.error);
+        }
+      },
+      error: () => {
+        reject();
+      }
+    });
+  });
+
   const api = (cmd: string, payload: any) => {
     return new Promise((resolve, reject) => {
-      const failure = (error: string) => {
-        console.error("API call error: "+cmd+": "+error);
-        resolve({ type: 'failed', error });
+      let firstAttempt = true;
+      const failure = (error: string, errorCode: number) => {
+        if (firstAttempt && errorCode === 900001) {
+          firstAttempt = false;
+          refreshToken()
+            .then(callApi)
+            .catch((error) => {
+              console.error("Failed to refresh CSRF token:" +error);
+              resolve({ type: 'failed', error });
+            });
+        } else {
+          console.error("API call error: "+cmd+": "+error);
+          resolve({ type: 'failed', error });
+        }
       };
       const success = (data) => {
         if (data.success) {
           resolve({ type: 'success', data: data.result });
         } else {
-          failure(data.error);
+          failure(data.error, data.errorCode);
         }
       };
-      const error = (xhr, error) => failure(error);
-      window.$.ajax({
+      const error = (xhr, error) => failure(error, -1);
+      const callApi = () => window.$.ajax({
         url: fixUrl(settings.api),
         type: 'POST',
         dataType: 'json',
         data: merge(payload, {
           action: 'command',
           cmd: cmd,
-          revwsToken: settings.csrf
+          revwsToken
         }),
         success,
         error
       });
+      callApi();
     });
   };
 

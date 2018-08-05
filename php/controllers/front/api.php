@@ -40,18 +40,25 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
   public function ajaxProcessCommand() {
     $moduleInstance = $this->module;
     $error = null;
+    $errorCode = -1;
     $result = null;
     try {
-      $this->module->csrf()->validate(Tools::getValue('revwsToken'));
-      $result = $this->dispatchCommand(Tools::getValue('cmd'));
+      $cmd = Tools::getValue('cmd');
+      if ($cmd != 'refreshToken') {
+        $this->module->csrf()->validate(Tools::getValue('revwsToken'));
+      }
+      $result = $this->dispatchCommand($cmd);
     } catch (Exception $e) {
       $error = $e->getMessage();
+      $errorCode = $e->getCode();
     }
-    $this->reply($error, $result);
+    $this->reply($error, $errorCode, $result);
   }
 
   private function dispatchCommand($cmd) {
     switch ($cmd) {
+      case 'refreshToken':
+        return $this->module->csrf()->getToken();
       case 'create':
         return $this->createReview();
       case 'update':
@@ -196,9 +203,9 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     return $review->toJSData($this->module->getPermissions());
   }
 
-  private function reply($error, $result) {
+  private function reply($error, $errorCode, $result) {
     if ($error) {
-      echo json_encode(['success'=>false, 'error' => $error]);
+      echo json_encode(['success'=>false, 'error' => $error, 'errorCode' => $errorCode]);
     } else {
       echo json_encode(['success'=>true, 'result' => $result]);
     }
