@@ -350,21 +350,33 @@ class Revws extends Module {
   }
 
   public function hookDisplayHeader() {
-    $this->hookHeader();
+    return $this->hookHeader();
   }
 
   public function hookDisplayMobileHeader() {
-    $this->hookHeader();
+    return $this->hookHeader();
   }
 
   public function hookMobileHeader() {
-    $this->hookHeader();
+    return $this->hookHeader();
   }
 
   public function hookHeader() {
     $this->csrf();
     $this->includeCommonStyles($this->context->controller);
     $this->context->controller->addJS($this->getPath('views/js/revws_bootstrap.js'));
+    return $this->addCanonicalTags($this->context->controller->php_self);
+  }
+
+  private function addCanonicalTags($page) {
+    if (defined('_TB_VERSION_')) {
+      // thirtybees already adds canonical tags automatically
+      return;
+    }
+    if ($page == 'module-revws-AllReviews') {
+      $canonical = $this->context->link->getPageLink($page);
+      return '<link rel="canonical" href="'.$canonical.'">'."\n";
+    }
   }
 
   public function hookDisplayRightColumnProduct($params) {
