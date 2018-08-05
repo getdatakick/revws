@@ -49,6 +49,14 @@ function getVersion() {
   throw new Error("version not found");
 }
 
+function getFileVersion() {
+  return getVersion().replace(/\./g, '_');
+}
+
+function getBootstrapJs() {
+  return 'revws-bootstrap-' + getFileVersion() + '.js';
+}
+
 function readTranslations(path) {
   var keys = JSON.parse(fs.readFileSync(path, 'utf8'));
   return sortBy(identity, values(mapObjIndexed((value, key) => {
@@ -91,8 +99,7 @@ gulp.task('copy-javascript', function(done) {
 });
 
 gulp.task('create-zip', function(done) {
-  var version = getVersion();
-  var fileVersion = version.replace(/\./g, '_');
+  var fileVersion = getFileVersion();
   return gulp
     .src('./build/staging/**/*')
     .pipe(zip('revws-'+fileVersion+'.zip'))
@@ -102,18 +109,29 @@ gulp.task('create-zip', function(done) {
 gulp.task('copy-text-files', function(done) {
   getLatestCommitHash(commit => {
     const version = getVersion();
+    const bootstrapJs = getBootstrapJs();
     const ext = ['php', 'tpl', 'js', 'sql', 'html', 'md', 'txt'];
     let sources = map(e => 'php/**/*.'+e, ext);
     sources = append('php/**/back.css', sources);
     sources = append('php/**/fallback.css', sources);
     sources = append('!php/license-header.*', sources);
+    sources = append('!php/**/revws_bootstrap.js', sources);
     return gulp
       .src(sources)
       .pipe(replace(/CACHE_CONTROL/g, commit))
       .pipe(replace(/CONSTANT_VERSION/g, version))
+      .pipe(replace(/revws_bootstrap.js/g, bootstrapJs))
       .pipe(gulp.dest('./build/staging/revws'))
       .on('end', done);
   });
+});
+
+gulp.task('copy-bootstrap-js', function(done) {
+  return gulp
+    .src(['php/**/revws_bootstrap.js'])
+    .pipe(rename(getBootstrapJs()))
+    .pipe(gulp.dest('./build/staging/revws/views/js/'))
+    .on('end', done);
 });
 
 gulp.task('copy-binary-files', function(done) {
@@ -126,7 +144,7 @@ gulp.task('copy-binary-files', function(done) {
 });
 
 gulp.task('copy-build', function(done) {
-  const ver = getVersion().replace(/\./g, '_');
+  const ver = getFileVersion();
   return gulp
     .src(['./build/front-'+ver+'.js', './build/back-'+ver+'.js'])
     .pipe(gulp.dest('./build/staging/revws/views/js'))
@@ -201,7 +219,7 @@ gulp.task('merge-translations-keys', function(done) {
 
 gulp.task('translate', gulp.series('extract-front-translations', 'extract-back-translations', 'create-translations', 'merge-translations-keys'));
 
-gulp.task('stage', gulp.series('copy-text-files', 'copy-binary-files', 'copy-build', 'create-index', 'create-config-xml', 'translate'));
+gulp.task('stage', gulp.series('copy-text-files', 'copy-binary-files', 'copy-bootstrap-js', 'copy-build', 'create-index', 'create-config-xml', 'translate'));
 
 gulp.task('upload', function(done) {
   const s3AccessFile = process.env['S3ACCESSFILE'];
@@ -209,8 +227,7 @@ gulp.task('upload', function(done) {
     throw new Error('S3ACCESSFILE not set in environment');
   }
   const config = JSON.parse(fs.readFileSync(s3AccessFile));
-  const version = getVersion();
-  const fileVersion = version.replace(/\./g, '_');
+  const fileVersion = getFileVersion();
   const s3 = createS3(config);
   gulp
     .src([`./build/revws-${fileVersion}.zip`])
