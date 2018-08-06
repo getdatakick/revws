@@ -471,6 +471,14 @@ class AdminRevwsBackendController extends ModuleAdminController {
       ];
     }
 
+    if (! extension_loaded('dom')) {
+      $warnings[] = [
+        'icon' => 'warning',
+        'message' => $this->l('PHP dom extension is not loaded'),
+        'hint' => $this->l('PHP `dom` extension is needed to export reviews into xml format')
+      ];
+    }
+
     // check email templates
     $warnings = array_merge($warnings, $this->getMissingEmailTemplates());
     return $warnings;
