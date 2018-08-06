@@ -3,6 +3,7 @@
     "%s reviews has been imported": "%s Bewertungen wurden importiert",
     "%s reviews out of %s has been imported. See javascript console for more info!": "%s Bewertungen aus %s wurden importiert. Beachten Sie die Javascript-Konsole für mehr Informationen.",
     "(read %1$d reviews)": "(%1$d Bewertungen lesen)",
+    "(read one review)": "",
     "Actions": "Handlungen",
     "Admin notifications": "Administrator-Benachrichtigungen",
     "All languages": "Alle Sprachen",

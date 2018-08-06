@@ -3,6 +3,7 @@
     "%s reviews has been imported": "%s comentarios ha sido importados",
     "%s reviews out of %s has been imported. See javascript console for more info!": "%s reseñas de %s han sido importadas. ¡Consulta la consola de Java para más información!",
     "(read %1$d reviews)": "( %1$d )",
+    "(read one review)": "",
     "Actions": "Acciones",
     "Admin notifications": "Notificaciones de administrador",
     "All languages": "Todos los lenguajes",

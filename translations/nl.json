@@ -3,6 +3,7 @@
     "%s reviews has been imported": "",
     "%s reviews out of %s has been imported. See javascript console for more info!": "",
     "(read %1$d reviews)": "(%1$d Reviews lezen)",
+    "(read one review)": "",
     "Actions": "Acties",
     "Admin notifications": "Administrator-Meldingen",
     "All languages": "Alle Talen",

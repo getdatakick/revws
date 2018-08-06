@@ -3,6 +3,7 @@
     "%s reviews has been imported": "%s recenzí bylo naimportováno",
     "%s reviews out of %s has been imported. See javascript console for more info!": "Podařilo se naimportovat %s recenzí z celkového počtu %s. Pro bližší informace otevřete javascript konzoli!",
     "(read %1$d reviews)": "(přečtěte si %1$d recenze)",
+    "(read one review)": "(přečtěte si recenzi)",
     "Actions": "Akce",
     "Admin notifications": "Upozornění - Administrátor",
     "All languages": "Všechny jazyky",
