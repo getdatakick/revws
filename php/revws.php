@@ -383,8 +383,8 @@ class Revws extends Module {
     $set = $this->getSettings();
     if ($set->getAveragePlacement() == 'rightColumn') {
       $productId = (int)(Tools::getValue('id_product'));
-      $this->setupAverageOnProductPage($productId);
-      return $this->display(__FILE__, 'product_extra.tpl');
+      $this->setupAverageOnProductPage($productId, 'extra');
+      return $this->display(__FILE__, 'review-average.tpl');
     }
   }
 
@@ -392,14 +392,15 @@ class Revws extends Module {
     $set = $this->getSettings();
     if ($set->getAveragePlacement() == 'buttons') {
       $productId = (int)(Tools::getValue('id_product'));
-      $this->setupAverageOnProductPage($productId);
-      return $this->display(__FILE__, 'product_buttons.tpl');
+      $this->setupAverageOnProductPage($productId, 'buttons');
+      return $this->display(__FILE__, 'review-average.tpl');
     }
   }
 
-  private function setupAverageOnProductPage($productId) {
+  private function setupAverageOnProductPage($productId, $placement) {
     $set = $this->getSettings();
     list($grade, $count) = RevwsReview::getAverageGrade($set, $productId);
+    $this->context->smarty->assign('placement', $placement);
     $this->context->smarty->assign('productId', $productId);
     $this->context->smarty->assign('grade', $grade);
     $this->context->smarty->assign('reviewCount', $count);
