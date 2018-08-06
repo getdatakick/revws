@@ -15,7 +15,6 @@ var merge = require('merge-stream');
 var replace = require('gulp-replace');
 var exec = require('child_process').exec;
 var rename = require('gulp-rename');
-var createS3 = require('gulp-s3-upload');
 var license = require('gulp-license-check');
 var { find, sortBy, identity, values, mapObjIndexed, append, prepend, map, flatten } = ramda;
 
@@ -222,20 +221,14 @@ gulp.task('translate', gulp.series('extract-front-translations', 'extract-back-t
 gulp.task('stage', gulp.series('copy-text-files', 'copy-binary-files', 'copy-bootstrap-js', 'copy-build', 'create-index', 'create-config-xml', 'translate'));
 
 gulp.task('upload', function(done) {
-  const s3AccessFile = process.env['S3ACCESSFILE'];
-  if (! s3AccessFile) {
-    throw new Error('S3ACCESSFILE not set in environment');
-  }
-  const config = JSON.parse(fs.readFileSync(s3AccessFile));
-  const fileVersion = getFileVersion();
-  const s3 = createS3(config);
-  gulp
-    .src([`./build/revws-${fileVersion}.zip`])
-    .pipe(s3({
-      Bucket: 'download.getdatakick.com',
-      ACL: 'public-read'
-    }))
-    .on('end', done);
+  const file = path.resolve('./build/revws-'+getFileVersion()+'.zip');
+  exec('release-module '+file+' revws free', (err, stdout, stderr) => {
+    if (err) {
+      throw new Error(err);
+    }
+    console.log(stdout);
+    done();
+  });
 });
 
 gulp.task('check-license-php', function() {
