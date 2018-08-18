@@ -29,7 +29,6 @@ module.system=haste
 module.name_mapper='.*\(.css\)' -> 'CSSModule'
 module.name_mapper='.*\(.less\)' -> 'CSSModule'
 module.name_mapper='^\(types\)$' -> '<PROJECT_ROOT>/js/\1'
-module.name_mapper='^components\/\(.*\)$' -> '<PROJECT_ROOT>/js/components/\1'
 module.name_mapper='^front\/\(.*\)$' -> '<PROJECT_ROOT>/js/front/\1'
 module.name_mapper='^back\/\(.*\)$' -> '<PROJECT_ROOT>/js/back/\1'
 module.name_mapper='^common\/\(.*\)$' -> '<PROJECT_ROOT>/js/common/\1'
