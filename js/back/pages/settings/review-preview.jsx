@@ -40,6 +40,7 @@ class ReviewPreview extends React.PureComponent<Props> {
       title: 'Amazing product!',
       content: "I have bough this product and it rocks!\nIf only the shipping was cheaper...",
       grades,
+      images: [],
       reply: null,
       date: new Date(),
       underReview: false,

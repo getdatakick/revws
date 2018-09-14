@@ -28,6 +28,7 @@ const defaultReview = (visitor: VisitorType, productId: number):ReviewType => {
     product: null,
     email,
     grades: {},
+    images: [],
     reply: null,
     displayName: formatName(firstName, lastName, pseudonym, nameFormat),
     title: '',

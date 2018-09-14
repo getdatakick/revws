@@ -3,7 +3,7 @@
 import React from 'react';
 import debounce from 'debounce';
 import classnames from 'classnames';
-import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType } from 'common/types';
+import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType, ImageType } from 'common/types';
 import { F, isNil, sortBy, prop, values, filter, has } from 'ramda';
 import { hasRatings, averageGrade } from 'common/utils/reviews';
 import Grading from 'common/components/grading/grading';
@@ -54,6 +54,15 @@ class ReviewListItem extends React.PureComponent<Props, State> {
   componentWillReceiveProps(nextProps: Props) {
     if (this.state.editReply && this.props.review.reply != nextProps.review.reply) {
       this.stopEditReply();
+    }
+  }
+
+  componentDidMount() {
+    if (window.$) {
+      const $ = window.$;
+      if ($.fancybox) {
+        $('[data-revws-image-group="'+this.props.review.id+'"]').fancybox();
+      }
     }
   }
 
@@ -118,6 +127,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
                 criteria={crits} />
             )}
           </div>
+          { this.renderImages() }
           <div className="revws-actions">
             {canVote && (
               <div className="revws-action revws-useful">
@@ -157,6 +167,26 @@ class ReviewListItem extends React.PureComponent<Props, State> {
       </div>
     );
   }
+
+  renderImages = () => {
+    const { images } = this.props.review;
+    if (!images || !images.length) {
+      return null;
+    }
+    return (
+      <div className="revws-images">
+        { images.map(this.renderImage) }
+      </div>
+    );
+  }
+
+  renderImage = (image: ImageType) => (
+    <a key={image.id} data-revws-image-group={this.props.review.id} rel='1' href={image.file}>
+      <div className="revws-image">
+        <img src={image.file} />
+      </div>
+    </a>
+  );
 
   renderReplies = () => {
     const { displayReply, review, onSaveReply } = this.props;
@@ -262,6 +292,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
     }
     return ret;
   }
+
 }
 
 const getCriteriaToRender = (criteria, grades) => {

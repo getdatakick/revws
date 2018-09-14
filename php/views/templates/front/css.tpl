@@ -590,3 +590,33 @@ a .revws-grading {
   margin: 0;
   padding: 0;
 }
+
+.revws-images {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 10px -10px 0px -10px;
+}
+
+.revws-image {
+  margin: 10px;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #f5f5f5;
+  transition: all 250ms linear;
+}
+
+.revws-image:hover {
+  border: 1px solid #222;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.revws-image img {
+  max-width: 100px;
+  max-height: 100px;
+  padding: 0px;
+}

@@ -49,6 +49,11 @@ export type GradingType = {
   [ number ]: number
 };
 
+export type ImageType = {
+  id: number,
+  file: string
+}
+
 export type ReviewType = {
   id: number,
   language: number,
@@ -63,6 +68,7 @@ export type ReviewType = {
   content: ?string,
   reply: ?string,
   grades: GradingType,
+  images: Array<ImageType>,
   date: Date,
   underReview: boolean,
   deleted: boolean,

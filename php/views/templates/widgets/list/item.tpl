@@ -82,6 +82,17 @@
       </div>
       {/if}
     </div>
+    {if $review.images}
+    <div class="revws-images">
+      {foreach from=$review.images item=image }
+      <a key="{$image.id}" href="{$image.file}">
+        <div class="revws-image">
+          <img src="{$image.file}" />
+        </div>
+      </a>
+      {/foreach}
+    </div>
+    {/if}
     <div class="revws-actions">
       {if $review.canVote}
         <div class="revws-action revws-useful">{l s='Was this comment useful to you?' mod='revws'}
