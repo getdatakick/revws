@@ -35,7 +35,7 @@ class Settings {
 
   public function __construct() {
     $this->data = self::getDefaultSettings();
-    $stored = Configuration::get(self::SETTINGS);
+    $stored = Configuration::getGlobalValue(self::SETTINGS);
     if ($stored) {
       $stored = json_decode($stored, true);
       if ($stored) {
@@ -143,7 +143,7 @@ class Settings {
   }
 
   public function getAppUrl($context, $module) {
-    $url = Configuration::get(self::APP_URL);
+    $url = Configuration::getGlobalValue(self::APP_URL);
     if (! $url) {
       $version = self::getUnderscoredVersion($module);
       $url = $module->getPath("/views/js/front-{$version}.js");
@@ -152,7 +152,7 @@ class Settings {
   }
 
   public function getBackendAppUrl($module) {
-    $url = Configuration::get(self::BACKEND_APP_URL);
+    $url = Configuration::getGlobalValue(self::BACKEND_APP_URL);
     if (! $url) {
       $version = self::getUnderscoredVersion($module);
       $url = $module->getPath("views/js/back-{$version}.js");
@@ -161,26 +161,26 @@ class Settings {
   }
 
   public function getVersionUrl() {
-    $url = Configuration::get(self::VERSION_URL);
+    $url = Configuration::getGlobalValue(self::VERSION_URL);
     return $url ? $url : 'https://version.getdatakick.com/version';
   }
 
   public function getSalt() {
-    $salt = Configuration::get(self::SALT);
+    $salt = Configuration::getGlobalValue(self::SALT);
     if (! $salt) {
       $salt = Utils::getRandomData();
-      Configuration::updateValue(self::SALT, $salt);
+      Configuration::updateGlobalValue(self::SALT, $salt);
     }
     return $salt;
   }
 
   public function getVersion() {
-    return Configuration::get(self::VERSION);
+    return Configuration::getGlobalValue(self::VERSION);
   }
 
   public function setVersion($version) {
     Configuration::deleteByName(self::CHECK_VERSION);
-    Configuration::updateValue(self::VERSION, $version);
+    Configuration::updateGlobalValue(self::VERSION, $version);
   }
 
   public function getPlacement() {
@@ -363,7 +363,7 @@ class Settings {
   }
 
   public function getCheckModuleVersion() {
-    $ret = Configuration::get(self::CHECK_VERSION);
+    $ret = Configuration::getGlobalValue(self::CHECK_VERSION);
     if ($ret) {
       return json_decode($ret, true);
     }
@@ -371,7 +371,7 @@ class Settings {
   }
 
   public function setCheckModuleVersion($version, $ts, $notes, $paid) {
-    Configuration::updateValue(self::CHECK_VERSION, json_encode([
+    Configuration::updateGlobalValue(self::CHECK_VERSION, json_encode([
       'ts' => $ts,
       'version' => $version,
       'notes' => $notes,
@@ -491,7 +491,7 @@ class Settings {
 
   public function set($value) {
     $this->data = $value;
-    return Configuration::updateValue(self::SETTINGS, json_encode($value));
+    return Configuration::updateGlobalValue(self::SETTINGS, json_encode($value));
   }
 
   private static function getDefaultGDPR() {
