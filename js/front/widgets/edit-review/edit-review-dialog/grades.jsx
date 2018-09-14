@@ -3,7 +3,6 @@ import React from 'react';
 import classnames from 'classnames';
 import { findIndex, assoc, has } from 'ramda';
 import type { CriterionType, ProductInfoType, GradingShapeType, GradingType } from 'common/types';
-import styles from './edit-review-dialog.less';
 import { fixUrl } from 'common/utils/url';
 import Grading from 'common/components/grading/grading';
 
@@ -35,17 +34,15 @@ class Grades extends React.PureComponent<Props, State> {
       left: (-slide * 100) + '%'
     };
     return (
-      <div className={styles.single}>
-        <div className={styles.productImage}>
-          <img src={fixUrl(product.image)} alt={product.name} />
-        </div>
-        <div className={styles.slidesWrapper}>
-          <div className={styles.slides} style={style}>
+      <div className='revws-dialog'>
+        <img className='revws-product-image-small' src={fixUrl(product.image)} alt={product.name} />
+        <div className='revws-dialog-slides-wrapper'>
+          <div className='revws-dialog-slides' style={style}>
             { criteria.map(this.renderSlide) }
           </div>
         </div>
         {cnt > 1 && (
-          <ul className={styles.dots}>
+          <ul className='revws-dots'>
             { criteria.map(this.renderDot)}
           </ul>
         )}
@@ -59,7 +56,7 @@ class Grades extends React.PureComponent<Props, State> {
     const grade = grades[criterion.id] || 0;
     const { id, label } = criterion;
     return (
-      <div key={id} className={styles.slide}>
+      <div key={id} className='revws-dialog-slide'>
         <h2>{ label }</h2>
         <Grading
           shape={shape}
@@ -73,8 +70,8 @@ class Grades extends React.PureComponent<Props, State> {
   renderDot = (criterion: CriterionType, index:number) => {
     const slide = this.state.slide;
     const id = criterion.id;
-    const clazz = classnames(styles.dot, {
-      [ styles.dotActive ]: slide == index
+    const clazz = classnames('revws-dot', {
+      'revws-dot-active': slide == index
     });
     return (
       <li

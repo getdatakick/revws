@@ -99,7 +99,6 @@ a .revws-grading {
 }
 
 /* review layout */
-
 .revws-review-list {
   position: relative;
   overflow-x: auto;
@@ -467,4 +466,127 @@ a .revws-grading {
 
 .revws-reset label {
   text-align: left;
+}
+
+.revws-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+}
+
+.revws-dialog h2 {
+  padding-bottom: 3rem;
+  font-size: 1.5em;
+  color: #999;
+}
+
+.revws-product-image  {
+  max-width: 250px;
+  max-height: 250px;
+}
+
+.revws-product-image-small  {
+  max-width: 150px;
+  max-height: 150px;
+}
+
+.revws-dialog-slides-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.revws-dialog-slides {
+  display: flex;
+  position: relative;
+  transition: left 300ms ease;
+  top: 0px;
+  left: 0px;
+}
+
+.revws-dialog-slide {
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  overflow: hidden;
+  text-align: center;
+}
+
+.revws-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.revws-dot {
+  width: 6px;
+  height: 6px;
+  margin: 0 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.revws-dot::after {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #ddd;
+  transition: box-shadow 0.5s;
+}
+
+.revws-dot:hover::after,
+.revws-dot:focus::after,
+.revws-dot-active::after,
+.revws-dot-active:hover::after,
+.revws-dot-action:focus::after {
+  box-shadow: 0 0 0 2px #ddd;
+}
+
+.revws-review-form .revws-review-form-input {
+  margin-top: 3rem;
+}
+
+.revws-review-form .revws-review-form-criterion {
+  display: flex;
+  flex-direction: row;
+}
+
+.revws-review-form-criterion-label {
+  margin-right: 1rem;
+  font-weight: bold;
+  color: #999;
+  width: 120px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+
+.revws-review-form-author {
+  color: #999;
+  margin-bottom: 1rem;
+}
+.revws-review-form-author a {
+  cursor: pointer;
+  color: #666;
+}
+.revws-review-form-author a:hover {
+  color: #222;
+  text-decoration: underline;
+}
+
+.revws-review-form-author-input {
+  margin-bottom: 1rem;
+}
+
+.revws-review-form-consent {
+  color: #999;
+}
+.revws-review-form-consent * {
+  margin: 0;
+  padding: 0;
 }

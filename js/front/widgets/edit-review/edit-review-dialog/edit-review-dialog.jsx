@@ -16,7 +16,6 @@ import { fixUrl } from 'common/utils/url';
 import { validateReview, hasErrors } from 'common/utils/validation';
 import { reject, isNil, find, prop, map } from 'ramda';
 import { getProduct } from 'front/utils/entities';
-import styles from './edit-review-dialog.less';
 import Grades from './grades';
 import { consentRequired } from 'front/utils/gdpr';
 
@@ -131,9 +130,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
 
   renderProductImage = (product: ProductInfoType) => {
     return (
-      <div className={styles.productImage}>
-        <img src={fixUrl(product.image)} alt={product.name} />
-      </div>
+      <img className='revws-product-image' src={fixUrl(product.image)} alt={product.name} />
     );
   }
 
@@ -153,7 +150,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
         errors={errors} />
     );
     return (smallDevice || !image) ? form : (
-      <Grid container spacing={8} className={styles.minHeight}>
+      <Grid container spacing={8} style={{minHeight: 408}}>
         <Grid item sm={4}>
           { this.renderProductImage(product) }
         </Grid>
@@ -166,7 +163,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
 
   renderSaving = () => {
     return (
-      <div className={styles.single}>
+      <div className='revws-dialog'>
         <CircularProgress size={100} />
       </div>
     );
@@ -178,7 +175,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
     const color = success ? 'primary' : 'error';
     const size = 120;
     return (
-      <div className={styles.single}>
+      <div className='revws-dialog'>
         <h2>{message}</h2>
         <Icon
           style={{width: size, height: size}}

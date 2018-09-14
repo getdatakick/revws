@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import classnames from 'classnames';
 import type { ReviewType, ReviewFormErrors, ProductInfoType } from 'common/types';
 import type { SettingsType, VisitorType } from 'front/types';
 import { map, propOr, assoc } from 'ramda';
@@ -10,9 +9,7 @@ import TextArea from 'common/components/text-area/text-area';
 import Checkbox from 'material-ui/Checkbox';
 import { FormControlLabel } from 'material-ui/Form';
 import { isLoggedIn, isGuest } from 'front/utils/visitor';
-import styles from './edit-review-form.less';
 import { consentRequired } from 'front/utils/gdpr';
-
 
 type Props = {
   settings: SettingsType,
@@ -40,21 +37,21 @@ class EditReviewForm extends React.PureComponent<Props, State> {
     const { review, errors, product } = this.props;
     const { title, content } = review;
     return (
-      <div className={styles.root}>
+      <div className='revws-review-form'>
         { map(this.renderCriterion, product.criteria)}
         { this.renderAuthor() }
         <TextField
           id="title"
           label={__("Review title")}
           placeholder={__("Please enter review title")}
-          className={styles.input}
+          className='revws-review-form-input'
           value={title}
           onChange={this.update('title')}
           error={!! errors.title}
           fullWidth
           autoFocus />
         <TextArea
-          className={styles.input}
+          className='revws-review-form-input'
           label={__("Review details")}
           value={content}
           error={!! errors.content}
@@ -72,10 +69,9 @@ class EditReviewForm extends React.PureComponent<Props, State> {
     const criterion = criteria[critKey];
     if (criterion) {
       return (
-        <div key={critKey} className={styles.criterion}>
-          <span className={styles.criterionLabel}>{criterion.label}</span>
+        <div key={critKey} className='revws-review-form-criterion'>
+          <span className='revws-review-form-criterion-label'>{criterion.label}</span>
           <Grading
-            className={styles.grading}
             shape={settings.shape}
             size={18}
             grade={grade}
@@ -97,19 +93,19 @@ class EditReviewForm extends React.PureComponent<Props, State> {
   }
 
   renderAuthorShort = (review: ReviewType) => (
-    <div className={classnames(styles.subtitle, styles.marginBottom)}>
-      {__('by')} <a className={styles.author} onClick={this.editAuthor}>{review.displayName}</a>
+    <div className='revws-review-form-author'>
+      {__('by')} <a onClick={this.editAuthor}>{review.displayName}</a>
     </div>
   );
 
   renderAuthorInputs = () => {
     const { review, errors, visitor } = this.props;
     const ret = [
-      <div key="space" className={styles.marginBottom} />,
+      <div key="space" className='revws-review-form-author-input' />,
       <TextField
         key="author"
         id="author"
-        className={styles.input}
+        className='revws-review-form-input'
         label={__("Your name")}
         placeholder={__("Please enter your name")}
         value={review.displayName}
@@ -122,7 +118,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
         <TextField
           key="email"
           id="email"
-          className={styles.input}
+          className='revws-review-form-input'
           label={__("Your email address")}
           placeholder={__("Please enter your email address")}
           value={review.email}
@@ -148,7 +144,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
               onChange={() => onAgree(!agreed)} />
           }
           label={(
-            <span className={styles.gdpr} dangerouslySetInnerHTML={markup} />
+            <span className='revws-review-form-consent' dangerouslySetInnerHTML={markup} />
           )} />
       );
     }
