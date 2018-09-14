@@ -82,9 +82,12 @@ class ReviewQuery {
 
   private function getTables() {
     $from = _DB_PREFIX_ . 'revws_review r';
+    $shop = $this->getShop();
+    $lang = $this->getLanguage();
+    if ($this->hasOption('shop')) {
+      $from .= ' INNER JOIN '. _DB_PREFIX_ ."product_shop ps ON (r.id_product = ps.id_product AND ps.id_shop = $shop)";
+    }
     if ($this->includeProductInfo()) {
-      $shop = (int)$this->getShop();
-      $lang = (int)$this->getLanguage();
       $from .= ' LEFT JOIN ' . _DB_PREFIX_ . "product_lang pl ON (r.id_product = pl.id_product AND pl.id_shop = $shop AND pl.id_lang = $lang)";
     }
     if ($this->includeCustomerInfo()) {
@@ -117,7 +120,7 @@ class ReviewQuery {
       $cond[] = "r.deleted = " . $this->getBool('deleted');
     }
     if ($this->settings->filterByLanguage() && !$this->hasOption('allLanguages')) {
-      $cond[] = "r.id_lang = " . (int)$this->getLanguage();
+      $cond[] = "r.id_lang = " . $this->getLanguage();
     }
     if ($this->hasOption('validated')) {
       $validated = $this->getBool('validated');
@@ -256,14 +259,14 @@ class ReviewQuery {
     if ($this->hasOption('language')) {
       return $this->getInt('language');
     }
-    return Context::getContext()->language->id;
+    return (int)Context::getContext()->language->id;
   }
 
   private function getShop() {
     if ($this->hasOption('shop')) {
       return $this->getInt('shop');
     }
-    return Context::getContext()->shop->id;
+    return (int)Context::getContext()->shop->id;
   }
 
 }

@@ -19,6 +19,7 @@
 
 namespace Revws;
 
+use \Context;
 use \RevwsReview;
 use \JsonSerializable;
 
@@ -73,6 +74,7 @@ class ReviewList implements JsonSerializable {
       $visitor = $this->module->getVisitor();
       $permissions = $this->module->getPermissions();
       $options = array_merge($this->conditions, [
+        'shop' => Context::getContext()->shop->id,
         'deleted' => false,
         'visitor' => $visitor,
         'validated' => true,
