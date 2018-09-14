@@ -65,6 +65,7 @@ class RevwsReview extends ObjectModel {
   public $reply;
 
   public $grades = [];
+  public $images = [];
   public $product;
   public $customer;
 
@@ -188,6 +189,16 @@ class RevwsReview extends ObjectModel {
         $value = (int)$row['grade'];
         $reviews[$id]->grades[$key] = $value;
       }
+
+      // load images
+      $image = _DB_PREFIX_ . 'revws_review_image';
+      $sql = "SELECT id_review, id_image, image FROM $image WHERE id_review IN ($keys) ORDER by id_review, id_image";
+      foreach ($conn->executeS($sql) as $row) {
+        $id = (int)$row['id_review'];
+        $key = (int)$row['id_image'];
+        $image = $row['image'];
+        $reviews[$id]->images[$key] = $image;
+      }
     }
 
     $page = $query->getPage();
@@ -303,6 +314,24 @@ class RevwsReview extends ObjectModel {
     }
   }
 
+  public function loadImages() {
+    $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
+    $image = _DB_PREFIX_ . 'revws_review_image';
+    $id = (int)$this->id;
+    $this->images = [];
+    if ($id) {
+      $query = "SELECT id_image, image FROM $image WHERE id_review = $id ORDER by id_image";
+      $dbData = $conn->executeS($query);
+      if ($dbData) {
+        foreach ($dbData as $row) {
+          $key = (int)$row['id_image'];
+          $value = $row['image'];
+          $this->images[$key] = $value;
+        }
+      }
+    }
+  }
+
   public static function getAverageGrade(Settings $settings, $productId) {
     $query = new ReviewQuery($settings, [
       'product' => (int)$productId,
@@ -318,6 +347,13 @@ class RevwsReview extends ObjectModel {
 
   public function toJSData(Permissions $permissions) {
     $canEdit = $permissions->canEdit($this);
+    $images = [];
+    foreach ($this->images as $id => $img) {
+      $images[] = [
+        'id' => (int)$id,
+        'file' => $img,
+      ];
+    }
     $ret = [
       'id' => (int)$this->id,
       'productId' => (int)$this->id_product,
@@ -328,6 +364,7 @@ class RevwsReview extends ObjectModel {
       'email' => $canEdit ? $this->email : '',
       'grades' => $this->grades,
       'grade' => round(Utils::calculateAverage($this->grades)),
+      'images' => $images,
       'title' => $this->title,
       'language' => (int)$this->id_lang,
       'content' => $this->content,
@@ -381,6 +418,7 @@ class RevwsReview extends ObjectModel {
       $review->customer = $dbData['customer'];
     }
     $review->grades = [];
+    $review->images = [];
     return $review;
   }
 
