@@ -258,8 +258,9 @@ class Revws extends Module {
 
   private function migrate($version) {
     if (version_compare($version, '1.0.9', '<')) {
-      $this->executeSqlScript('update-1_0_9', false);
+      $this->executeSqlScript('update-verified_buyer', false);
     }
+    $this->executeSqlScript('update-review-image', false);
   }
 
   public function getVisitor() {
