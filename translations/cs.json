@@ -129,6 +129,8 @@
     "Notify customer when": "Upozornit zákazníka když",
     "Official prestashop GDPR module": "Oficiální prestashop modul pro GDPR",
     "Order reviews by": "Seřadit recenze podle",
+    "PHP `dom` extension is needed to export reviews into xml format": "PHP 'dom' rozšíření je zapotřebí pro exportování recenzí do XML souboru",
+    "PHP dom extension is not loaded": "PHP 'dom' rozšíření není nainstalované",
     "Please enter customer name": "Prosím zadejte jméno zákazníka",
     "Please enter review details": "Prosím vyplňte detaily",
     "Please enter review title": "Prosím vyplňte nadpis",

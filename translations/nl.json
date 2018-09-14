@@ -129,6 +129,8 @@
     "Notify customer when": "Klanten berichten als",
     "Official prestashop GDPR module": "",
     "Order reviews by": "Reviews sorteren",
+    "PHP `dom` extension is needed to export reviews into xml format": "",
+    "PHP dom extension is not loaded": "",
     "Please enter customer name": "Klantennaam opgeven",
     "Please enter review details": "Hier kunt u de uitgebreide product review schrijven. Wij beoordelen de review of deze begrijpelijk is en het correcte gebruik van hoodletter, schrijf en leestekens voordat deze goedgekeurd wordt.",
     "Please enter review title": "Jouw mening in zo min mogelijk woorden / Koptekst",

@@ -129,6 +129,8 @@
     "Notify customer when": "Уведоми клиента когато",
     "Official prestashop GDPR module": "",
     "Order reviews by": "Подреди ревютата по",
+    "PHP `dom` extension is needed to export reviews into xml format": "",
+    "PHP dom extension is not loaded": "",
     "Please enter customer name": "Моля въведете име на клиента",
     "Please enter review details": "Моля въведете детайли",
     "Please enter review title": "Моля въведете заглавие на ревюто",

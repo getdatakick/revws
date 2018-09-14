@@ -129,6 +129,8 @@
     "Notify customer when": "Kunde benachrichtigen, wenn",
     "Official prestashop GDPR module": "Offizielles Prestashop DSGVO-Modul",
     "Order reviews by": "Bewertungen sortieren",
+    "PHP `dom` extension is needed to export reviews into xml format": "",
+    "PHP dom extension is not loaded": "",
     "Please enter customer name": "Bitte Kundennamen eingeben",
     "Please enter review details": "Hier können Sie Ihre literarische Seite zeigen - oder sachlich das Produkt bewerten, ganz wie Sie mögen",
     "Please enter review title": "Die Überschrift - mit einem Einzeiler die Bewertung knackig zusammenfassen",
