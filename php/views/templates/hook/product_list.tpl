@@ -18,15 +18,7 @@
 {if $reviewCount>0 || !$omitEmpty}
 <div class="revws-product-list{if $reviewCount == 0} revws-product-list-empty{/if}">
   <a href="{$reviewsUrl}">
-    <div class="revws-grading revws-grading-list">
-      {section name="i" start=0 loop=5 step=1}
-        <div class="revws-grade-wrap">
-          <svg class="revws-grade revws-grade-{if $grade <= $smarty.section.i.index}off{else}on{/if}" viewBox="{$shape.viewBox}">
-            <path d="{$shape.path}" />
-          </svg>
-        </div>
-      {/section}
-    </div>
+    {include file='modules/revws/views/templates/widgets/grading/grading.tpl' grade=$grade shape=$shape type='list'}
     <div class="revws-count-text">
       {if $reviewCount == 1}
         {l s='one review' mod='revws'}
