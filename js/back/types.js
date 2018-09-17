@@ -55,6 +55,15 @@ export type SettingsType = {
     allowEdit: boolean,
     displayCriteria: DisplayCriteriaType
   },
+  images: {
+    enabled: boolean,
+    allowNewImages: boolean,
+    maxFileSize: number | string,
+    width: number | string,
+    height: number | string,
+    thumbWidth: number | string,
+    thumbHeight: number | string,
+  },
   notifications: {
     admin: {
       email: string,

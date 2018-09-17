@@ -620,8 +620,8 @@ a .revws-grading {
 
 .revws-image {
   margin: 10px;
-  width: 120px;
-  height: 120px;
+  width: {$cssSettings.images.thumbnail.width + 20}px;
+  height: {$cssSettings.images.thumbnail.height + 20}px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -636,8 +636,8 @@ a .revws-grading {
 }
 
 .revws-image img {
-  max-width: 100px;
-  max-height: 100px;
+  max-width: {$cssSettings.images.thumbnail.width}px;
+  max-height: {$cssSettings.images.thumbnail.height}px;
   padding: 0px;
 }
 

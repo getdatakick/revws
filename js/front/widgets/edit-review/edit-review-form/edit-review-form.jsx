@@ -135,22 +135,29 @@ class EditReviewForm extends React.PureComponent<Props, State> {
   }
 
   renderImages = () => {
-    const images = this.props.review.images;
+    const { review, settings } = this.props;
+    const images = review.images;
+    const { allowImages, allowNewImages } = settings.preferences;
+    if (! allowImages) {
+      return null;
+    }
     if (images.length == 0) {
-      return (
+      return allowNewImages ? (
         <label htmlFor='image-new' className='revws-review-form-image-text'>
           { __('Attach images') }
           {this.renderFileInput()}
         </label>
-      );
+      ) : null;
     } else {
       return (
         <div className='revws-images'>
           { images.map(this.renderImage) }
-          <label htmlFor='image-new' key='new' className="revws-image">
-            <AddIcon style={{width: 40, height: 40}}/>
-            {this.renderFileInput()}
-          </label>
+          { allowNewImages && (
+            <label htmlFor='image-new' key='new' className="revws-image">
+              <AddIcon style={{width: 40, height: 40}}/>
+              {this.renderFileInput()}
+            </label>
+          )}
         </div>
       );
     }

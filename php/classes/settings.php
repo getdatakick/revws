@@ -125,6 +125,15 @@ class Settings {
       'richSnippets' => [
         'enabled' => true
       ],
+      'images' => [
+        'enabled' => true,
+        'allowNewImages' => true,
+        'maxFileSize' => 3,
+        'width' => 800,
+        'height' => 800,
+        'thumbWidth' => 100,
+        'thumbHeight' => 100
+      ],
       'gdpr' => [
         'implementation' => self::getDefaultGDPR(),
         'requiredForCustomers' => true
@@ -207,6 +216,34 @@ class Settings {
 
   public function isEditAllowed() {
     return $this->toBool($this->get(['review', 'allowEdit']));
+  }
+
+  public function allowImages() {
+    return $this->toBool($this->get(['images', 'enabled']));
+  }
+
+  public function allowNewImages() {
+    return $this->toBool($this->get(['images', 'allowNewImages']));
+  }
+
+  public function getMaxImageSize() {
+    return 1.0 * $this->get(['images', 'maxFileSize']);
+  }
+
+  public function getImageWidth() {
+    return 1.0 * $this->get(['images', 'width']);
+  }
+
+  public function getImageHeight() {
+    return 1.0 * $this->get(['images', 'height']);
+  }
+
+  public function getImageThumbnailWidth() {
+    return 1.0 * $this->get(['images', 'thumbWidth']);
+  }
+
+  public function getImageThumbnailHeight() {
+    return 1.0 * $this->get(['images', 'thumbHeight']);
   }
 
   public function getAveragePlacement() {

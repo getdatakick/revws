@@ -798,6 +798,12 @@ class Revws extends Module {
       'colors' => $colors,
       'productList' => [
         'noReviews' => $set->productListNoReviewsBehavior()
+      ],
+      'images' => [
+        'thumbnail' => [
+          'width' => $set->getImageThumbnailWidth(),
+          'height' => $set->getImageThumbnailHeight(),
+        ]
       ]
     ];
   }

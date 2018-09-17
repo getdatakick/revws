@@ -19,6 +19,8 @@ export type SettingsType = {
   preferences: {
     allowEmptyReviews: boolean,
     allowGuestReviews: boolean,
+    allowImages: boolean,
+    allowNewImages: boolean,
     allowReviewWithoutCriteria: boolean,
     customerReviewsPerPage: number,
     customerMaxRequests: number,

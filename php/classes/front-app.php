@@ -172,6 +172,8 @@ class FrontApp implements JsonSerializable {
           'allowEmptyReviews' => $set->allowEmptyReviews(),
           'allowReviewWithoutCriteria' => $set->allowReviewWithoutCriteria(),
           'allowGuestReviews' => $set->allowGuestReviews(),
+          'allowImages' => $set->allowImages(),
+          'allowNewImages' => $set->allowNewImages(),
           'customerReviewsPerPage' => $set->getCustomerReviewsPerPage(),
           'customerMaxRequests' => $set->getCustomerMaxRequests(),
           'showSignInButton' => $set->showSignInButton(),

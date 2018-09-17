@@ -98,6 +98,11 @@ class Settings extends React.PureComponent<Props, State> {
         content: this.renderCustomerAccount(errors)
       },
       {
+        key: 'images',
+        label: __('Images'),
+        content: this.renderImages(errors)
+      },
+      {
         key: 'rich-snippets',
         label: __('Structured Data / Rich Snippets'),
         content: this.renderRichSnippets()
@@ -534,8 +539,68 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
+  renderImages = (errors: any) => {
+    const { enabled, maxFileSize, width, height, thumbWidth, thumbHeight } = this.state.settings.images;
+    const disabled = !enabled;
+    return (
+      <div>
+        <FormGroup>
+          <FormControlLabel
+            control={this.renderSwitch(['images', 'enabled'])}
+            label={__("Allow reviews with images")} />
+          <FormControlLabel
+            control={this.renderSwitch(['images', 'allowNewImages'])}
+            disabled={disabled}
+            label={__("Customers can upload new images")} />
+          <div className={styles.group}>
+            <TextField
+              fullWidth
+              label={__("Max image file size [MB]")}
+              value={maxFileSize}
+              disabled={disabled}
+              error={!! errors.images.maxFileSize}
+              onChange={e => this.set(['images', 'maxFileSize'], e.target.value)} />
+            <div className={styles.space} />
+            <TextField
+              fullWidth
+              label={__("Resize image - max width")}
+              value={width}
+              disabled={disabled}
+              error={!! errors.images.width}
+              onChange={e => this.set(['images', 'width'], e.target.value)} />
+            <div className={styles.space} />
+            <TextField
+              fullWidth
+              label={__("Resize image - max height")}
+              value={height}
+              disabled={disabled}
+              error={!! errors.images.height}
+              onChange={e => this.set(['images', 'height'], e.target.value)} />
+            <div className={styles.space} />
+            <TextField
+              fullWidth
+              label={__("Thubmnail width")}
+              value={thumbWidth}
+              disabled={disabled}
+              error={!! errors.images.thumbWidth}
+              onChange={e => this.set(['images', 'thumbWidth'], e.target.value)} />
+            <div className={styles.space} />
+            <TextField
+              fullWidth
+              label={__("Thumbnail height")}
+              value={thumbHeight}
+              disabled={disabled}
+              error={!! errors.images.thumbHeight}
+              onChange={e => this.set(['images', 'thumbHeight'], e.target.value)} />
+          </div>
+        </FormGroup>
+      </div>
+    );
+  }
+
   renderCustomerAccount = (errors: any) => {
     const settings = this.state.settings;
+    const disabled = !settings.display.myReviews.show;
     return (
       <FormGroup>
         <FormControlLabel
@@ -547,6 +612,7 @@ class Settings extends React.PureComponent<Props, State> {
             label={__("Reviews per page")}
             value={settings.display.myReviews.reviewsPerPage}
             error={!! errors.display.myReviews.reviewsPerPage}
+            disabled={disabled}
             onChange={e => this.set(['display', 'myReviews', 'reviewsPerPage'], e.target.value)} />
           <div className={styles.space} />
           <TextField
@@ -554,10 +620,12 @@ class Settings extends React.PureComponent<Props, State> {
             label={__("Max review requests")}
             value={settings.display.myReviews.maxRequests}
             error={!! errors.display.myReviews.maxRequests}
+            disabled={disabled}
             onChange={e => this.set(['display', 'myReviews', 'maxRequests'], e.target.value)} />
           <div className={styles.space} />
           <TextField
             fullWidth
+            disabled={disabled}
             label={__("Icon css class")}
             value={settings.display.myReviews.iconClass}
             onChange={e => this.set(['display', 'myReviews', 'iconClass'], e.target.value)} />
@@ -650,6 +718,13 @@ class Settings extends React.PureComponent<Props, State> {
           reviewsPerPage: validateIsNumber(settings.display.myReviews.reviewsPerPage),
           maxRequests: validateIsNumber(settings.display.myReviews.maxRequests),
         }
+      },
+      images: {
+        maxFileSize: validateIsNumber(settings.images.maxFileSize),
+        width: validateIsNumber(settings.images.width),
+        height: validateIsNumber(settings.images.height),
+        thumbWidth: validateIsNumber(settings.images.thumbWidth),
+        thumbHeight: validateIsNumber(settings.images.thumbHeight),
       },
       notifications: {
         admin: {

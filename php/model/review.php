@@ -65,7 +65,7 @@ class RevwsReview extends ObjectModel {
   public $reply;
 
   public $grades = [];
-  public $images = [];
+  public $images;
   public $product;
   public $customer;
 
@@ -199,12 +199,15 @@ class RevwsReview extends ObjectModel {
       }
 
       // load images
-      $image = _DB_PREFIX_ . 'revws_review_image';
-      $sql = "SELECT id_review, image FROM $image WHERE id_review IN ($keys) ORDER by id_review, pos";
-      foreach ($conn->executeS($sql) as $row) {
-        $id = (int)$row['id_review'];
-        $image = $row['image'];
-        $reviews[$id]->images[] = $image;
+      if ($settings->allowImages()) {
+        $reviews[$id]->images = [];
+        $image = _DB_PREFIX_ . 'revws_review_image';
+        $sql = "SELECT id_review, image FROM $image WHERE id_review IN ($keys) ORDER by id_review, pos";
+        foreach ($conn->executeS($sql) as $row) {
+          $id = (int)$row['id_review'];
+          $image = $row['image'];
+          $reviews[$id]->images[] = $image;
+        }
       }
     }
 
@@ -321,17 +324,19 @@ class RevwsReview extends ObjectModel {
     }
   }
 
-  public function loadImages() {
-    $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
-    $image = _DB_PREFIX_ . 'revws_review_image';
-    $id = (int)$this->id;
-    $this->images = [];
-    if ($id) {
-      $query = "SELECT image FROM $image WHERE id_review = $id ORDER by pos";
-      $dbData = $conn->executeS($query);
-      if ($dbData) {
-        foreach ($dbData as $row) {
-          $this->images[] = $row['image'];
+  public function loadImages(Settings $settings) {
+    if ($settings->allowImages()) {
+      $this->images = [];
+      $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
+      $image = _DB_PREFIX_ . 'revws_review_image';
+      $id = (int)$this->id;
+      if ($id) {
+        $query = "SELECT image FROM $image WHERE id_review = $id ORDER by pos";
+        $dbData = $conn->executeS($query);
+        if ($dbData) {
+          foreach ($dbData as $row) {
+            $this->images[] = $row['image'];
+          }
         }
       }
     }
@@ -340,7 +345,7 @@ class RevwsReview extends ObjectModel {
   private function saveImages() {
     $conn = Db::getInstance();
     $id = (int)$this->id;
-    if ($id) {
+    if ($id && is_array($this->images)) {
       $this->deleteImages();
       $pos = 1;
       foreach ($this->images as $image) {
@@ -371,7 +376,7 @@ class RevwsReview extends ObjectModel {
 
   public function toJSData(Permissions $permissions) {
     $canEdit = $permissions->canEdit($this);
-    $images = $this->images;
+    $images = is_array($this->images) ? $this->images : [];
     $ret = [
       'id' => (int)$this->id,
       'productId' => (int)$this->id_product,
@@ -436,7 +441,6 @@ class RevwsReview extends ObjectModel {
       $review->customer = $dbData['customer'];
     }
     $review->grades = [];
-    $review->images = [];
     return $review;
   }
 
@@ -456,7 +460,6 @@ class RevwsReview extends ObjectModel {
     $review->content = Tools::getValue('content');
     $review->date_upd = new \DateTime();
     $review->grades = [];
-    $review->images = [];
     $review->verified_buyer = $visitor->hasPurchasedProduct($review->id_product);
     $grades = Tools::getValue('grades');
     if (is_array($grades)) {
@@ -466,6 +469,7 @@ class RevwsReview extends ObjectModel {
     }
     $images = Tools::getValue('images');
     if (is_array($images)) {
+      $review->images = [];
       $images = array_unique(array_values($images));
       foreach ($images as $image) {
         if (file_exists(_PS_ROOT_DIR_.$image)) {

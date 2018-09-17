@@ -179,6 +179,11 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
   }
 
   private function uploadImage() {
+    $settings = $this->module->getSettings();
+    if (! $settings->allowImages() || !$settings->allowNewImages()) {
+      throw new Exception("Images are not allowed");
+    }
+
     if (! isset($_FILES['file']['tmp_name'])) {
       throw new Exception("File not provided");
     }
@@ -186,8 +191,7 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     $file = $_FILES['file'];
 
     // validate image
-    // TODO - move to config settings
-    $maxSize = 3 * 1024 * 1024;
+    $maxSize = ($settings->getMaxImageSize() * 1024 * 1024) + 1;
     $error = ImageManager::validateUpload($file, $maxSize);
     if ($error) {
       throw new Exception($error);
@@ -204,16 +208,14 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     $target = "/data/images/$file.$ext";
     $thumb = "/data/images/$file.thumb.$ext";
     try {
-      // TODO - move to config settings
-      $width = 800;
-      $height = 800;
+      $width = $settings->getImageWidth();
+      $height = $settings->getImageHeight();
       if (!ImageManager::resize($tmpName, REVWS_MODULE_DIR . $target, $width, $height, $ext)) {
         throw new Exception('An error occurred while uploading image');
       }
 
-      // TODO - move to config settings
-      $thumbWidth = 100;
-      $thumbHeight = 100;
+      $thumbWidth = $settings->getImageThumbnailWidth();
+      $thumbHeight = $settings->getImageThumbnailHeight();
       if (!ImageManager::resize($tmpName, REVWS_MODULE_DIR . $thumb, $thumbWidth, $thumbHeight, $ext)) {
         throw new Exception('An error occurred while uploading image');
       }
@@ -247,9 +249,10 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
   }
 
   private function returnReview($id){
+    $settings = $this->module->getSettings();
     $review = new RevwsReview($id);
     $review->loadGrades();
-    $review->loadImages();
+    $review->loadImages($settings);
     return $review->toJSData($this->module->getPermissions());
   }
 
