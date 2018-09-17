@@ -10,6 +10,8 @@ import Checkbox from 'material-ui/Checkbox';
 import { FormControlLabel } from 'material-ui/Form';
 import { isLoggedIn, isGuest } from 'front/utils/visitor';
 import { consentRequired } from 'front/utils/gdpr';
+import { CircularProgress } from 'material-ui/Progress';
+import AddIcon from 'material-ui-icons/Add';
 
 type Props = {
   settings: SettingsType,
@@ -20,6 +22,7 @@ type Props = {
   agreed: boolean,
   onAgree: (boolean) => void,
   onUpdateReview: (ReviewType)=>void,
+  onUploadFile: (id: number, file:File)=>void
 }
 
 type State = {
@@ -57,6 +60,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
           error={!! errors.content}
           placeholder={__("Please enter review details")}
           onChange={this.update('content')} />
+        { this.renderImages() }
         { this.renderConsent() }
       </div>
     );
@@ -130,6 +134,57 @@ class EditReviewForm extends React.PureComponent<Props, State> {
     return ret;
   }
 
+  renderImages = () => {
+    const images = this.props.review.images;
+    if (images.length == 0) {
+      return (
+        <label htmlFor='image-new' className='revws-review-form-image-text'>
+          { __('Attach images') }
+          {this.renderFileInput()}
+        </label>
+      );
+    } else {
+      return (
+        <div className='revws-images'>
+          { images.map(this.renderImage) }
+          <label htmlFor='image-new' key='new' className="revws-image">
+            <AddIcon style={{width: 40, height: 40}}/>
+            {this.renderFileInput()}
+          </label>
+        </div>
+      );
+    }
+  }
+
+  renderImage = (image: string, i: number) => {
+    return (
+      <div key={i} className="revws-image">
+        { image === ''
+          ? <CircularProgress size={40} />
+          : <img src={getThumbnail(image)} />
+        }
+      </div>
+    );
+  }
+
+  renderFileInput = () => (
+    <input
+      id='image-new'
+      type="file"
+      accept="image/*"
+      onChange={this.handleUploadFile}
+      style={{display:'none'}} />
+  );
+
+  handleUploadFile = (e: any) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      const { review, onUploadFile } = this.props;
+      const pos = review.images.length;
+      onUploadFile(pos, file);
+    }
+  }
+
   renderConsent = () => {
     const { review, settings, agreed, onAgree } = this.props;
     if (consentRequired(settings, review)) {
@@ -167,5 +222,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
     onUpdateReview({ ...review, grades });
   }
 }
+
+const getThumbnail = (img: string) => img.replace(/.jpg$/, ".thumb.jpg");
 
 export default EditReviewForm;

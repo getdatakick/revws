@@ -2,6 +2,7 @@
 import type { Action } from 'front/actions';
 import type { EditStage, ReviewType } from 'common/types';
 import type { VisitorType } from 'front/types';
+import { remove, update, append } from 'ramda';
 import { formatName } from 'common/utils/format';
 import Types from 'front/actions/types';
 
@@ -44,6 +45,22 @@ const defaultReview = (visitor: VisitorType, productId: number):ReviewType => {
   };
 };
 
+const setImage = (id: number, image: string, review: ReviewType) => {
+  const { images, ...rest } = review;
+  const newImages = (images.length <= id)
+    ? append(image, images)
+    : update(id, image, images);
+  return { ...rest, images: newImages };
+};
+
+const removeImage = (id: number,review: ReviewType) => {
+  const { images, ...rest } = review;
+  const newImages = (id < images.length)
+    ? remove(id, 1, images)
+    : images;
+  return { ...rest, images: newImages };
+};
+
 export default (visitor: VisitorType) => {
   return (state?: State, action:Action): State => {
     state = state || defaultState;
@@ -77,6 +94,21 @@ export default (visitor: VisitorType) => {
     if (action.type === Types.saveReviewCompleted) {
       const stage = action.saved ? 'saved' : 'failed';
       return { ...state, stage };
+    }
+
+    if (action.type === Types.uploadImage && state.review) {
+      const review = setImage(action.id, '', state.review);
+      return { ...state, review };
+    }
+
+    if (action.type === Types.uploadImageFailed && state.review) {
+      const review = removeImage(action.id, state.review);
+      return { ...state, review };
+    }
+
+    if (action.type === Types.setImage && state.review) {
+      const review = setImage(action.id, action.image, state.review);
+      return { ...state, review };
     }
 
     return state;

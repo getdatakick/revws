@@ -3,7 +3,7 @@
 import React from 'react';
 import debounce from 'debounce';
 import classnames from 'classnames';
-import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType, ImageType } from 'common/types';
+import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType } from 'common/types';
 import { F, isNil, sortBy, prop, values, filter, has } from 'ramda';
 import { hasRatings, averageGrade } from 'common/utils/reviews';
 import Grading from 'common/components/grading/grading';
@@ -180,10 +180,10 @@ class ReviewListItem extends React.PureComponent<Props, State> {
     );
   }
 
-  renderImage = (image: ImageType) => (
-    <a key={image.id} data-revws-image-group={this.props.review.id} rel='1' href={image.file}>
+  renderImage = (image: string) => (
+    <a key={image} data-revws-image-group={this.props.review.id} rel='1' href={image}>
       <div className="revws-image">
-        <img src={image.file} />
+        <img src={getThumbnail(image)} />
       </div>
     </a>
   );
@@ -299,6 +299,8 @@ const getCriteriaToRender = (criteria, grades) => {
   const list = sortBy(prop('id'), values(criteria));
   return filter(crit => has(crit.id, grades), list);
 };
+
+const getThumbnail = (img: string) => img.replace(/.jpg$/, ".thumb.jpg");
 
 
 export default ReviewListItem;

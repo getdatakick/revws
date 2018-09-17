@@ -22,7 +22,10 @@ import type {
   SetListAction,
   SetReviewsAction,
   AgreeGDPRAction,
-  MergeEntitiesAction
+  MergeEntitiesAction,
+  UploadImageAction,
+  UploadImageFailedAction,
+  SetImageAction,
 } from './index';
 import Types from './types';
 
@@ -50,3 +53,7 @@ export const setReviews = (reviews: Array<ReviewType>): SetReviewsAction => ({ t
 export const mergeEntities = (entities: EntitiesType): MergeEntitiesAction => ({ type: Types.mergeEntities, entities });
 
 export const agreeGDPR = (agreed: boolean): AgreeGDPRAction => ({ type: Types.agreeGDPR, agreed });
+
+export const uploadImage = (id: number, file:File): UploadImageAction => ({ type: Types.uploadImage, id, file });
+export const uploadImageFailed = (id: number): UploadImageFailedAction => ({ type: Types.uploadImageFailed, id });
+export const setImage = (id: number, image:string): SetImageAction => ({ type: Types.setImage, id, image });

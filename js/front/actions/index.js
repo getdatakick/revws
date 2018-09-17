@@ -107,6 +107,23 @@ export type MergeEntitiesAction = {
   entities: EntitiesType
 }
 
+export type UploadImageAction = {
+  type: 'UPLOAD_IMAGE',
+  id: number,
+  file: File
+}
+
+export type UploadImageFailedAction = {
+  type: 'UPLOAD_IMAGE_FAILED',
+  id: number
+}
+
+export type SetImageAction = {
+  type: 'SET_IMAGE',
+  id: number,
+  image: string
+}
+
 export type Action = (
   SetReviewAction |
   TriggerCreateReviewAction |
@@ -127,5 +144,8 @@ export type Action = (
   SetListAction |
   SetReviewsAction |
   AgreeGDPRAction |
-  MergeEntitiesAction
+  MergeEntitiesAction |
+  UploadImageAction |
+  UploadImageFailedAction |
+  SetImageAction
 );

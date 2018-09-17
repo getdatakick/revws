@@ -3,7 +3,7 @@
 import type { Command } from 'common/types';
 import type { SettingsType } from 'front/types';
 import type { Action } from 'front/actions';
-import { merge, prop } from 'ramda';
+import { keys, forEach, merge, prop } from 'ramda';
 import { fixUrl } from 'common/utils/url';
 import Types from 'front/actions/types';
 import { saveReview } from './save-review';
@@ -11,13 +11,15 @@ import { deleteReview } from './delete-review';
 import { voteReview } from './vote-review';
 import { reportAbuse } from './report-review';
 import { loadList } from './load-list';
+import { uploadImage } from './upload-image';
 
 const commands = {
   [ Types.saveReview ]: saveReview,
   [ Types.deleteReview ]: deleteReview,
   [ Types.triggerVote]: voteReview,
   [ Types.triggerReportReview]: reportAbuse,
-  [ Types.loadList]: loadList
+  [ Types.loadList]: loadList,
+  [ Types.uploadImage ]: uploadImage
 };
 
 export default (settings: SettingsType) => {
@@ -71,18 +73,40 @@ export default (settings: SettingsType) => {
         }
       };
       const error = (xhr, error) => failure(error, -1);
-      const callApi = () => window.$.ajax({
-        url: fixUrl(settings.api),
-        type: 'POST',
-        dataType: 'json',
-        data: merge(payload, {
-          action: 'command',
-          cmd: cmd,
-          revwsToken
-        }),
-        success,
-        error
-      });
+      const callApi = () => {
+        if (payload.file) {
+          const data = new FormData();
+          data.append('ajax', '1');
+          data.append('action', 'command');
+          data.append('cmd', cmd);
+          data.append('revwsToken', revwsToken);
+          forEach(key => data.append(key, payload[key]), keys(payload));
+          window.$.ajax({
+            url: fixUrl(settings.api),
+            data: data,
+            cache: false,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success,
+            error
+          });
+        } else {
+          window.$.ajax({
+            url: fixUrl(settings.api),
+            type: 'POST',
+            dataType: 'json',
+            data: merge(payload, {
+              action: 'command',
+              cmd: cmd,
+              revwsToken
+            }),
+            success,
+            error
+          });
+        }
+      };
       callApi();
     });
   };

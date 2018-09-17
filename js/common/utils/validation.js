@@ -1,7 +1,7 @@
 // @flow
 import type { ReviewType, ReviewFormErrors } from 'common/types';
 import { isEmpty, isObject, notNil, isString, isNumber } from 'common/utils/ramda';
-import { curry, pipe, defaultTo, values, map, reduce, or } from 'ramda';
+import { isNil, find, curry, pipe, defaultTo, values, map, reduce, or } from 'ramda';
 import validator from 'validator';
 
 export const validateVersion = (version: ?string): ?string => {
@@ -20,11 +20,19 @@ export const validateVersion = (version: ?string): ?string => {
   return null;
 };
 
+export const validateImages = (images: Array<string>) => {
+  if (isNil(find(isEmpty, images))) {
+    return null;
+  }
+  return "Image not uploaded";
+};
+
 export const validateReview = (allowEmptyReviews: boolean, review: ReviewType): ReviewFormErrors => ({
   email: validateReviewEmail(review.email),
   displayName: validateDisplayName(review.displayName),
   title: validateTitle(review.title),
-  content: validateContent(allowEmptyReviews, review.content)
+  content: validateContent(allowEmptyReviews, review.content),
+  images: validateImages(review.images)
 });
 
 

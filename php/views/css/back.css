@@ -13,3 +13,13 @@
 .revws-space-large {
   height: 30px;
 }
+
+.fancybox-overlay {
+  z-index: 19008010 !important;
+}
+.fancybox-wrap {
+	z-index: 19008020 !important;
+}
+.fancybox-opened {
+  z-index: 19008030 !important;
+}

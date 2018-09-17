@@ -90,6 +90,7 @@ class RevwsReview extends ObjectModel {
   public function save($nullValues = false, $autoDate = true) {
     $ret = parent::save($nullValues, $autoDate);
     $ret &= $this->saveGrades();
+    $ret &= $this->saveImages();
     return $ret;
   }
 
@@ -137,6 +138,7 @@ class RevwsReview extends ObjectModel {
   public function delete() {
     $ret = parent::delete();
     $ret &= $this->deleteGrades();
+    $ret &= $this->deleteImages();
     $ret &= $this->deleteReactions();
     return $ret;
   }
@@ -160,6 +162,12 @@ class RevwsReview extends ObjectModel {
     $conn = Db::getInstance();
     $id = (int)$this->id;
     return $conn->delete('revws_review_reaction', "id_review = $id ");
+  }
+
+  public function deleteImages() {
+    $conn = Db::getInstance();
+    $id = (int)$this->id;
+    return $conn->delete('revws_review_image', "id_review = $id ");
   }
 
   public static function findReviews(Settings $settings, $options) {
@@ -329,6 +337,25 @@ class RevwsReview extends ObjectModel {
     }
   }
 
+  private function saveImages() {
+    $conn = Db::getInstance();
+    $id = (int)$this->id;
+    if ($id) {
+      $this->deleteImages();
+      $pos = 1;
+      foreach ($this->images as $image) {
+        $conn->insert('revws_review_image',
+          [
+            'id_review' => $id,
+            'image' => $image,
+            'pos' => $pos++
+          ]
+        );
+      }
+    }
+    return true;
+  }
+
   public static function getAverageGrade(Settings $settings, $productId) {
     $query = new ReviewQuery($settings, [
       'product' => (int)$productId,
@@ -344,13 +371,7 @@ class RevwsReview extends ObjectModel {
 
   public function toJSData(Permissions $permissions) {
     $canEdit = $permissions->canEdit($this);
-    $images = [];
-    foreach ($this->images as $id => $img) {
-      $images[] = [
-        'id' => (int)$id,
-        'file' => $img,
-      ];
-    }
+    $images = $this->images;
     $ret = [
       'id' => (int)$this->id,
       'productId' => (int)$this->id_product,
@@ -435,11 +456,21 @@ class RevwsReview extends ObjectModel {
     $review->content = Tools::getValue('content');
     $review->date_upd = new \DateTime();
     $review->grades = [];
+    $review->images = [];
     $review->verified_buyer = $visitor->hasPurchasedProduct($review->id_product);
     $grades = Tools::getValue('grades');
     if (is_array($grades)) {
-      foreach (Tools::getValue('grades') as $key => $value) {
+      foreach ($grades as $key => $value) {
         $review->grades[(int)$key] = (int)$value;
+      }
+    }
+    $images = Tools::getValue('images');
+    if (is_array($images)) {
+      $images = array_unique(array_values($images));
+      foreach ($images as $image) {
+        if (file_exists(_PS_ROOT_DIR_.$image)) {
+          $review->images[] = $image;
+        }
       }
     }
     return $review;

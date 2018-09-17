@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
 import { getStage, getReview } from 'front/selectors/edit-review';
 import { hasAgreed } from 'front/selectors/gdpr';
-import { closeEditReview, saveReview, updateReviewDetails, agreeGDPR } from 'front/actions/creators';
+import { closeEditReview, saveReview, updateReviewDetails, uploadImage, agreeGDPR } from 'front/actions/creators';
 import { getEntities } from 'front/selectors/entities';
 
 const mapStateToProps = mapObject({
@@ -22,6 +22,7 @@ const actions = {
   onSave: saveReview,
   onAgree: agreeGDPR,
   onUpdateReview: updateReviewDetails,
+  onUploadFile: uploadImage,
 };
 
 const connectRedux = connect(mapStateToProps, actions);

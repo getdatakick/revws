@@ -28,6 +28,7 @@ type InputProps = {
   agreed: boolean,
   onAgree: (boolean) => void,
   onUpdateReview: (ReviewType)=>void,
+  onUploadFile: (id: number, file:File)=>void,
   onSave: (ReviewType)=>void,
   onClose: ()=>void
 }
@@ -135,7 +136,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
   }
 
   renderForm = (review: ReviewType, product: ProductInfoType, errors: ReviewFormErrors) => {
-    const { width, settings, onUpdateReview, agreed, onAgree, visitor } = this.props;
+    const { width, settings, onUpdateReview, onUploadFile, agreed, onAgree, visitor } = this.props;
     const smallDevice = width === 'sm' || width == 'xs';
     const image = product.image;
     const form = (
@@ -147,6 +148,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
         agreed={agreed}
         onAgree={onAgree}
         onUpdateReview={onUpdateReview}
+        onUploadFile={onUploadFile}
         errors={errors} />
     );
     return (smallDevice || !image) ? form : (

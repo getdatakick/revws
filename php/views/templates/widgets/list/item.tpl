@@ -85,9 +85,9 @@
     {if $review.images}
     <div class="revws-images">
       {foreach from=$review.images item=image }
-      <a key="{$image.id}" href="{$image.file}">
+      <a href="{$image}">
         <div class="revws-image">
-          <img src="{$image.file}" />
+          <img src="{str_replace(".jpg", ".thumb.jpg", $image)}" />
         </div>
       </a>
       {/foreach}

@@ -27,5 +27,9 @@ export default {
   setReviews: 'SET_REVIEWS',
   mergeEntities: 'MERGE_ENTITIES',
 
-  agreeGDPR: 'AGREE_GDPR'
+  agreeGDPR: 'AGREE_GDPR',
+
+  uploadImage: 'UPLOAD_IMAGE',
+  uploadImageFailed: 'UPLOAD_IMAGE_FAILED',
+  setImage: 'SET_IMAGE'
 };

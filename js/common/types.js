@@ -49,11 +49,6 @@ export type GradingType = {
   [ number ]: number
 };
 
-export type ImageType = {
-  id: number,
-  file: string
-}
-
 export type ReviewType = {
   id: number,
   language: number,
@@ -68,7 +63,7 @@ export type ReviewType = {
   content: ?string,
   reply: ?string,
   grades: GradingType,
-  images: Array<ImageType>,
+  images: Array<string>,
   date: Date,
   underReview: boolean,
   deleted: boolean,
@@ -97,7 +92,8 @@ export type ReviewFormErrors = {
   email: ?string,
   displayName: ?string,
   title: ?string,
-  content: ?string
+  content: ?string,
+  images: ?string
 }
 
 export type CriterionType = {

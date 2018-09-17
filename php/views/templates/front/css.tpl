@@ -591,6 +591,26 @@ a .revws-grading {
   padding: 0;
 }
 
+.revws-review-form-image-text {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  color: #999;
+  cursor: pointer;
+  font-weight: normal;
+}
+.revws-review-form-image-text:before {
+  content: "\f0c6";
+  font-size: 1.5rem;
+  font-family: FontAwesome;
+  padding-right: 5px;
+}
+
+.revws-review-form-image-text:hover {
+  color: #222;
+}
+
+
 .revws-images {
   display: flex;
   flex-direction: row;
@@ -619,4 +639,9 @@ a .revws-grading {
   max-width: 100px;
   max-height: 100px;
   padding: 0px;
+}
+
+.revws-image svg {
+  stroke: #aaa;
+  fill: #aaa;
 }
