@@ -192,12 +192,11 @@ class RevwsReview extends ObjectModel {
 
       // load images
       $image = _DB_PREFIX_ . 'revws_review_image';
-      $sql = "SELECT id_review, id_image, image FROM $image WHERE id_review IN ($keys) ORDER by id_review, id_image";
+      $sql = "SELECT id_review, image FROM $image WHERE id_review IN ($keys) ORDER by id_review, pos";
       foreach ($conn->executeS($sql) as $row) {
         $id = (int)$row['id_review'];
-        $key = (int)$row['id_image'];
         $image = $row['image'];
-        $reviews[$id]->images[$key] = $image;
+        $reviews[$id]->images[] = $image;
       }
     }
 
@@ -320,13 +319,11 @@ class RevwsReview extends ObjectModel {
     $id = (int)$this->id;
     $this->images = [];
     if ($id) {
-      $query = "SELECT id_image, image FROM $image WHERE id_review = $id ORDER by id_image";
+      $query = "SELECT image FROM $image WHERE id_review = $id ORDER by pos";
       $dbData = $conn->executeS($query);
       if ($dbData) {
         foreach ($dbData as $row) {
-          $key = (int)$row['id_image'];
-          $value = $row['image'];
-          $this->images[$key] = $value;
+          $this->images[] = $row['image'];
         }
       }
     }
