@@ -818,6 +818,8 @@ class Revws extends Module {
     if ($extend) {
       $css .= "\n" . $this->display(__FILE__, 'css-extend.tpl');
     }
+    $css = str_replace('<!--', '/*', $css);
+    $css = str_replace('-->', '*/', $css);
     $dir = dirname($filename);
     if (! is_dir($dir)) {
       @mkdir($dir);
