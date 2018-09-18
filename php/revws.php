@@ -713,6 +713,7 @@ class Revws extends Module {
   }
 
   public function includeCommonStyles($controller) {
+    $controller->addJquery();
     $controller->addJqueryPlugin('fancybox');
     $controller->addCSS($this->getCSSFile(), 'all', null, false);
   }
