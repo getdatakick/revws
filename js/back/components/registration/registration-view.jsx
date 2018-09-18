@@ -104,7 +104,7 @@ class Registration extends React.PureComponent<Props> {
 
   step1 = () => (
     <div>
-      <h2>{__('Lincesing information')}</h2>
+      <h2>{__('Licensing information')}</h2>
       <div style={styles.text}>
         <TextWithTags
           text={__("Thank you for installing free version of [1]Revws[/1] module. We are very happy to have you aboard.")}
