@@ -135,7 +135,12 @@ gulp.task('copy-bootstrap-js', function(done) {
 
 gulp.task('copy-binary-files', function(done) {
   const ext = ['png', 'svg', 'jpg'];
-  const sources =  map(e => 'php/**/*.'+e, ext);
+  const sources = [];
+  for (var i=0; i<ext.length; i++) {
+    const e = ext[i];
+    sources.push('php/**/*.'+e);
+    sources.push('!php/data/**/*.'+e);
+  }
   return gulp
     .src(sources)
     .pipe(gulp.dest('./build/staging/revws'))
@@ -153,6 +158,12 @@ gulp.task('copy-build', function(done) {
 gulp.task('create-index', function(done) {
   if (!fs.existsSync('./build/staging/revws/translations')){
     fs.mkdirSync('./build/staging/revws/translations');
+  }
+  if (!fs.existsSync('./build/staging/revws/data')) {
+    fs.mkdirSync('./build/staging/revws/data');
+  }
+  if (!fs.existsSync('./build/staging/revws/data/images')) {
+    fs.mkdirSync('./build/staging/revws/data/images');
   }
   var folders = getFolders('./build/staging/revws');
   var tasks = folders.map(folder => gulp.src('php/index.php').pipe(gulp.dest(folder)));
