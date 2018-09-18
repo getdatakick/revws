@@ -1,8 +1,17 @@
 // @flow
-import type { Load, SettingsType, FullCriterion, FullCriteria } from 'back/types';
+import type { Load, SettingsType, FullCriterion, FullCriteria, EmailPreferences } from 'back/types';
 import type { ReviewType } from 'common/types';
 import type { RoutingState } from 'back/routing';
 
+export type ActivateAccountAction = {
+  type: 'ACTIVATE_ACCOUNT',
+  email: string,
+  emailPreferences: EmailPreferences
+}
+
+export type ActivateAccountFailedAction = {
+  type: 'ACTIVATE_ACCOUNT_FAILED'
+}
 
 export type GoToAction = {
   type: 'GO_TO',
@@ -135,6 +144,8 @@ export type RefreshDataAction = {
 };
 
 export type Action = (
+  ActivateAccountAction |
+  ActivateAccountFailedAction |
   CheckModuleVersionAction |
   CheckModuleVersionFailedAction |
   SetLatestVersionAction |

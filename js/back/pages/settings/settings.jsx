@@ -585,10 +585,6 @@ class Settings extends React.PureComponent<Props, State> {
     return (
       <FormGroup>
         <FormControlLabel
-          control={this.renderSwitch(['module', 'checkModuleVersion'])}
-          label={__("Automatically check for new version")}
-        />
-        <FormControlLabel
           control={this.renderSwitch(['general', 'multilang'])}
           label={__("Filter reviews by current language")}
         />

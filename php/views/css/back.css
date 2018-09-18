@@ -1,3 +1,15 @@
 .app-content {
   padding: 100px 30px;
 }
+
+.revws-space {
+  height: 15px;
+}
+
+.revws-space-small {
+  height: 5px;
+}
+
+.revws-space-large {
+  height: 30px;
+}

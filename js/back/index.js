@@ -1,5 +1,5 @@
 // @flow
-import type { FullCriteria, SettingsType, GlobalDataType, VersionCheck } from 'back/types';
+import type { FullCriteria, SettingsType, GlobalDataType, VersionCheck, AccountType } from 'back/types';
 import React from 'react';
 import { equals } from 'ramda';
 import { render } from 'react-dom';
@@ -82,6 +82,11 @@ window.startRevws = (init: any) => {
   const settings: SettingsType = init.settings;
   const criteria: FullCriteria = init.criteria;
   const versionCheck: VersionCheck = init.versionCheck;
+  const account: AccountType = {
+    activated: data.activated,
+    version: data.version,
+    versionCheck
+  };
 
   const commandsMiddleware = createCommands(data);
   const middlewares = [
@@ -97,7 +102,7 @@ window.startRevws = (init: any) => {
     routingState = moderationPage();
     history.replace(toUrl(routingState));
   }
-  const reducer = createReducer(routingState, settings, criteria, data.version, versionCheck);
+  const reducer = createReducer(routingState, settings, criteria, account);
   const store = createStore(reducer, applyMiddleware(...middlewares));
 
   watchElementSize(node, store);
@@ -120,12 +125,10 @@ window.startRevws = (init: any) => {
     }
   });
 
-  if (settings.module.checkModuleVersion) {
-    const lastCheck = moment(versionCheck.ts);
-    const threshold = moment().add(-6, 'hour');
-    if (! lastCheck.isValid() || lastCheck.isBefore(threshold)) {
-      store.dispatch(checkModuleVersion());
-    }
+  const lastCheck = moment(versionCheck.ts);
+  const threshold = moment().add(-6, 'hour');
+  if (! lastCheck.isValid() || lastCheck.isBefore(threshold)) {
+    store.dispatch(checkModuleVersion());
   }
 
   render((

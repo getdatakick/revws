@@ -5,7 +5,7 @@ import { dissoc, assoc } from 'ramda';
 import { asObject } from 'common/utils/input';
 import Types from 'back/actions/types';
 
-type State = {
+export type State = {
   loading: boolean,
   criteria: FullCriteria,
 }

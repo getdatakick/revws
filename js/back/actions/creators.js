@@ -1,9 +1,11 @@
 // @flow
 
-import type { Load, SettingsType, FullCriterion, FullCriteria } from 'back/types';
+import type { Load, SettingsType, FullCriterion, FullCriteria, EmailPreferences } from 'back/types';
 import type { ReviewType } from 'common/types';
 import type { RoutingState } from 'back/routing';
 import type {
+  ActivateAccountAction,
+  ActivateAccountFailedAction,
   CheckModuleVersionAction,
   CheckModuleVersionFailedAction,
   SetLatestVersionAction,
@@ -64,3 +66,6 @@ export const uploadYotpoCsv = (file: File): UploadYotpoCsvAction => ({ type: Typ
 
 export const exportReviews = (): ExportReviewsAction => ({ type: Types.exportReviews });
 export const refreshData = (): RefreshDataAction => ({ type: Types.refreshData });
+
+export const activateAccount = (email: string, emailPreferences: EmailPreferences): ActivateAccountAction => ({ type: Types.activateAccount, email: email, emailPreferences });
+export const activateAccountFailed = (): ActivateAccountFailedAction => ({ type: Types.activateAccountFailed });

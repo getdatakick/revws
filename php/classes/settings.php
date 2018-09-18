@@ -29,6 +29,7 @@ class Settings {
   const SALT = 'REVWS_SALT';
   const SETTINGS = 'REVWS_SETTINGS';
   const VERSION = 'REVWS_VERSION';
+  const ACTIVATED = 'REVWS_ACTIVATED';
   const CHECK_VERSION = 'REVWS_CHECK_VERSION';
 
   private $data;
@@ -46,9 +47,6 @@ class Settings {
 
   private static function getDefaultSettings() {
     return [
-      'module' => [
-        'checkModuleVersion' => true
-      ],
       'general' => [
         'multilang' => true
       ],
@@ -370,6 +368,14 @@ class Settings {
     return [ 'ts' => null, 'version' => null, 'notes' => null, 'paid' => null ];
   }
 
+  public function isActivated() {
+    return Configuration::getGlobalValue(self::ACTIVATED) == 'free';
+  }
+
+  public function setActivated() {
+    Configuration::updateGlobalValue(self::ACTIVATED, 'free');
+  }
+
   public function setCheckModuleVersion($version, $ts, $notes, $paid) {
     Configuration::updateGlobalValue(self::CHECK_VERSION, json_encode([
       'ts' => $ts,
@@ -456,6 +462,7 @@ class Settings {
     $this->data = null;
     Configuration::deleteByName(self::CHECK_VERSION);
     Configuration::deleteByName(self::SETTINGS);
+    Configuration::deleteByName(self::ACTIVATED);
     return true;
   }
 

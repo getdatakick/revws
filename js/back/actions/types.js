@@ -1,6 +1,8 @@
 // @flow
 
 export default {
+  activateAccount: 'ACTIVATE_ACCOUNT',
+  activateAccountFailed: 'ACTIVATE_ACCOUNT_FAILED',
   checkModuleVersion: 'CHECK_MODULE_VERSION',
   checkModuleVersionFailed: 'CHECK_MODULE_VERSION_FAILED',
   setLatestVersion: 'SET_LATEST_VERSION',

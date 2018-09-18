@@ -1,9 +1,10 @@
 // @flow
-import type { VersionCheck } from 'back/types';
+import type { AccountType } from 'back/types';
 import type { Action } from 'back/actions';
 import Types from 'back/actions/types';
 
-type State = {
+export type State = {
+  activated: boolean,
   version: string,
   latestVersion: ?string,
   lastCheck: ?number,
@@ -12,9 +13,11 @@ type State = {
   checking: boolean
 }
 
-const initialState = (version: string, versionCheck: VersionCheck): State => {
+const initialState = (account: AccountType): State => {
+  const versionCheck = account.versionCheck;
   return {
-    version,
+    activated: account.activated,
+    version: account.version,
     latestVersion: versionCheck.version,
     lastCheck: versionCheck.ts,
     notes: versionCheck.notes,
@@ -23,9 +26,9 @@ const initialState = (version: string, versionCheck: VersionCheck): State => {
   };
 };
 
-export default (version: string, versionCheck: VersionCheck) => {
+export default (account: AccountType) => {
   return (state?: State, action:Action): State => {
-    state = state || initialState(version, versionCheck);
+    state = state || initialState(account);
 
     if (action.type === Types.setLatestVersion) {
       return {
@@ -44,6 +47,14 @@ export default (version: string, versionCheck: VersionCheck) => {
 
     if (action.type === Types.checkModuleVersionFailed) {
       return { ...state, checking: false };
+    }
+
+    if (action.type === Types.activateAccount) {
+      return { ...state, activated: true };
+    }
+
+    if (action.type === Types.activateAccountFailed) {
+      return { ...state, activated: false };
     }
 
     return state;

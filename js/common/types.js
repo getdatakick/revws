@@ -1,5 +1,13 @@
 // @flow
 
+
+export type Tag = string | {
+  tag: string,
+  params: {
+    [ string ]: string
+  }
+}
+
 export type KeyValue = {
   [ number ]: string
 }

@@ -2,7 +2,7 @@
 import type { Action } from 'back/actions';
 import Types from 'back/actions/types';
 
-type State = {
+export type State = {
   width: number,
   height: number
 }

@@ -5,12 +5,13 @@ import Snackbar from 'back/pages/snackbar';
 import styles from './app.less';
 import AppTheme from 'common/components/theme/theme';
 import { getRoutingState } from 'back/selectors/routing-state';
-import { isNewVersionAvailable } from 'back/selectors/version';
+import { isNewVersionAvailable } from 'back/selectors/account';
 import { render } from 'back/routing';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
 import { goTo } from 'back/actions/creators';
 import Navigation from 'back/components/navigation/navigation';
+import Registration from 'back/components/registration';
 
 type Props = {
   routingState: RoutingState,
@@ -31,6 +32,7 @@ class BackApp extends React.PureComponent<Props> {
           { this.renderNavigation(routingState, newVersionAvailable) }
           { render(routingState, { ...routingState, data, goTo }) }
           <Snackbar anchorOrigin={snackbarPosition} />
+          <Registration />
         </div>
       </AppTheme>
     );

@@ -1,10 +1,11 @@
 // @flow
 import React from 'react';
+import type { Tag } from 'common/types';
 import { replaceTags } from 'common/utils/translation';
 
 type Props = {
   text: string,
-  tags: Array<string>
+  tags: Array<Tag>
 };
 
 class TextWithTags extends React.PureComponent<Props> {

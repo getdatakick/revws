@@ -3,7 +3,7 @@ import type { Action } from 'back/actions';
 import Types from 'back/actions/types';
 import { reject, has, always, map, assoc, update, findIndex, propEq, merge } from 'ramda';
 
-type State = {
+export type State = {
   [ string ]: ?any
 }
 

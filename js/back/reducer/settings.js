@@ -3,7 +3,7 @@ import type { Action } from 'back/actions';
 import type { SettingsType } from 'back/types';
 import Types from 'back/actions/types';
 
-type State = SettingsType;
+export type State = SettingsType;
 
 export default (defaultConfig: SettingsType) => {
   return (state?: State, action:Action): State => {

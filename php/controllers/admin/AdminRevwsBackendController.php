@@ -61,6 +61,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
       'title' => $this->l('Product reviews'),
       'revws' => [
         'data' => [
+          'activated' => $settings->isActivated(),
           'version' => $this->module->version,
           'versionUrl' => $settings->getVersionUrl(),
           'api' => $this->context->link->getAdminLink('AdminRevwsBackend'),
@@ -125,6 +126,8 @@ class AdminRevwsBackendController extends ModuleAdminController {
   private function dispatchCommand($cmd) {
     $payload = json_decode(Tools::getValue('payload'), true);
     switch ($cmd) {
+      case 'activate':
+        return $this->activate($payload);
       case 'loadData':
         return $this->loadData($payload);
       case 'approveReview':
@@ -152,6 +155,11 @@ class AdminRevwsBackendController extends ModuleAdminController {
       default:
         throw new Exception("Unknown command $cmd");
     }
+  }
+
+  private function activate() {
+    $this->module->getSettings()->setActivated();
+    return true;
   }
 
   private function importYotpo() {

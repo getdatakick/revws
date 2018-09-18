@@ -2,11 +2,7 @@
 import type { NameFormatType, LangString, LanguagesType, GradingShapeType, ShapeColorsType, DisplayCriteriaType } from 'common/types';
 export type { RoutingState, GoTo } from 'back/routing';
 
-
 export type SettingsType = {
-  module: {
-    checkModuleVersion: boolean
-  },
   general: {
     multilang: boolean
   },
@@ -91,6 +87,7 @@ export type EnvironmentType = {
 }
 
 export type GlobalDataType = {
+  activated: boolean,
   version: string,
   versionUrl: string,
   api: string,
@@ -149,6 +146,12 @@ export type VersionCheck = {
   paid?: ?string,
 }
 
+export type AccountType = {
+  activated: boolean,
+  version: string,
+  versionCheck: VersionCheck
+}
+
 export type WarningMessageIconType = (
   'email' |
   'warning'
@@ -159,6 +162,13 @@ export type WarningMessageType = {
   message: string,
   hint: string
 };
+
+
+export type EmailPreferences = {
+  release: boolean,
+  education: boolean,
+  marketing: boolean
+}
 
 export type DrilldownUrls = {
   [ string ] : string

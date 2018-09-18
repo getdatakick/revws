@@ -36,6 +36,8 @@ export const hasErrors = pipe(
   reduce(or, false)
 );
 
+export const isEmail = (email: string) => validator.isEmail(email);
+
 const notEmpty = curry((errorMessage: string, value: ?string):?string => isEmpty(value) ? errorMessage : null);
 
 export const validateDisplayName = notEmpty(__("Please provide your name"));

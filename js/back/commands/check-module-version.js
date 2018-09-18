@@ -10,6 +10,7 @@ export const checkModuleVersion = (data: GlobalDataType) => (action: CheckModule
   const module = 'revws';
   const { versionUrl, version, platform, platformVersion } = data;
   const currentVersion = data.version;
+  const domain = location.hostname;
   if (! isUrl(versionUrl)) {
     console.info('version check url not provided');
     return;
@@ -22,7 +23,7 @@ export const checkModuleVersion = (data: GlobalDataType) => (action: CheckModule
     url: versionUrl,
     type: 'POST',
     dataType: 'json',
-    data: JSON.stringify({ module, version: version, platform, platformVersion }),
+    data: JSON.stringify({ module, version: version, platform, platformVersion, domain }),
     success: (data) => {
       if (data && data.data && data.data.version) {
         const ver = data.data.version;
