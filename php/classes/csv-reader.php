@@ -37,7 +37,7 @@ class CsvReader {
       $this->convertFrom = $inputEncoding;
     }
     if ($hasColumnNames) {
-      $this->columnNames = $this->fetch();
+      $this->columnNames = array_map('trim', $this->fetch());
     }
   }
 
