@@ -124,7 +124,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
   }
 
   private function dispatchCommand($cmd) {
-    $payload = json_decode(Tools::getValue('payload'), true);
+    $payload = json_decode($_POST['payload'], true);
     switch ($cmd) {
       case 'activate':
         return $this->activate($payload);

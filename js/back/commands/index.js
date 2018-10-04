@@ -80,7 +80,7 @@ export default (data: GlobalDataType) => {
             ajax: true,
             action: 'command',
             cmd: cmd,
-            payload: JSON.stringify(payload).replace(/\\n/g, "\\\\n")
+            payload: JSON.stringify(payload)
           },
           success,
           error
