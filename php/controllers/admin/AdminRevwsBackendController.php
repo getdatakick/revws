@@ -534,12 +534,11 @@ class AdminRevwsBackendController extends ModuleAdminController {
   }
 
   private function getEmailTemplatePaths() {
-    $relative = $this->module->getPath('mails/');
     $rootDir = rtrim(_PS_ROOT_DIR_, DIRECTORY_SEPARATOR);
     $themeDir = rtrim(_PS_THEME_DIR_, DIRECTORY_SEPARATOR);
     return [
-      $themeDir . $relative,
-      $rootDir . $relative,
+      $themeDir . '/modules/revws/mails/',
+      $rootDir . '/modules/revws/mails/',
       $themeDir . '/mails/'
     ];
   }
