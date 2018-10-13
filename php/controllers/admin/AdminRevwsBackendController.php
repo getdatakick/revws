@@ -495,24 +495,27 @@ class AdminRevwsBackendController extends ModuleAdminController {
   private function getMissingEmailTemplates() {
     $templates = [];
     $missing = [];
-    foreach (@scandir(_PS_ROOT_DIR_ . $this->module->getPath('mails/en/')) as $file) {
-      $split = explode('.', $file);
-      $ext = end($split);
-      if ($ext === 'txt' || $ext === 'html') {
-        $templates[] = $file;
+    $mailDir = REVWS_MODULE_DIR . '/mails/en/';
+    $files = @scandir($mailDir);
+    if ($files) {
+      foreach (@scandir($mailDir) as $file) {
+        $split = explode('.', $file);
+        $ext = end($split);
+        if ($ext === 'txt' || $ext === 'html') {
+          $templates[] = $file;
+        }
       }
     }
     $pathsToCheck = $this->getEmailTemplatePaths();
-    $source = rtrim(_PS_ROOT_DIR_, DIRECTORY_SEPARATOR) . $this->module->getPath('mails/en/');
     foreach (Language::getLanguages() as $lang) {
       $isoCode = $lang['iso_code'];
       foreach ($templates as $template) {
         if (! self::emailTemplateExists($isoCode, $template, $pathsToCheck)) {
-          $target = rtrim(_PS_THEME_DIR_, DIRECTORY_SEPARATOR) . $this->module->getPath("mails/$isoCode/");
+          $target = rtrim(_PS_THEME_DIR_, DIRECTORY_SEPARATOR) . "/modules/revws/mails/$isoCode/";
           $missing[] = [
             'icon' => 'email',
             'message' => sprintf($this->l('Email template %s is not translated for language %s'), $template, $lang['name']),
-            'hint' => sprintf($this->l('To fix this problem, copy file %s to %s, and then translate it'), $source.$template, $target.$template)
+            'hint' => sprintf($this->l('To fix this problem, copy file %s to %s, and then translate it'), $mailDir.$template, $target.$template)
           ];
         }
       }
