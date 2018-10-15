@@ -46,31 +46,28 @@ class CriterionForm extends React.PureComponent<Props, State> {
     const { onClose } = this.props;
     const criterion = this.state.criterion;
     const isSame = equals(criterion, this.props.criterion);
-    return (
+    return criterion ? (
       <Dialog
         maxWidth='md'
         fullWidth={true}
-        open={!! criterion}
+        open={true}
         disableBackdropClick={true}
+        scroll='paper'
         onClose={onClose} >
-        {criterion ? (
-          <div>
-            <DialogTitle>{__('Edit criterion')}</DialogTitle>
-            <DialogContent>
-              { this.renderContent(criterion) }
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={onClose}>
-                {__('Cancel')}
-              </Button>
-              <Button onClick={this.submit} disabled={isSame} color="accent">
-                {__('Save')}
-              </Button>
-            </DialogActions>
-          </div>
-        ) : ''}
+        <DialogTitle>{__('Edit criterion')}</DialogTitle>
+        <DialogContent>
+          { this.renderContent(criterion) }
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>
+            {__('Cancel')}
+          </Button>
+          <Button onClick={this.submit} disabled={isSame} color="accent">
+            {__('Save')}
+          </Button>
+        </DialogActions>
       </Dialog>
-    );
+    ) : null;
   }
 
   renderContent(criterion: FullCriterion) {
