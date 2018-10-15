@@ -28,6 +28,7 @@ class RevwsCriterion extends ObjectModel {
     'fields'  => [
       'global'  => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
       'active'  => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
+      'entity'  => [ 'type' => self::TYPE_STRING, 'validate' => 'isString', 'required' => true ],
       // Lang fields
       'label'   => ['type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'required' => true, 'size' => 128]
     ],
@@ -39,16 +40,18 @@ class RevwsCriterion extends ObjectModel {
   public $products = [];
   public $categories = [];
 
-  public static function getCriteria($idLang, $activeOnly=true) {
+  public static function getCriteria($idLang) {
     $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
-    $id = (int)$idLang;
+    $idLang = (int)$idLang;
     $criterion = _DB_PREFIX_ . 'revws_criterion';
     $lang = _DB_PREFIX_ . 'revws_criterion_lang';
-    $query = "SELECT c.id_criterion, c.global, c.active, l.label FROM $criterion c INNER JOIN $lang l ON (c.id_criterion = l.id_criterion AND l.id_lang=$id)";
-    if ($activeOnly) {
-      $query .= " WHERE c.active = 1";
-    }
-    $query .= " ORDER BY c.id_criterion";
+    $query = ("
+      SELECT c.id_criterion, c.global, c.active, l.label, c.entity
+      FROM $criterion c
+      INNER JOIN $lang l ON (c.id_criterion = l.id_criterion AND l.id_lang=$idLang)
+      WHERE c.active = 1
+      ORDER BY c.entity, c.id_criterion
+    ");
     $dbData = $conn->executeS($query);
     $criteria = [];
     if ($dbData) {
@@ -56,6 +59,7 @@ class RevwsCriterion extends ObjectModel {
         $id = (int)$row['id_criterion'];
         $criteria[$id] = [
           'id' => $id,
+          'entity' => $row['entity'],
           'global' => !!$row['global'],
           'active' => !!$row['active'],
           'label' => $row['label'],
@@ -69,7 +73,11 @@ class RevwsCriterion extends ObjectModel {
     $conn = Db::getInstance(_PS_USE_SQL_SLAVE_);
     $criterion = _DB_PREFIX_ . 'revws_criterion';
     $lang = _DB_PREFIX_ . 'revws_criterion_lang';
-    $query = "SELECT c.id_criterion, c.global, c.active, l.id_lang, l.label FROM $criterion c INNER JOIN $lang l ON (c.id_criterion = l.id_criterion)";
+    $query = ("
+      SELECT c.id_criterion, c.global, c.active, l.id_lang, l.label, c.entity
+      FROM $criterion c
+      INNER JOIN $lang l ON (c.id_criterion = l.id_criterion)
+    ");
     $dbData = $conn->executeS($query);
     $criteria = [];
     if ($dbData) {
@@ -84,6 +92,7 @@ class RevwsCriterion extends ObjectModel {
           $crit->id = $id;
           $crit->global = (bool)$row['global'];
           $crit->active = (bool)$row['active'];
+          $crit->entity = $row['entity'];
           $crit->label = [ $lang => $label ];
           $criteria[$id] = $crit;
         }
@@ -105,7 +114,7 @@ class RevwsCriterion extends ObjectModel {
     $cp = _DB_PREFIX_ . 'revws_criterion_product';
     $query = "
       SELECT c.id_criterion AS id
-        FROM $criterion c WHERE c.active=1 AND c.global=1
+        FROM $criterion c WHERE c.active=1 AND c.global=1 AND c.entity='PRODUCT'
       UNION
       SELECT DISTINCT c.id_criterion
         FROM $product ps
@@ -193,6 +202,7 @@ class RevwsCriterion extends ObjectModel {
     $crit->label = $json['label'];
     $crit->active = (bool)$json['active'];
     $crit->global = (bool)$json['global'];
+    $crit->entity = $json['entity'];
     $crit->products = isset($json['products']) ? $json['products'] : [];
     $crit->categories = isset($json['categories']) ? $json['categories'] : [];
     return $crit;
@@ -208,6 +218,7 @@ class RevwsCriterion extends ObjectModel {
       'global' => (bool)$crit->global,
       'active' => (bool)$crit->active,
       'label' => Utils::toKeyValue($crit->label),
+      'entity' => $crit->entity,
       'products' => Utils::toIntArray($crit->products),
       'categories' => Utils::toIntArray($crit->categories)
     ];
