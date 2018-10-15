@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
-import type { ProductInfoType, ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
+import type { ProductInfoType, ReviewType, DisplayCriteriaType, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
 import type { Load } from 'back/types';
-import EditReviewForm from './edit-review-form';
+import EditReviewDialog from './edit-review-dialog';
 import type { ComponentType } from 'react';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
@@ -11,14 +11,18 @@ import { loadData } from 'back/actions/creators';
 
 
 type InputProps = {
-  productId: number,
-  errors: ReviewFormErrors,
+  shopName: string,
+  allowEmptyReviews: boolean,
+  review: ReviewType,
   language: number,
   languages: LanguagesType,
   criteria: CriteriaType,
+  dateFormat: string,
+  displayCriteria: DisplayCriteriaType,
   shape: GradingShapeType,
-  review: ReviewType,
-  onUpdateReview: (ReviewType)=>void,
+  shapeSize: number,
+  onSave: (ReviewType)=>void,
+  onClose: ()=>void
 }
 
 type Props = InputProps & {
@@ -28,11 +32,12 @@ type Props = InputProps & {
   }) => void,
 }
 
-class EditReviewFormController extends React.PureComponent<Props> {
-  static displayName = 'EditReviewFormController';
+class EditReviewDialogController extends React.PureComponent<Props> {
+  static displayName = 'EditReviewDialogController';
 
   componentDidMount() {
-    const { data, loadData, productId } = this.props;
+    const { data, loadData, review } = this.props;
+    const productId = review.productId;
     const key = 'product'+productId;
     if (! data[key]) {
       loadData({
@@ -47,11 +52,13 @@ class EditReviewFormController extends React.PureComponent<Props> {
   }
 
   render() {
-    const { productId, data, ...rest} = this.props;
+    const { data, review, ...rest} = this.props;
+    const productId = review.productId;
     const productInfo: ?ProductInfoType = data['product'+productId];
     const usedCriteria = productInfo ? productInfo.criteria : null;
     return (
-      <EditReviewForm
+      <EditReviewDialog
+        review={review}
         usedCriteria={usedCriteria}
         {...rest} />
     );
@@ -67,5 +74,5 @@ const actions = {
 };
 
 const connectRedux = connect(mapStateToProps, actions);
-const ConnectedComponent: ComponentType<InputProps> = connectRedux(EditReviewFormController);
+const ConnectedComponent: ComponentType<InputProps> = connectRedux(EditReviewDialogController);
 export default ConnectedComponent;

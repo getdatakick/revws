@@ -5,7 +5,7 @@ import type { CriteriaType, ReviewType } from 'common/types';
 import type { SubPage } from 'back/routing/reviews';
 import React from 'react';
 import ReviewsTable from 'back/components/reviews-table';
-import CreateReview from 'back/components/create-review/create-review-dialog';
+import CreateReview from 'back/components/create-review';
 import MigrateData from './migrate-data';
 import { reviewsPage } from 'back/routing';
 import Section from 'back/components/section/section';

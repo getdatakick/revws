@@ -7,7 +7,7 @@ import { notNil } from 'common/utils/ramda';
 import { prop, find, propEq, reject, merge, equals, has } from 'ramda';
 import React from 'react';
 import ReviewsTable from 'back/components/reviews-table/reviews-table';
-import EditReviewDialog from 'back/components/edit-review/edit-review-dialog';
+import EditReviewDialog from 'back/components/edit-review';
 
 export type InputProps = {
   shopName: string,
@@ -151,20 +151,22 @@ class Controller extends React.PureComponent<Props, State> {
           onChangeFilters={this.onChangeFilters}
           drilldownUrls={drilldownUrls}
         />
-        <EditReviewDialog
-          shopName={shopName}
-          languages={languages}
-          language={language}
-          review={selectedReview}
-          allowEmptyReviews={true}
-          criteria={criteria}
-          shape={shape}
-          shapeSize={shapeSize}
-          dateFormat={dateFormat}
-          onSave={this.onSaveReview}
-          displayCriteria={displayCriteria}
-          onClose={() => this.setState({ edit: null })}
-        />
+        { selectedReview && (
+          <EditReviewDialog
+            shopName={shopName}
+            languages={languages}
+            language={language}
+            review={selectedReview}
+            allowEmptyReviews={true}
+            criteria={criteria}
+            shape={shape}
+            shapeSize={shapeSize}
+            dateFormat={dateFormat}
+            onSave={this.onSaveReview}
+            displayCriteria={displayCriteria}
+            onClose={() => this.setState({ edit: null })}
+          />
+        )}
       </div>
     );
   }

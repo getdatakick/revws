@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import type { LanguagesType, ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType, LanguageType } from 'common/types';
-import { toPairs, pathOr, assoc, keys } from 'ramda';
+import { toPairs, pathOr, keys } from 'ramda';
 import { isArray } from 'common/utils/ramda';
 import TextField from 'material-ui/TextField';
 import Grid from 'material-ui/Grid';
@@ -140,7 +140,10 @@ class EditReviewForm extends React.PureComponent<Props> {
 
   onSetGrade = (criterion: number, grade: number) => {
     const { review, onUpdateReview } = this.props;
-    const grades = assoc(criterion, grade, review.grades);
+    const grades = {
+      ...review.grades,
+      [ criterion ]: grade
+    };
     onUpdateReview({ ...review, grades });
   }
 }

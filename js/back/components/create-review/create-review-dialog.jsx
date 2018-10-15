@@ -1,45 +1,36 @@
 // @flow
 
 import React from 'react';
-import type { ReviewFormErrors, NameFormatType, ReviewType, CriteriaType, GradingShapeType, CustomerInfoType, LanguagesType } from 'common/types';
-import { equals, keys } from 'ramda';
+import type { ReviewFormErrors, ReviewType, CriteriaType, GradingShapeType, CustomerInfoType, LanguagesType } from 'common/types';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog';
 import SelectProduct from 'back/components/select-product';
 import SelectCustomer from 'back/components/select-customer';
-import EditReviewForm from 'back/components/edit-review/edit-review-form-controller';
+import EditReviewForm from 'back/components/edit-review/edit-review-form';
 import { validateReview, hasErrors } from 'common/utils/validation';
-import { formatName } from 'common/utils/format';
 
 type Props = {
-  nameFormat: NameFormatType,
+  productId: ?number,
+  review: ?ReviewType,
   allowEmptyReview: boolean,
   shape: GradingShapeType,
   shapeSize: number,
   language: number,
   languages: LanguagesType,
   criteria: CriteriaType,
+  usedCriteria: ?Array<number>,
+  onSetProduct: (number)=>void,
+  onSetCustomer: (customerInfo: CustomerInfoType)=>void,
+  onUpdateReview: (ReviewType)=>void,
   onSave: (ReviewType)=>void,
   onClose: ()=>void
 }
 
-type State = {
-  productId: ?number,
-  review: ?ReviewType,
-}
-
-class EditReviewDialog extends React.PureComponent<Props, State> {
-
-  state = {
-    review: null,
-    productId: null,
-  }
-
+class CreateReviewDialog extends React.PureComponent<Props> {
   render() {
-    const { onClose, allowEmptyReview, criteria } = this.props;
-    const { review } = this.state;
+    const { review, onClose, allowEmptyReview, usedCriteria } = this.props;
     const errors = review ? validateReview(allowEmptyReview, review) : null;
-    const grades = review ? equals(keys(criteria), keys(review.grades)) : false;
+    const grades = (review && usedCriteria ) ? criteriaEntered(usedCriteria,review.grades) : false;
     const invalid = !review || !grades || hasErrors(errors);
     return (
       <Dialog
@@ -64,7 +55,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
   }
 
   getLabel = () => {
-    const { review, productId } = this.state;
+    const { review, productId } = this.props;
     if (! productId) {
       return __('Select product');
     }
@@ -75,67 +66,32 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
   }
 
   renderContent = (errors: ?ReviewFormErrors) => {
-    const { shape, language, criteria, languages } = this.props;
-    const { productId, review } = this.state;
+    const { onUpdateReview, productId, review, shape, language, criteria, usedCriteria, languages, onSetProduct, onSetCustomer } = this.props;
     if (! productId) {
-      return <SelectProduct onSelect={this.setProduct} />;
+      return <SelectProduct onSelect={onSetProduct} />;
     }
     if (review && errors) {
       return (
         <EditReviewForm
           productId={review.productId}
           review={review}
-          onUpdateReview={review => this.setState({review})}
+          onUpdateReview={onUpdateReview}
           shape={shape}
           criteria={criteria}
+          usedCriteria={usedCriteria}
           language={language}
           languages={languages}
           errors={errors}
         />
       );
     } else {
-      return <SelectCustomer onSelect={this.setCustomer} />;
+      return <SelectCustomer onSelect={onSetCustomer} />;
     }
   }
 
-  setProduct = (productId: number) => {
-    this.setState({ productId });
-  }
-
-  setCustomer = (customerInfo: CustomerInfoType) => {
-    const productId = this.state.productId || 0;
-    const review: ReviewType = {
-      id: -1,
-      language: this.props.language,
-      productId,
-      authorType: 'customer',
-      authorId: customerInfo.id,
-      customer: null,
-      product: null,
-      email: customerInfo.email,
-      grades: {},
-      images: [],
-      reply: null,
-      displayName: formatName(customerInfo.firstName, customerInfo.lastName, customerInfo.pseudonym, this.props.nameFormat),
-      title: '',
-      content: null,
-      underReview: true,
-      deleted: false,
-      verifiedBuyer: true,
-      date: new Date(),
-      canVote: false,
-      canReport: false,
-      canDelete: true,
-      canEdit: true
-    };
-    this.setState({ review });
-  }
-
-
 
   onSave = () => {
-    const { onSave, onClose } = this.props;
-    const { review } = this.state;
+    const { onSave, onClose, review } = this.props;
     if (review) {
       onSave(review);
     }
@@ -143,4 +99,14 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
   }
 }
 
-export default EditReviewDialog;
+const criteriaEntered = (used, grades) => {
+  for (var i = 0; i < used.length; i++) {
+    const crit = used[i];
+    if (! grades[crit]) {
+      return false;
+    }
+  }
+  return true;
+};
+
+export default CreateReviewDialog;

@@ -42,6 +42,9 @@ export default (state?: State, action:Action): State => {
   if (action.type === Types.refreshData) {
     return defaultState;
   }
+  if (action.type === Types.setCriteria) {
+    return defaultState;
+  }
   if (action.type === Types.setData) {
     return merge(state, action.payload);
   }
