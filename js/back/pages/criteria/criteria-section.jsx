@@ -2,7 +2,7 @@
 import React from 'react';
 import type { EntityType, LanguagesType, KeyValue } from 'common/types';
 import type { Load, FullCriteria, FullCriterion } from 'back/types';
-import { map, always, values, sortBy, prop } from 'ramda';
+import { keys, map, always, values, sortBy, prop } from 'ramda';
 import List, {
   ListItem,
   ListItemAvatar,
@@ -22,6 +22,8 @@ import styles from './criteria.less';
 type Props = {
   entity: EntityType,
   criteria: FullCriteria,
+  selectProducts: boolean,
+  selectCategories: boolean,
   products: ?KeyValue,
   categories: ?KeyValue,
   language: number,
@@ -47,18 +49,22 @@ class CriteriaSection extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const { categories, products, loadData } = this.props;
-    if (! categories || !products) {
-      loadData({
-        products: {
-          record: 'products',
-          options: 'all'
-        },
-        categories: {
-          record: 'categories',
-          options: 'all'
-        }
-      });
+    const { selectProducts, products, selectCategories, categories, loadData } = this.props;
+    const load = {};
+    if (selectProducts && !products) {
+      load.products = {
+        record: 'products',
+        options: 'all'
+      };
+    }
+    if (selectCategories && !categories) {
+      load.categories = {
+        record: 'categories',
+        options: 'all'
+      };
+    }
+    if (keys(load).length) {
+      loadData(load);
     }
   }
 
@@ -113,13 +119,15 @@ class CriteriaSection extends React.PureComponent<Props, State> {
   }
 
   renderEditForm = () => {
-    const { onSaveCriterion, languages, categories, products } = this.props;
+    const { onSaveCriterion, languages, selectProducts, products, selectCategories, categories } = this.props;
     const edit = this.state.edit;
     const criterion = this.getCriterion(edit);
     return (
       <Form
-        categories={categories}
+        selectProducts={selectProducts}
         products={products}
+        selectCategories={selectCategories}
+        categories={categories}
         criterion={criterion}
         languages={languages}
         onClose={this.closeEditForm}

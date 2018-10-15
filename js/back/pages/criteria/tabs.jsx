@@ -22,7 +22,11 @@ const styles = theme => ({
   }
 });
 
+type TabKey = 'products' | 'categories';
+
 type InputProps = {
+  selectCategories: boolean,
+  selectProducts: boolean,
   products: ?KeyValue,
   categories: ?KeyValue,
   selectedProducts: Array<number>,
@@ -36,42 +40,38 @@ type Props = InputProps & {
 }
 
 type State = {
-  value: number
+  tab: TabKey
 }
 
 
 class FullWidthTabs extends React.PureComponent<Props, State> {
+
   state = {
-    value: 0,
+    tab: getInitialTab(this.props)
   };
 
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
-
-  handleChangeIndex = index => {
-    this.setState({ value: index });
+  handleChange = (event, tab) => {
+    this.setState({ tab });
   };
 
   render() {
-    const { classes, selectedProducts, selectedCategories, products, categories, onSetProducts, onSetCategories } = this.props;
-    const value = this.state.value;
+    const { classes, selectProducts, selectCategories, selectedProducts, selectedCategories, products, categories, onSetProducts, onSetCategories } = this.props;
+    const tab = this.state.tab;
 
     return (
       <div className={classes.root}>
         <AppBar position="static">
           <Tabs
-            value={value}
+            value={tab}
             onChange={this.handleChange}
             indicatorColor="accent"
             fullWidth >
-            <Tab label={__("Categories")} />
-            <Tab label={__("Products")} />
+            { selectCategories && <Tab value="categories" label={__("Categories")} /> }
+            { selectProducts && <Tab value="products" label={__("Products")} /> }
           </Tabs>
         </AppBar>
-        { value === 0 ?
-          this.renderTab(categories, selectedCategories, onSetCategories) :
-          this.renderTab(products, selectedProducts, onSetProducts) }
+        { tab === 'categories' && this.renderTab(categories, selectedCategories, onSetCategories) }
+        { tab === 'products' && this.renderTab(products, selectedProducts, onSetProducts) }
       </div>
     );
   }
@@ -86,6 +86,16 @@ class FullWidthTabs extends React.PureComponent<Props, State> {
     );
   }
 }
+
+const getInitialTab = (props: Props): TabKey => {
+  if (props.selectCategories) {
+    return 'categories';
+  }
+  if (props.selectProducts) {
+    return 'products';
+  }
+  throw new Error('Invariant');
+};
 
 const Component: ComponentType<InputProps> = withStyles(styles)(FullWidthTabs);
 export default Component;

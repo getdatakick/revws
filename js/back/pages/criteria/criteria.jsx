@@ -31,6 +31,8 @@ class CriteriaPage extends React.PureComponent<Props> {
           <CriteriaSection
             entity='PRODUCT'
             criteria={getCriteria('PRODUCT', criteria)}
+            selectProducts={true}
+            selectCategories={true}
             {...rest} />
         </Section>
       </div>

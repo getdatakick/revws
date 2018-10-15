@@ -15,6 +15,8 @@ import Tabs from './tabs';
 
 type Props = {
   criterion: ?FullCriterion,
+  selectProducts: boolean,
+  selectCategories: boolean,
   products: ?KeyValue,
   categories: ?KeyValue,
   languages: LanguagesType,
@@ -100,11 +102,13 @@ class CriterionForm extends React.PureComponent<Props, State> {
   }
 
   renderAssociations = (criterion: FullCriterion) => {
-    const { products, categories } = this.props;
-    return (
+    const { selectProducts, selectCategories, products, categories } = this.props;
+    return (selectProducts || selectCategories) && (
       <Tabs
-        products={products}
+        selectCategories={selectCategories}
+        selectProducts={selectProducts}
         categories={categories}
+        products={products}
         selectedProducts={criterion.products}
         selectedCategories={criterion.categories}
         onSetProducts={products => this.setCriterion({...criterion, products})}
