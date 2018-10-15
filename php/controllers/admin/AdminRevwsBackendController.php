@@ -347,9 +347,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
 
   private function getCategories($options) {
     $lang = $this->context->language->id;
-    $exists = is_callable(array('Category', 'getAllCategoriesName'));
-    $categories = $exists ? Category::getAllCategoriesName(null, $lang, true, null, true, "AND `c`.`level_depth` > 0") : Category::getSimpleCategories($lang);
-    return Utils::mapKeyValue('id_category', 'name', $categories);
+    return Utils::mapKeyValue('id_category', 'name', Category::getSimpleCategories($lang));
   }
 
   private function getReviews($options) {
