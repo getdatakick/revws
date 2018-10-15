@@ -1,5 +1,5 @@
 // @flow
-import { path } from 'ramda';
+import type { State } from 'back/reducer';
 
-export const isLoading = path(['criteria', 'loading']);
-export const getFullCriteria = path(['criteria', 'criteria']);
+export const isLoading = (state: State) => state.criteria.loading;
+export const getFullCriteria = (state: State) => state.criteria.criteria;

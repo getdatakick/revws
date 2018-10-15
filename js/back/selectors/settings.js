@@ -1,4 +1,4 @@
 // @flow
-import { prop } from 'ramda';
+import type { State } from 'back/reducer';
 
-export const getSettings = prop('settings');
+export const getSettings = (state: State) => state.settings;

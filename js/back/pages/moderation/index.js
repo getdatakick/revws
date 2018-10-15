@@ -1,22 +1,47 @@
 // @flow
 import type { ComponentType } from 'react';
-import type { GlobalDataType } from 'back/types';
+import type { GlobalDataType, SettingsType, FullCriteria } from 'back/types';
+import type { State } from 'back/reducer';
+import type { Props } from './moderation';
 import { connect } from 'react-redux';
-import { mapObject } from 'common/utils/redux';
 import { getSettings } from 'back/selectors/settings';
 import { getFullCriteria } from 'back/selectors/criteria';
 import Moderation from './moderation';
-import { mergeCriteria } from 'back/utils/criteria';
+import { convertCriteria } from 'back/utils/criteria';
 
-const mapStateToProps = mapObject({
-  settings: getSettings,
-  fullCriteria: getFullCriteria
+
+type OwnProps = {
+  settings: SettingsType,
+  fullCriteria: FullCriteria
+}
+
+type Actions = {
+}
+
+type PassedProps = {
+  data: GlobalDataType
+}
+
+
+const mapStateToProps = (state: State): OwnProps => ({
+  settings: getSettings(state),
+  fullCriteria: getFullCriteria(state)
 });
 
 const actions = {
 };
 
-const connectRedux = connect(mapStateToProps, actions, mergeCriteria);
-const ConnectedComponent: ComponentType<{data: GlobalDataType}> = connectRedux(Moderation);
+const merge = (props: OwnProps, actions: Actions, passed: PassedProps):Props => {
+  const { fullCriteria, ...rest } = props;
+  return {
+    ...rest,
+    ...actions,
+    ...passed,
+    criteria: convertCriteria(passed.data.language, fullCriteria)
+  };
+};
+
+const connectRedux = connect(mapStateToProps, actions, merge);
+const ConnectedComponent: ComponentType<PassedProps> = connectRedux(Moderation);
 
 export default ConnectedComponent;

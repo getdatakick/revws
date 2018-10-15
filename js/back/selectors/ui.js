@@ -1,6 +1,5 @@
 // @flow
-import { path } from 'ramda';
+import type { State } from 'back/reducer';
 
-const get = (key: string) => path(['ui', key]);
-export const getWidth = get('width');
-export const getHeight = get('height');
+export const getWidth = (state: State) => state.ui.width;
+export const getHeight = (state: State) => state.ui.height;

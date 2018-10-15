@@ -5,7 +5,7 @@ import type { CriteriaType } from 'common/types';
 import React from 'react';
 import ReviewsTable from 'back/components/reviews-table';
 
-type Props = {
+export type Props = {
   data: GlobalDataType,
   settings: SettingsType,
   criteria: CriteriaType

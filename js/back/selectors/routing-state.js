@@ -1,5 +1,5 @@
 // @flow
 
-import { prop } from 'ramda';
+import type { State } from 'back/reducer';
 
-export const getRoutingState = prop('routingState');
+export const getRoutingState = (state: State) => state.routingState;

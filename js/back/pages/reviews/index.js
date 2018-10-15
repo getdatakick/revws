@@ -1,17 +1,36 @@
 // @flow
 import type { ComponentType } from 'react';
-import type { GlobalDataType } from 'back/types';
+import type { GlobalDataType, SettingsType, GoTo, FullCriteria } from 'back/types';
+import type { ReviewType } from 'common/types';
+import type { State } from 'back/reducer';
+import type { Props } from './reviews';
+import type { SubPage } from 'back/routing/reviews';
 import { connect } from 'react-redux';
-import { mapObject } from 'common/utils/redux';
 import { getSettings } from 'back/selectors/settings';
 import { getFullCriteria } from 'back/selectors/criteria';
 import { exportReviews, saveReview } from 'back/actions/creators';
 import Reviews from './reviews';
-import { mergeCriteria } from 'back/utils/criteria';
+import { convertCriteria } from 'back/utils/criteria';
 
-const mapStateToProps = mapObject({
-  settings: getSettings,
-  fullCriteria: getFullCriteria
+type OwnProps = {
+  settings: SettingsType,
+  fullCriteria: FullCriteria
+}
+
+type Actions = {
+  saveReview: (ReviewType) => void,
+  exportReviews: ()=>void
+}
+
+type PassedProps = {
+  subpage: SubPage,
+  goTo: GoTo,
+  data: GlobalDataType
+}
+
+const mapStateToProps = (state: State): OwnProps => ({
+  settings: getSettings(state),
+  fullCriteria: getFullCriteria(state)
 });
 
 const actions = {
@@ -19,7 +38,17 @@ const actions = {
   exportReviews
 };
 
-const connectRedux = connect(mapStateToProps, actions, mergeCriteria);
-const ConnectedComponent: ComponentType<{data: GlobalDataType}> = connectRedux(Reviews);
+const merge = (props: OwnProps, actions: Actions, passed: PassedProps):Props => {
+  const { fullCriteria, ...rest } = props;
+  return {
+    ...rest,
+    ...actions,
+    ...passed,
+    criteria: convertCriteria(passed.data.language, fullCriteria)
+  };
+};
+
+const connectRedux = connect(mapStateToProps, actions, merge);
+const ConnectedComponent: ComponentType<PassedProps> = connectRedux(Reviews);
 
 export default ConnectedComponent;

@@ -1,7 +1,8 @@
 // @flow
-import { path } from 'ramda';
+import type { State } from 'back/reducer';
 
-export const getProducts = path(['data', 'products']);
-export const getCustomers = path(['data', 'customers']);
-export const getCategories = path(['data', 'categories']);
-export const getData = path(['data']);
+export const getProducts = (state: State) => state.data.products;
+export const getCustomers = (state: State) => state.data.customers;
+export const getCategories = (state: State) => state.data.categories;
+
+export const getData = (state: State) => state.data;

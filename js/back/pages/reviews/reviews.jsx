@@ -11,7 +11,7 @@ import { reviewsPage } from 'back/routing';
 import Section from 'back/components/section/section';
 import Button from 'material-ui/Button';
 
-type Props = {
+export type Props = {
   goTo: GoTo,
   data: GlobalDataType,
   settings: SettingsType,
