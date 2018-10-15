@@ -73,8 +73,9 @@ class CriterionForm extends React.PureComponent<Props, State> {
   }
 
   renderContent(criterion: FullCriterion) {
-    const { languages } = this.props;
+    const { languages, selectProducts, selectCategories } = this.props;
     const { label, global } = criterion;
+    const hasDimensions = selectProducts || selectCategories;
     return (
       <div>
         <div className={styles.space} />
@@ -88,14 +89,18 @@ class CriterionForm extends React.PureComponent<Props, State> {
             languages={languages}
             onChange={label => this.setCriterion({...criterion, label })} />
           <div className={styles.space} />
-          <FormControlLabel
-            control={(
-              <Switch
-                checked={global}
-                onChange={(event, checked) => this.setCriterion({...criterion, global: checked})} />
-            )}
-            label={__("Applies to entire catalog")} />
-          { !global && this.renderAssociations(criterion) }
+          {hasDimensions && (
+            <div>
+              <FormControlLabel
+                control={(
+                  <Switch
+                    checked={global}
+                    onChange={(event, checked) => this.setCriterion({...criterion, global: checked})} />
+                )}
+                label={__("Applies to entire catalog")} />
+              { this.renderAssociations(criterion) }
+            </div>
+          )}
         </div>
       </div>
     );
@@ -103,7 +108,7 @@ class CriterionForm extends React.PureComponent<Props, State> {
 
   renderAssociations = (criterion: FullCriterion) => {
     const { selectProducts, selectCategories, products, categories } = this.props;
-    return (selectProducts || selectCategories) && (
+    return (!criterion.global) && (
       <Tabs
         selectCategories={selectCategories}
         selectProducts={selectProducts}
