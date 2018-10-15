@@ -406,6 +406,9 @@ class Settings {
   }
 
   public function isActivated() {
+    if (Configuration::getGlobalValue(self::VERSION_URL)) {
+      return true;
+    }
     return Configuration::getGlobalValue(self::ACTIVATED) == 'free';
   }
 
