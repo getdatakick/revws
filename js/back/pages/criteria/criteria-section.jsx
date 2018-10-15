@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import type { LanguagesType, KeyValue } from 'common/types';
+import type { EntityType, LanguagesType, KeyValue } from 'common/types';
 import type { Load, FullCriteria, FullCriterion } from 'back/types';
 import { map, always, values, sortBy, prop } from 'ramda';
 import List, {
@@ -17,9 +17,10 @@ import DeleteIcon from 'material-ui-icons/Delete';
 import AddAvatar from 'common/components/add-avatar/add-avatar';
 import ConfirmDelete from 'common/components/confirm-delete/confirm-delete';
 import Form from './form';
-import styles from './criteria-section.less';
+import styles from './criteria.less';
 
 type Props = {
+  entity: EntityType,
   criteria: FullCriteria,
   products: ?KeyValue,
   categories: ?KeyValue,
@@ -64,7 +65,7 @@ class CriteriaSection extends React.PureComponent<Props, State> {
   render() {
     const criteria = sortBy(prop('id'), values(this.props.criteria));
     return (
-      <div className={styles.root}>
+      <div className={styles.section}>
         <List>
           { criteria.map(this.renderCriterion) }
           <ListItem button onClick={e => this.setEdit(-1)}>
@@ -131,13 +132,14 @@ class CriteriaSection extends React.PureComponent<Props, State> {
   }
 
   getCriterion = (id: ?number): ?FullCriterion => {
-    const { criteria, languages } = this.props;
+    const { entity, criteria, languages } = this.props;
     if (! id) {
       return null;
     }
     if (id === -1) {
       return {
         id,
+        entity,
         global: true,
         active: true,
         label: map(always(''), languages),

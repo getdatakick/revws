@@ -2,7 +2,7 @@
 import React from 'react';
 import type { GoTo, RoutingState } from 'back/types';
 import Tabs, { Tab } from 'material-ui/Tabs';
-import { moderationPage, reviewsPage, supportPage } from 'back/routing';
+import { moderationPage, reviewsPage, supportPage, criteriaPage } from 'back/routing';
 import styles from './navigation.less';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
@@ -31,6 +31,7 @@ class Navigation extends React.PureComponent<Props> {
           <Tabs value={selected} onChange={this.onChangeTab}>
             <Tab value='moderation' label={__("Moderation")} />
             <Tab value='reviews' label={__("Reviews")} />
+            <Tab value='criteria' label={__("Criteria")} />
             <Tab value='support' label={this.renderSupportLabel(newVersionAvailable, warnings)} />
           </Tabs>
         </div>
@@ -97,6 +98,9 @@ class Navigation extends React.PureComponent<Props> {
         break;
       case 'support':
         goTo(supportPage());
+        break;
+      case 'criteria':
+        goTo(criteriaPage());
         break;
     }
   }

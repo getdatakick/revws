@@ -13,13 +13,17 @@ export { moderationPage } from './moderation';
 import type { ReviewsPage } from './reviews';
 import { reviewsRoute } from './reviews';
 export { reviewsPage } from './reviews';
+import type { CriteriaPage } from './criteria';
+import { criteriaRoute } from './criteria';
+export { criteriaPage } from './criteria';
 
 
 export type RoutingState = (
   SettingsPage |
   SupportPage |
   ModerationPage |
-  ReviewsPage
+  ReviewsPage |
+  CriteriaPage
 );
 
 export type GoTo = (RoutingState) => void;
@@ -29,6 +33,7 @@ const routes = {
   support: supportRoute,
   moderation: moderationRoute,
   reviews: reviewsRoute,
+  criteria: criteriaRoute
 };
 
 

@@ -1,5 +1,5 @@
 // @flow
-import type { NameFormatType, LangString, LanguagesType, GradingShapeType, ShapeColorsType, DisplayCriteriaType } from 'common/types';
+import type { NameFormatType, LangString, LanguagesType, GradingShapeType, ShapeColorsType, DisplayCriteriaType, EntityType } from 'common/types';
 export type { RoutingState, GoTo } from 'back/routing';
 
 export type SettingsType = {
@@ -120,6 +120,7 @@ export type FullCriterion = {
   active: boolean,
   global: boolean,
   label: LangString,
+  entity: EntityType,
   products: Array<number>,
   categories: Array<number>
 }

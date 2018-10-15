@@ -10,7 +10,7 @@ import { FormControlLabel } from 'material-ui/Form';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog';
 import Switch from 'material-ui/Switch';
-import styles from './criteria-section.less';
+import styles from './criteria.less';
 import Tabs from './tabs';
 
 type Props = {

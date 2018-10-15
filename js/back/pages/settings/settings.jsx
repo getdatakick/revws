@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import type { SettingsType, GlobalDataType } from 'back/types';
-import type { CriteriaType } from 'common/types';
 import ScrollSpy from 'react-scrollspy';
 import { prop, toPairs, path, last, merge, range, map, curry, equals, assocPath } from 'ramda';
 import Section from 'back/components/section/section';
@@ -15,14 +14,12 @@ import Checkbox from 'material-ui/Checkbox';
 import Preview from './review-preview';
 import MenuItem from 'material-ui/Menu/MenuItem';
 import TextField from 'material-ui/TextField';
-import CriteriaSection from './criteria-section';
 import { hasErrors, validateIsNumber, validateReviewEmail } from 'common/utils/validation';
 import styles from './style.less';
 import ColorPicker from 'common/components/color-picker/trigger';
 
-type Props = {
+export type Props = {
   data: GlobalDataType,
-  criteria: CriteriaType,
   settings: SettingsType,
   pageWidth: number,
   saveSettings: (SettingsType)=>void,
@@ -121,11 +118,6 @@ class Settings extends React.PureComponent<Props, State> {
         key: 'customer-notifications',
         label: __('Customer notifications'),
         content: this.renderCustomerNotifications()
-      },
-      {
-        key: 'criteria',
-        label: __('Review criteria'),
-        content: this.renderCriteria()
       }
     ];
     const items = map(sectionKey, sections);
@@ -346,15 +338,6 @@ class Settings extends React.PureComponent<Props, State> {
             label={__("employee replies to review")} />
         </div>
       </FormGroup>
-    );
-  }
-
-  renderCriteria = () => {
-    const { languages, language } = this.props.data;
-    return (
-      <CriteriaSection
-        language={language}
-        languages={languages}/>
     );
   }
 

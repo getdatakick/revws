@@ -1,26 +1,43 @@
 // @flow
 import type { ComponentType } from 'react';
-import type { GlobalDataType } from 'back/types';
+import type { GlobalDataType, SettingsType } from 'back/types';
+import type { State } from 'back/reducer';
+import type { Props } from './settings';
 import { connect } from 'react-redux';
-import { mapObject } from 'common/utils/redux';
 import { getWidth } from 'back/selectors/ui';
 import { getSettings } from 'back/selectors/settings';
 import { setSettings } from 'back/actions/creators';
-import { getFullCriteria } from 'back/selectors/criteria';
-import { mergeCriteria } from 'back/utils/criteria';
 import Settings from './settings';
 
-const mapStateToProps = mapObject({
-  pageWidth: getWidth,
-  fullCriteria: getFullCriteria,
-  settings: getSettings
+type OwnProps = {
+  pageWidth: number,
+  settings: SettingsType
+}
+
+type Actions = {
+  saveSettings: (SettingsType) => void
+}
+
+type PassedProps = {
+  data: GlobalDataType
+};
+
+const mapStateToProps = (state: State): OwnProps => ({
+  pageWidth: getWidth(state),
+  settings: getSettings(state)
 });
 
 const actions = {
   saveSettings: setSettings,
 };
 
-const connectRedux = connect(mapStateToProps, actions, mergeCriteria);
-const ConnectedComponent: ComponentType<{data: GlobalDataType}> = connectRedux(Settings);
+const merge = (props: OwnProps, actions: Actions, passed: PassedProps): Props => ({
+  ...props,
+  ...actions,
+  ...passed
+});
+
+const connectRedux = connect(mapStateToProps, actions, merge);
+const ConnectedComponent: ComponentType<PassedProps> = connectRedux(Settings);
 
 export default ConnectedComponent;
