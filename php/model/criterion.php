@@ -26,17 +26,17 @@ class RevwsCriterion extends ObjectModel {
     'primary' => 'id_criterion',
     'multilang' => true,
     'fields'  => [
-      'global'  => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
-      'active'  => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
-      'entity'  => [ 'type' => self::TYPE_STRING, 'validate' => 'isString', 'required' => true ],
-      // Lang fields
-      'label'   => ['type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'required' => true, 'size' => 128]
+      'global'      => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
+      'active'      => [ 'type' => self::TYPE_BOOL, 'validate' => 'isBool' ],
+      'entity_type' => [ 'type' => self::TYPE_STRING, 'validate' => 'isString', 'required' => true ],
+      'label'       => ['type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'required' => true, 'size' => 128]
     ],
   ];
 
   public $global;
   public $active;
   public $label;
+  public $entity_type;
   public $products = [];
   public $categories = [];
 
@@ -46,11 +46,11 @@ class RevwsCriterion extends ObjectModel {
     $criterion = _DB_PREFIX_ . 'revws_criterion';
     $lang = _DB_PREFIX_ . 'revws_criterion_lang';
     $query = ("
-      SELECT c.id_criterion, c.global, c.active, l.label, c.entity
+      SELECT c.id_criterion, c.global, c.active, l.label, c.entity_type
       FROM $criterion c
       INNER JOIN $lang l ON (c.id_criterion = l.id_criterion AND l.id_lang=$idLang)
       WHERE c.active = 1
-      ORDER BY c.entity, c.id_criterion
+      ORDER BY c.entity_type, c.id_criterion
     ");
     $dbData = $conn->executeS($query);
     $criteria = [];
@@ -59,7 +59,7 @@ class RevwsCriterion extends ObjectModel {
         $id = (int)$row['id_criterion'];
         $criteria[$id] = [
           'id' => $id,
-          'entity' => $row['entity'],
+          'entityType' => $row['entity_type'],
           'global' => !!$row['global'],
           'active' => !!$row['active'],
           'label' => $row['label'],
@@ -74,7 +74,7 @@ class RevwsCriterion extends ObjectModel {
     $criterion = _DB_PREFIX_ . 'revws_criterion';
     $lang = _DB_PREFIX_ . 'revws_criterion_lang';
     $query = ("
-      SELECT c.id_criterion, c.global, c.active, l.id_lang, l.label, c.entity
+      SELECT c.id_criterion, c.global, c.active, l.id_lang, l.label, c.entity_type
       FROM $criterion c
       INNER JOIN $lang l ON (c.id_criterion = l.id_criterion)
     ");
@@ -92,7 +92,7 @@ class RevwsCriterion extends ObjectModel {
           $crit->id = $id;
           $crit->global = (bool)$row['global'];
           $crit->active = (bool)$row['active'];
-          $crit->entity = $row['entity'];
+          $crit->entity_type = $row['entity_type'];
           $crit->label = [ $lang => $label ];
           $criteria[$id] = $crit;
         }
@@ -102,6 +102,13 @@ class RevwsCriterion extends ObjectModel {
     self::addProductAssociations($criteria);
     self::addCategoryAssociations($criteria);
     return $criteria;
+  }
+
+  public static function getByEntity($entityType, $entityId) {
+    if ($entityType === 'PRODUCT') {
+      return static::getByProduct($entityId);
+    }
+    throw new Exception("Invalid entity type: $entityType");
   }
 
   public static function getByProduct($productId) {
@@ -114,7 +121,7 @@ class RevwsCriterion extends ObjectModel {
     $cp = _DB_PREFIX_ . 'revws_criterion_product';
     $query = "
       SELECT c.id_criterion AS id
-        FROM $criterion c WHERE c.active=1 AND c.global=1 AND c.entity='PRODUCT'
+        FROM $criterion c WHERE c.active=1 AND c.global=1 AND c.entity_type='PRODUCT'
       UNION
       SELECT DISTINCT c.id_criterion
         FROM $product ps
@@ -202,7 +209,7 @@ class RevwsCriterion extends ObjectModel {
     $crit->label = $json['label'];
     $crit->active = (bool)$json['active'];
     $crit->global = (bool)$json['global'];
-    $crit->entity = $json['entity'];
+    $crit->entity_type = $json['entityType'];
     $crit->products = isset($json['products']) ? $json['products'] : [];
     $crit->categories = isset($json['categories']) ? $json['categories'] : [];
     return $crit;
@@ -218,7 +225,7 @@ class RevwsCriterion extends ObjectModel {
       'global' => (bool)$crit->global,
       'active' => (bool)$crit->active,
       'label' => Utils::toKeyValue($crit->label),
-      'entity' => $crit->entity,
+      'entityType' => $crit->entity_type,
       'products' => Utils::toIntArray($crit->products),
       'categories' => Utils::toIntArray($crit->categories)
     ];

@@ -1,6 +1,6 @@
 // @flow
 
-import type { ReviewType, CriteriaType, DisplayCriteriaType, GradingShapeType, NameFormatType, ProductInfoType, ListOrder, ListOrderDirection } from 'common/types';
+import type { EntityType, ReviewType, CriteriaType, DisplayCriteriaType, GradingShapeType, NameFormatType, EntityInfoType, ListOrder, ListOrderDirection } from 'common/types';
 
 export type ReviewDisplayStyle = 'item' | 'item-with-product';
 
@@ -49,7 +49,7 @@ export type VisitorType = {
 
 export type EntitiesType = {
   products: {
-    [ number ]: ProductInfoType
+    [ number ]: EntityInfoType
   }
 }
 
@@ -83,8 +83,9 @@ export type TranslationsType = {
 };
 
 export type ProductListWidgetType = {
-  type: 'productList',
-  productId: number,
+  type: 'entityList',
+  entityType: EntityType,
+  entityId: number,
   listId: string
 }
 

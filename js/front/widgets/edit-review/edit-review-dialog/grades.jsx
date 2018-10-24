@@ -2,7 +2,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { findIndex, assoc, has } from 'ramda';
-import type { CriterionType, ProductInfoType, GradingShapeType, GradingType } from 'common/types';
+import type { CriterionType, EntityInfoType, GradingShapeType, GradingType } from 'common/types';
 import { fixUrl } from 'common/utils/url';
 import Grading from 'common/components/grading/grading';
 
@@ -10,7 +10,7 @@ type Props = {
   shape: GradingShapeType,
   size: number,
   grades: GradingType,
-  product: ProductInfoType,
+  entity: EntityInfoType,
   criteria: Array<CriterionType>,
   onSetGrades: (GradingType) => void
 };
@@ -26,7 +26,7 @@ class Grades extends React.PureComponent<Props, State> {
   state = getInitialState(this.props);
 
   render() {
-    const { product, criteria } = this.props;
+    const { entity, criteria } = this.props;
     const { slide } = this.state;
     const cnt = criteria.length;
     const style = {
@@ -35,7 +35,7 @@ class Grades extends React.PureComponent<Props, State> {
     };
     return (
       <div className='revws-dialog'>
-        <img className='revws-product-image-small' src={fixUrl(product.image)} alt={product.name} />
+        <img className='revws-product-image-small' src={fixUrl(entity.image)} alt={entity.name} />
         <div className='revws-dialog-slides-wrapper'>
           <div className='revws-dialog-slides' style={style}>
             { criteria.map(this.renderSlide) }

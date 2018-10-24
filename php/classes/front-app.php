@@ -52,19 +52,26 @@ class FrontApp implements JsonSerializable {
     $this->widgets[] = $widget;
   }
 
-  public function addProductListWidget($productId) {
-    $id = 'product-reviews';
+  public function addEntityListWidget($entityType, $entityId) {
+    $entityId = (int)$entityId;
+    $id = strtolower($entityType) . '-reviews';
     $list = $this->getList($id);
     if (! $list) {
       $settings = $this->getSettings();
-      $conditions = [ 'product' => (int)$productId ];
+      $conditions = [
+        'entity' => [
+            'type' => $entityType,
+            'id' => $entityId
+        ]
+      ];
       $pageSize = $this->getPageSize($id, $settings->getReviewsPerPage());
       $order = $settings->getReviewOrder();
       $page = $this->getPage($id, 0);
       $list = $this->addList(new ReviewList($this->module, $id, $conditions, $page, $pageSize, $order, 'desc'));
       $this->addWidget([
-        'type' => 'productList',
-        'productId' => $productId,
+        'type' => 'entityList',
+        'entityType' => $entityType,
+        'entityId' => $entityId,
         'listId' => $list->getId()
       ]);
     }

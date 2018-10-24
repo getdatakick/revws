@@ -53,7 +53,8 @@ export type GradingType = {
 export type ReviewType = {
   id: number,
   language: number,
-  productId: number,
+  entityType: EntityType,
+  entityId: number,
   product: ?string,
   customer: ?string,
   authorType: 'guest' | 'customer',
@@ -110,14 +111,13 @@ export type EditStage = 'edit' | 'saving' | 'saved' | 'failed';
 
 export type NameFormatType = 'fullName' | 'firstName' | 'lastName' | 'initials' | 'initialLastName' | 'pseudonym' | 'custom';
 
-export type ProductInfoType = {
+export type EntityInfoType = {
   id: number,
   name: string,
-  url: string,
+  criteria: Array<number>,
   image: string,
-  criteria: Array<number>
+  url: string
 }
-
 
 export type CustomerInfoType = {
   id: number,

@@ -2,7 +2,7 @@
 
 import type { SettingsType, VisitorType, WidgetsType, WidgetType } from 'front/types';
 import React from 'react';
-import ProductReviewList from 'front/widgets/product-review-list';
+import EntityReviewList from 'front/widgets/entity-review-list';
 import MyReviews from 'front/widgets/my-reviews';
 import ReviewList from 'front/widgets/review-list';
 import EditReview from 'front/widgets/edit-review';
@@ -34,15 +34,16 @@ class FrontApp extends React.PureComponent<Props> {
 
   renderWidget = (widget: WidgetType, i: number) => {
     const { settings, visitor } = this.props;
-    if (widget.type === 'productList') {
-      const { listId, productId } = widget;
+    if (widget.type === 'entityList') {
+      const { listId, entityType, entityId } = widget;
       return (
         <Portal nodeId={`revws-portal-${listId}`} key={i}>
-          <ProductReviewList
+          <EntityReviewList
             settings={settings}
             visitor={visitor}
             listId={listId}
-            productId={productId} />
+            entityType={entityType}
+            entityId={entityId} />
         </Portal>
       );
     }

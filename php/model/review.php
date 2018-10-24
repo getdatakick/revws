@@ -31,7 +31,8 @@ class RevwsReview extends ObjectModel {
     'table'   => 'revws_review',
     'primary' => 'id_review',
     'fields'  => [
-      'id_product'     => [ 'type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true],
+      'entity_type'    => [ 'type' => self::TYPE_STRING, 'validate' => 'isString', 'required' => true ],
+      'id_entity'      => [ 'type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true ],
       'id_customer'    => [ 'type' => self::TYPE_INT ],
       'id_guest'       => [ 'type' => self::TYPE_INT ],
       'id_lang'        => [ 'type' => self::TYPE_INT],
@@ -49,7 +50,8 @@ class RevwsReview extends ObjectModel {
   ];
 
   public $id;
-  public $id_product;
+  public $entity_type;
+  public $id_entity;
   public $id_customer;
   public $id_guest;
   public $id_lang;
@@ -379,7 +381,8 @@ class RevwsReview extends ObjectModel {
     $images = is_array($this->images) ? $this->images : [];
     $ret = [
       'id' => (int)$this->id,
-      'productId' => (int)$this->id_product,
+      'entityType' => $this->entity_type,
+      'entityId' => (int)$this->id_entity,
       'authorType' => $this->getAuthorType(),
       'authorId' => $this->getAuthorId(),
       'displayName' => $this->display_name,
@@ -422,9 +425,10 @@ class RevwsReview extends ObjectModel {
     $review->id = (int)$dbData['id_review'];
     $review->id_guest = (int)$dbData['id_guest'];
     $review->id_customer = (int)$dbData['id_customer'];
-    $review->id_product = (int)$dbData['id_product'];
     $review->id_lang = (int)$dbData['id_lang'];
     $review->display_name = $dbData['display_name'];
+    $review->entity_type = $dbData['entity_type'];
+    $review->id_entity = (int)$dbData['id_entity'];
     $review->email = $dbData['email'];
     $review->title = $dbData['title'];
     $review->content = $dbData['content'];
@@ -452,7 +456,8 @@ class RevwsReview extends ObjectModel {
     $review = new RevwsReview($id);
     $review->id_guest = $visitor->getGuestId();
     $review->id_customer = $visitor->getCustomerId();
-    $review->id_product = (int)Tools::getValue('productId');
+    $review->entity_type = Tools::getValue('entityType');
+    $review->id_entity = (int)Tools::getValue('entityId');
     $review->id_lang = $visitor->getLanguage();
     $review->display_name = Tools::getValue('displayName');
     $review->email = Tools::getValue('email');
@@ -460,7 +465,7 @@ class RevwsReview extends ObjectModel {
     $review->content = Tools::getValue('content');
     $review->date_upd = new \DateTime();
     $review->grades = [];
-    $review->verified_buyer = $visitor->hasPurchasedProduct($review->id_product);
+    $review->verified_buyer = $review->entity_type === 'PRODUCT' && $visitor->hasPurchasedProduct($review->id_entity);
     $grades = Tools::getValue('grades');
     if (is_array($grades)) {
       foreach ($grades as $key => $value) {
@@ -504,7 +509,8 @@ class RevwsReview extends ObjectModel {
       $review->grades[(int)$key] = (int)$value;
     }
     if (! $id) {
-      $review->id_product = (int)$json['productId'];
+      $review->entity_type  = $json['entityType'];
+      $review->id_entity = (int)$json['entityId'];
       $review->id_customer = (int)$json['authorId'];
       $review->validated = true;
     }

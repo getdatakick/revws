@@ -2,7 +2,7 @@
 import type { Action } from 'front/actions';
 import Types from 'front/actions/types';
 
-type State = {
+export type State = {
   message: ?string
 }
 

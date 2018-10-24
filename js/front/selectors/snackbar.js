@@ -1,5 +1,4 @@
 // @flow
-import { path } from 'ramda';
+import type { State } from 'front/reducer';
 
-const get = (key: string) => path(['snackbar', key]);
-export const getMessage = get('message');
+export const getMessage = (state: State) => state.snackbar.message;

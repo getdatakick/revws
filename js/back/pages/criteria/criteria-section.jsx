@@ -20,7 +20,7 @@ import Form from './form';
 import styles from './criteria.less';
 
 type Props = {
-  entity: EntityType,
+  entityType: EntityType,
   criteria: FullCriteria,
   selectProducts: boolean,
   selectCategories: boolean,
@@ -140,14 +140,14 @@ class CriteriaSection extends React.PureComponent<Props, State> {
   }
 
   getCriterion = (id: ?number): ?FullCriterion => {
-    const { entity, criteria, languages } = this.props;
+    const { entityType, criteria, languages } = this.props;
     if (! id) {
       return null;
     }
     if (id === -1) {
       return {
         id,
-        entity,
+        entityType,
         global: true,
         active: true,
         label: map(always(''), languages),

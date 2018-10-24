@@ -22,7 +22,7 @@ use \RevwsReview;
 
 class NoPermissions implements Permissions {
 
-  public function canCreateReview($productId) {
+  public function canCreateReview($entityType, $entityId) {
     return false;
   }
 

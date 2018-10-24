@@ -1,7 +1,5 @@
 // @flow
-import { path } from 'ramda';
+import type { State } from 'front/reducer';
 
-const get = (key: string) => path(['editReview', key]);
-
-export const getReview = get('review');
-export const getStage = get('stage');
+export const getReview = (state: State) => state.editReview.review;
+export const getStage = (state: State) => state.editReview.stage;

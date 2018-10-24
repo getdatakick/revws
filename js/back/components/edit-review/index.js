@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import type { ProductInfoType, ReviewType, DisplayCriteriaType, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
+import type { EntityInfoType, ReviewType, DisplayCriteriaType, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
 import type { Load } from 'back/types';
 import EditReviewDialog from './edit-review-dialog';
 import type { ComponentType } from 'react';
@@ -37,14 +37,15 @@ class EditReviewDialogController extends React.PureComponent<Props> {
 
   componentDidMount() {
     const { data, loadData, review } = this.props;
-    const productId = review.productId;
-    const key = 'product'+productId;
+    const { entityType, entityId } = review;
+    const type = entityType.toLowerCase();
+    const key = getEntityKey(review);
     if (! data[key]) {
       loadData({
         [ key ]: {
-          record: 'productInfo',
+          record: type,
           options: {
-            id: productId
+            id: entityId
           }
         }
       });
@@ -53,9 +54,9 @@ class EditReviewDialogController extends React.PureComponent<Props> {
 
   render() {
     const { data, review, ...rest} = this.props;
-    const productId = review.productId;
-    const productInfo: ?ProductInfoType = data['product'+productId];
-    const usedCriteria = productInfo ? productInfo.criteria : null;
+    const entityKey = getEntityKey(review);
+    const entity: ?EntityInfoType = data[entityKey];
+    const usedCriteria = entity ? entity.criteria : null;
     return (
       <EditReviewDialog
         review={review}
@@ -64,6 +65,12 @@ class EditReviewDialogController extends React.PureComponent<Props> {
     );
   }
 }
+
+const getEntityKey = (review: ReviewType): string => {
+  const { entityType, entityId } = review;
+  const type = entityType.toLowerCase();
+  return type + entityId;
+};
 
 const mapStateToProps = mapObject({
   data: getData

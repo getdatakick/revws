@@ -3,7 +3,7 @@ import type { Action } from 'front/actions';
 import Types from 'front/actions/types';
 import type { SettingsType } from 'front/types';
 
-type State = {
+export type State = {
   agreed: boolean
 }
 

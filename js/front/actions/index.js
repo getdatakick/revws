@@ -1,5 +1,5 @@
 // @flow
-import type { ReviewType, ListOrder, ListOrderDirection } from 'common/types';
+import type { EntityType, ReviewType, ListOrder, ListOrderDirection } from 'common/types';
 import type { ListConditions, ListType, EntitiesType } from 'front/types';
 
 export type SetReviewAction = {
@@ -14,7 +14,8 @@ export type ReviewRemovedAction = {
 
 export type TriggerCreateReviewAction = {
   type: 'TRIGGER_CREATE_REVIEW',
-  productId: number
+  entityType: EntityType,
+  entityId: number
 };
 
 export type CloseEditReviewAction = {

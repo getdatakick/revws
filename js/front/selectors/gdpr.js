@@ -1,6 +1,4 @@
 // @flow
-import { path } from 'ramda';
+import type { State } from 'front/reducer';
 
-const get = (key: string) => path(['gdpr', key]);
-
-export const hasAgreed = get('agreed');
+export const hasAgreed = (state: State) => state.gdpr.agreed;

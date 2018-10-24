@@ -11,7 +11,7 @@ type ListState = ListType & {
   loading: boolean
 };
 
-type State = {
+export type State = {
   [ string ]: ListState
 };
 

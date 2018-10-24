@@ -1,14 +1,16 @@
 
 // @flow
 import type { ComponentType } from 'react';
-import type { SettingsType, VisitorType } from 'front/types';
-import { contains } from 'ramda';
-import ReviewList from './product-review-list';
+import type { EntitiesType, ListConditions, ReviewsType, SettingsType, VisitorType } from 'front/types';
+import type { EntityType, ListOrder, ListOrderDirection, ReviewType } from 'common/types';
+import type { State } from 'front/reducer';
+import type { State as Lists } from 'front/reducer/lists';
+import type { Props } from './entity-review-list';
+import ReviewList from './entity-review-list';
 import { connect } from 'react-redux';
-import { mapObject } from 'common/utils/redux';
 import { getLists } from 'front/selectors/lists';
 import { getReviews } from 'front/selectors/reviews';
-import { getReviewedProducts } from 'front/selectors/visitor-reviews';
+import { getIsReviewed } from 'front/selectors/visitor-reviews';
 import { getReviewList } from 'front/utils/list';
 import { getEntities } from 'front/selectors/entities';
 import { loadList, triggerVoteReview, triggerReportReview, triggerEditReview, triggerCreateReview, triggerDeleteReview } from 'front/actions/creators';
@@ -17,14 +19,31 @@ type PassedProps = {
   settings: SettingsType,
   visitor: VisitorType,
   listId: string,
-  productId: number
+  entityType: EntityType,
+  entityId: number
 };
 
-const mapStateToProps = mapObject({
-  lists: getLists,
-  entities: getEntities,
-  reviews: getReviews,
-  reviewedProducts: getReviewedProducts
+type OwnProps = {
+  lists: Lists,
+  entities: EntitiesType,
+  reviews: ReviewsType,
+  isReviewed: (EntityType, number) => bool
+}
+
+type Actions = {
+  onEdit: (ReviewType)=>void,
+  onCreate: (EntityType, number)=>void,
+  onDelete: (ReviewType)=>void,
+  onReport: (ReviewType)=>void,
+  onVote: (ReviewType, 'up' | 'down')=>void,
+  loadList: (string, ListConditions, number, number, ListOrder, ListOrderDirection)=>void
+}
+
+const mapStateToProps = (state: State): OwnProps => ({
+  lists: getLists(state),
+  entities: getEntities(state),
+  reviews: getReviews(state),
+  isReviewed: getIsReviewed(state),
 });
 
 const actions = {
@@ -36,15 +55,15 @@ const actions = {
   loadList: loadList,
 };
 
-const merge = (props, actions, passed: PassedProps) => {
-  const { reviewedProducts, lists, reviews, entities  } = props;
-  const { settings, visitor, listId, productId } = passed;
+const merge = (props: OwnProps, actions: Actions, passed: PassedProps): Props => {
+  const { isReviewed, lists, reviews, entities  } = props;
+  const { settings, visitor, listId, entityType, entityId } = passed;
   const { loadList, ...restActions } = actions;
   const list = lists[listId];
   const loading = list.loading;
   const reviewList = getReviewList(list, reviews);
   const forbidden = visitor.type === 'guest' && !settings.preferences.allowGuestReviews;
-  const hasReviewed = contains(productId, reviewedProducts);
+  const hasReviewed = isReviewed(entityType, entityId);
   const canReview = !forbidden && !hasReviewed;
   const loadPage = (page: number) => {
     return loadList(listId, list.conditions, page, list.pageSize, list.order, list.orderDir);

@@ -236,18 +236,25 @@ class Notifications {
   }
 
   private function getCommonData(RevwsReview $review, $lang) {
-    $productData = FrontApp::getProductData($review->id_product, $lang);
+    $ret = [];
+
+    if ($review->entity_type === 'PRODUCT') {
+      $productData = FrontApp::getProductData($review->id_entity, $lang);
+      $ret = [
+        '{product_id}' => $productData['id'],
+        '{product_name}' => $productData['name'],
+        '{product_image}' => $productData['image'],
+        '{product_url}' => $productData['url']
+      ];
+    }
+
     $authorName = $review->display_name;
     if ($review->isCustomer()) {
       $customer = $this->getCustomer($review);
       $customeName = $customer->firstname . ' ' .$customer->lastname;
     }
 
-    return [
-      '{product_id}' => $productData['id'],
-      '{product_name}' => $productData['name'],
-      '{product_image}' => $productData['image'],
-      '{product_url}' => $productData['url'],
+    $ret = array_merge($ret, [
       '{review_id}' => (int)$review->id,
       '{author_type}' => $review->getAuthorType(),
       '{author_email}' => $review->email,
@@ -259,7 +266,9 @@ class Notifications {
       '{reply}' => $this->escapeContent($review->reply),
       '{validated}' => $review->validated,
       '{deleted}' => $review->deleted
-    ];
+    ]);
+
+    return $ret;
   }
 
   private function getReviewerEmail(RevwsReview $review) {

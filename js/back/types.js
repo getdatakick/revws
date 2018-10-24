@@ -120,7 +120,7 @@ export type FullCriterion = {
   active: boolean,
   global: boolean,
   label: LangString,
-  entity: EntityType,
+  entityType: EntityType,
   products: Array<number>,
   categories: Array<number>
 }

@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { filter, propEq } from 'ramda';
+import { filter } from 'ramda';
 import CriteriaSection from './criteria-section';
 import Section from 'back/components/section/section';
 import type { EntityType, LanguagesType, KeyValue } from 'common/types';
@@ -29,7 +29,7 @@ class CriteriaPage extends React.PureComponent<Props> {
       <div>
         <Section id='products' label={__('Products criteria')}>
           <CriteriaSection
-            entity='PRODUCT'
+            entityType='PRODUCT'
             criteria={getCriteria('PRODUCT', criteria)}
             selectProducts={true}
             selectCategories={true}
@@ -40,6 +40,6 @@ class CriteriaPage extends React.PureComponent<Props> {
   }
 }
 
-const getCriteria = (type: EntityType, criteria: FullCriteria): FullCriteria => filter(propEq('entity', type), criteria);
+const getCriteria = (type: EntityType, criteria: FullCriteria): FullCriteria => filter((crit: FullCriterion) => crit.entityType === type, criteria);
 
 export default CriteriaPage;

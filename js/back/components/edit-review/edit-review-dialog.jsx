@@ -137,7 +137,6 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
     return (
       <EditReviewForm
         languages={languages}
-        productId={review.productId}
         review={review}
         onUpdateReview={this.onUpdateReview}
         shape={shape}

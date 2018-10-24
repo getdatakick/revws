@@ -30,7 +30,7 @@ class EmployeePermissions implements Permissions {
     return self::$instance;
   }
 
-  public function canCreateReview($productId) {
+  public function canCreateReview($entityType, $entityId) {
     return true;
   }
 

@@ -1,6 +1,6 @@
 // @flow
 
-import type { ReviewType, ListOrder, ListOrderDirection } from 'common/types';
+import type { ReviewType, ListOrder, ListOrderDirection, EntityType } from 'common/types';
 import type { ListConditions, ListType, EntitiesType } from 'front/types';
 import type {
   CloseEditReviewAction,
@@ -31,7 +31,7 @@ import Types from './types';
 
 export const setSnackbar = (message: ?string): SetSnackbarAction => ({ type: Types.setSnackbar, message });
 
-export const triggerCreateReview = (productId: number): TriggerCreateReviewAction => ({ type: Types.triggerCreateReview, productId });
+export const triggerCreateReview = (entityType: EntityType, entityId: number): TriggerCreateReviewAction => ({ type: Types.triggerCreateReview, entityType, entityId });
 export const triggerEditReview = (review: ReviewType): TriggerEditReviewAction => ({ type: Types.triggerEditReview, review });
 export const triggerVoteReview = (review: ReviewType, direction: 'up' | 'down'): TriggerVoteAction => ({ type: Types.triggerVote, review, direction });
 export const triggerReportReview = (review: ReviewType): TriggerReportReviewAction => ({ type: Types.triggerReportReview, review });

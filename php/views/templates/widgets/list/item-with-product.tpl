@@ -15,7 +15,8 @@
 * @copyright 2017-2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-{assign "product" $reviewEntities.products[$review.productId]}
+{if $review.entityType == 'PRODUCT'}
+{assign "product" $reviewEntities.products[$review.entityId]}
 {strip}
 <div class="revws-review-with-product">
   <div>
@@ -39,3 +40,4 @@
   </div>
 </div>
 {/strip}
+{/if}

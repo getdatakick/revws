@@ -78,22 +78,25 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
   }
 
   private function createReview() {
-    $productId = (int)Tools::getValue('productId');
+    $entityType = Tools::getValue('entityType');
+    $entityId = (int)Tools::getValue('entityId');
     $id = (int)Tools::getValue('id');
     $perms = $this->module->getPermissions();
     $settings = $this->module->getSettings();
-    if (! $perms->canCreateReview($productId)) {
+    if (! $perms->canCreateReview($entityType, $entityId)) {
       throw new Exception("Permission denied");
     }
     if ($id > 0) {
       throw new Exception("Invalid request");
     }
-    if ($productId === 0) {
-      throw new Exception("Invalid product id");
+    if ($entityId === 0) {
+      throw new Exception("Invalid entityId id");
     }
     $visitor = $this->module->getVisitor();
     $this->module->getGDPR()->logConsent($visitor);
-    $product = $this->getProductById($productId);
+    if ($entityType === 'PRODUCT') {
+      $product = $this->getProductById($entityId);
+    }
     $review = $this->getReviewPayload();
     $review->setValidated(! $settings->validateNewReviews());
     if (! $review->save()) {

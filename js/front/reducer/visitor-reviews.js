@@ -1,13 +1,15 @@
 // @flow
 import type { Action } from 'front/actions';
 import type { VisitorType } from 'front/types';
-import type { ReviewType } from 'common/types';
-import { append, contains, reject, equals } from 'ramda';
+import type { EntityType, ReviewType } from 'common/types';
+import { assoc, append, contains, reject, equals } from 'ramda';
 import Types from 'front/actions/types';
 
-type State = {
-  toReview: Array<number>,
-  reviewed: Array<number>
+export type State = {
+  [ EntityType ]: {
+    toReview: Array<number>,
+    reviewed: Array<number>
+  }
 }
 
 
@@ -18,20 +20,22 @@ const isCustomerReview = (visitor: VisitorType, review: ReviewType) => {
   );
 };
 
-const remove = (review: ReviewType, list: Array<number>): Array<number> => reject(equals(review.productId), list);
-const add = (review: ReviewType, list: Array<number>): Array<number> => {
-  if (contains(review.productId, list)) {
+const remove = (entityId: number, list: Array<number>): Array<number> => reject(equals(entityId), list);
+
+const add = (entityId: number, list: Array<number>): Array<number> => {
+  if (contains(entityId, list)) {
     return list;
   }
-  return append(review.productId, list);
+  return append(entityId, list);
 };
 
 const updateLists = (visitor: VisitorType, review: ReviewType, state: State) => {
+  const { entityId, entityType } = review;
   if (isCustomerReview(visitor, review)) {
-    return {
-      toReview: remove(review, state.toReview),
-      reviewed: add(review, state.reviewed)
-    };
+    return assoc(entityType, {
+      toReview: remove(entityId, state[entityType].toReview),
+      reviewed: add(entityId, state[entityType].reviewed)
+    }, state);
   }
   return state;
 };
@@ -39,8 +43,10 @@ const updateLists = (visitor: VisitorType, review: ReviewType, state: State) => 
 export default (visitor: VisitorType) => {
   return (state?: State, action:Action): State => {
     state = state || {
-      toReview: visitor.productsToReview,
-      reviewed: visitor.reviewedProducts
+      PRODUCT: {
+        toReview: visitor.productsToReview,
+        reviewed: visitor.reviewedProducts
+      }
     };
 
     if (action.type === Types.setReviews) {
@@ -57,10 +63,11 @@ export default (visitor: VisitorType) => {
     }
 
     if (action.type === Types.reviewRemoved && isCustomerReview(visitor, action.review)) {
-      return {
-        toReview: add(action.review, state.toReview),
-        reviewed: remove(action.review, state.reviewed)
-      };
+      const { entityId, entityType } = action.review;
+      return assoc(entityType, {
+        toReview: remove(entityId, state[entityType].toReview),
+        reviewed: add(entityId, state[entityType].reviewed)
+      }, state);
     }
 
     return state;

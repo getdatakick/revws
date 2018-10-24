@@ -21,7 +21,7 @@ namespace Revws;
 use \RevwsReview;
 
 interface Permissions {
-  function canCreateReview($productId);
+  function canCreateReview($entityType, $entityId);
   function canReportAbuse(RevwsReview $review);
   function canVote(RevwsReview $review);
   function canDelete(RevwsReview $review);

@@ -1,5 +1,4 @@
 // @flow
-import { path } from 'ramda';
+import type { State } from 'front/reducer';
 
-const get = (key: string) => path(['deleteReview', key]);
-export const getReview = get('review');
+export const getReview = (state: State) => state.deleteReview.review;

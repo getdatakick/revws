@@ -7,7 +7,7 @@ import Types from 'front/actions/types';
 import { fixReviews, fixReview } from 'common/utils/reviews';
 import { map, reduce, assoc, dissoc, curry } from 'ramda';
 
-type State = ReviewsType;
+export type State = ReviewsType;
 
 const markLoading = curry((loading: boolean, review: ReviewType) => assoc('loading', loading, review));
 const addReview = (state: State, review: ReviewType) => assoc(review.id, fixReview(markLoading(false, review)), state);

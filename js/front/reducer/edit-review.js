@@ -1,12 +1,12 @@
 // @flow
 import type { Action } from 'front/actions';
-import type { EditStage, ReviewType } from 'common/types';
+import type { EntityType, EditStage, ReviewType } from 'common/types';
 import type { VisitorType } from 'front/types';
 import { remove, update, append } from 'ramda';
 import { formatName } from 'common/utils/format';
 import Types from 'front/actions/types';
 
-type State = {
+export type State = {
   review: ?ReviewType,
   stage: EditStage
 }
@@ -16,12 +16,13 @@ const defaultState: State = {
   stage: 'edit'
 };
 
-const defaultReview = (visitor: VisitorType, productId: number):ReviewType => {
+const defaultReview = (visitor: VisitorType, entityType: EntityType, entityId: number):ReviewType => {
   const { email, firstName, lastName, pseudonym, nameFormat, type, language} = visitor;
 
   return {
     id: -1,
-    productId,
+    entityType,
+    entityId,
     authorType: type,
     authorId: -1,
     language,
@@ -68,7 +69,7 @@ export default (visitor: VisitorType) => {
     if (action.type === Types.triggerCreateReview) {
       return {
         ...state,
-        review: defaultReview(visitor, action.productId),
+        review: defaultReview(visitor, action.entityType, action.entityId),
       };
     }
 

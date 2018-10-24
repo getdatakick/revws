@@ -1,10 +1,10 @@
 // @flow
 import React from 'react';
 import { F } from 'ramda';
-import type { ReviewListType, ReviewType } from 'common/types';
+import type { ReviewListType, ReviewType, EntityType } from 'common/types';
 import type { EntitiesType, SettingsType } from 'front/types';
 import { slice } from 'ramda';
-import { getProduct } from 'front/utils/entities';
+import { getEntity } from 'front/utils/entities';
 import List from '../review-list/review-list';
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
   loading: boolean,
   loadPage: (number)=>void,
   onEdit: (ReviewType)=>void,
-  onCreate: (number)=>void,
+  onCreate: (EntityType, number)=>void,
   onDelete: (ReviewType)=>void,
 };
 
@@ -68,7 +68,7 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
         <div>
           <h1 className="page-heading">{__('Could you review these products?')}</h1>
           <div className='revws-review-requests'>
-            { toReview.map(this.renderRequest) }
+            { toReview.map(this.renderRequest('PRODUCT')) }
           </div>
         </div>
       );
@@ -76,15 +76,15 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
     return null;
   }
 
-  renderRequest = (productId: number) => {
+  renderRequest = (entityType: EntityType) => (entityId: number) => {
     const { entities, onCreate } = this.props;
-    const product = getProduct(entities, productId);
-    if (product) {
+    const entity = getEntity(entities, entityType, entityId);
+    if (entity) {
       return (
-        <div key={productId} className='revws-review-request' onClick={e => onCreate(productId)}>
-          <img src={product.image} />
+        <div key={entityType + entityId} className='revws-review-request' onClick={e => onCreate(entityType, entityId)}>
+          <img src={entity.image} />
           <h3 className='revws-review-request-name'>
-            {product.name}
+            {entity.name}
           </h3>
         </div>
       );

@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import type { ReviewType, ReviewFormErrors, ProductInfoType } from 'common/types';
+import type { ReviewType, ReviewFormErrors } from 'common/types';
 import type { SettingsType, VisitorType } from 'front/types';
 import { map, propOr, assoc } from 'ramda';
 import TextField from 'material-ui/TextField';
@@ -16,7 +16,7 @@ import AddIcon from 'material-ui-icons/Add';
 type Props = {
   settings: SettingsType,
   visitor: VisitorType,
-  product: ProductInfoType,
+  usedCriteria: Array<number>,
   errors: ReviewFormErrors,
   review: ReviewType,
   agreed: boolean,
@@ -37,11 +37,11 @@ class EditReviewForm extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { review, errors, product } = this.props;
+    const { review, errors, usedCriteria } = this.props;
     const { title, content } = review;
     return (
       <div className='revws-review-form'>
-        { map(this.renderCriterion, product.criteria)}
+        { map(this.renderCriterion, usedCriteria)}
         { this.renderAuthor() }
         <TextField
           id="title"

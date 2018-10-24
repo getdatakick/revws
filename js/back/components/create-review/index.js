@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import type { ProductInfoType, NameFormatType, CustomerInfoType, ReviewType, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
+import type { EntityInfoType, NameFormatType, CustomerInfoType, ReviewType, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
 import type { Load } from 'back/types';
 import EditReviewDialog from './create-review-dialog';
 import type { ComponentType } from 'react';
@@ -64,7 +64,7 @@ class EditReviewDialogController extends React.PureComponent<Props, State> {
   render() {
     const { data, ...rest} = this.props;
     const { productId, review } = this.state;
-    const productInfo: ?ProductInfoType = productId ? data['product'+productId] : null;
+    const productInfo: ?EntityInfoType = productId ? data['product'+productId] : null;
     const usedCriteria = productInfo ? productInfo.criteria : null;
     return (
       <EditReviewDialog
@@ -83,7 +83,8 @@ class EditReviewDialogController extends React.PureComponent<Props, State> {
     const review: ReviewType = {
       id: -1,
       language: this.props.language,
-      productId,
+      entityType: 'PRODUCT',
+      entityId: productId,
       authorType: 'customer',
       authorId: customerInfo.id,
       customer: null,

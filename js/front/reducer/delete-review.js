@@ -3,7 +3,7 @@ import type { Action } from 'front/actions';
 import Types from 'front/actions/types';
 import type { ReviewType } from 'common/types';
 
-type State = {
+export type State = {
   review: ?ReviewType
 }
 

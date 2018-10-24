@@ -176,7 +176,8 @@ class DatakickIntegration {
           'join' => [
             'type' => 'LEFT',
             'conditions' => [
-              "pl.id_product = r.id_product",
+              "r.entity_type = 'PRODUCT'",
+              "pl.id_product = r.id_entity",
               "<bind-param:language:pl.id_lang>"
             ]
           ]
@@ -200,11 +201,20 @@ class DatakickIntegration {
           ],
           'update' => false
         ],
-        'productId' => [
-          'type' => 'number',
-          'description' => 'ID product',
+        'entityType' => [
+          'type' => 'string',
+          'description' => 'entity type',
           'mapping' => [
-            'r' => 'id_product',
+            'r' => 'entity_id',
+          ],
+          'required' => true,
+          'update' => true,
+        ],
+        'entityId' => [
+          'type' => 'number',
+          'description' => 'ID entity',
+          'mapping' => [
+            'r' => 'id_entity',
           ],
           'required' => true,
           'update' => true,

@@ -190,6 +190,7 @@ class Revws extends Module {
       if ($stmt) {
         try {
           if (!Db::getInstance()->execute($stmt)) {
+            die($stmt);
             if ($check) {
               return false;
             }
@@ -292,13 +293,14 @@ class Revws extends Module {
     $productId = (int)(Tools::getValue('id_product'));
     $frontApp = $this->getFrontApp();
     $frontApp->addEntity('product', $productId);
-    if (isset($_GET['post_review']) && $this->getPermissions()->canCreateReview($productId)) {
+    if (isset($_GET['post_review']) && $this->getPermissions()->canCreateReview('PRODUCT', $productId)) {
       $frontApp->addInitAction([
         'type' => 'TRIGGER_CREATE_REVIEW',
-        'productId' => $productId
+        'entityType' => 'PRODUCT',
+        'entityId' => $productId
       ]);
     }
-    $list = $frontApp->addProductListWidget($productId);
+    $list = $frontApp->addEntityListWidget('PRODUCT', $productId);
     $visitor = $this->getVisitor();
     $settings = $this->getSettings();
     $this->context->smarty->assign([
@@ -405,10 +407,10 @@ class Revws extends Module {
     $this->context->smarty->assign('productId', $productId);
     $this->context->smarty->assign('grade', $grade);
     $this->context->smarty->assign('reviewCount', $count);
-    $this->context->smarty->assign('hasReviewed', $this->getVisitor()->hasWrittenReview($productId));
+    $this->context->smarty->assign('hasReviewed', $this->getVisitor()->hasWrittenReview('PRODUCT', $productId));
     $this->context->smarty->assign('shape', $this->getShapeSettings());
     $this->context->smarty->assign('shapeSize', $set->getShapeSize());
-    $this->context->smarty->assign('canReview', $this->getPermissions()->canCreateReview($productId));
+    $this->context->smarty->assign('canReview', $this->getPermissions()->canCreateReview('PRODUCT', $productId));
     $this->context->smarty->assign('isGuest', $this->getVisitor()->isGuest());
     $this->context->smarty->assign('loginLink', $this->getLoginUrl($productId));
     $this->context->smarty->assign('microdata', $set->emitRichSnippets());
@@ -534,7 +536,7 @@ class Revws extends Module {
         $this->context->smarty->assign('criteria', RevwsCriterion::getCriteria($this->context->language->id));
         $this->context->smarty->assign('displayCriteria', $displayCriteria);
         $this->context->smarty->assign('shopName', $shopName);
-        $this->context->smarty->assign('linkToProduct', $this->context->link->getProductLink($review->id_product));
+        $this->context->smarty->assign('linkToProduct', $this->context->link->getProductLink($review->id_entity));
         return $this->display(__FILE__, 'display-revws-review.tpl');
       }
     }

@@ -73,7 +73,6 @@ class CreateReviewDialog extends React.PureComponent<Props> {
     if (review && errors) {
       return (
         <EditReviewForm
-          productId={review.productId}
           review={review}
           onUpdateReview={onUpdateReview}
           shape={shape}

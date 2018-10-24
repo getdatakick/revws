@@ -20,6 +20,7 @@
 namespace Revws;
 use \Customer;
 use \Db;
+use \Exception;
 use \Shop;
 use \RevwsReview;
 
@@ -103,9 +104,12 @@ class Visitor {
     return $this->isGuest() ? $this->id : 0;
   }
 
-  public function hasWrittenReview($productId) {
+  public function hasWrittenReview($entityType, $entityId) {
     $this->loadReviews();
-    return isset($this->reviewedProducts[$productId]);
+    if ($entityType === 'PRODUCT') {
+      return isset($this->reviewedProducts[$entityId]);
+    }
+    throw new Exception("Invalid entity type $entityType");
   }
 
   public function getReviewedProducts() {
@@ -137,7 +141,9 @@ class Visitor {
         $visitorType => (int)$visitorId
       ]);
       foreach($reviews['reviews'] as $rev) {
-        $this->reviewedProducts[(int)$rev->id_product] = true;
+        if ($rev->entity_type === 'PRODUCT') {
+          $this->reviewedProducts[(int)$rev->id_entity] = true;
+        }
       }
     }
   }
@@ -154,7 +160,7 @@ class Visitor {
         FROM "._DB_PREFIX_."orders o
         INNER JOIN "._DB_PREFIX_."order_detail d ON (o.id_order = d.id_order AND o.id_shop=d.id_shop)
         INNER JOIN "._DB_PREFIX_."product_shop p ON (p.id_product = d.product_id and p.id_shop = d.id_shop)
-        LEFT JOIN  "._DB_PREFIX_."revws_review r ON (r.id_product = p.id_product)
+        LEFT JOIN  "._DB_PREFIX_."revws_review r ON (r.entity_type = 'PRODUCT' AND r.id_entity = p.id_product)
         WHERE o.id_customer = $customer
           AND o.id_shop = $shop
           AND r.id_review IS NULL

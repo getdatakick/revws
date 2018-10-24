@@ -27,7 +27,7 @@ import EnhancedTableHead from './table-head';
 import EnhancedTableToolbar from './table-toolbar';
 import Grading from 'common/components/grading/grading';
 import { hasRatings, averageGrade } from 'common/utils/reviews';
-import { viewCustomerUrl, editProductUrl } from 'back/utils/drilldown';
+import { viewCustomerUrl, editEntityUrl } from 'back/utils/drilldown';
 import type { Filters, Column } from './types';
 
 type InputProps = {
@@ -146,7 +146,7 @@ class EnhancedTable extends React.Component<Props> {
             />
             <TableBody>
               {data.map((review: ReviewType) => {
-                const { id, product, productId, title, content, customer, displayName, authorType, authorId, verifiedBuyer  } = review;
+                const { id, product, title, content, customer, displayName, authorType, authorId, verifiedBuyer, entityType, entityId } = review;
                 const ratings = hasRatings(review) ;
                 const grade = averageGrade(review);
                 const { icon, type } = getAuthorInfo(classes, authorType, verifiedBuyer);
@@ -158,6 +158,7 @@ class EnhancedTable extends React.Component<Props> {
                     </a>
                   );
                 }
+                const drilldownUrl = editEntityUrl(drilldownUrls, entityType, entityId);
                 return (
                   <TableRow
                     tabIndex={-1}
@@ -169,9 +170,11 @@ class EnhancedTable extends React.Component<Props> {
                       { id }
                     </TableCell>
                     <TableCell padding="dense">
-                      <a className={classes.drilldown} href={editProductUrl(drilldownUrls, productId)} target="_blank" onClick={stop}>
-                        { product }
-                      </a>
+                      { drilldownUrl ? (
+                        <a className={classes.drilldown} href={drilldownUrl} target="_blank" onClick={stop}>
+                          { product }
+                        </a>
+                      ) : product }
                     </TableCell>
                     <TableCell padding="none">
                       <Tooltip placement='bottom-start' title={type}>

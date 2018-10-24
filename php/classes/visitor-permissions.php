@@ -30,18 +30,18 @@ class VisitorPermissions implements Permissions {
     $this->visitor = $visitor;
   }
 
-  public function canCreateReview($productId) {
+  public function canCreateReview($entityType, $entityId) {
     $visitor = $this->visitor;
     if ($visitor->isGuest() && !$this->settings->allowGuestReviews()) {
       return false;
     }
 
-    if ($visitor->hasWrittenReview($productId)) {
+    if ($visitor->hasWrittenReview($entityType, $entityId)) {
       return false;
     }
 
     if (! $this->settings->allowReviewWithoutCriteria()) {
-      $criteria = RevwsCriterion::getByProduct($productId);
+      $criteria = RevwsCriterion::getByEntity($entityType, $entityId);
       if (count($criteria) === 0) {
         return false;
       }

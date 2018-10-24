@@ -9,7 +9,7 @@ import { getLists } from 'front/selectors/lists';
 import { getReviews } from 'front/selectors/reviews';
 import { getReviewList } from 'front/utils/list';
 import { getEntities } from 'front/selectors/entities';
-import { loadList, triggerVoteReview, triggerReportReview, triggerEditReview, triggerCreateReview, triggerDeleteReview } from 'front/actions/creators';
+import { loadList, triggerVoteReview, triggerReportReview, triggerEditReview, triggerDeleteReview } from 'front/actions/creators';
 
 type PassedProps = {
   settings: SettingsType,
@@ -25,7 +25,6 @@ const mapStateToProps = mapObject({
 
 const actions = {
   onEdit: triggerEditReview,
-  onCreate: triggerCreateReview,
   onDelete: triggerDeleteReview,
   onVote: triggerVoteReview,
   onReport: triggerReportReview,

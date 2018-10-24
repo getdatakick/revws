@@ -199,7 +199,8 @@ class AdminRevwsBackendController extends ModuleAdminController {
       $review->content = $line[$index['review_content']];
       $review->date_upd = date('Y-m-d H:i:s');
       $review->date_add = (new \DateTime($line[$index['date']]))->format('Y-m-d H:i:s');
-      $review->id_product = $productId;
+      $review->entity_type = 'PRODUCT';
+      $review->id_entity = $productId;
       $review->id_lang = (int)Context::getContext()->language->id;
       $review->validated = $line[$index['published']] === 'true';
       $review->email = $line[$index['email']];
@@ -210,7 +211,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
       $review->verified_buyer = 0;
       if (isset($customers[$review->email])) {
         $review->id_customer = (int)$customers[$review->email];
-        $review->verified_buyer = Visitor::hasCustomerPurchasedProduct($review->id_customer, $review->id_product);
+        $review->verified_buyer = Visitor::hasCustomerPurchasedProduct($review->id_customer, $productId);
       }
       $review->grades = [
         '1' => (int)$line[$index['review_score']]
@@ -304,7 +305,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
         if ($rec == 'reviews') {
           $ret[$key] = $this->getReviews($options);
         }
-        if ($rec == 'productInfo') {
+        if ($rec == 'product') {
           $ret[$key] = $this->getProductInfo($options);
         }
         if ($rec == 'customers') {

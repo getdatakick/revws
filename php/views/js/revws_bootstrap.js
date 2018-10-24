@@ -60,10 +60,12 @@
     });
     $('[data-revws-create-trigger]').click(function(e) {
       e.preventDefault();
-      var productId = parseInt($(this).data('revws-create-trigger'), 10);
+      var entityId = parseInt($(this).data('revws-create-trigger'), 10);
+      var entityType = $(this).data('revws-entity-type') || 'PRODUCT';
       window.revws({
         type: 'TRIGGER_CREATE_REVIEW',
-        productId: productId
+        entityType: entityType,
+        entityId: entityId
       })
     });
   })

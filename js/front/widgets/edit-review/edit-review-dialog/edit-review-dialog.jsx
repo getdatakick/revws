@@ -3,7 +3,7 @@
 import React from 'react';
 import debounce from 'debounce';
 import type { ComponentType } from 'react';
-import type { EditStage, CriterionType, ReviewType, ReviewFormErrors, ProductInfoType, GradingType } from 'common/types';
+import type { EditStage, CriterionType, ReviewType, ReviewFormErrors, EntityInfoType, GradingType } from 'common/types';
 import type { SettingsType, EntitiesType, VisitorType } from 'front/types';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle, withMobileDialog } from 'common/components/dialog';
@@ -15,7 +15,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import { fixUrl } from 'common/utils/url';
 import { validateReview, hasErrors } from 'common/utils/validation';
 import { reject, isNil, find, prop, map } from 'ramda';
-import { getProduct } from 'front/utils/entities';
+import { getEntity } from 'front/utils/entities';
 import Grades from './grades';
 import { consentRequired } from 'front/utils/gdpr';
 
@@ -49,14 +49,14 @@ class EditReviewDialog extends React.PureComponent<Props> {
         open={!! review}
         disableBackdropClick={true}
         onClose={onClose} >
-        { review ? this.renderDialog(getProduct(entities, review.productId), review) : '' }
+        { review ? this.renderDialog(getEntity(entities, review.entityType, review.entityId), review) : '' }
       </Dialog>
     );
   }
 
-  renderDialog = (product: ProductInfoType, review: ReviewType) => {
+  renderDialog = (entity: EntityInfoType, review: ReviewType) => {
     const { onClose, onSave, settings, stage, agreed } = this.props;
-    const { name } = product;
+    const { name } = entity;
     const errors = validateReview(settings.preferences.allowEmptyReviews, review);
     const withErrors = hasErrors(errors) || (consentRequired(settings, review) && !agreed);
     const saving = stage === 'saving';
@@ -83,7 +83,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
       <div>
         <DialogTitle>{__('Please review %s', name)}</DialogTitle>
         <DialogContent>
-          { this.renderContent(product, review, errors)}
+          { this.renderContent(entity, review, errors)}
         </DialogContent>
         <DialogActions>
           { buttons }
@@ -92,7 +92,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
     );
   }
 
-  renderContent = (product: ProductInfoType, review: ReviewType, errors: ReviewFormErrors) => {
+  renderContent = (entity: EntityInfoType, review: ReviewType, errors: ReviewFormErrors) => {
     const { id, grades } = review;
     const { stage } = this.props;
     const isNew = id === -1;
@@ -102,25 +102,25 @@ class EditReviewDialog extends React.PureComponent<Props> {
     if (stage === 'saved' || stage === 'failed') {
       return this.renderSaved(isNew, stage === 'saved');
     }
-    if (isNew && this.hasUnsetCriterion(product.criteria, grades)) {
-      return this.renderGrading(review, product);
+    if (isNew && this.hasUnsetCriterion(entity.criteria, grades)) {
+      return this.renderGrading(review, entity);
     }
-    return this.renderForm(review, product, errors);
+    return this.renderForm(review, entity, errors);
   }
 
   hasUnsetCriterion = (criteria: Array<any>, grades: GradingType): ?CriterionType => {
     return !!find(k => !grades[k], criteria);
   }
 
-  renderGrading = (review: ReviewType, product: ProductInfoType) => {
+  renderGrading = (review: ReviewType, entity: EntityInfoType) => {
     const { width, settings, onUpdateReview } = this.props;
     const grades = review.grades;
     const smallDevice = width === 'sm' || width == 'xs';
     const size = settings.shapeSize.create / (smallDevice ? 2 : 1);
-    const criteria = reject(isNil, map(key => prop(key, settings.criteria), product.criteria));
+    const criteria = reject(isNil, map(key => prop(key, settings.criteria), entity.criteria));
     return (
       <Grades
-        product={product}
+        entity={entity}
         criteria={criteria}
         grades={grades}
         size={size}
@@ -129,19 +129,19 @@ class EditReviewDialog extends React.PureComponent<Props> {
     );
   }
 
-  renderProductImage = (product: ProductInfoType) => {
+  ProductImage = (entity: EntityInfoType) => {
     return (
-      <img className='revws-product-image' src={fixUrl(product.image)} alt={product.name} />
+      <img className='revws-entity-image' src={fixUrl(entity.image)} alt={entity.name} />
     );
   }
 
-  renderForm = (review: ReviewType, product: ProductInfoType, errors: ReviewFormErrors) => {
+  renderForm = (review: ReviewType, entity: EntityInfoType, errors: ReviewFormErrors) => {
     const { width, settings, onUpdateReview, onUploadFile, agreed, onAgree, visitor } = this.props;
     const smallDevice = width === 'sm' || width == 'xs';
-    const image = product.image;
+    const image = entity.image;
     const form = (
       <EditReviewForm
-        product={product}
+        usedCriteria={entity.criteria}
         visitor={visitor}
         settings={settings}
         review={review}
@@ -154,7 +154,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
     return (smallDevice || !image) ? form : (
       <Grid container spacing={8} style={{minHeight: 408}}>
         <Grid item sm={4}>
-          { this.renderProductImage(product) }
+          { this.ProductImage(entity) }
         </Grid>
         <Grid item sm={8}>
           { form}

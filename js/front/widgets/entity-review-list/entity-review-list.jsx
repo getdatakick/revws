@@ -1,13 +1,14 @@
 // @flow
 import React from 'react';
-import type { ReviewListType, ReviewType } from 'common/types';
+import type { EntityType, ReviewListType, ReviewType } from 'common/types';
 import type { SettingsType, VisitorType, EntitiesType } from 'front/types';
 import List from '../review-list/review-list';
 
-type Props = {
+export type Props = {
   hasReviewed: boolean,
   canReview: boolean,
-  productId: number,
+  entityType: EntityType,
+  entityId: number,
   entities: EntitiesType,
   reviewList: ReviewListType,
   visitor: VisitorType,
@@ -15,14 +16,14 @@ type Props = {
   loading: boolean,
   loadPage: (number)=>void,
   onEdit: (ReviewType)=>void,
-  onCreate: (number)=>void,
+  onCreate: (EntityType, number)=>void,
   onDelete: (ReviewType)=>void,
   onReport: (ReviewType)=>void,
   onVote: (ReviewType, 'up' | 'down')=>void,
 };
 
-class FrontAppReviewList extends React.PureComponent<Props> {
-  static displayName = 'FrontAppReviewList';
+class EntityReviewList extends React.PureComponent<Props> {
+  static displayName = 'EntityReviewList';
 
   render() {
     const { loadPage, settings, entities, reviewList, loading, onEdit, onDelete, onReport, onVote } = this.props;
@@ -93,10 +94,10 @@ class FrontAppReviewList extends React.PureComponent<Props> {
   }
 
   renderCreateButton = (label: string) => {
-    const { productId, onCreate } = this.props;
+    const { entityType, entityId, onCreate } = this.props;
     return (
       <div className="form-group">
-        <a className="btn btn-primary" onClick={e => onCreate(productId)}>
+        <a className="btn btn-primary" onClick={e => onCreate(entityType, entityId)}>
           { label }
         </a>
       </div>
@@ -111,4 +112,4 @@ class FrontAppReviewList extends React.PureComponent<Props> {
   getLoginUrl = () => this.props.settings.loginUrl + encodeURIComponent(window.location.href);
 }
 
-export default FrontAppReviewList;
+export default EntityReviewList;

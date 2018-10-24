@@ -1,6 +1,11 @@
 // @flow
-import { path } from 'ramda';
-const get = (key: string) => path(['visitorReviews', key]);
+import type { State } from 'front/reducer';
+import type { EntityType } from 'common/types';
+import { contains } from 'ramda';
 
-export const getProductsToReview = get('toReview');
-export const getReviewedProducts = get('reviewed');
+export const getProductsToReview = (state: State) => state.visitorReviews.PRODUCT.toReview;
+
+export const getIsReviewed = (state: State) => (type: EntityType, id: number): boolean => {
+  const list = state.visitorReviews[type];
+  return contains(id, list);
+};

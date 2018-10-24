@@ -1,12 +1,12 @@
 // @flow
 import React from 'react';
-import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType, ProductInfoType } from 'common/types';
+import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType, EntityInfoType } from 'common/types';
 import ReviewListItem from 'common/components/review-list-item/review-list-item';
 
 type Props = {
   shopName: string,
   shape: GradingShapeType,
-  product: ProductInfoType,
+  entity: EntityInfoType,
   colors?: ShapeColorsType,
   shapeSize: number,
   dateFormat: string,
@@ -20,23 +20,23 @@ type Props = {
   onReport: (ReviewType)=>void
 };
 
-class ReviewListItemWithProduct extends React.PureComponent<Props> {
-  static displayName = 'ReviewListItemWithProduct';
+class ReviewListItemWithEntity extends React.PureComponent<Props> {
+  static displayName = 'ReviewListItemWithEntity';
 
   static defaultProps = {};
 
   render() {
-    const { product, shopName, shape, colors, shapeSize, criteria, displayCriteria, review, onEdit, onDelete, onVote, onReport, dateFormat } = this.props;
+    const { entity, shopName, shape, colors, shapeSize, criteria, displayCriteria, review, onEdit, onDelete, onVote, onReport, dateFormat } = this.props;
     return (
       <div className="revws-review-with-product">
         <div>
-          <a href={product.url}>
-            <img src={product.image} alt={product.name} />
+          <a href={entity.url}>
+            <img src={entity.image} alt={entity.name} />
           </a>
         </div>
         <div className='revws-review-wrapper'>
           <h2>
-            <a href={product.url}>{product.name}</a>
+            <a href={entity.url}>{entity.name}</a>
           </h2>
           <ReviewListItem
             shopName={shopName}
@@ -58,4 +58,4 @@ class ReviewListItemWithProduct extends React.PureComponent<Props> {
   }
 }
 
-export default ReviewListItemWithProduct;
+export default ReviewListItemWithEntity;
