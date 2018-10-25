@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 declare module CSSModule {
   declare module.exports: {
     [ key: string ]: string

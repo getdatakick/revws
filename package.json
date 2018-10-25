@@ -67,6 +67,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "translations": "github:getdatakick/translations",
-    "validator": "^9.2.0"
+    "validator": "^9.2.0",
+    "classnames": "latest"
   }
 }

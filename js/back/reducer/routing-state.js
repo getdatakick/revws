@@ -9,12 +9,11 @@ type reducerType = (?RoutingState, Action) => RoutingState;
 export type State = RoutingState;
 
 export default (initialState: RoutingState): reducerType => {
-  const reducer = (state: ?State, action: Action): State => {
+  return (state: ?State, action: Action): State => {
     const curState = state || initialState;
     if (action.type === Types.goTo) {
       return action.routingState;
     }
     return curState;
   };
-  return reducer;
 };
