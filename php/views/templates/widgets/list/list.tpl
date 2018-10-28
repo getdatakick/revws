@@ -31,7 +31,7 @@
     }
   {else}
     {include
-      file='modules/revws/views/templates/widgets/list/item-with-product.tpl'
+      file='modules/revws/views/templates/widgets/list/item-with-entity.tpl'
       review=$review
       shopName=$shopName
       shape=$shape

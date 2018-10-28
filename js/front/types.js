@@ -48,7 +48,7 @@ export type VisitorType = {
 };
 
 export type EntitiesType = {
-  products: {
+  [ EntityType ]: {
     [ number ]: EntityInfoType
   }
 }

@@ -620,7 +620,7 @@ class Revws extends Module {
       'criteria' => RevwsCriterion::getCriteria($this->context->language->id),
       'shape' => $this->getShapeSettings(),
       'reviewList' => $list->getData(),
-      'reviewEntities' => $frontApp->getEntitites(),
+      'reviewEntities' => $frontApp->getEntities(),
     ], $widgetParams));
 
     return $this->display(__FILE__, 'display-revws-review-list.tpl');

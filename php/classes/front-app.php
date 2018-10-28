@@ -122,7 +122,7 @@ class FrontApp implements JsonSerializable {
       'visitor' => $this->getVisitorData(),
       'settings' => $this->getStaticData(),
       'reviews' => $this->getReviews(),
-      'entities' => $this->getEntitites(),
+      'entities' => $this->getEntities(),
       'lists' => $this->getLists(),
       'widgets' => $this->widgets,
       'translations' => $this->module->getFrontTranslations(),
@@ -239,7 +239,7 @@ class FrontApp implements JsonSerializable {
     return isset($this->lists[$id]) ? $this->lists[$id] : null;
   }
 
-  public function getEntitites() {
+  public function getEntities() {
     if (is_null($this->entities)) {
       $this->entities = $this->loadEntities();
     }
@@ -265,7 +265,7 @@ class FrontApp implements JsonSerializable {
       }
     }
     return [
-      'products' => $products
+      'PRODUCT' => $products
     ];
   }
 

@@ -177,7 +177,7 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     $list = new ReviewList($this->module, $listId, $conditions, $page, $pageSize, $order, $orderDir);
     return [
       'list' => $list,
-      'entities' => $list->getEntitites()
+      'entities' => $list->getEntities()
     ];
   }
 

@@ -106,7 +106,7 @@ class ReviewList implements JsonSerializable {
     return $products;
   }
 
-  public function getEntitites() {
+  public function getEntities() {
     return [
       'products' => $this->getProductEntities()
     ];

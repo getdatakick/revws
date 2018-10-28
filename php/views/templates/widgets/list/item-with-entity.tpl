@@ -15,18 +15,18 @@
 * @copyright 2017-2018 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-{if $review.entityType == 'PRODUCT'}
-{assign "product" $reviewEntities.products[$review.entityId]}
 {strip}
-<div class="revws-review-with-product">
+{if isset($reviewEntities[$review.entityType][$review.entityId])}
+{assign "entity" $reviewEntities[$review.entityType][$review.entityId]}
+<div class="revws-review-with-{$review.entityType|lower}">
   <div>
-    <a href="{$product.url}">
-      <img src="{$product.image}" alt="{$product.name|escape:'html':'UTF-8'}"></img>
+    <a href="{$entity.url}">
+      <img src="{$entity.image}" alt="{$entity.name|escape:'html':'UTF-8'}"></img>
     </a>
   </div>
   <div class="revws-review-wrapper">
     <h2>
-      <a href="{$product.url}">{$product.name|escape:'html':'UTF-8'}</a>
+      <a href="{$entity.url}">{$entity.name|escape:'html':'UTF-8'}</a>
     </h2>
     {include
       file='modules/revws/views/templates/widgets/list/item.tpl'

@@ -105,6 +105,10 @@ class ReviewQuery {
     if ($this->hasOption('product')) {
       $cond[] = "r.entity_type = 'PRODUCT' AND r.id_entity = " . $this->getInt('product');
     }
+    if ($this->hasOption('entityType')) {
+      $entityType = psql($this->getOption('entityType'));
+      $cond[] = "r.entity_type = '$entityType'";
+    }
     if ($this->hasOption('entity')) {
       $entity = $this->getOption('entity');
       $entityType = psql($entity['type']);

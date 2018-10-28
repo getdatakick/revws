@@ -57,7 +57,7 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
     $this->context->smarty->assign([
       'reviewList' => $list->getData(),
       'visitor' => $frontApp->getVisitorData(),
-      'reviewEntities' => $frontApp->getEntitites(),
+      'reviewEntities' => $frontApp->getEntities(),
       'reviewsData' => $frontApp->getStaticData()
     ]);
     $this->setTemplate('my-reviews.tpl');

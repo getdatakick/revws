@@ -57,9 +57,7 @@ const getLists = (input: any): ListsType => asObject(input);
 
 const getWidgets = (input: any): WidgetsType => input || [];
 
-const getEntities = (input: any): EntitiesType => ({
-  products: asObject(get('products', isObject, input))
-});
+const getEntities = (input: any): EntitiesType => asObject(input);
 
 const getInitActions = (input: any): Array<any> => isArray(input) ? input : [];
 

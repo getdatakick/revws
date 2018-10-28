@@ -51,7 +51,7 @@ class EditReviewDialogController extends React.PureComponent<Props, State> {
       if (! data[key]) {
         loadData({
           [ key ]: {
-            record: 'productInfo',
+            record: 'product',
             options: {
               id: productId
             }
