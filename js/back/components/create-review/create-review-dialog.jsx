@@ -1,16 +1,17 @@
 // @flow
 
 import React from 'react';
-import type { ReviewFormErrors, ReviewType, CriteriaType, GradingShapeType, CustomerInfoType, LanguagesType } from 'common/types';
+import type { EntityType, ReviewFormErrors, ReviewType, CriteriaType, GradingShapeType, CustomerInfoType, LanguagesType } from 'common/types';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog';
-import SelectProduct from 'back/components/select-product';
+import SelectEntity from 'back/components/select-entity';
 import SelectCustomer from 'back/components/select-customer';
 import EditReviewForm from 'back/components/edit-review/edit-review-form';
 import { validateReview, hasErrors } from 'common/utils/validation';
 
 type Props = {
-  productId: ?number,
+  entityType: ?EntityType,
+  entityId: ?number,
   review: ?ReviewType,
   allowEmptyReview: boolean,
   shape: GradingShapeType,
@@ -19,7 +20,7 @@ type Props = {
   languages: LanguagesType,
   criteria: CriteriaType,
   usedCriteria: ?Array<number>,
-  onSetProduct: (number)=>void,
+  onSetEntity: (EntityType, number)=>void,
   onSetCustomer: (customerInfo: CustomerInfoType)=>void,
   onUpdateReview: (ReviewType)=>void,
   onSave: (ReviewType)=>void,
@@ -55,9 +56,9 @@ class CreateReviewDialog extends React.PureComponent<Props> {
   }
 
   getLabel = () => {
-    const { review, productId } = this.props;
-    if (! productId) {
-      return __('Select product');
+    const { review, entityId } = this.props;
+    if (! entityId) {
+      return __('Create new review for');
     }
     if (! review) {
       return __('Select customer');
@@ -66,9 +67,12 @@ class CreateReviewDialog extends React.PureComponent<Props> {
   }
 
   renderContent = (errors: ?ReviewFormErrors) => {
-    const { onUpdateReview, productId, review, shape, language, criteria, usedCriteria, languages, onSetProduct, onSetCustomer } = this.props;
-    if (! productId) {
-      return <SelectProduct onSelect={onSetProduct} />;
+    const { onUpdateReview, entityId, review, shape, language, criteria, usedCriteria, languages, onSetEntity, onSetCustomer } = this.props;
+    if (! entityId) {
+      return (
+        <SelectEntity
+          onSelect={onSetEntity} />
+      );
     }
     if (review && errors) {
       return (

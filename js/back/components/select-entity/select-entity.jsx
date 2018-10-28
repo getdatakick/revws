@@ -1,14 +1,14 @@
 // @flow
 import React from 'react';
-import type { KeyValue } from 'common/types';
+import type { EntityType, KeyValue } from 'common/types';
 import type { Load } from 'back/types';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import validator from 'validator';
-import styles from './select-product.less';
+import styles from './select-entity.less';
 
-type InputProps = {
-  onSelect: (number) => void
+export type InputProps = {
+  onSelect: (EntityType, number) => void
 }
 
 type Props = InputProps & {
@@ -96,7 +96,7 @@ class SelectProduct extends React.PureComponent<Props, State> {
   renderResult = (pair: [number, string]) => {
     const [ id, name ] = pair;
     return (
-      <ListItem key={id} button onClick={() => this.props.onSelect(id)}>
+      <ListItem key={id} button onClick={() => this.props.onSelect('PRODUCT', id)}>
         <div className={styles.number}>{id}</div>
         <ListItemText primary={name} />
       </ListItem>

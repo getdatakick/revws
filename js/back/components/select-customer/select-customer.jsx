@@ -5,7 +5,7 @@ import type { Load } from 'back/types';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import validator from 'validator';
-import styles from '../select-product/select-product.less';
+import styles from '../select-entity/select-entity.less';
 
 type CustomersType = {
   [ number ]: CustomerInfoType

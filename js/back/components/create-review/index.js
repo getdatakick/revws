@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
-import type { EntityInfoType, NameFormatType, CustomerInfoType, ReviewType, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
+import type { EntityType, EntityInfoType, NameFormatType, CustomerInfoType, ReviewType, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
 import type { Load } from 'back/types';
-import EditReviewDialog from './create-review-dialog';
+import CreateReviewDialog from './create-review-dialog';
 import type { ComponentType } from 'react';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
@@ -31,7 +31,8 @@ type Props = InputProps & {
 }
 
 type State = {
-  productId: ?number,
+  entityType: ?EntityType,
+  entityId: ?number,
   review: ?ReviewType
 }
 
@@ -39,21 +40,22 @@ class EditReviewDialogController extends React.PureComponent<Props, State> {
   static displayName = 'EditReviewDialogController';
 
   state = {
-    productId: null,
+    entityType: null,
+    entityId: null,
     review: null
   }
 
   componentWillUpdate(nextProps: Props, nextState: State) {
-    if (nextState.productId) {
-      const productId = nextState.productId;
+    if (nextState.entityType && nextState.entityId) {
+      const { entityType, entityId } = nextState;
       const { data, loadData } = this.props;
-      const key = 'product'+productId;
+      const key = entityType + entityId;
       if (! data[key]) {
         loadData({
           [ key ]: {
             record: 'product',
             options: {
-              id: productId
+              id: entityId
             }
           }
         });
@@ -63,49 +65,55 @@ class EditReviewDialogController extends React.PureComponent<Props, State> {
 
   render() {
     const { data, ...rest} = this.props;
-    const { productId, review } = this.state;
-    const productInfo: ?EntityInfoType = productId ? data['product'+productId] : null;
-    const usedCriteria = productInfo ? productInfo.criteria : null;
+    const { entityType, entityId, review } = this.state;
+    let entity: ?EntityInfoType = null;
+    if (entityType && entityId) {
+      entity = data[entityType + entityId];
+    }
+    const usedCriteria = entity ? entity.criteria : null;
     return (
-      <EditReviewDialog
-        productId={productId}
+      <CreateReviewDialog
+        entityType={entityType}
+        entityId={entityId}
         review={review}
         usedCriteria={usedCriteria}
         onSetCustomer={this.setCustomer}
-        onSetProduct={(productId) => this.setState({ productId })}
+        onSetEntity={(entityType, entityId) => this.setState({ entityType, entityId })}
         onUpdateReview={(review) => this.setState({ review })}
         {...rest} />
     );
   }
 
   setCustomer = (customerInfo: CustomerInfoType) => {
-    const productId = this.state.productId || 0;
-    const review: ReviewType = {
-      id: -1,
-      language: this.props.language,
-      entityType: 'PRODUCT',
-      entityId: productId,
-      authorType: 'customer',
-      authorId: customerInfo.id,
-      customer: null,
-      product: null,
-      email: customerInfo.email,
-      grades: {},
-      images: [],
-      reply: null,
-      displayName: formatName(customerInfo.firstName, customerInfo.lastName, customerInfo.pseudonym, this.props.nameFormat),
-      title: '',
-      content: null,
-      underReview: true,
-      deleted: false,
-      verifiedBuyer: true,
-      date: new Date(),
-      canVote: false,
-      canReport: false,
-      canDelete: true,
-      canEdit: true
-    };
-    this.setState({ review });
+    const { entityType, entityId } = this.state;
+    if (entityType && entityId) {
+      const review: ReviewType = {
+        id: -1,
+        language: this.props.language,
+        entityType,
+        entityId,
+        authorType: 'customer',
+        authorId: customerInfo.id,
+        customer: null,
+        product: null,
+        email: customerInfo.email,
+        grades: {},
+        images: [],
+        reply: null,
+        displayName: formatName(customerInfo.firstName, customerInfo.lastName, customerInfo.pseudonym, this.props.nameFormat),
+        title: '',
+        content: null,
+        underReview: true,
+        deleted: false,
+        verifiedBuyer: true,
+        date: new Date(),
+        canVote: false,
+        canReport: false,
+        canDelete: true,
+        canEdit: true
+      };
+      this.setState({ review });
+    }
   }
 
 
