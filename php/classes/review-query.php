@@ -240,7 +240,10 @@ class ReviewQuery {
   }
 
   private function includeProductInfo() {
-    return $this->getOption('productInfo', false);
+    if ($this->getOption('productInfo', false)) {
+      return true;
+    }
+    return $this->getOrderField() === 'product';
   }
 
   private function includeCustomerInfo() {
