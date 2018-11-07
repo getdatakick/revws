@@ -149,7 +149,7 @@ class Registration extends React.PureComponent<Props> {
 
       <div style={styles.smallText}>
         <TextWithTags
-          text={__("We promise that we will [1]not disclose[/1] your email address to anyone or use it to [2]spam[/2] you. We will not send you automated [3]marketing[/3] emails unless you [4]opt-in[/4] for it.[5][/5]You can read our [6]privacy policy[6] here.")}
+          text={__("We promise that we will [1]not disclose[/1] your email address to anyone or use it to [2]spam[/2] you. We will not send you automated [3]marketing[/3] emails unless you [4]opt-in[/4] for it.[5][/5]You can read our [6]privacy policy[/6] here.")}
           tags={[
             'strong',
             'strong',
