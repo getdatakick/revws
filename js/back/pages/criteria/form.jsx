@@ -74,12 +74,13 @@ class CriterionForm extends React.PureComponent<Props, State> {
 
   renderContent(criterion: FullCriterion) {
     const { languages, selectProducts, selectCategories } = this.props;
-    const { label, global } = criterion;
+    const { label, global, active } = criterion;
     const hasDimensions = selectProducts || selectCategories;
     return (
       <div>
         <div className={styles.space} />
         <div className={styles.group}>
+
           <MultiLangField
             label={__("Label")}
             values={label}
@@ -89,6 +90,13 @@ class CriterionForm extends React.PureComponent<Props, State> {
             languages={languages}
             onChange={label => this.setCriterion({...criterion, label })} />
           <div className={styles.space} />
+          <FormControlLabel
+            control={(
+              <Switch
+                checked={active}
+                onChange={(event, checked) => this.setCriterion({...criterion, active: checked})} />
+            )}
+            label={__("Active")} />
           {hasDimensions && (
             <div>
               <FormControlLabel

@@ -97,7 +97,7 @@ class CriteriaSection extends React.PureComponent<Props, State> {
 
   renderCriterion = (crit: FullCriterion) => {
     const language = this.props.language;
-    const { id, label, active, global, categories, products } = crit;
+    const { id, label, active, global, categories, products, entityType } = crit;
     return (
       <ListItem key={id} button onClick={e => this.setEdit(id)}>
         <ListItemAvatar>
@@ -107,7 +107,7 @@ class CriteriaSection extends React.PureComponent<Props, State> {
         </ListItemAvatar>
         <ListItemText
           primary={label[language]}
-          secondary={describeCriterion(active, global, categories, products)}
+          secondary={describeCriterion(active, entityType, global, categories, products)}
         />
         <ListItemSecondaryAction>
           <IconButton onClick={() => this.triggerDeleteCriterion(id)}>
@@ -171,32 +171,35 @@ class CriteriaSection extends React.PureComponent<Props, State> {
   }
 }
 
-const describeCriterion = (active, global, categories, products) => {
+const describeCriterion = (active, entityType, global, categories, products) => {
   if (! active) {
     return (
       <span>
         <b>
           {__('Disabled criterion')}
+          &nbsp;
         </b>
-        { describeCriterion(true, global, categories, products)}
+        { describeCriterion(true, entityType, global, categories, products)}
       </span>
     );
   }
-  if (global) {
-    return __('Applies to your entire catalog');
+  if (entityType === 'product') {
+    if (global) {
+      return __('Applies to your entire catalog');
+    }
+    const ccnt = count(categories);
+    const pcnt = count(products);
+    if (ccnt && pcnt) {
+      return __('Applies to %s categories and %s products', ccnt, pcnt);
+    }
+    if (ccnt) {
+      return __('Applies to product from %s categories', ccnt);
+    }
+    if (pcnt) {
+      return __('Applies to %s products', pcnt);
+    }
+    return __('Does not apply to any product');
   }
-  const ccnt = count(categories);
-  const pcnt = count(products);
-  if (ccnt && pcnt) {
-    return __('Applies to %s categories and %s products', ccnt, pcnt);
-  }
-  if (ccnt) {
-    return __('Applies to product from %s categories', ccnt);
-  }
-  if (pcnt) {
-    return __('Applies to %s products', pcnt);
-  }
-  return __('Does not apply to any product');
 };
 
 const count = (val) => {
