@@ -143,8 +143,12 @@ class FrontApp implements JsonSerializable {
         'nameFormat' => $settings->getNamePreference(),
         'email' => $visitor->getEmail(),
         'language' => $visitor->getLanguage(),
-        'productsToReview' => $visitor->getProductsToReview(),
-        'reviewedProducts' => $visitor->getReviewedProducts(),
+        'toReview' => [
+          'product' => $visitor->getProductsToReview(),
+        ],
+        'reviewed' => [
+          'product' => $visitor->getReviewedProducts(),
+        ]
       ];
     }
     return $this->visitorData;

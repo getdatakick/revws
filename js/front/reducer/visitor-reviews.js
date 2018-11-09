@@ -2,13 +2,15 @@
 import type { Action } from 'front/actions';
 import type { VisitorType } from 'front/types';
 import type { EntityType, ReviewType } from 'common/types';
-import { assoc, append, contains, reject, equals } from 'ramda';
+import { append, contains, reject, equals } from 'ramda';
 import Types from 'front/actions/types';
 
 export type State = {
-  [ EntityType ]: {
-    toReview: Array<number>,
-    reviewed: Array<number>
+  reviewed: {
+    [ EntityType ]: Array<number>
+  },
+  toReview: {
+    [ EntityType ]: Array<number>
   }
 }
 
@@ -29,13 +31,21 @@ const add = (entityId: number, list: Array<number>): Array<number> => {
   return append(entityId, list);
 };
 
-const updateLists = (visitor: VisitorType, review: ReviewType, state: State) => {
+const updateLists = (visitor: VisitorType, review: ReviewType, toAdd: boolean, state: State) => {
   const { entityId, entityType } = review;
   if (isCustomerReview(visitor, review)) {
-    return assoc(entityType, {
-      toReview: remove(entityId, state[entityType].toReview),
-      reviewed: add(entityId, state[entityType].reviewed)
-    }, state);
+    const toReviewFunc = toAdd ? remove : add;
+    const reviewedFunc = toAdd ? add : remove;
+    return {
+      toReview: {
+        ...state.toReview,
+        [ entityType ]: toReviewFunc(entityId, state.toReview[entityType]),
+      },
+      reviewed: {
+        ...state.reviewed,
+        [ entityType ]: reviewedFunc(entityId, state.reviewed[entityType])
+      }
+    };
   }
   return state;
 };
@@ -43,31 +53,25 @@ const updateLists = (visitor: VisitorType, review: ReviewType, state: State) => 
 export default (visitor: VisitorType) => {
   return (state?: State, action:Action): State => {
     state = state || {
-      product: {
-        toReview: visitor.productsToReview,
-        reviewed: visitor.reviewedProducts
-      }
+      toReview: visitor.toReview,
+      reviewed: visitor.reviewed
     };
 
     if (action.type === Types.setReviews) {
       const reviews: Array<ReviewType> = action.reviews;
       for (var i=0; i<reviews.length; i++) {
         const review = reviews[i];
-        state = updateLists(visitor, review, state);
+        state = updateLists(visitor, review, true, state);
       }
       return state;
     }
 
     if (action.type === Types.setReview) {
-      return updateLists(visitor, action.review, state);
+      return updateLists(visitor, action.review, true, state);
     }
 
     if (action.type === Types.reviewRemoved && isCustomerReview(visitor, action.review)) {
-      const { entityId, entityType } = action.review;
-      return assoc(entityType, {
-        toReview: remove(entityId, state[entityType].toReview),
-        reviewed: add(entityId, state[entityType].reviewed)
-      }, state);
+      return updateLists(visitor, action.review, false, state);
     }
 
     return state;

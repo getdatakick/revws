@@ -43,8 +43,12 @@ export type VisitorType = {
   pseudonym: ?string,
   nameFormat: NameFormatType,
   email: string,
-  reviewedProducts: Array<number>,
-  productsToReview: Array<number>
+  reviewed: {
+    [ EntityType ]: Array<number>
+  },
+  toReview: {
+    [ EntityType ]: Array<number>
+  }
 };
 
 export type EntitiesType = {
