@@ -176,7 +176,7 @@ class DatakickIntegration {
           'join' => [
             'type' => 'LEFT',
             'conditions' => [
-              "r.entity_type = 'PRODUCT'",
+              "r.entity_type = 'product'",
               "pl.id_product = r.id_entity",
               "<bind-param:language:pl.id_lang>"
             ]

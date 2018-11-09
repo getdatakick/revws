@@ -16,7 +16,7 @@ export const editCustomerUrl = (urls: DrilldownUrls, customerId: number) => getU
 export const viewOrderUrl = (urls: DrilldownUrls, orderId: number) => getUrl('viewOrder', urls, orderId);
 
 const functions = {
-  PRODUCT: editProductUrl
+  product: editProductUrl
 };
 
 export const editEntityUrl = (urls: DrilldownUrls, entityType: EntityType, entityId: number): ?string => {

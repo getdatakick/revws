@@ -92,5 +92,5 @@ CREATE TABLE IF NOT EXISTS `PREFIX_revws_review_image` (
   KEY `id_review` (`id_review`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
 
-INSERT IGNORE INTO `PREFIX_revws_criterion`(`id_criterion`, `global`, `entity_type`) VALUES (1, 1, 'PRODUCT');
+INSERT IGNORE INTO `PREFIX_revws_criterion`(`id_criterion`, `global`, `entity_type`) VALUES (1, 1, 'product');
 INSERT IGNORE INTO `PREFIX_revws_criterion_lang`(`id_criterion`, `id_lang`, `label`) SELECT 1, `l`.`id_lang`, 'Quality' FROM `PREFIX_lang` `l`;

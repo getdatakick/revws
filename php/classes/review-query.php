@@ -86,10 +86,10 @@ class ReviewQuery {
     $shop = $this->getShop();
     $lang = $this->getLanguage();
     if ($this->hasOption('shop')) {
-      $from .= ' INNER JOIN '. _DB_PREFIX_ ."product_shop ps ON (r.entity_type = 'PRODUCT' AND r.id_entity = ps.id_product AND ps.id_shop = $shop)";
+      $from .= ' INNER JOIN '. _DB_PREFIX_ ."product_shop ps ON (r.entity_type = 'product' AND r.id_entity = ps.id_product AND ps.id_shop = $shop)";
     }
     if ($this->includeProductInfo()) {
-      $from .= ' LEFT JOIN ' . _DB_PREFIX_ . "product_lang pl ON (r.entity_type = 'PRODUCT' AND r.id_entity = pl.id_product AND pl.id_shop = $shop AND pl.id_lang = $lang)";
+      $from .= ' LEFT JOIN ' . _DB_PREFIX_ . "product_lang pl ON (r.entity_type = 'product' AND r.id_entity = pl.id_product AND pl.id_shop = $shop AND pl.id_lang = $lang)";
     }
     if ($this->includeCustomerInfo()) {
       $from .= ' LEFT JOIN ' . _DB_PREFIX_ . 'customer cust ON (r.id_customer = cust.id_customer)';
@@ -103,7 +103,7 @@ class ReviewQuery {
       $cond[] = "r.id_review = " . $this->getInt('id');
     }
     if ($this->hasOption('product')) {
-      $cond[] = "r.entity_type = 'PRODUCT' AND r.id_entity = " . $this->getInt('product');
+      $cond[] = "r.entity_type = 'product' AND r.id_entity = " . $this->getInt('product');
     }
     if ($this->hasOption('entityType')) {
       $entityType = psql($this->getOption('entityType'));

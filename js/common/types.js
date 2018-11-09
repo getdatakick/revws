@@ -1,6 +1,6 @@
 // @flow
 
-export type EntityType = 'PRODUCT';
+export type EntityType = 'product';
 
 export type Tag = string | {
   tag: string,

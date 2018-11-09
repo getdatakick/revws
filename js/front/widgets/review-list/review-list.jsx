@@ -34,7 +34,7 @@ class ReviewList extends React.PureComponent<Props> {
 
   render() {
     const { reviewStyle, loading, reviewList } = this.props;
-    const func = reviewStyle === 'item' ? this.renderReview : this.renderReviewWithProduct;
+    const func = reviewStyle === 'item' ? this.renderReview : this.renderReviewWithEntity;
     return [
       <div key="list" className="revws-review-list">
         { map(func, reviewList.reviews) }
@@ -69,7 +69,7 @@ class ReviewList extends React.PureComponent<Props> {
     );
   }
 
-  renderReviewWithProduct = (review: ReviewType) => {
+  renderReviewWithEntity = (review: ReviewType) => {
     const { entities, shape, shapeSize, onReport, onVote, onEdit, onDelete, shopName, displayCriteria, criteria, dateFormat } = this.props;
     const entity = getEntity(entities, review.entityType, review.entityId);
     return (

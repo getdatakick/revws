@@ -68,7 +68,7 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
         <div>
           <h1 className="page-heading">{__('Could you review these products?')}</h1>
           <div className='revws-review-requests'>
-            { toReview.map(this.renderRequest('PRODUCT')) }
+            { toReview.map(this.renderRequest('product')) }
           </div>
         </div>
       );

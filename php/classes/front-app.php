@@ -265,7 +265,7 @@ class FrontApp implements JsonSerializable {
       }
     }
     return [
-      'PRODUCT' => $products
+      'product' => $products
     ];
   }
 

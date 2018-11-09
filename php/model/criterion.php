@@ -105,7 +105,7 @@ class RevwsCriterion extends ObjectModel {
   }
 
   public static function getByEntity($entityType, $entityId) {
-    if ($entityType === 'PRODUCT') {
+    if ($entityType === 'product') {
       return static::getByProduct($entityId);
     }
     throw new Exception("Invalid entity type: $entityType");
@@ -121,7 +121,7 @@ class RevwsCriterion extends ObjectModel {
     $cp = _DB_PREFIX_ . 'revws_criterion_product';
     $query = "
       SELECT c.id_criterion AS id
-        FROM $criterion c WHERE c.active=1 AND c.global=1 AND c.entity_type='PRODUCT'
+        FROM $criterion c WHERE c.active=1 AND c.global=1 AND c.entity_type='product'
       UNION
       SELECT DISTINCT c.id_criterion
         FROM $product ps

@@ -465,7 +465,7 @@ class RevwsReview extends ObjectModel {
     $review->content = Tools::getValue('content');
     $review->date_upd = new \DateTime();
     $review->grades = [];
-    $review->verified_buyer = $review->entity_type === 'PRODUCT' && $visitor->hasPurchasedProduct($review->id_entity);
+    $review->verified_buyer = $review->entity_type === 'product' && $visitor->hasPurchasedProduct($review->id_entity);
     $grades = Tools::getValue('grades');
     if (is_array($grades)) {
       foreach ($grades as $key => $value) {

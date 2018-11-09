@@ -29,8 +29,8 @@ class CriteriaPage extends React.PureComponent<Props> {
       <div>
         <Section id='products' label={__('Products criteria')}>
           <CriteriaSection
-            entityType='PRODUCT'
-            criteria={getCriteria('PRODUCT', criteria)}
+            entityType='product'
+            criteria={getCriteria('product', criteria)}
             selectProducts={true}
             selectCategories={true}
             {...rest} />

@@ -156,7 +156,7 @@ class Backup {
     $created->value = \date(\DateTime::ATOM, \strtotime($rev->date_add));
     $node->appendChild($created);
 
-    if ($rev->entity_type === 'PRODUCT') {
+    if ($rev->entity_type === 'product') {
       $product = $domtree->createElement('product');
       $id = $domtree->createAttribute('id');
       $id->value = $rev->id_entity;

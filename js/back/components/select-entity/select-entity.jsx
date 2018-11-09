@@ -96,7 +96,7 @@ class SelectProduct extends React.PureComponent<Props, State> {
   renderResult = (pair: [number, string]) => {
     const [ id, name ] = pair;
     return (
-      <ListItem key={id} button onClick={() => this.props.onSelect('PRODUCT', id)}>
+      <ListItem key={id} button onClick={() => this.props.onSelect('product', id)}>
         <div className={styles.number}>{id}</div>
         <ListItemText primary={name} />
       </ListItem>

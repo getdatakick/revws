@@ -238,7 +238,7 @@ class Notifications {
   private function getCommonData(RevwsReview $review, $lang) {
     $ret = [];
 
-    if ($review->entity_type === 'PRODUCT') {
+    if ($review->entity_type === 'product') {
       $productData = FrontApp::getProductData($review->id_entity, $lang);
       $ret = [
         '{product_id}' => $productData['id'],

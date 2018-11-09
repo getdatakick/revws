@@ -43,7 +43,7 @@ const updateLists = (visitor: VisitorType, review: ReviewType, state: State) => 
 export default (visitor: VisitorType) => {
   return (state?: State, action:Action): State => {
     state = state || {
-      PRODUCT: {
+      product: {
         toReview: visitor.productsToReview,
         reviewed: visitor.reviewedProducts
       }

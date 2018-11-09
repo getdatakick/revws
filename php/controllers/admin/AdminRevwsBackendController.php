@@ -199,7 +199,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
       $review->content = $line[$index['review_content']];
       $review->date_upd = date('Y-m-d H:i:s');
       $review->date_add = (new \DateTime($line[$index['date']]))->format('Y-m-d H:i:s');
-      $review->entity_type = 'PRODUCT';
+      $review->entity_type = 'product';
       $review->id_entity = $productId;
       $review->id_lang = (int)Context::getContext()->language->id;
       $review->validated = $line[$index['published']] === 'true';

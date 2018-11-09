@@ -293,14 +293,14 @@ class Revws extends Module {
     $productId = (int)(Tools::getValue('id_product'));
     $frontApp = $this->getFrontApp();
     $frontApp->addEntity('product', $productId);
-    if (isset($_GET['post_review']) && $this->getPermissions()->canCreateReview('PRODUCT', $productId)) {
+    if (isset($_GET['post_review']) && $this->getPermissions()->canCreateReview('product', $productId)) {
       $frontApp->addInitAction([
         'type' => 'TRIGGER_CREATE_REVIEW',
-        'entityType' => 'PRODUCT',
+        'entityType' => 'product',
         'entityId' => $productId
       ]);
     }
-    $list = $frontApp->addEntityListWidget('PRODUCT', $productId);
+    $list = $frontApp->addEntityListWidget('product', $productId);
     $visitor = $this->getVisitor();
     $settings = $this->getSettings();
     $this->context->smarty->assign([
@@ -407,10 +407,10 @@ class Revws extends Module {
     $this->context->smarty->assign('productId', $productId);
     $this->context->smarty->assign('grade', $grade);
     $this->context->smarty->assign('reviewCount', $count);
-    $this->context->smarty->assign('hasReviewed', $this->getVisitor()->hasWrittenReview('PRODUCT', $productId));
+    $this->context->smarty->assign('hasReviewed', $this->getVisitor()->hasWrittenReview('product', $productId));
     $this->context->smarty->assign('shape', $this->getShapeSettings());
     $this->context->smarty->assign('shapeSize', $set->getShapeSize());
-    $this->context->smarty->assign('canReview', $this->getPermissions()->canCreateReview('PRODUCT', $productId));
+    $this->context->smarty->assign('canReview', $this->getPermissions()->canCreateReview('product', $productId));
     $this->context->smarty->assign('isGuest', $this->getVisitor()->isGuest());
     $this->context->smarty->assign('loginLink', $this->getLoginUrl($productId));
     $this->context->smarty->assign('microdata', $set->emitRichSnippets());

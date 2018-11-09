@@ -61,7 +61,7 @@
     $('[data-revws-create-trigger]').click(function(e) {
       e.preventDefault();
       var entityId = parseInt($(this).data('revws-create-trigger'), 10);
-      var entityType = $(this).data('revws-entity-type') || 'PRODUCT';
+      var entityType = $(this).data('revws-entity-type') || 'product';
       window.revws({
         type: 'TRIGGER_CREATE_REVIEW',
         entityType: entityType,

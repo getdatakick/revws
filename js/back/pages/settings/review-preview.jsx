@@ -32,7 +32,7 @@ class ReviewPreview extends React.PureComponent<Props> {
       authorType: 'customer',
       language: 1,
       authorId: 1,
-      entityType: 'PRODUCT',
+      entityType: 'product',
       entityId: 1,
       product: null,
       customer: null,

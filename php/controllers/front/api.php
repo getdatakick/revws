@@ -94,7 +94,7 @@ class RevwsApiModuleFrontController extends ModuleFrontController {
     }
     $visitor = $this->module->getVisitor();
     $this->module->getGDPR()->logConsent($visitor);
-    if ($entityType === 'PRODUCT') {
+    if ($entityType === 'product') {
       $product = $this->getProductById($entityId);
     }
     $review = $this->getReviewPayload();

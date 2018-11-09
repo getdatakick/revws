@@ -96,7 +96,7 @@ class ReviewList implements JsonSerializable {
     $reviews = $this->getReviews();
     $language = $this->module->getVisitor()->getLanguage();
     foreach ($reviews as $review) {
-      if ($review['entityType'] === 'PRODUCT') {
+      if ($review['entityType'] === 'product') {
         $productId = (int)$review['entityId'];
         if (! isset($products[$productId])) {
           $products[$productId] = FrontApp::getProductData($productId, $language);
@@ -108,7 +108,7 @@ class ReviewList implements JsonSerializable {
 
   public function getEntities() {
     return [
-      'products' => $this->getProductEntities()
+      'product' => $this->getProductEntities()
     ];
   }
 }
