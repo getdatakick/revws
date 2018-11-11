@@ -22,7 +22,7 @@
 </div>
 {/if}
 <div id="revws-portal-{$reviewList.id}">
-{assign "hasReviewed" in_array($productId, $visitor.reviewedProducts)}
+{assign "hasReviewed" in_array($productId, $visitor.reviewed.product)}
 {assign "canReview" !($visitor.type === 'guest' && !$reviewsData.preferences.allowGuestReviews) && !$hasReviewed}
 {if $reviewList.total > 0}
   {include

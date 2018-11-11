@@ -17,12 +17,12 @@
 *}
 {strip}
 <div id="revws-portal-{$reviewList.id}">
-  {if $visitor.productsToReview}
+  {if $visitor.toReview.product}
   <h1 class="page-heading">{l s='Could you review these products?' mod='revws'}</h1>
   <div class='revws-review-requests'>
-    {foreach from=$visitor.productsToReview item=productId}
+    {foreach from=$visitor.toReview.product item=productId}
       {if $productId@iteration <= $reviewsData.preferences.customerMaxRequests}
-      {assign "product" $reviewEntities.products[$productId]}
+      {assign "product" $reviewEntities.product[$productId]}
       <div class='revws-review-request'>
         <img src="{$product.image}" />
         <h3 class='revws-review-request-name'>

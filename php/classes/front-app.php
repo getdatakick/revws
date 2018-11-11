@@ -256,7 +256,7 @@ class FrontApp implements JsonSerializable {
       $products = $list->getProductEntities($products);
     }
     $visitorData = $this->getVisitorData();
-    foreach ($visitorData['productsToReview'] as $productId) {
+    foreach ($visitorData['toReview']['product'] as $productId) {
       $productId = (int)$productId;
       if (! isset($products[$productId])) {
         $products[$productId] = self::getProductData($productId, $this->getLanguage());
