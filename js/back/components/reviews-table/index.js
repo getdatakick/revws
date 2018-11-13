@@ -19,7 +19,7 @@ const actions = {
   loadData: (key: string, pagination: LoadPagination) => loadData({
     [ key ]: {
       record: 'reviews',
-      options: pagination
+      pagination
     }
   })
 };

@@ -38,15 +38,13 @@ class EditReviewDialogController extends React.PureComponent<Props> {
   componentDidMount() {
     const { data, loadData, review } = this.props;
     const { entityType, entityId } = review;
-    const type = entityType.toLowerCase();
     const key = getEntityKey(review);
     if (! data[key]) {
       loadData({
         [ key ]: {
-          record: type,
-          options: {
-            id: entityId
-          }
+          record: 'record',
+          entityType,
+          entityId
         }
       });
     }

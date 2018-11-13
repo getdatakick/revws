@@ -41,7 +41,6 @@ class SelectProduct extends React.PureComponent<Props, State> {
       loadData({
         customers: {
           record: 'customers',
-          options: 'all'
         }
       });
     } else {
