@@ -4,6 +4,7 @@ import type { EntityType, EntityInfoType, NameFormatType, CustomerInfoType, Revi
 import type { Load } from 'back/types';
 import CreateReviewDialog from './create-review-dialog';
 import type { ComponentType } from 'react';
+import { keys } from 'ramda';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
 import { getData } from 'back/selectors/data';
@@ -12,6 +13,7 @@ import { formatName } from 'common/utils/format';
 
 
 type InputProps = {
+  entityTypes: { [ EntityType ]: string },
   nameFormat: NameFormatType,
   allowEmptyReview: boolean,
   shape: GradingShapeType,
@@ -40,7 +42,7 @@ class EditReviewDialogController extends React.PureComponent<Props, State> {
   static displayName = 'EditReviewDialogController';
 
   state = {
-    entityType: null,
+    entityType: getEntityType(this.props.entityTypes),
     entityId: null,
     review: null
   }
@@ -51,20 +53,18 @@ class EditReviewDialogController extends React.PureComponent<Props, State> {
       const { data, loadData } = this.props;
       const key = entityType + entityId;
       if (! data[key]) {
-        loadData({
-          [ key ]: {
-            record: 'product',
-            options: {
-              id: entityId
-            }
-          }
-        });
+        const load: Load = {
+          record: 'entity',
+          entityType,
+          entityId
+        };
+        loadData({ [ key ]: load });
       }
     }
   }
 
   render() {
-    const { data, ...rest} = this.props;
+    const { data, entityTypes, ...rest} = this.props;
     const { entityType, entityId, review } = this.state;
     let entity: ?EntityInfoType = null;
     if (entityType && entityId) {
@@ -73,12 +73,14 @@ class EditReviewDialogController extends React.PureComponent<Props, State> {
     const usedCriteria = entity ? entity.criteria : null;
     return (
       <CreateReviewDialog
+        entityTypes={entityTypes}
         entityType={entityType}
         entityId={entityId}
         review={review}
         usedCriteria={usedCriteria}
         onSetCustomer={this.setCustomer}
-        onSetEntity={(entityType, entityId) => this.setState({ entityType, entityId })}
+        onSetEntityType={(entityType) => this.setState({ entityType })}
+        onSetEntity={(entityId) => this.setState({ entityId })}
         onUpdateReview={(review) => this.setState({ review })}
         {...rest} />
     );
@@ -115,9 +117,15 @@ class EditReviewDialogController extends React.PureComponent<Props, State> {
       this.setState({ review });
     }
   }
-
-
 }
+
+const getEntityType = (entityTypes) => {
+  const k = keys(entityTypes);
+  if (k.length === 1) {
+    return k[0];
+  }
+  return null;
+};
 
 const mapStateToProps = mapObject({
   data: getData

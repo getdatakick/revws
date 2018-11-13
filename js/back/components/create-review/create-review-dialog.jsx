@@ -4,12 +4,14 @@ import React from 'react';
 import type { EntityType, ReviewFormErrors, ReviewType, CriteriaType, GradingShapeType, CustomerInfoType, LanguagesType } from 'common/types';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog';
+import SelectEntityType from 'back/components/select-entity-type/select-entity-type';
 import SelectEntity from 'back/components/select-entity';
 import SelectCustomer from 'back/components/select-customer';
 import EditReviewForm from 'back/components/edit-review/edit-review-form';
 import { validateReview, hasErrors } from 'common/utils/validation';
 
 type Props = {
+  entityTypes: { [ EntityType ]: string },
   entityType: ?EntityType,
   entityId: ?number,
   review: ?ReviewType,
@@ -20,7 +22,8 @@ type Props = {
   languages: LanguagesType,
   criteria: CriteriaType,
   usedCriteria: ?Array<number>,
-  onSetEntity: (EntityType, number)=>void,
+  onSetEntityType: (EntityType)=>void,
+  onSetEntity: (number)=>void,
   onSetCustomer: (customerInfo: CustomerInfoType)=>void,
   onUpdateReview: (ReviewType)=>void,
   onSave: (ReviewType)=>void,
@@ -56,9 +59,13 @@ class CreateReviewDialog extends React.PureComponent<Props> {
   }
 
   getLabel = () => {
-    const { review, entityId } = this.props;
+    const { review, entityId, entityType, entityTypes } = this.props;
+    if (! entityType) {
+      return __('Select review type');
+    }
     if (! entityId) {
-      return __('Create new review for');
+      const name = entityTypes[entityType] || entityType;
+      return __('Select %s', name.toLowerCase());
     }
     if (! review) {
       return __('Select customer');
@@ -67,10 +74,19 @@ class CreateReviewDialog extends React.PureComponent<Props> {
   }
 
   renderContent = (errors: ?ReviewFormErrors) => {
-    const { onUpdateReview, entityId, review, shape, language, criteria, usedCriteria, languages, onSetEntity, onSetCustomer } = this.props;
-    if (! entityId) {
+    const { onUpdateReview, entityTypes, entityType, entityId, review, shape, language, criteria, usedCriteria, languages, onSetEntity, onSetEntityType, onSetCustomer } = this.props;
+    if (!entityType) {
+      return (
+        <SelectEntityType
+          entityTypes={entityTypes}
+          onSelect={onSetEntityType} />
+      );
+    }
+    if (entityType && !entityId) {
       return (
         <SelectEntity
+          entityName={entityTypes[entityType] || entityType}
+          entityType={entityType}
           onSelect={onSetEntity} />
       );
     }

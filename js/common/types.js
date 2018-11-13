@@ -2,6 +2,11 @@
 
 export type EntityType = 'product';
 
+export type EntityTypeDescription = {
+  type: EntityType,
+  name: string,
+}
+
 export type Tag = string | {
   tag: string,
   params: {

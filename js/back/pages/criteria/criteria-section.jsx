@@ -53,14 +53,13 @@ class CriteriaSection extends React.PureComponent<Props, State> {
     const load = {};
     if (selectProducts && !products) {
       load.products = {
-        record: 'products',
-        options: 'all'
+        record: 'entities',
+        entityType: 'product'
       };
     }
     if (selectCategories && !categories) {
       load.categories = {
         record: 'categories',
-        options: 'all'
       };
     }
     if (keys(load).length) {

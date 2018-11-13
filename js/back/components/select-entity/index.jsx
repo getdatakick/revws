@@ -1,14 +1,14 @@
 // @flow
 import type { ComponentType } from 'react';
-import type { EntityType } from 'common/types';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
-import { getProducts } from 'back/selectors/data';
+import { getEntities } from 'back/selectors/data';
 import { loadData } from 'back/actions/creators';
 import SelectEntity from './select-entity';
+import type { InputProps } from './select-entity';
 
 const mapStateToProps = mapObject({
-  products: getProducts,
+  entities: getEntities,
 });
 
 const actions = {
@@ -16,8 +16,6 @@ const actions = {
 };
 
 const connectRedux = connect(mapStateToProps, actions);
-const ConnectedComponent: ComponentType<{
-  onSelect: (EntityType, number) => void,
-}> = connectRedux(SelectEntity);
+const ConnectedComponent: ComponentType<InputProps> = connectRedux(SelectEntity);
 
 export default ConnectedComponent;

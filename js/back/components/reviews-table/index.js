@@ -1,6 +1,6 @@
 // @flow
 import type { ComponentType } from 'react';
-import type { LoadOptions } from 'back/types';
+import type { LoadPagination } from 'back/types';
 import type { InputProps } from './controller';
 import { connect } from 'react-redux';
 import { saveReview, loadData, approveReview, deleteReview, deletePermReview, undeleteReview } from 'back/actions/creators';
@@ -16,10 +16,10 @@ const actions = {
   deletePermReview,
   undeleteReview,
   saveReview,
-  loadData: (key: string, options: LoadOptions) => loadData({
+  loadData: (key: string, pagination: LoadPagination) => loadData({
     [ key ]: {
       record: 'reviews',
-      options
+      options: pagination
     }
   })
 };

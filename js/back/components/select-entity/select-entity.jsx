@@ -8,75 +8,78 @@ import validator from 'validator';
 import styles from './select-entity.less';
 
 export type InputProps = {
-  onSelect: (EntityType, number) => void
+  entityName: string,
+  entityType: EntityType,
+  onSelect: (number) => void
 }
 
 type Props = InputProps & {
-  products: ?KeyValue,
+  entities: ?KeyValue,
   loadData: ({
     [ string ]: Load
   }) => void,
 };
 
 type State = {
-  products: Array<[number, string]>,
+  entities: Array<[number, string]>,
   text: string
 }
 
-class SelectProduct extends React.PureComponent<Props, State> {
-  static displayName = 'SelectProduct';
+class SelectEntity extends React.PureComponent<Props, State> {
+  static displayName = 'SelectEntity';
 
   state = {
-    products: [],
+    entities: [],
     text: ''
   }
 
   componentDidMount() {
-    const { products, loadData } = this.props;
-    if (! products) {
+    const { entityType, entities, loadData } = this.props;
+    if (! entities) {
       loadData({
-        products: {
-          record: 'products',
-          options: 'all'
+        entities: {
+          record: 'entities',
+          entityType
         }
       });
     } else {
-      this.filterProducts(this.state.text, products);
+      this.filterEntities(this.state.text, entities);
     }
   }
 
   componentWillUpdate(nextProps: Props, nextState: State) {
-    if (nextProps.products) {
-      const products = nextProps.products;
-      if (! this.props.products) {
-        this.filterProducts(nextState.text, products);
+    if (nextProps.entities) {
+      const entities = nextProps.entities;
+      if (! this.props.entities) {
+        this.filterEntities(nextState.text, entities);
       } else if (this.state.text != nextState.text) {
-        this.filterProducts(nextState.text, products);
+        this.filterEntities(nextState.text, entities);
       }
     }
   }
 
   render() {
     const { text } = this.state;
-    const hasProducts = !!this.props.products;
+    const { entities, entityName } = this.props;
+    const hasEntities = !!entities;
     return (
       <div>
         <TextField
-          label={__("Search products")}
-          placeholder={__("Search products")}
+          label={__("Search %s", entityName)}
+          placeholder={__("Search %s", entityName)}
           value={text}
           onChange={e => this.setState({text: e.target.value})}
           fullWidth />
         <div className={styles.suggest}>
-          { hasProducts ? this.renderProducts() : this.renderPlaceholder() }
+          { hasEntities ? this.renderEntities() : this.renderPlaceholder() }
         </div>
       </div>
     );
   }
 
-  renderProducts = () => {
-    const products = this.state.products;
-    return products.length == 0 ? (
+  renderEntities = () => {
+    const entities = this.state.entities;
+    return entities.length == 0 ? (
       <div className={styles.center}>
         <div>
           {__('Nothing found')}
@@ -84,7 +87,7 @@ class SelectProduct extends React.PureComponent<Props, State> {
       </div>
     ) : (
       <List>
-        { products.map(this.renderResult) }
+        { entities.map(this.renderResult) }
       </List>
     );
   }
@@ -96,15 +99,15 @@ class SelectProduct extends React.PureComponent<Props, State> {
   renderResult = (pair: [number, string]) => {
     const [ id, name ] = pair;
     return (
-      <ListItem key={id} button onClick={() => this.props.onSelect('product', id)}>
+      <ListItem key={id} button onClick={() => this.props.onSelect(id)}>
         <div className={styles.number}>{id}</div>
         <ListItemText primary={name} />
       </ListItem>
     );
   }
 
-  filterProducts = (text: string, input: KeyValue) => {
-    const products: Array<[number, string]> = [];
+  filterEntities = (text: string, input: KeyValue) => {
+    const entities: Array<[number, string]> = [];
     text = text.toLowerCase();
     const isNumber = validator.isNumeric(text);
     for (let key in input) {
@@ -113,15 +116,15 @@ class SelectProduct extends React.PureComponent<Props, State> {
         const label: string = (input[id] || '').toLowerCase();
         const test = isNumber ? key : label;
         if (test.indexOf(text) > -1) {
-          products.push([id, label]);
-          if (products.length >= 8) {
+          entities.push([id, label]);
+          if (entities.length >= 8) {
             break;
           }
         }
       }
     }
-    this.setState({ products });
+    this.setState({ entities });
   }
 }
 
-export default SelectProduct;
+export default SelectEntity;

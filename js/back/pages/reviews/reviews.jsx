@@ -59,6 +59,7 @@ class ReviewsPage extends React.PureComponent<Props> {
           <CreateReview
             shape={shape}
             shapeSize={shapeSize}
+            entityTypes={data.entityTypes}
             language={data.language}
             languages={data.languages}
             criteria={criteria}

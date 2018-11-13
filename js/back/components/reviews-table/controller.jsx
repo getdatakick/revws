@@ -1,7 +1,7 @@
 // @flow
 
 import type { ReviewListType, GradingShapeType, ReviewType, CriteriaType, DisplayCriteriaType, LanguagesType, ListOrder, ListOrderDirection } from 'common/types';
-import type { DrilldownUrls, LoadOptions } from 'back/types';
+import type { DrilldownUrls, LoadPagination } from 'back/types';
 import type { Filters } from './types';
 import { notNil } from 'common/utils/ramda';
 import { prop, find, propEq, reject, merge, equals, has } from 'ramda';
@@ -27,7 +27,7 @@ export type InputProps = {
 
 type Props = InputProps & {
   data: any,
-  loadData: (string, LoadOptions) => void,
+  loadData: (string, LoadPagination) => void,
   approveReview: (id: number) => void,
   deleteReview: (id: number) => void,
   deletePermReview: (id: number) => void,
