@@ -60,7 +60,7 @@ export type ReviewType = {
   language: number,
   entityType: EntityType,
   entityId: number,
-  product: ?string,
+  entity: ?string,
   customer: ?string,
   authorType: 'guest' | 'customer',
   authorId: number,
@@ -82,7 +82,7 @@ export type ReviewType = {
   loading?: boolean
 }
 
-export type ListOrder = 'date' | 'usefulness' | 'author' | 'product' | 'title' | 'content' | 'grade' | 'id';
+export type ListOrder = 'date' | 'usefulness' | 'author' | 'entityType' | 'entity' | 'title' | 'content' | 'grade' | 'id';
 export type ListOrderDirection = 'desc' | 'asc';
 
 export type ReviewListType = {

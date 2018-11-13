@@ -68,7 +68,7 @@ class RevwsReview extends ObjectModel {
 
   public $grades = [];
   public $images;
-  public $product;
+  public $entity;
   public $customer;
 
   private $deletedOrig;
@@ -406,8 +406,8 @@ class RevwsReview extends ObjectModel {
     if ($this->customer) {
       $ret['customer'] = $this->customer;
     }
-    if ($this->product) {
-      $ret['product'] = $this->product;
+    if ($this->entity) {
+      $ret['entity'] = $this->entity;
     }
     return $ret;
   }
@@ -438,8 +438,8 @@ class RevwsReview extends ObjectModel {
     $review->deleted = !!$dbData['deleted'];
     $review->verified_buyer = !!$dbData['verified_buyer'];
     $review->reply = $dbData['reply'];
-    if (isset($dbData['product'])) {
-      $review->product = $dbData['product'];
+    if (isset($dbData['entity'])) {
+      $review->entity = $dbData['entity'];
     }
     if (isset($dbData['customer'])) {
       $review->customer = $dbData['customer'];
@@ -496,7 +496,7 @@ class RevwsReview extends ObjectModel {
     $review->title = $json['title'];
     $review->content = $json['content'];
     $review->date_upd = new \DateTime();
-    $review->product = isset($json['product']) ? $json['product'] : null;
+    $review->entity = isset($json['entity']) ? $json['entity'] : null;
     $review->customer = isset($json['customer']) ? $json['customer'] : null;
     $review->email = $json['email'];
     $review->reply = $json['reply'] ? str_replace('\\', '\\\\', $json['reply']) : null;

@@ -34,7 +34,7 @@ class ReviewPreview extends React.PureComponent<Props> {
       authorId: 1,
       entityType: 'product',
       entityId: 1,
-      product: null,
+      entity: null,
       customer: null,
       displayName: 'John Doe',
       email: '',

@@ -52,7 +52,7 @@ class Backup {
       $criteriaNode->appendChild($this->addCriterion($crit, $domtree));
     }
     $data = RevwsReview::findReviews($this->settings, array_merge($this->options, [
-      'productInfo' => true,
+      'entityInfo' => true,
       'customerInfo' => true,
       'allLanguages' => true,
       'order' => [

@@ -1,8 +1,9 @@
 // @flow
 
 import type { ComponentType } from 'react';
-import type { GradingShapeType, ReviewType, ListOrder, ListOrderDirection } from 'common/types';
+import type { EntityType, GradingShapeType, ReviewType, ListOrder, ListOrderDirection } from 'common/types';
 import type { DrilldownUrls } from 'back/types';
+import { values, reject, isNil } from 'ramda';
 import React from 'react';
 import classnames from 'classnames';
 import { withStyles } from 'material-ui/styles';
@@ -55,6 +56,9 @@ type InputProps = {
   total: number,
   // page data
   drilldownUrls: DrilldownUrls,
+  entityTypes: {
+    [ EntityType ]: string
+  },
   data: Array<ReviewType>,
 }
 
@@ -117,17 +121,20 @@ class EnhancedTable extends React.Component<Props> {
   render() {
     const {
       shape, emptyLabel, title, classes, total, data, order, orderDir, rowsPerPage, page, onChangePage, onChangeRowsPerPage,
-      onAuthorClick, onReviewClick, filters, onChangeFilters, drilldownUrls
+      onAuthorClick, onReviewClick, filters, onChangeFilters, drilldownUrls, entityTypes
     } = this.props;
-    const columnsData: Array<Column> = [
+    const names = values(entityTypes);
+    const multiple = names.length > 1;
+    const columnsData: Array<Column> = reject(isNil, [
       { id: 'id', sort: 'id', disablePadding: false, label: __('ID') },
-      { id: 'product', sort: 'product', disablePadding: false, label: __('Product') },
+      multiple ? { id: 'entityType', sort: 'entityType', disablePadding: false, label: __('Type') } : null,
+      { id: 'entity', sort: 'entity', disablePadding: false, label: names.join(' / ') },
       { id: 'author', sort: 'author', disablePadding: true, label: __('Author') },
       { id: 'grade', sort: 'grade', disablePadding: false, label: __('Ratings') },
       { id: 'title', sort: 'title', disablePadding: true, label: __('Review title') },
       { id: 'content', sort: 'content', disablePadding: true, label: __('Review content') },
       { id: 'actions', disablePadding: false, label: __('Actions') },
-    ];
+    ]);
     return (
       <Paper className={classes.root}>
         <EnhancedTableToolbar
@@ -146,7 +153,7 @@ class EnhancedTable extends React.Component<Props> {
             />
             <TableBody>
               {data.map((review: ReviewType) => {
-                const { id, product, title, content, customer, displayName, authorType, authorId, verifiedBuyer, entityType, entityId } = review;
+                const { id, entity, title, content, customer, displayName, authorType, authorId, verifiedBuyer, entityType, entityId } = review;
                 const ratings = hasRatings(review) ;
                 const grade = averageGrade(review);
                 const { icon, type } = getAuthorInfo(classes, authorType, verifiedBuyer);
@@ -169,12 +176,17 @@ class EnhancedTable extends React.Component<Props> {
                     <TableCell padding="dense" style={{width: 30}}>
                       { id }
                     </TableCell>
+                    {multiple && (
+                      <TableCell padding="dense">
+                        { entityTypes[entityType] || entityType }
+                      </TableCell>
+                    )}
                     <TableCell padding="dense">
                       { drilldownUrl ? (
                         <a className={classes.drilldown} href={drilldownUrl} target="_blank" onClick={stop}>
-                          { product }
+                          { entity }
                         </a>
-                      ) : product }
+                      ) : entity }
                     </TableCell>
                     <TableCell padding="none">
                       <Tooltip placement='bottom-start' title={type}>

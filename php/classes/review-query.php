@@ -67,8 +67,8 @@ class ReviewQuery {
       'deleted' => 'r.deleted',
       'verified_buyer' => 'r.verified_buyer'
     ];
-    if ($this->includeProductInfo()) {
-      $fields['product'] = 'pl.name';
+    if ($this->includeEntityInfo()) {
+      $fields['entity'] = 'pl.name';
     }
     if ($this->includeCustomerInfo()) {
       $fields['customer'] = "CONCAT(cust.firstname,' ', cust.lastname)";
@@ -86,9 +86,9 @@ class ReviewQuery {
     $shop = $this->getShop();
     $lang = $this->getLanguage();
     if ($this->hasOption('shop')) {
-      $from .= ' INNER JOIN '. _DB_PREFIX_ ."product_shop ps ON (r.entity_type = 'product' AND r.id_entity = ps.id_product AND ps.id_shop = $shop)";
+      $from .= ' LEFT JOIN '. _DB_PREFIX_ ."product_shop ps ON (r.entity_type = 'product' AND r.id_entity = ps.id_product AND ps.id_shop = $shop)";
     }
-    if ($this->includeProductInfo()) {
+    if ($this->includeEntityInfo()) {
       $from .= ' LEFT JOIN ' . _DB_PREFIX_ . "product_lang pl ON (r.entity_type = 'product' AND r.id_entity = pl.id_product AND pl.id_shop = $shop AND pl.id_lang = $lang)";
     }
     if ($this->includeCustomerInfo()) {
@@ -101,6 +101,9 @@ class ReviewQuery {
     $cond = [];
     if ($this->hasOption('id')) {
       $cond[] = "r.id_review = " . $this->getInt('id');
+    }
+    if ($this->hasOption('shop')) {
+      $cond[] = "ps.id_shop IS NOT NULL";
     }
     if ($this->hasOption('product')) {
       $cond[] = "r.entity_type = 'product' AND r.id_entity = " . $this->getInt('product');
@@ -187,7 +190,9 @@ class ReviewQuery {
         return $this->getUsefulnessSubselect();
       case 'author':
         return $this->includeCustomerInfo() ? "(CASE WHEN r.id_customer != 0 THEN TRIM(CONCAT(cust.firstname,' ', cust.lastname)) ELSE r.display_name END)" : 'r.display_name';
-      case 'product':
+      case 'entityType':
+        return 'r.entity_type';
+      case 'entity':
         return 'pl.name';
       case 'title':
         return 'r.title';
@@ -239,11 +244,14 @@ class ReviewQuery {
     return -1;
   }
 
-  private function includeProductInfo() {
+  private function includeEntityInfo() {
+    if ($this->getOption('entityInfo', false)) {
+      return true;
+    }
     if ($this->getOption('productInfo', false)) {
       return true;
     }
-    return $this->getOrderField() === 'product';
+    return $this->getOrderField() === 'entity';
   }
 
   private function includeCustomerInfo() {

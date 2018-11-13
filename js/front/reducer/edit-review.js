@@ -27,7 +27,7 @@ const defaultReview = (visitor: VisitorType, entityType: EntityType, entityId: n
     authorId: -1,
     language,
     customer: null,
-    product: null,
+    entity: null,
     email,
     grades: {},
     images: [],

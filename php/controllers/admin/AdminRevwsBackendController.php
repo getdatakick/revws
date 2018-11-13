@@ -450,7 +450,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
     $records = RevwsReview::findReviews($this->module->getSettings(), [
       'id' => $id,
       'allLanguages' => true,
-      'productInfo' => true,
+      'entityInfo' => true,
       'customerInfo' => true,
     ]);
     if (isset($records['reviews'][$id])) {

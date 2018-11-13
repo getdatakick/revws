@@ -34,6 +34,7 @@ class ModerationPage extends React.PureComponent<Props> {
           deleted: false
         }}
         drilldownUrls={data.drilldownUrls}
+        entityTypes={data.entityTypes}
         uniqueId='toApprove' />
     );
   }

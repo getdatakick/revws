@@ -89,7 +89,7 @@ class GDPR implements GDPRInterface {
     $criteria = RevwsCriterion::getCriteria(\Context::getContext()->language->id);
     $query = [
       'allLanguages' => true,
-      'productInfo' => true,
+      'entityInfo' => true,
       'customerInfo' => true
     ];
 
