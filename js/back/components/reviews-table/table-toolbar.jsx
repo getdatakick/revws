@@ -1,6 +1,6 @@
 // @flow
 import type { ComponentType } from 'react';
-import { isNil, has, assoc, dissoc } from 'ramda';
+import { toPairs, isNil, assoc, dissoc } from 'ramda';
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import Toolbar from 'material-ui/Toolbar';
@@ -8,9 +8,13 @@ import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import Tooltip from 'material-ui/Tooltip';
 import FilterListIcon from 'material-ui-icons/FilterList';
-import Checkbox from 'material-ui/Checkbox';
-import { FormControlLabel, FormGroup } from 'material-ui/Form';
+import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu';
+import { FormControl } from 'material-ui/Form';
+import { InputLabel } from 'material-ui/Input';
+import { FormGroup } from 'material-ui/Form';
 import type { Filters } from './types';
+import type { EntityType } from 'common/types';
 
 const toolbarStyles = theme => ({
   root: {
@@ -31,7 +35,8 @@ const toolbarStyles = theme => ({
     flexDirection: 'row'
   },
   label: {
-    minWidth: 300
+    minWidth: 200,
+    paddingRight: 40
   }
 });
 
@@ -40,6 +45,9 @@ type InputProps = {
   title: string,
   total: number,
   filters: Filters,
+  entityTypes: {
+    [ EntityType ]: string
+  },
   onChangeFilters: (Filters)=>void
 }
 
@@ -82,38 +90,46 @@ class EnahncedTableToolbar extends React.PureComponent<Props, State> {
   }
 
   renderFilters = () => {
-    const { classes, filters, onChangeFilters } = this.props;
-    const toggle = key => value => {
-      if (has(key, filters)) {
-        if (filters[key]) {
-          onChangeFilters(assoc(key, false, filters));
-        } else {
-          onChangeFilters(dissoc(key, filters));
-        }
+    const { classes, filters, onChangeFilters, entityTypes } = this.props;
+    const types = toPairs(entityTypes);
+    const set = key => e => {
+      const value = e.target.value;
+      if (value == 'all') {
+        onChangeFilters(dissoc(key, filters));
       } else {
-        onChangeFilters(assoc(key, true, filters));
+        onChangeFilters(assoc(key, value, filters));
       }
     };
+    const entityType = filters.entityType || 'all';
+    const deleted = isNil(filters.deleted) ? 'all' : filters.deleted;
+    const approved = isNil(filters.validated) ? 'all' : filters.validated;
     return (
       <FormGroup key='filters' className={classes.filters}>
-        <FormControlLabel
-          className={classes.label}
-          control={
-            <Checkbox
-              checked={!! filters.deleted}
-              indeterminate={isNil(filters.deleted)}
-              onChange={toggle('deleted')} />
-          }
-          label={__("Show deleted reviews")} />
-        <FormControlLabel
-          className={classes.label}
-          control={
-            <Checkbox
-              checked={!!filters.validated}
-              indeterminate={isNil(filters.validated)}
-              onChange={toggle('validated')} />
-          }
-          label={__("Show approved reviews")} />
+        {types.length > 1 && (
+          <FormControl className={classes.label}>
+            <InputLabel>{__('Review type')}</InputLabel>
+            <Select value={entityType} onChange={set('entityType')}>
+              <MenuItem value={'all'}>{__('All')}</MenuItem>
+              { types.map(pair => <MenuItem key={pair[0]} value={pair[0]}>{pair[1]}</MenuItem>) }
+            </Select>
+          </FormControl>
+        )}
+        <FormControl className={classes.label}>
+          <InputLabel>{__('Delete status')}</InputLabel>
+          <Select value={deleted} onChange={set('deleted')}>
+            <MenuItem value={'all'}>{__('All')}</MenuItem>
+            <MenuItem value={true}>{__('Deleted')}</MenuItem>
+            <MenuItem value={false}>{__('Not deleted')}</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl className={classes.label}>
+          <InputLabel>{__('Approval status')}</InputLabel>
+          <Select value={approved} onChange={set('validated')}>
+            <MenuItem value={'all'}>{__('All')}</MenuItem>
+            <MenuItem value={true}>{__('Approved')}</MenuItem>
+            <MenuItem value={false}>{__('Unapproved')}</MenuItem>
+          </Select>
+        </FormControl>
       </FormGroup>
     );
   }

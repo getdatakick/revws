@@ -123,7 +123,7 @@ class EnhancedTable extends React.Component<Props> {
       shape, emptyLabel, title, classes, total, data, order, orderDir, rowsPerPage, page, onChangePage, onChangeRowsPerPage,
       onAuthorClick, onReviewClick, filters, onChangeFilters, drilldownUrls, entityTypes
     } = this.props;
-    const names = values(entityTypes);
+    const names = getEntityNames(entityTypes, filters.entityType);
     const multiple = names.length > 1;
     const columnsData: Array<Column> = reject(isNil, [
       { id: 'id', sort: 'id', disablePadding: false, label: __('ID') },
@@ -141,6 +141,7 @@ class EnhancedTable extends React.Component<Props> {
           title={title}
           total={total}
           filters={filters}
+          entityTypes={entityTypes}
           onChangeFilters={onChangeFilters} />
         <div className={classes.tableWrapper}>
           <Table className={classes.table}>
@@ -317,6 +318,13 @@ const getAuthorInfo = (css: any, authorType: string, verified: boolean) => {
     type = __('Guest visitor');
   }
   return { icon, type };
+};
+
+const getEntityNames = (entityTypes, entityTypeFilter): Array<string> => {
+  if (entityTypeFilter) {
+    return [ entityTypes[entityTypeFilter] ];
+  }
+  return values(entityTypes);
 };
 
 const stop = (e) => e.stopPropagation();

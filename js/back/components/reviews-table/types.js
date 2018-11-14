@@ -1,9 +1,10 @@
 // @flow
-import type { ListOrder } from 'common/types';
+import type { ListOrder, EntityType } from 'common/types';
 
 export type Filters = {
   deleted?: boolean,
-  validated?: boolean
+  validated?: boolean,
+  entityType?: EntityType
 }
 
 export type Column = {
