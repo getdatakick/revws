@@ -186,8 +186,8 @@ class Settings {
   }
 
   public function setVersion($version) {
-    Configuration::deleteByName(self::CHECK_VERSION);
     Configuration::updateGlobalValue(self::VERSION, $version);
+    Configuration::deleteByName(self::CHECK_VERSION);
   }
 
   public function getPlacement() {
