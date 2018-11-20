@@ -39,7 +39,7 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
     return isEmpty ? this.renderEmptyState() : (
       <div>
         <List
-          reviewStyle='item-with-product'
+          reviewStyle='item-with-entity'
           entities={entities}
           shopName={settings.shopName}
           shape={settings.shape}

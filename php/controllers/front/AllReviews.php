@@ -35,7 +35,7 @@ class RevwsAllReviewsModuleFrontController extends ModuleFrontController {
     parent::initContent();
     $frontApp = $this->module->getFrontApp();
     $list = $frontApp->addCustomListWidget('all-reviews', [], [
-      'reviewStyle' => 'item-with-product'
+      'reviewStyle' => 'item-with-entity'
     ]);
     $this->context->smarty->assign([
       'reviewList' => $list->getData(),

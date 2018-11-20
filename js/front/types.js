@@ -2,7 +2,7 @@
 
 import type { EntityType, ReviewType, CriteriaType, DisplayCriteriaType, GradingShapeType, NameFormatType, EntityInfoType, ListOrder, ListOrderDirection } from 'common/types';
 
-export type ReviewDisplayStyle = 'item' | 'item-with-product';
+export type ReviewDisplayStyle = 'item' | 'item-with-entity';
 
 export type SettingsType = {
   csrf: string,

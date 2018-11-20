@@ -29,7 +29,7 @@
 <div id="revws-portal-{$reviewList.id}">
   {include
     file='modules/revws/views/templates/widgets/list/list.tpl'
-    reviewStyle='item-with-product'
+    reviewStyle='item-with-entity'
     reviewList=$reviewList
     displayCriteria=$reviewsData.preferences.displayCriteria
     shopName=$reviewsData.shopName

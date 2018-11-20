@@ -160,7 +160,7 @@ class Visitor {
         FROM "._DB_PREFIX_."orders o
         INNER JOIN "._DB_PREFIX_."order_detail d ON (o.id_order = d.id_order AND o.id_shop=d.id_shop)
         INNER JOIN "._DB_PREFIX_."product_shop p ON (p.id_product = d.product_id and p.id_shop = d.id_shop)
-        LEFT JOIN  "._DB_PREFIX_."revws_review r ON (r.entity_type = 'product' AND r.id_entity = p.id_product)
+        LEFT JOIN  "._DB_PREFIX_."revws_review r ON (r.entity_type = 'product' AND r.id_entity = p.id_product AND r.id_customer = o.id_customer)
         WHERE o.id_customer = $customer
           AND o.id_shop = $shop
           AND r.id_review IS NULL
