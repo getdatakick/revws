@@ -32,6 +32,7 @@ use \Logger;
 
 class Notifications {
   private static $instance;
+  private $allowed = true;
   private $queue = [];
 
   // cache
@@ -211,6 +212,10 @@ class Notifications {
   /**
    * public API
    */
+  public function enableNotifications($allowed) {
+    $this->allowed = $allowed;
+  }
+
   public function reviewCreated($id, $actor) {
     $this->push('processReviewCreated', $id, $actor);
   }
@@ -289,11 +294,13 @@ class Notifications {
 
   // utils
   private function push($type, $reviewId, $actor) {
-    $this->queue[] = [
-      'type' => $type,
-      'id' => (int)$reviewId,
-      'actor' => $actor
-    ];
+    if ($this->allowed) {
+      $this->queue[] = [
+        'type' => $type,
+        'id' => (int)$reviewId,
+        'actor' => $actor
+      ];
+    }
   }
 
   private function getReview($id) {

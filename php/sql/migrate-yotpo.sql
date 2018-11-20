@@ -24,5 +24,5 @@ TRUNCATE `PREFIX_revws_review`;
 TRUNCATE `PREFIX_revws_review_grade`;
 TRUNCATE `PREFIX_revws_review_reaction`;
 
-INSERT IGNORE INTO `PREFIX_revws_criterion`(`id_criterion`, `global`) VALUES (1, 1);
+INSERT IGNORE INTO `PREFIX_revws_criterion`(`id_criterion`, `global`, `entity_type`) VALUES (1, 1, 'product');
 INSERT IGNORE INTO `PREFIX_revws_criterion_lang`(`id_criterion`, `id_lang`, `label`) SELECT 1, `l`.`id_lang`, 'Quality' FROM `PREFIX_lang` `l`;

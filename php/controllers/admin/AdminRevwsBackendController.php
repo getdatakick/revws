@@ -127,7 +127,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
   }
 
   private function dispatchCommand($cmd) {
-    $payload = json_decode($_POST['payload'], true);
+    $payload = isset($_POST['payload']) ? json_decode($_POST['payload'], true) : [];
     switch ($cmd) {
       case 'activate':
         return $this->activate($payload);
@@ -166,6 +166,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
   }
 
   private function importYotpo() {
+    Notifications::getInstance()->enableNotifications(false);
     $upload = Tools::fileAttachment('file', false);
     if (! (isset($_FILES['file']['name']) && !empty($_FILES['file']['name']) && !empty($_FILES['file']['tmp_name']))) {
       throw new Exception('No file');
@@ -179,7 +180,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
       }
     }
     $this->module->executeSqlScript('migrate-yotpo');
-    $products = $this->getProducts([]);
+    $products = $this->getEntities('product');
     $customers = $this->getCustomersByEmail();
     $errors = [];
     $success = 0;
@@ -404,6 +405,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
   }
 
   private function migrateData($data) {
+    Notifications::getInstance()->enableNotifications(false);
     $source = isset($data['source']) ? $data['source'] : 'invalid';
     switch ($source) {
       case 'productcomments':

@@ -25,8 +25,8 @@ TRUNCATE `PREFIX_revws_review_grade`;
 TRUNCATE `PREFIX_revws_review_reaction`;
 
 /* migrate review criteria */
-INSERT INTO `PREFIX_revws_criterion`(`id_criterion`, `active`, `global`)
-SELECT `id_product_comment_criterion`, `active`, (`id_product_comment_criterion_type`=1)
+INSERT INTO `PREFIX_revws_criterion`(`id_criterion`, `active`, `global`, `entity_type`)
+SELECT `id_product_comment_criterion`, `active`, (`id_product_comment_criterion_type`=1), 'product'
   FROM `PREFIX_product_comment_criterion`;
 
 INSERT IGNORE INTO `PREFIX_revws_criterion_lang`(`id_criterion`, `id_lang`, `label`)
@@ -42,8 +42,8 @@ SELECT `id_product_comment_criterion`, `id_category`
   FROM `PREFIX_product_comment_criterion_category`;
 
 /* migrate reviews */
-INSERT INTO `PREFIX_revws_review`(`id_review`, `id_product`, `id_customer`, `id_guest`, `id_lang`, `email`, `display_name`, `title`, `content`, `validated`, `deleted`, `date_add`, `date_upd`)
-SELECT `pc`.`id_product_comment`, `pc`.`id_product`, `pc`.`id_customer`, `pc`.`id_guest`, COALESCE(`cust`.`id_lang`, (SELECT `conf`.`value` FROM `PREFIX_configuration` `conf` WHERE `conf`.`name`='PS_LANG_DEFAULT' LIMIT 1)), COALESCE(`cust`.`email`, ''), `pc`.`customer_name`, `pc`.`title`, `pc`.`content`, `pc`.`validate`, `pc`.`deleted`, `pc`.`date_add`, `pc`.`date_add`
+INSERT INTO `PREFIX_revws_review`(`id_review`, `entity_type`, `id_entity`, `id_customer`, `id_guest`, `id_lang`, `email`, `display_name`, `title`, `content`, `validated`, `deleted`, `date_add`, `date_upd`)
+SELECT `pc`.`id_product_comment`, 'product', `pc`.`id_product`, `pc`.`id_customer`, `pc`.`id_guest`, COALESCE(`cust`.`id_lang`, (SELECT `conf`.`value` FROM `PREFIX_configuration` `conf` WHERE `conf`.`name`='PS_LANG_DEFAULT' LIMIT 1)), COALESCE(`cust`.`email`, ''), `pc`.`customer_name`, `pc`.`title`, `pc`.`content`, `pc`.`validate`, `pc`.`deleted`, `pc`.`date_add`, `pc`.`date_add`
   FROM `PREFIX_product_comment` `pc`
   LEFT JOIN `PREFIX_customer` `cust` ON (`pc`.`id_customer` = `cust`.`id_customer`);
 
@@ -66,5 +66,5 @@ SELECT `id_product_comment`, `id_customer`, 0, (CASE WHEN `usefulness` THEN 'vot
 UPDATE `PREFIX_revws_review` r
 INNER JOIN `PREFIX_customer` c ON (r.id_customer = c.id_customer)
 INNER JOIN `PREFIX_orders` o ON (o.id_customer = c.id_customer AND o.delivery_date IS NOT NULL)
-INNER JOIN `PREFIX_order_detail` d ON (d.id_order = o.id_order AND d.product_id = r.id_product)
+INNER JOIN `PREFIX_order_detail` d ON (d.id_order = o.id_order AND d.product_id = r.id_entity AND r.entity_type = 'product')
 SET r.verified_buyer = 1;
