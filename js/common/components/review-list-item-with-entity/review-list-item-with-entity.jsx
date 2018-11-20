@@ -28,30 +28,30 @@ class ReviewListItemWithEntity extends React.PureComponent<Props> {
   render() {
     const { entity, shopName, shape, colors, shapeSize, criteria, displayCriteria, review, onEdit, onDelete, onVote, onReport, dateFormat } = this.props;
     return (
-      <div className="revws-review-with-product">
-        <div>
-          <a href={entity.url}>
+      <div>
+        <h2 className="revws-review-entity-name">
+          <a href={entity.url}>{entity.name}</a>
+        </h2>
+        <div className="revws-review-with-product">
+          <a className="revws-entity-image-wrapper" href={entity.url}>
             <img src={entity.image} alt={entity.name} />
           </a>
-        </div>
-        <div className='revws-review-wrapper'>
-          <h2>
-            <a href={entity.url}>{entity.name}</a>
-          </h2>
-          <ReviewListItem
-            shopName={shopName}
-            shape={shape}
-            colors={colors}
-            shapeSize={shapeSize}
-            dateFormat={dateFormat}
-            criteria={criteria}
-            displayCriteria={displayCriteria}
-            review={review}
-            onEdit={onEdit}
-            onDelete={onDelete}
-            onVote={onVote}
-            onReport={onReport}
-          />
+          <div className='revws-review-wrapper'>
+            <ReviewListItem
+              shopName={shopName}
+              shape={shape}
+              colors={colors}
+              shapeSize={shapeSize}
+              dateFormat={dateFormat}
+              criteria={criteria}
+              displayCriteria={displayCriteria}
+              review={review}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onVote={onVote}
+              onReport={onReport}
+            />
+          </div>
         </div>
       </div>
     );

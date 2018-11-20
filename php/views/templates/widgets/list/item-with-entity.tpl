@@ -18,25 +18,25 @@
 {strip}
 {if isset($reviewEntities[$review.entityType][$review.entityId])}
 {assign "entity" $reviewEntities[$review.entityType][$review.entityId]}
-<div class="revws-review-with-{$review.entityType|lower}">
-  <div>
-    <a href="{$entity.url}">
+<div>
+  <h2 class="revws-review-entity-name">
+    <a href="{$entity.url}">{$entity.name|escape:'html':'UTF-8'}</a>
+  </h2>
+  <div class="revws-review-with-{$review.entityType|lower}">
+    <a class="revws-entity-image-wrapper" href="{$entity.url}">
       <img src="{$entity.image}" alt="{$entity.name|escape:'html':'UTF-8'}"></img>
     </a>
-  </div>
-  <div class="revws-review-wrapper">
-    <h2>
-      <a href="{$entity.url}">{$entity.name|escape:'html':'UTF-8'}</a>
-    </h2>
-    {include
-      file='modules/revws/views/templates/widgets/list/item.tpl'
-      review=$review
-      shopName=$shopName
-      criteria=$criteria
-      shape=$shape
-      displayCriteria=$displayCriteria
-      microdata=false
-    }
+    <div class="revws-review-wrapper">
+      {include
+        file='modules/revws/views/templates/widgets/list/item.tpl'
+        review=$review
+        shopName=$shopName
+        criteria=$criteria
+        shape=$shape
+        displayCriteria=$displayCriteria
+        microdata=false
+      }
+    </div>
   </div>
 </div>
 {/strip}

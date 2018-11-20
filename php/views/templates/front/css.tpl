@@ -459,7 +459,11 @@ a .revws-grading {
     flex-wrap: wrap;
     justify-content: center;
   }
-  .revws-review-with-product h2 {
+  .revws-review-with-site img,
+  .revws-review-with-product img {
+    padding-right: 0;
+  }
+  .revws-review-entity-name {
     text-align: center;
   }
 }
@@ -644,4 +648,17 @@ a .revws-grading {
 .revws-image svg {
   stroke: #aaa;
   fill: #aaa;
+}
+
+.revws-entity-image-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.revws-review-entity-name a {
+  text-decoration: none;
+}
+
+.revws-review-entity-name a:hover {
+  text-decoration: underline;
 }
