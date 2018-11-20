@@ -43,7 +43,7 @@ SELECT `id_product_comment_criterion`, `id_category`
 
 /* migrate reviews */
 INSERT INTO `PREFIX_revws_review`(`id_review`, `entity_type`, `id_entity`, `id_customer`, `id_guest`, `id_lang`, `email`, `display_name`, `title`, `content`, `validated`, `deleted`, `date_add`, `date_upd`)
-SELECT `pc`.`id_product_comment`, 'product', `pc`.`id_product`, `pc`.`id_customer`, `pc`.`id_guest`, COALESCE(`cust`.`id_lang`, (SELECT `conf`.`value` FROM `PREFIX_configuration` `conf` WHERE `conf`.`name`='PS_LANG_DEFAULT' LIMIT 1)), COALESCE(`cust`.`email`, ''), `pc`.`customer_name`, `pc`.`title`, `pc`.`content`, `pc`.`validate`, `pc`.`deleted`, `pc`.`date_add`, `pc`.`date_add`
+SELECT `pc`.`id_product_comment`, 'product', `pc`.`id_product`, `pc`.`id_customer`, `pc`.`id_guest`, COALESCE(`cust`.`id_lang`, (SELECT `conf`.`value` FROM `PREFIX_configuration` `conf` WHERE `conf`.`name`='PS_LANG_DEFAULT' LIMIT 1)), COALESCE(`cust`.`email`, (SELECT `conf`.`value` FROM `PREFIX_configuration` `conf` WHERE `conf`.`name`='PS_SHOP_EMAIL' LIMIT 1)), `pc`.`customer_name`, `pc`.`title`, `pc`.`content`, `pc`.`validate`, `pc`.`deleted`, `pc`.`date_add`, `pc`.`date_add`
   FROM `PREFIX_product_comment` `pc`
   LEFT JOIN `PREFIX_customer` `cust` ON (`pc`.`id_customer` = `cust`.`id_customer`);
 
