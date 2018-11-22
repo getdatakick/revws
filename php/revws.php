@@ -43,6 +43,7 @@ require_once __DIR__.'/classes/front-app.php';
 require_once __DIR__.'/classes/backup.php';
 require_once __DIR__.'/classes/integration/datakick.php';
 require_once __DIR__.'/classes/integration/krona.php';
+require_once __DIR__.'/classes/migration-utils.php';
 
 require_once __DIR__.'/model/criterion.php';
 require_once __DIR__.'/model/review.php';
@@ -59,7 +60,7 @@ class Revws extends Module {
   public function __construct() {
     $this->name = 'revws';
     $this->tab = 'administration';
-    $this->version = '1.0.21';
+    $this->version = '1.0.22';
     $this->author = 'DataKick';
     $this->need_instance = 0;
     $this->bootstrap = true;
@@ -258,10 +259,14 @@ class Revws extends Module {
   }
 
   private function migrate($version) {
+    $utils = new \Revws\MigrationUtils(Db::getInstance());
     if (version_compare($version, '1.0.9', '<')) {
       $this->executeSqlScript('update-verified_buyer', false);
     }
     $this->executeSqlScript('update-review-image', false);
+    if (! $utils->columnExists(_DB_PREFIX_ . 'revws_criterion', 'entity_type')) {
+      $this->executeSqlScript('add-entity-type', false);
+    }
   }
 
   public function getVisitor() {
