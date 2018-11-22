@@ -87,7 +87,7 @@ class Revws extends Module {
       $this->uninstallDb($dropTables) &&
       $this->unregisterHooks() &&
       $this->removeTab() &&
-      $this->getSettings()->remove() &&
+      $this->getSettings(false)->remove() &&
       parent::uninstall()
     );
   }
@@ -191,12 +191,13 @@ class Revws extends Module {
       if ($stmt) {
         try {
           if (!Db::getInstance()->execute($stmt)) {
-            die($stmt);
+            PrestaShopLogger::addLog("revws: migration script $script: $stmt: error");
             if ($check) {
               return false;
             }
           }
         } catch (\Exception $e) {
+          PrestaShopLogger::addLog("revws: migration script $script: $stmt: exception");
           if ($check) {
             return false;
           }
@@ -240,11 +241,11 @@ class Revws extends Module {
     return 0;
   }
 
-  public function getSettings() {
+  public function getSettings($check=true) {
     if (! $this->settings) {
       $this->settings = new \Revws\Settings();
       $version = $this->settings->getVersion();
-      if ($version != $this->version) {
+      if ($check && $version != $this->version) {
         if (version_compare($version, $this->version, '<')) {
           $this->migrate($version);
         }

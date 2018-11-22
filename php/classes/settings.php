@@ -503,6 +503,7 @@ class Settings {
     Configuration::deleteByName(self::CHECK_VERSION);
     Configuration::deleteByName(self::SETTINGS);
     Configuration::deleteByName(self::ACTIVATED);
+    Configuration::deleteByName(self::VERSION);
     return true;
   }
 
