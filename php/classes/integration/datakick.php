@@ -103,6 +103,15 @@ class DatakickIntegration {
           'mapping' => [ 'c' => 'active' ],
           'update' => true,
         ],
+        'entityType' => [
+          'type' => 'string',
+          'description' => 'entity type',
+          'mapping' => [ 'c' => 'entity_type' ],
+          'update' => true,
+          'values' => [
+            'product' => 'Product'
+          ]
+        ]
       ],
       'links' => [
         'products' => [
@@ -205,10 +214,13 @@ class DatakickIntegration {
           'type' => 'string',
           'description' => 'entity type',
           'mapping' => [
-            'r' => 'entity_id',
+            'r' => 'entity_type',
           ],
           'required' => true,
           'update' => true,
+          'values' => [
+            'product' => 'Product'
+          ]
         ],
         'entityId' => [
           'type' => 'number',
@@ -338,8 +350,11 @@ class DatakickIntegration {
             'description' => 'Product',
             'collection' => 'products',
             'type' => 'BELONGS_TO',
-            'sourceFields' => [ 'productId' ],
+            'sourceFields' => [ 'entityId' ],
             'targetFields' => [ 'id' ],
+            'conditions' => [
+              "<source:entityType> = 'product'"
+            ],
             'generateReverse' => [
               'id' => 'revwsReview',
               'description' => 'Reviews',
