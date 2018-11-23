@@ -724,6 +724,10 @@ class Revws extends Module {
     $controller->addJquery();
     $controller->addJqueryPlugin('fancybox');
     $controller->addCSS($this->getCSSFile(), 'all', null, false);
+    $themeName = "views/css/themes/"._THEME_NAME_.".css";
+    if (file_exists(REVWS_MODULE_DIR . '/' . $themeName)) {
+      $controller->addCSS($this->getPath($themeName), 'all', null, false);
+    }
   }
 
   private function getProductReviewsLink($product) {

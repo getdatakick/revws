@@ -113,6 +113,7 @@ gulp.task('copy-text-files', function(done) {
     let sources = map(e => 'php/**/*.'+e, ext);
     sources = append('php/**/back.css', sources);
     sources = append('php/**/fallback.css', sources);
+    sources = append('php/**/css/themes/*.css', sources);
     sources = append('!php/license-header.*', sources);
     sources = append('!php/**/revws_bootstrap.js', sources);
     return gulp
