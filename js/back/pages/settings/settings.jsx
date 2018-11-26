@@ -458,10 +458,19 @@ class Settings extends React.PureComponent<Props, State> {
             onChange={e => this.set(['display', 'product', 'averagePlacement'], e.target.value)}>
             <MenuItem value='rightColumn'>{__('Right column')}</MenuItem>
             <MenuItem value='buttons'>{__('Product buttons')}</MenuItem>
+            <MenuItem value='custom'>{__('Custom placement')}</MenuItem>
             <MenuItem value='none'>{__("Don't show review average")}</MenuItem>
           </TextField>
-          <div className={styles.space} />
         </div>
+        {settings.display.product.averagePlacement === 'custom' && (
+          <div className={styles.note}>
+            {__("edit your theme's product template and insert this code anywhere you want to display review average")}
+            <pre>
+              { "{hook h='displayRevwsAverageRating' mod='revws'}" }
+            </pre>
+          </div>
+        )}
+        <div className={styles.space} />
         <FormControlLabel
           control={this.renderSwitch(['display', 'product', 'hideEmptyReviews'])}
           label={__("Hide review section when is empty")}

@@ -20,7 +20,7 @@ export type SettingsType = {
       placement: string,
       orderBy: 'date' | 'grade' | 'usefulness',
       reviewsPerPage: number | string,
-      averagePlacement: 'rightColumn' | 'buttons' | 'none',
+      averagePlacement: 'rightColumn' | 'buttons' | 'custom' | 'none',
       showSignInButton: boolean,
     },
     productList: {
