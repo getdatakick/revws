@@ -86,7 +86,7 @@ export type TranslationsType = {
   [ string ]: string
 };
 
-export type ProductListWidgetType = {
+export type EntityListWidgetType = {
   type: 'entityList',
   entityType: EntityType,
   entityId: number,
@@ -108,7 +108,7 @@ export type CustomListWidgetType = {
 }
 
 export type WidgetType = (
-  ProductListWidgetType |
+  EntityListWidgetType |
   MyReviewsWidgetType |
   CustomListWidgetType
 );
