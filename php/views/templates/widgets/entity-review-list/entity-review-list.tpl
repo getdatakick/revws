@@ -16,17 +16,11 @@
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
 {strip}
-{if $reviewsData.preferences.microdata && $reviewCount>0 && $avgGrade > 0}
-<div class="revws-hidden" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-  Rated <span itemprop="ratingValue">{$avgGrade|string_format:"%.2f"}</span> on the scale <span itemProp="worstRating">1</span> - <span itemprop="bestRating">5</span> based on <span itemprop="reviewCount">{$reviewCount}</span> customer reviews
-</div>
-{/if}
-<div id="revws-portal-{$reviewList.id}">
-{assign "hasReviewed" in_array($productId, $visitor.reviewed.product)}
+{assign "hasReviewed" in_array($entityId, $visitor.reviewed[$entityType])}
 {assign "canReview" !($visitor.type === 'guest' && !$reviewsData.preferences.allowGuestReviews) && !$hasReviewed}
 {if $reviewList.total > 0}
   {include
-    file='modules/revws/views/templates/widgets/list/list.tpl'
+    file='modules/revws/views/templates/widgets/review-list/list.tpl'
     reviewStyle='item'
     reviewList=$reviewList
     reviewsData=$reviewsData
@@ -34,13 +28,13 @@
     shape=$reviewsData.theme.shape
     criteria=$reviewsData.criteria
     displayCriteria=$reviewsData.preferences.displayCriteria
-    microdata=$reviewsData.preferences.microdata
-    allowPaging=true
+    microdata=$microdata
+    allowPaging=$allowPaging
   }
   {if !$hasReviewed}
     {if $canReview}
       <div class="form-group">
-        <a class="btn btn-primary" data-revws-create-trigger="{$productId}">
+        <a class="btn btn-primary" data-revws-entity-type="{$entityType}" data-revws-create-trigger="{$entityId}">
           {l s='Write your review!' mod='revws'}
         </a>
       </div>
@@ -58,7 +52,7 @@
   {if !$hasReviewed}
     {if $canReview}
       <div class="form-group">
-        <a class="btn btn-primary" data-revws-create-trigger="{$productId}">
+        <a class="btn btn-primary" data-revws-entity-type="{$entityType}" data-revws-create-trigger="{$entityId}">
           {l s='Be the first to write a review!' mod='revws'}
         </a>
       </div>
@@ -75,8 +69,4 @@
     {/if}
   {/if}
 {/if}
-</div>
-<div class="revws-hidden">
-  <a href="{$allReviewsUrl}">{l s='Reviews' mod='revws'}</a>
-</div>
 {/strip}

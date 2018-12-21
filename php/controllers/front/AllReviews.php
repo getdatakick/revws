@@ -34,10 +34,12 @@ class RevwsAllReviewsModuleFrontController extends ModuleFrontController {
   public function initContent() {
     parent::initContent();
     $frontApp = $this->module->getFrontApp();
-    $list = $frontApp->addCustomListWidget('all-reviews', [], [
+    $widget = $frontApp->addCustomListWidget('all-reviews', [], [
       'reviewStyle' => 'item-with-entity'
     ]);
+    $list = $frontApp->getList('all-reviews');
     $this->context->smarty->assign([
+      'widget' => $widget,
       'reviewList' => $list->getData(),
       'visitor' => $frontApp->getVisitorData(),
       'reviewEntities' => $frontApp->getEntities(),

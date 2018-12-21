@@ -307,15 +307,16 @@ class Revws extends Module {
         'entityId' => $productId
       ]);
     }
-    $list = $frontApp->addEntityListWidget('product', $productId);
-    $visitor = $this->getVisitor();
     $settings = $this->getSettings();
+    $widget = $frontApp->addEntityListWidget('product', $productId, $settings->emitRichSnippets());
+    $list = $frontApp->getList($widget['listId']);
+    $visitor = $this->getVisitor();
     $this->context->smarty->assign([
+      'widget' => $widget,
       'reviewList' => $list->getData(),
-      'productId' => $productId,
       'visitor' => $frontApp->getVisitorData(),
       'reviewsData' => $frontApp->getStaticData(),
-      'allReviewsUrl' => $this->getUrl('AllReviews')
+      'reviewEntities' => $frontApp->getEntities(),
     ]);
     if ($settings->emitRichSnippets()) {
       list($grade, $count) = RevwsReview::getAverageGrade($settings, $productId);
@@ -629,17 +630,18 @@ class Revws extends Module {
 
     $frontApp = $this->getFrontApp();
     $listId = "" . (isset($params['id']) ? $params['id'] : $frontApp->generateListId());
-    $list = $frontApp->addCustomListWidget($listId, $conditions, $widgetParams, $pageSize, $order, $orderDir);
+    $widget = $frontApp->addCustomListWidget($listId, $conditions, $widgetParams, $pageSize, $order, $orderDir);
+    $list = $frontApp->getList($listId);
 
-    $this->context->smarty->assign(array_merge([
-      'shopName' => $shopName,
-      'criteria' => RevwsCriterion::getCriteria($this->context->language->id),
-      'shape' => $this->getShapeSettings(),
+    $this->context->smarty->assign([
+      'widget' => $widget,
       'reviewList' => $list->getData(),
+      'visitor' => $frontApp->getVisitorData(),
       'reviewEntities' => $frontApp->getEntities(),
-    ], $widgetParams));
+      'reviewsData' => $frontApp->getStaticData()
+    ]);
 
-    return $this->display(__FILE__, 'display-revws-review-list.tpl');
+    return $this->display(__FILE__, 'widget.tpl');
   }
 
   public function hookModuleRoutes() {

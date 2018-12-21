@@ -55,7 +55,7 @@ const getVisitor = (input: any): VisitorType => asObject(input);
 
 const getLists = (input: any): ListsType => asObject(input);
 
-const getWidgets = (input: any): WidgetsType => input || [];
+const getWidgets = (input: any): WidgetsType => input || {};
 
 const getEntities = (input: any): EntitiesType => asObject(input);
 

@@ -18,7 +18,7 @@
 {strip}
 <div class="revws-review-single">
   {include
-    file='modules/revws/views/templates/widgets/list/item.tpl'
+    file='modules/revws/views/templates/widgets/review-list/item.tpl'
     review=$review
     shape=$shape
     criteria=$criteria

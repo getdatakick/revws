@@ -24,7 +24,7 @@
       <div class="revws-verified-buyer-badge">{l s="Verified purchase" mod='revws'}</div>
     {/if}
     {if count($review.grades) > 0}
-      {include file='modules/revws/views/templates/widgets/grading/grading.tpl' grade=$review.grade shape=$shape type='product'}
+      {include file='modules/revws/views/templates/helpers/grading.tpl' grade=$review.grade shape=$shape type='product'}
       {if $microdata}
         <div class="revws-hidden" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
           <meta itemprop="worstRating" content="1">
@@ -45,7 +45,7 @@
           {if isset($criteria[$critKey])}
           <div class='revws-review-criterion'>
             <span class='revws-criterion-label'>{$criteria[$critKey].label}</span>
-            {include file='modules/revws/views/templates/widgets/grading/grading.tpl' grade=$critValue shape=$shape type='criterion'}
+            {include file='modules/revws/views/templates/helpers/grading.tpl' grade=$critValue shape=$shape type='criterion'}
           </div>
           {/if}
           {/foreach}
@@ -72,7 +72,7 @@
             <tr>
               <td class="revws-criterion-label">{$criteria[$critKey].label}</td>
               <td class="revws-criterion-value">
-                {include file='modules/revws/views/templates/widgets/grading/grading.tpl' grade=$critValue shape=$shape type='criterion'}
+                {include file='modules/revws/views/templates/helpers/grading.tpl' grade=$critValue shape=$shape type='criterion'}
               </td>
             </tr>
             {/if}

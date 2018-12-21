@@ -21,7 +21,7 @@
 {foreach from=$reviewList.reviews item=review}
   {if $reviewStyle === 'item'}
     {include
-      file='modules/revws/views/templates/widgets/list/item.tpl'
+      file='modules/revws/views/templates/widgets/review-list/item.tpl'
       review=$review
       shopName=$shopName
       shape=$shape
@@ -31,7 +31,7 @@
     }
   {else}
     {include
-      file='modules/revws/views/templates/widgets/list/item-with-entity.tpl'
+      file='modules/revws/views/templates/widgets/review-list/item-with-entity.tpl'
       review=$review
       shopName=$shopName
       shape=$shape
@@ -43,7 +43,7 @@
 {/foreach}
 </div>
 {if $allowPaging && $reviewList.pages > 1}
-  {include file='modules/revws/views/templates/widgets/list/paging.tpl' }
+  {include file='modules/revws/views/templates/widgets/review-list/paging.tpl' }
 {/if}
 {/if}
 {/strip}

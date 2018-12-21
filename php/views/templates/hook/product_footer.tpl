@@ -18,10 +18,15 @@
 <section id="revws-section" class="page-product-box">
   <h3 class="page-product-heading">{l s='Reviews' mod='revws'}</h3>
   <div id="idTabRevws">
+    {if $reviewsData.preferences.microdata && $reviewCount>0 && $avgGrade > 0}
+    <div class="revws-hidden" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+      Rated <span itemprop="ratingValue">{$avgGrade|string_format:"%.2f"}</span> on the scale <span itemProp="worstRating">1</span> - <span itemprop="bestRating">5</span> based on <span itemprop="reviewCount">{$reviewCount}</span> customer reviews
+    </div>
+    {/if}
     {include
-      file='modules/revws/views/templates/widgets/product-reviews/product-reviews.tpl'
+      file='modules/revws/views/templates/hook/widget.tpl'
+      widget=$widget
       reviewList=$reviewList
-      productId=$productId
       visitor=$visitor
       reviewsData=$reviewsData
     }

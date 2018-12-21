@@ -42,7 +42,8 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
 
   private function renderContent(Visitor $visitor, Permissions $permissions) {
     $frontApp = $this->module->getFrontApp();
-    $list = $frontApp->addMyReviewsWidget();
+    $widget = $frontApp->addMyReviewsWidget();
+    $list = $frontApp->getList($widget['listId']);
     $params = $this->getParams();
     $reviewProduct = (isset($params['review-product'])) ? (int)$params['review-product'] : null;
     if ($reviewProduct && $permissions->canCreateReview('product', $reviewProduct)) {
@@ -55,6 +56,7 @@ class RevwsMyReviewsModuleFrontController extends ModuleFrontController {
     }
 
     $this->context->smarty->assign([
+      'widget' => $widget,
       'reviewList' => $list->getData(),
       'visitor' => $frontApp->getVisitorData(),
       'reviewEntities' => $frontApp->getEntities(),

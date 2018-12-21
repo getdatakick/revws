@@ -48,73 +48,87 @@ class FrontApp implements JsonSerializable {
     $this->initActions[] = $action;
   }
 
-  public function addWidget($widget) {
-    $this->widgets[] = $widget;
+  public function addWidget($id, $widget) {
+    $widget['id'] = $id;
+    $this->widgets[$id] = $widget;
+    return $widget;
   }
 
-  public function addEntityListWidget($entityType, $entityId) {
+  public function addEntityListWidget($entityType, $entityId, $microdata) {
     $entityId = (int)$entityId;
     $id = strtolower($entityType) . '-reviews';
-    $list = $this->getList($id);
-    if (! $list) {
-      $settings = $this->getSettings();
-      $conditions = [
-        'entity' => [
-            'type' => $entityType,
-            'id' => $entityId
-        ]
-      ];
-      $pageSize = $this->getPageSize($id, $settings->getReviewsPerPage());
-      $order = $settings->getReviewOrder();
-      $page = $this->getPage($id, 0);
-      $list = $this->addList(new ReviewList($this->module, $id, $conditions, $page, $pageSize, $order, 'desc'));
-      $this->addWidget([
+    $widget = $this->getWidget($id);
+    if (! $widget) {
+      $list = $this->getList($id);
+      if (! $list) {
+        $settings = $this->getSettings();
+        $conditions = [
+          'entity' => [
+              'type' => $entityType,
+              'id' => $entityId
+          ]
+        ];
+        $pageSize = $this->getPageSize($id, $settings->getReviewsPerPage());
+        $order = $settings->getReviewOrder();
+        $page = $this->getPage($id, 0);
+        $list = $this->addList(new ReviewList($this->module, $id, $conditions, $page, $pageSize, $order, 'desc'));
+      }
+      $widget = $this->addWidget($id, [
         'type' => 'entityList',
         'entityType' => $entityType,
         'entityId' => $entityId,
-        'listId' => $list->getId()
+        'listId' => $list->getId(),
+        'allowPaging' => true,
+        'microdata' => $microdata
       ]);
     }
-    return $list;
+    return $widget;
   }
 
   public function addMyReviewsWidget() {
     $id = 'my-reviews';
-    $list = $this->getList($id);
-    if (! $list) {
-      $customerId = $this->getVisitor()->getCustomerId();
-      $settings = $this->getSettings();
-      $conditions = [ 'customer' => (int)$customerId ];
-      $pageSize = $this->getPageSize($id, $settings->getCustomerReviewsPerPage());
-      $order = 'id';
-      $page = $this->getPage($id, 0);
-      $list = $this->addList(new ReviewList($this->module, $id, $conditions, $page, $pageSize, $order, 'desc'));
-      $this->addWidget([
+    $widget = $this->getWidget($id);
+    if (! $widget) {
+      $list = $this->getList($id);
+      if (! $list) {
+        $customerId = $this->getVisitor()->getCustomerId();
+        $settings = $this->getSettings();
+        $conditions = [ 'customer' => (int)$customerId ];
+        $pageSize = $this->getPageSize($id, $settings->getCustomerReviewsPerPage());
+        $order = 'id';
+        $page = $this->getPage($id, 0);
+        $list = $this->addList(new ReviewList($this->module, $id, $conditions, $page, $pageSize, $order, 'desc'));
+      }
+      $widget = $this->addWidget($id, [
         'type' => 'myReviews',
         'customerId' => $customerId,
         'listId' => $list->getId()
       ]);
     }
-    return $list;
+    return $widget;
   }
 
   public function addCustomListWidget($id, $conditions, $preferences=[], $pageSize=5, $order='date', $orderDir='desc') {
-    $list = $this->getList($id);
-    if (! $list) {
-      $page = $this->getPage($id, 0);
-      $pageSize = $this->getPageSize($id, $pageSize);
-      $list = $this->addList(new ReviewList($this->module, $id, $conditions, $page, $pageSize, $order, $orderDir));
-      $this->customCount++;
-      $this->addWidget(array_merge([
+    $widget = $this->getWidget($id);
+    if (! $widget) {
+      $list = $this->getList($id);
+      if (! $list) {
+        $page = $this->getPage($id, 0);
+        $pageSize = $this->getPageSize($id, $pageSize);
+        $list = $this->addList(new ReviewList($this->module, $id, $conditions, $page, $pageSize, $order, $orderDir));
+        $this->customCount++;
+      }
+      $widget = $this->addWidget($id, array_merge([
         'type' => 'list',
         'listId' => $list->getId(),
         'reviewStyle' => 'item',
         'displayReply' => true,
         'displayCriteria' => $this->getSettings()->getDisplayCriteriaPreference(),
-        'allowPaging' => true
+        'allowPaging' => true,
+        'microdata' => false
       ], $preferences));
     }
-    return $list;
+    return $widget;
   }
 
   public function jsonSerialize() {
@@ -241,6 +255,10 @@ class FrontApp implements JsonSerializable {
 
   public function getList($id) {
     return isset($this->lists[$id]) ? $this->lists[$id] : null;
+  }
+
+  public function getWidget($id) {
+    return isset($this->widgets[$id]) ? $this->widgets[$id] : null;
   }
 
   public function getEntities() {

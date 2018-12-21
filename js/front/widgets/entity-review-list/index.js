@@ -20,7 +20,8 @@ type PassedProps = {
   visitor: VisitorType,
   listId: string,
   entityType: EntityType,
-  entityId: number
+  entityId: number,
+  allowPaging: boolean,
 };
 
 type OwnProps = {
