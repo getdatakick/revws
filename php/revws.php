@@ -382,7 +382,7 @@ class Revws extends Module {
   private function addCanonicalTags($page) {
     if (defined('_TB_VERSION_')) {
       // thirtybees already adds canonical tags automatically
-      return;
+      return null;
     }
     if ($page == 'module-revws-AllReviews') {
       $canonical = $this->context->link->getPageLink($page);
@@ -561,8 +561,6 @@ class Revws extends Module {
 
   public function hookDisplayRevwsReviewList($params) {
     $displayReply = true;
-    if (isset($params['displayReply'])) {
-    }
     if (isset($params['displayReply'])) {
       $displayReply = !!$params['displayReply'];
     }
