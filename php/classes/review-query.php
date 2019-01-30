@@ -31,11 +31,19 @@ class ReviewQuery {
 
   public function getSql() {
     return "
-      SELECT SQL_CALC_FOUND_ROWS {$this->getFields()}
+      SELECT {$this->getFields()}
         FROM {$this->getTables()}
         WHERE {$this->getConditions()}
         ORDER BY {$this->getOrder()}
         {$this->getLimit()}
+    ";
+  }
+
+  public function getCountSql() {
+    return "
+      SELECT COUNT(1) AS `cnt`
+        FROM {$this->getTables()}
+        WHERE {$this->getConditions()}
     ";
   }
 

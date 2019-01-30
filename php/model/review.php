@@ -185,7 +185,7 @@ class RevwsReview extends ObjectModel {
         $reviews[$id] = self::mapDbData($item);
       }
     }
-    $count = (int)$conn->getRow('SELECT FOUND_ROWS() AS r')['r'];
+    $count = (int)$conn->getRow($query->getCountSql())['cnt'];
 
     if ($reviews) {
       $keys = implode(array_keys($reviews), ', ');
