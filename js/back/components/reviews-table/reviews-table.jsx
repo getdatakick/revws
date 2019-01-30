@@ -113,6 +113,11 @@ const styles = theme => ({
       color: '#000',
       textDecoration: 'underline',
     }
+  },
+  text: {
+    maxWidth: 300,
+    textOverflow: 'ellipsis',
+    overflowX: 'hidden'
   }
 });
 
@@ -202,10 +207,10 @@ class EnhancedTable extends React.Component<Props> {
                         <Grading size={16} grade={grade} shape={shape} />
                       ) : '-'}
                     </TableCell>
-                    <TableCell padding="none">
+                    <TableCell padding="none" className={classes.text}>
                       { title }
                     </TableCell>
-                    <TableCell padding="none">
+                    <TableCell padding="none" className={classes.text}>
                       { content }
                     </TableCell>
                     <TableCell padding="dense" numeric={true}>

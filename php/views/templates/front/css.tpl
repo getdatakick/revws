@@ -189,6 +189,7 @@ a .revws-grading {
   color: #222;
   font-weight: bold;
   font-size: 16px;
+  word-break: break-word;
 }
 
 .revws-review-title a {
@@ -199,6 +200,7 @@ a .revws-grading {
   color: #666;
   padding: 10px 0px;
   font-size: 14px;
+  word-break: break-word;
 }
 
 .revws-review-criteria {
