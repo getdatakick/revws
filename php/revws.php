@@ -431,6 +431,8 @@ class Revws extends Module {
     $this->context->smarty->assign('loginLink', $this->getLoginUrl($product));
     $this->context->smarty->assign('microdata', $set->emitRichSnippets());
     $this->context->smarty->assign('showSignInButton', $set->showSignInButton());
+    $this->context->smarty->assign('inModal', (bool)Tools::getValue('content_only'));
+    $this->context->smarty->assign('linkToProduct', $this->context->link->getProductLink($product));
     return $this->display(__FILE__, 'review-average.tpl');
   }
 

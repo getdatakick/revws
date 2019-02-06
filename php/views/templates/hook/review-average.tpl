@@ -30,7 +30,7 @@
     </a>
   {else}
     {if $canReview}
-      <a class="revws-product-{$placement}-link" href="#" data-revws-create-trigger="{$productId}">
+      <a class="revws-product-{$placement}-link" href="#" {if !$inModal}data-revws-create-trigger="{$productId}"{/if}>
         {l s='Be the first to write a review!' mod='revws'}
       </a>
     {else}
@@ -46,3 +46,10 @@
     {/if}
   {/if}
 </div>
+{if $inModal}
+<script>
+  $('.revws-product-{$placement}-link').click(function() {
+    window.parent.document.location = '{$linkToProduct}#idTabRevws';
+  });
+</script>
+{/if}
