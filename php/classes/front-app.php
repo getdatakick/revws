@@ -93,7 +93,10 @@ class FrontApp implements JsonSerializable {
       if (! $list) {
         $customerId = $this->getVisitor()->getCustomerId();
         $settings = $this->getSettings();
-        $conditions = [ 'customer' => (int)$customerId ];
+        $conditions = [
+          'customer' => (int)$customerId,
+          'allLanguages' => true
+        ];
         $pageSize = $this->getPageSize($id, $settings->getCustomerReviewsPerPage());
         $order = 'id';
         $page = $this->getPage($id, 0);
