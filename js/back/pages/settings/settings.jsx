@@ -1,9 +1,10 @@
 // @flow
 import React from 'react';
-import type { SettingsType, GlobalDataType } from 'back/types';
+import type { GoTo, SettingsType, GlobalDataType } from 'back/types';
 import ScrollSpy from 'react-scrollspy';
 import { prop, toPairs, path, last, merge, range, map, curry, equals, assocPath } from 'ramda';
 import Section from 'back/components/section/section';
+import { reviewsPage, criteriaPage, supportPage } from 'back/routing';
 import ShapeSelect from './shape-select';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
@@ -19,6 +20,7 @@ import styles from './style.less';
 import ColorPicker from 'common/components/color-picker/trigger';
 
 export type Props = {
+  goTo: GoTo,
   data: GlobalDataType,
   settings: SettingsType,
   pageWidth: number,
@@ -58,6 +60,7 @@ class Settings extends React.PureComponent<Props, State> {
   }
 
   renderContent = (errors: any) => {
+    const { goTo } = this.props;
     const sections = [
       {
         key: 'general',
@@ -133,6 +136,21 @@ class Settings extends React.PureComponent<Props, State> {
                 </li>
               )) }
             </ScrollSpy>
+            <h2>{__('Shortcuts')}</h2>
+            <ul className={styles.sectionList}>
+              <li className={styles.sectionListItem}>
+                <a onClick={() => goTo(reviewsPage())}>{__('Reviews')}</a>
+              </li>
+              <li className={styles.sectionListItem}>
+                <a onClick={() => goTo(criteriaPage())}>{__('Manage review criteria')}</a>
+              </li>
+              <li className={styles.sectionListItem}>
+                <a onClick={() => goTo(reviewsPage('data'))}>{__('Import and export reviews')}</a>
+              </li>
+              <li className={styles.sectionListItem}>
+                <a onClick={() => goTo(supportPage())}>{__('Help and support')}</a>
+              </li>
+            </ul>
           </div>
         </Grid>
         <Grid item md={8} sm={12}>
