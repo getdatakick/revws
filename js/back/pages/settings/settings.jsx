@@ -98,6 +98,11 @@ class Settings extends React.PureComponent<Props, State> {
         content: this.renderCustomerAccount(errors)
       },
       {
+        key: 'all-reviews',
+        label: __('All reviews page'),
+        content: this.renderAllReviewsPage(errors)
+      },
+      {
         key: 'images',
         label: __('Images'),
         content: this.renderImages(errors)
@@ -645,6 +650,22 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
+  renderAllReviewsPage = (errors: any) => {
+    const settings = this.state.settings;
+    return (
+      <FormGroup>
+        <div className={styles.group}>
+          <TextField
+            fullWidth
+            label={__("Reviews per page")}
+            value={settings.display.allReviews.reviewsPerPage}
+            error={!! errors.display.allReviews.reviewsPerPage}
+            onChange={e => this.set(['display', 'allReviews', 'reviewsPerPage'], e.target.value)} />
+        </div>
+      </FormGroup>
+    );
+  }
+
   renderProductComparison = () => {
     return (
       <FormGroup>
@@ -727,6 +748,9 @@ class Settings extends React.PureComponent<Props, State> {
         myReviews: {
           reviewsPerPage: validateIsNumber(settings.display.myReviews.reviewsPerPage),
           maxRequests: validateIsNumber(settings.display.myReviews.maxRequests),
+        },
+        allReviews: {
+          reviewsPerPage: validateIsNumber(settings.display.allReviews.reviewsPerPage),
         }
       },
       images: {

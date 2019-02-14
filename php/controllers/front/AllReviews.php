@@ -36,7 +36,7 @@ class RevwsAllReviewsModuleFrontController extends ModuleFrontController {
     $frontApp = $this->module->getFrontApp();
     $widget = $frontApp->addCustomListWidget('all-reviews', [], [
       'reviewStyle' => 'item-with-entity'
-    ]);
+    ], $this->module->getSettings()->getAllReviewsPerPage());
     $list = $frontApp->getList('all-reviews');
     $this->context->smarty->assign([
       'widget' => $widget,

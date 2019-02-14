@@ -1,6 +1,6 @@
 // @flow
 import type { ComponentType } from 'react';
-import type { GlobalDataType, SettingsType } from 'back/types';
+import type { GlobalDataType, SettingsType, GoTo } from 'back/types';
 import type { State } from 'back/reducer';
 import type { Props } from './settings';
 import { connect } from 'react-redux';
@@ -19,7 +19,8 @@ type Actions = {
 }
 
 type PassedProps = {
-  data: GlobalDataType
+  data: GlobalDataType,
+  goTo: GoTo,
 };
 
 const mapStateToProps = (state: State): OwnProps => ({

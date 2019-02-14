@@ -35,7 +35,10 @@ export type SettingsType = {
       iconClass: string,
       reviewsPerPage: number | string,
       maxRequests: number | string,
-    }
+    },
+    allReviews: {
+      reviewsPerPage: number | string
+    },
   },
   moderation: {
     enabled: boolean,

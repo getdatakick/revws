@@ -85,6 +85,9 @@ class Settings {
           'iconClass' => 'icon icon-star',
           'reviewsPerPage' => 5,
           'maxRequests' => 3
+        ],
+        'allReviews' => [
+          'reviewsPerPage' => 10
         ]
       ],
       'moderation' => [
@@ -333,6 +336,11 @@ class Settings {
   public function getCustomerReviewsPerPage() {
     $ret = (int)$this->get(['display', 'myReviews', 'reviewsPerPage']);
     return $ret === 0 ? 5 : $ret;
+  }
+
+  public function getAllReviewsPerPage() {
+    $ret = (int)$this->get(['display', 'allReviews', 'reviewsPerPage']);
+    return $ret === 0 ? 10 : $ret;
   }
 
   public function getCustomerMaxRequests() {
