@@ -508,6 +508,9 @@ class RevwsReview extends ObjectModel {
     foreach ($json['grades'] as $key => $value) {
       $review->grades[(int)$key] = (int)$value;
     }
+    if ($json['date']) {
+      $review->date_add = date($json['date']);
+    }
     if (! $id) {
       $review->entity_type  = $json['entityType'];
       $review->id_entity = (int)$json['entityId'];

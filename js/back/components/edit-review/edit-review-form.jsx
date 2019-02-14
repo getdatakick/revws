@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import type { LanguagesType, ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType, LanguageType } from 'common/types';
+import moment from 'moment';
 import { toPairs, pathOr, keys } from 'ramda';
 import { isArray } from 'common/utils/ramda';
 import TextField from 'material-ui/TextField';
@@ -31,7 +32,7 @@ class EditReviewForm extends React.PureComponent<Props> {
 
   render() {
     const { review, errors, usedCriteria, languages } = this.props;
-    const { title, content, language } = review;
+    const { title, content, language, date } = review;
     const criteria = usedCriteria || keys(review.grades);
     const langs = toPairs(languages);
     return (
@@ -65,14 +66,25 @@ class EditReviewForm extends React.PureComponent<Props> {
                   onChange={this.toggleVerifiedBuyer} />
               }
               label={__("Verified buyer")} />
-            <div className={styles.formControl}>
-              <FormControl>
-                <InputLabel>{__('Review language')}</InputLabel>
-                <Select value={language} onChange={this.update('language')}>
-                  { langs.map(this.renderLanguage) }
-                </Select>
-              </FormControl>
-            </div>
+            <Grid container spacing={40} className={styles.formControl}>
+              <Grid item md={6}>
+                <FormControl>
+                  <InputLabel>{__('Review language')}</InputLabel>
+                  <Select value={language} onChange={this.update('language')}>
+                    { langs.map(this.renderLanguage) }
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item md={6}>
+                <TextField
+                  id="date"
+                  label="Review Date"
+                  type="date"
+                  value={moment(date).format('YYYY-MM-DD')}
+                  onChange={this.setDate}
+                  InputLabelProps={{ shrink: true }} />
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item md={6}>
             <h3>{__('Ratings')}</h3>
@@ -131,6 +143,17 @@ class EditReviewForm extends React.PureComponent<Props> {
   update = (key: string) => (e: any) => {
     const { review, onUpdateReview } = this.props;
     onUpdateReview({ ...review, [ key ]: e.target.value });
+  }
+
+  setDate = (e: any) => {
+    const value = e.target.value;
+    if (value) {
+      const m = moment(value, 'YYYY-MM-DD');
+      if (m.isValid()) {
+        const { review, onUpdateReview } = this.props;
+        onUpdateReview({ ...review, date: m.toDate() });
+      }
+    }
   }
 
   toggleVerifiedBuyer = (e: any) => {
