@@ -606,25 +606,9 @@ class Revws extends Module {
     ];
 
     $conditions = [];
-
-    if (isset($params['product'])) {
-      $product = (int)$params['product'];
-      if ($product > 0) {
-        $conditions['product'] = $product;
-      }
-    }
-
-    if (isset($params['customer'])) {
-      $customer = (int)$params['customer'];
-      if ($customer > 0) {
-        $conditions['customer'] = $customer;
-      }
-    }
-
-    if (isset($params['guest'])) {
-      $guest = (int)$params['guest'];
-      if ($guest > 0) {
-        $conditions['guest'] = $guest;
+    foreach (['product', 'customer', 'guest', 'category', 'categoryTree', 'manufacturer'] as $param) {
+      if (isset($params[$param])) {
+        $conditions[$param] = (int)$params[$param];
       }
     }
 

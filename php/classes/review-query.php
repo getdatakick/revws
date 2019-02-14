@@ -19,6 +19,7 @@
 
 namespace Revws;
 use \Context;
+use \Category;
 
 class ReviewQuery {
   private $settings;
@@ -101,6 +102,26 @@ class ReviewQuery {
     }
     if ($this->includeCustomerInfo()) {
       $from .= ' LEFT JOIN ' . _DB_PREFIX_ . 'customer cust ON (r.id_customer = cust.id_customer)';
+    }
+    if ($this->hasOption('category')) {
+      $category = $this->getInt('category');
+      $from .= ' INNER JOIN '. _DB_PREFIX_ . "category_product cp ON (r.entity_type = 'product' AND r.id_entity = cp.id_product AND cp.id_category = $category)";
+    }
+    if ($this->hasOption('categoryTree')) {
+      $category = $this->getInt('categoryTree');
+      $categories = Category::getChildren($category, $lang);
+      $cats = [ $category ];
+      if ($categories) {
+        foreach ($categories as $cat) {
+          $cats[] = (int)$cat['id_category'];
+        }
+      }
+      $cats = implode(',', $cats);
+      $from .= ' INNER JOIN '. _DB_PREFIX_ . "category_product cpr ON (r.entity_type = 'product' AND r.id_entity = cpr.id_product AND cpr.id_category in ($cats))";
+    }
+    if ($this->hasOption('manufacturer')) {
+      $manufacturer = $this->getInt('manufacturer');
+      $from .= ' INNER JOIN '. _DB_PREFIX_ ."product p ON (r.entity_type = 'product' AND r.id_entity = p.id_product AND p.id_manufacturer = $manufacturer)";
     }
     return $from;
   }
