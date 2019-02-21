@@ -657,6 +657,10 @@ a .revws-grading {
     align-items: center;
 }
 
+.revws-entity-image {
+  max-width: 100%;
+}
+
 .revws-review-entity-name a {
   text-decoration: none;
 }
