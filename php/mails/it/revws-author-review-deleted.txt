@@ -1,0 +1,19 @@
+Subject: La tua recensione non è stata approvata - {shop_name}
+
+Salve,
+
+Ti siamo estremamente grati di aver dedicato il tuo tempo per valutare i nostri prodotti. 
+Tuttavia riteniamo che il contenuto della tua recensione non sia appropiato e abbiamo deciso di non convalidarne la pubblicazione. 
+
+Come promemoria, questa è stata la tua recensione:
+
+Prodotto: {product_name}
+Valutazione: {ratings}
+Titolo: {title}
+Contenuto: {content}
+Nome Visualizzato: {display_name}
+
+Non esitare a contattarci se pensi che questo sia un errore da parte nostra.
+
+Cordiali saluti,
+{shop_name}

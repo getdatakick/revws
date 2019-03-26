@@ -1,0 +1,12 @@
+﻿Subject: Una recensione è stata modificata - {shop_name}
+
+Ciao!
+
+La recensione {review_id} per {product_name} è stata modificata nel seguente modo:
+
+Valutazione: {ratings} 
+Titolo: {title}
+Contenuto: {content}
+ID Recensione: {review_id} 
+
+Messaggio inviato dal Modulo di Recensioni DataKick 

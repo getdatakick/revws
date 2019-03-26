@@ -1,0 +1,18 @@
+﻿Subject: {shop_name} Grazie per la tua recensione
+
+Ciao!
+
+Grazie per la tua recensione! Ti siamo estremamente grati di aver dedicato il tuo tempo per valutare i nostri prodotti.
+
+Come promemoria, questa è stata la tua recensione:
+
+Prodotto: {product_name}
+Valutazione: {ratings} 
+Titolo: {title}
+Contenuto: {content}
+Nome Visualizzato: {display_name}
+
+Grazie di nuovo! Abbiamo molto apprezzato il tuo commento. 
+{shop_name}
+
+

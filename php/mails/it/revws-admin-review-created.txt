@@ -1,0 +1,15 @@
+Subject: Hai ricevuto una nuova recensione - {shop_name}
+
+Ciao!
+
+Hai ricevuto una nuova recensione!
+
+Ecco di seguito i dettagli:
+
+Prodotto: {product_name}
+Valutazione: {ratings} 
+Titolo: {title}
+Contenuto: {content}
+ID Recensione: {review_id} 
+
+Messaggio inviato dal Modulo di Recensioni DataKick 

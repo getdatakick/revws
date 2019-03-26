@@ -1,0 +1,14 @@
+﻿Subject: Una recensione è stata cancellata - {shop_name}
+
+Ciao!
+
+Questo messaggio è per informarti che la recensione {review_id} con valutazione {ratings} per {product_name} è stata cancellata dal cliente.
+
+Nel caso tu voglia contattare l'autore e chiederne il motivo ecco i suoi dati:
+
+Email: {author_email}
+Nome: {author_name}
+Nome Visualizzato nella recensione: {display_name}
+
+Messaggio inviato dal Modulo di Recensioni DataKick 
+

@@ -1,0 +1,20 @@
+Subject: La tua recensione è stata approvata - {shop_name}
+
+Ciao!
+
+La tua recensione è stata approvata.
+
+Ti siamo estremamente grati di aver dedicato il tuo tempo per valutare i nostri prodotti.
+
+Come promemoria, questa è la tua recensione:
+
+Prodotto: {product_name}
+Valutazione: {ratings}
+Titolo: {title}
+Contenuto: {content}
+Nome Visualizzato: {display_name}
+
+Grazie di nuovo! Abbiamo molto apprezzato il tuo commento. 
+{shop_name}
+
+

@@ -1,0 +1,11 @@
+Subject: Una recensione deve essere approvata - {shop_name}
+
+Ciao!
+
+Hai ricevuto una nuova recensione per {product_name}. 
+
+La recensione {review_id} con la valutazione di {ratings} è in attesa di essere approvata prima della pubblicazione.
+
+Collegati velocemente al tuo sito per controllarla!
+
+Messaggio inviato dal Modulo di Recensioni DataKick 
