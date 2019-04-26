@@ -183,7 +183,7 @@ class FrontApp implements JsonSerializable {
         'version' => $this->module->version,
         'api' => $context->link->getModuleLink('revws', 'api', [], true),
         'appJsUrl' => $set->getAppUrl($context, $this->module),
-        'loginUrl' => $this->module->getLoginUrl(),
+        'loginUrl' => $this->module->getLoginUrl(null),
         'csrf' => $this->module->csrf()->getToken(),
         'shopName' => Configuration::get('PS_SHOP_NAME'),
         'theme' => [
