@@ -26,15 +26,14 @@ type Props = {
 };
 
 const github='https://github.com/getdatakick/revws';
-const tbForum='https://forum.thirtybees.com/topic/1422/free-module-revws-product-reviews';
-const psForum='https://www.prestashop.com/forums/topic/663108-free-module-revws-product-reviews-ps16ps17';
+const forum='https://store.getdatakick.com/en/support/module/3-revws-product-reviews?utm_campaign=revws&utm_medium=web&utm_source=support';
 const datakick = 'https://www.getdatakick.com/?utm_campaign=revws&utm_medium=web&utm_source=support';
 const contact = 'https://www.getdatakick.com/contact/?utm_campaign=revws&utm_medium=web&utm_source=support';
-const download = 'https://www.getdatakick.com/extras/revws-product-reviews/?utm_campaign=revws&utm_medium=web&utm_source=support';
-const upgrade = 'https://www.getdatakick.com/extras/revws-product-reviews/?utm_campaign=revws&utm_medium=web&utm_source=upgrade';
-const sendreviewrequest = 'https://forum.thirtybees.com/topic/1510/free-module-send-review-request';
-const krona = 'https://forum.thirtybees.com/topic/1505/free-module-loyalty-points-genzo_krona';
-const originThread = 'https://forum.thirtybees.com/topic/1235/i-m-going-to-create-a-free-module';
+const download = 'https://store.getdatakick.com/en/revws-free?utm_campaign=revws&utm_medium=web&utm_source=support';
+const upgrade = 'https://store.getdatakick.com/en/modules/revws?utm_campaign=revws&utm_medium=web&utm_source=upgrade';
+const krona = 'https://forum.thirtybees.com/topic/1505-1505/free-module-loyalty-points-genzo_krona';
+const originThread = 'https://forum.thirtybees.com/topic/1235-1235/i-m-going-to-create-a-free-module';
+const services = 'https://store.getdatakick.com/en/services?utm_campaign=revws&utm_medium=web&utm_source=support';
 
 class SupportPage extends React.PureComponent<Props> {
   static displayName = 'SupportPage';
@@ -42,7 +41,6 @@ class SupportPage extends React.PureComponent<Props> {
   render() {
     const { checking, checkUpdate, data, paidNotes } = this.props;
     const isThirtybees = data.platform === 'thirtybees';
-    const forum = isThirtybees ? tbForum : psForum;
     return (
       <div className={styles.root}>
         {this.renderWarnings()}
@@ -74,7 +72,7 @@ class SupportPage extends React.PureComponent<Props> {
           </div>
           <div className={styles.link}>
             <strong>Forum:</strong>
-            <a target="_blank" href={forum} rel='noreferrer'>{forum}</a>
+            <a target="_blank" href={forum} rel='noreferrer'>{forum.replace(/\?.*/g, '')}</a>
           </div>
         </Section>
 
@@ -97,12 +95,6 @@ class SupportPage extends React.PureComponent<Props> {
                 Revws module is integrated with <a target="_blank" rel='noreferrer' href={krona}>Loyalty Points - Genzo Krona</a> module.
                 This module let you set up your own rewards strategy &mdash; give your customers an incentive to post reviews.
               </div>
-
-              <h3>Send review requests by email</h3>
-              <div className={classnames(styles.note, styles.link)}>
-                You can also use <a target="_blank" rel='noreferrer' href={sendreviewrequest}>Send Review Request module</a>. This one
-                will send an email to the customers who have purchased product, asking them for a review. Amazing tool to get those reviews.
-              </div>
             </div>
           )}
         </Section>
@@ -117,7 +109,7 @@ class SupportPage extends React.PureComponent<Props> {
             I would love to hear about your experience with this module.
           </div>
           <div className={styles.note}>
-            I also offer <strong>prestashop support</strong> and <strong>custom development</strong> services. If you are looking
+            I also offer <a target="_blank" rel='noreferrer' href={services}>prestashop support</a> and <a target="_blank" rel='noreferrer' href={services}>custom development</a> services. If you are looking
             for an experience prestashop developer then send me an email.
           </div>
           <div className={styles.note}>
