@@ -15,6 +15,7 @@ type Props = {
   entityType: ?EntityType,
   entityId: ?number,
   review: ?ReviewType,
+  allowEmptyTitle: boolean,
   allowEmptyReview: boolean,
   shape: GradingShapeType,
   shapeSize: number,
@@ -32,8 +33,8 @@ type Props = {
 
 class CreateReviewDialog extends React.PureComponent<Props> {
   render() {
-    const { review, onClose, allowEmptyReview, usedCriteria } = this.props;
-    const errors = review ? validateReview(allowEmptyReview, review) : null;
+    const { review, onClose, allowEmptyReview, allowEmptyTitle, usedCriteria } = this.props;
+    const errors = review ? validateReview(allowEmptyTitle, allowEmptyReview, review) : null;
     const grades = (review && usedCriteria ) ? criteriaEntered(usedCriteria,review.grades) : false;
     const invalid = !review || !grades || hasErrors(errors);
     return (

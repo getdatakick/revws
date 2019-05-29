@@ -15,6 +15,7 @@ import { formatName } from 'common/utils/format';
 type InputProps = {
   entityTypes: { [ EntityType ]: string },
   nameFormat: NameFormatType,
+  allowEmptyTitle: boolean,
   allowEmptyReview: boolean,
   shape: GradingShapeType,
   shapeSize: number,

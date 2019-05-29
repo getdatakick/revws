@@ -110,13 +110,20 @@ class ReviewListItem extends React.PureComponent<Props, State> {
                   colors={colors}
                   criteria={crits} />
               )}
-              <p className="revws-review-title">
-                { title }
-              </p>
+              {title && (
+                <p className="revws-review-title">{ title }</p>
+              )}
               {underReview && (
                 <div className="revws-under-review">{__("This review hasn't been approved yet")}</div>
               )}
-              <p className="revws-review-content">{ this.renderContent(content) }</p>
+              {content && (
+                <p className="revws-review-content">{ this.renderContent(content) }</p>
+              )}
+              {!title && !content && (
+                <p className="revws-review-content revws-review-without-details">
+                  {__("Customer didn't write any details")}
+                </p>
+              )}
             </div>
             {showCriteria && displayCriteria == 'side' && (
               <BlockCriteria

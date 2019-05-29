@@ -66,6 +66,7 @@ class ReviewsPage extends React.PureComponent<Props> {
             criteria={criteria}
             nameFormat={settings.review.displayName}
             allowEmptyReview={settings.review.allowEmpty}
+            allowEmptyTitle={settings.review.allowEmptyTitle}
             onClose={() => goTo(reviewsPage())}
             onSave={saveReview}
           />

@@ -197,6 +197,7 @@ class FrontApp implements JsonSerializable {
         'dateFormat' => $context->language->date_format_lite,
         'criteria' => RevwsCriterion::getCriteria($this->getLanguage()),
         'preferences' => [
+          'allowEmptyTitle' => $set->allowEmptyTitle(),
           'allowEmptyReviews' => $set->allowEmptyReviews(),
           'allowReviewWithoutCriteria' => $set->allowReviewWithoutCriteria(),
           'allowGuestReviews' => $set->allowGuestReviews(),

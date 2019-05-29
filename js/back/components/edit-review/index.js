@@ -12,6 +12,7 @@ import { loadData } from 'back/actions/creators';
 
 type InputProps = {
   shopName: string,
+  allowEmptyTitle: boolean,
   allowEmptyReviews: boolean,
   review: ReviewType,
   language: number,

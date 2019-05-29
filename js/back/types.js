@@ -52,6 +52,7 @@ export type SettingsType = {
     displayName: NameFormatType,
     allowGuestReviews: boolean,
     allowEmpty: boolean,
+    allowEmptyTitle: boolean,
     allowVoting: boolean,
     allowReporting: boolean,
     allowDelete: boolean,

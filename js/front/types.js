@@ -17,6 +17,7 @@ export type SettingsType = {
   },
   dateFormat: string,
   preferences: {
+    allowEmptyTitle: boolean,
     allowEmptyReviews: boolean,
     allowGuestReviews: boolean,
     allowImages: boolean,

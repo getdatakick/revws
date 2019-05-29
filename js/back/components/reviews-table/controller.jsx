@@ -162,6 +162,7 @@ class Controller extends React.PureComponent<Props, State> {
             languages={languages}
             language={language}
             review={selectedReview}
+            allowEmptyTitle={true}
             allowEmptyReviews={true}
             criteria={criteria}
             shape={shape}

@@ -27,10 +27,10 @@ export const validateImages = (images: Array<string>) => {
   return "Image not uploaded";
 };
 
-export const validateReview = (allowEmptyReviews: boolean, review: ReviewType): ReviewFormErrors => ({
+export const validateReview = (allowEmptyTitle: boolean, allowEmptyReviews: boolean, review: ReviewType): ReviewFormErrors => ({
   email: validateReviewEmail(review.email),
   displayName: validateDisplayName(review.displayName),
-  title: validateTitle(review.title),
+  title: validateTitle(allowEmptyTitle, review.title),
   content: validateContent(allowEmptyReviews, review.content),
   images: validateImages(review.images)
 });
@@ -50,7 +50,12 @@ const notEmpty = curry((errorMessage: string, value: ?string):?string => isEmpty
 
 export const validateDisplayName = notEmpty(__("Please provide your name"));
 
-export const validateTitle = notEmpty(__("Review title must be set"));
+export const validateTitle = (allowEmptyTitle: boolean, title: ?string) => {
+  if (allowEmptyTitle) {
+    return null;
+  }
+  return notEmpty(__("Review title must be set"), title);
+};
 
 export const validateContent = (allowEmptyReviews: boolean, content: ?string) => {
   if (allowEmptyReviews) {

@@ -103,6 +103,7 @@ class Settings {
         'allowGuestReviews' => true,
         'allowReviewWithoutCriteria' => false,
         'allowEmpty' => true,
+        'allowEmptyTitle' => false,
         'allowDelete' => true,
         'allowEdit' => true,
         'allowVoting' => true,
@@ -290,6 +291,10 @@ class Settings {
 
   public function allowEmptyReviews() {
     return $this->toBool($this->get(['review', 'allowEmpty']));
+  }
+
+  public function allowEmptyTitle() {
+    return $this->toBool($this->get(['review', 'allowEmptyTitle']));
   }
 
   public function showOnProductComparison() {

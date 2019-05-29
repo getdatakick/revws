@@ -57,7 +57,8 @@ class EditReviewDialog extends React.PureComponent<Props> {
   renderDialog = (entity: EntityInfoType, review: ReviewType) => {
     const { onClose, onSave, settings, stage, agreed } = this.props;
     const { name } = entity;
-    const errors = validateReview(settings.preferences.allowEmptyReviews, review);
+    const { allowEmptyReviews, allowEmptyTitle } = settings.preferences;
+    const errors = validateReview(allowEmptyTitle, allowEmptyReviews, review);
     const withErrors = hasErrors(errors) || (consentRequired(settings, review) && !agreed);
     const saving = stage === 'saving';
     const saved = stage === 'saved' || stage === 'failed';

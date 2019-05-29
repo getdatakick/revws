@@ -386,6 +386,10 @@ class Settings extends React.PureComponent<Props, State> {
     return (
       <FormGroup>
         <FormControlLabel
+          control={this.renderSwitch(['review', 'allowEmptyTitle'])}
+          label={__("Allow reviews without title")}
+        />
+        <FormControlLabel
           control={this.renderSwitch(['review', 'allowEmpty'])}
           label={__("Allow reviews without details")}
         />

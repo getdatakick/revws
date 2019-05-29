@@ -672,3 +672,9 @@ a .revws-grading {
 .revws-review-entity-name a:hover {
   text-decoration: underline;
 }
+
+.revws-review-without-details {
+  color: #999;
+  font-style: italic;
+  font-size: 85%;
+}

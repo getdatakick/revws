@@ -51,6 +51,7 @@
           {/foreach}
         </div>
         {/if}
+        {if !empty($review.title)}
         <p class="revws-review-title" {if $microdata}itemprop="name"{/if}>
           {if isset($linkToProduct) && $linkToProduct}
           <a href="{$linkToProduct}">{$review.title}</a>
@@ -58,10 +59,16 @@
           {$review.title}
           {/if}
         </p>
+        {/if}
         {if $review.underReview}
         <div class="revws-under-review">{l s="This review hasn't been approved yet" mod='revws'}</div>
         {/if}
+        {if !empty($review.content)}
         <p class="revws-review-content" {if $microdata}itemprop="description"{/if}>{$review.content|escape:'html':'UTF-8'|nl2br}</p>
+        {/if}
+        {if empty($review.title) && empty($review.content)}
+        <p class="revws-review-content revws-review-without-details">{l s='Customer didn\'t write any details' mod='revws'}</p>
+        {/if}
       </div>
       {if $showCriteria && $displayCriteria === 'side'}
       <div class="revws-review-criteria revws-review-criteria-block">

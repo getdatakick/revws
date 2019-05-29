@@ -12,6 +12,7 @@ import styles from './edit-review-form.less';
 
 type Props = {
   shopName: string,
+  allowEmptyTitle: boolean,
   allowEmptyReviews: boolean,
   review: ?ReviewType,
   language: number,
@@ -62,8 +63,8 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
   }
 
   renderDialog = (review: ReviewType) => {
-    const { allowEmptyReviews } = this.props;
-    const errors = validateReview(allowEmptyReviews, review);
+    const { allowEmptyTitle, allowEmptyReviews } = this.props;
+    const errors = validateReview(allowEmptyTitle, allowEmptyReviews, review);
     const viewMode = this.state.mode === 'view';
     const withErrors = hasErrors(errors);
     const label = viewMode ? __('Review details') : __('Edit review');
