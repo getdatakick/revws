@@ -7,6 +7,7 @@ import Button from 'material-ui/Button';
 import styles from './support.less';
 import type { GlobalDataType } from 'back/types';
 import CheckIcon from 'material-ui-icons/Cached';
+import RateIcon from 'material-ui-icons/Star';
 import List from 'material-ui/List';
 import UpToDateIcon from 'material-ui-icons/Done';
 import NewVersionIcon from 'material-ui-icons/InfoOutline';
@@ -20,9 +21,11 @@ type Props = {
   lastCheck: ?number,
   notes: ?string,
   paidNotes: ?string,
+  shouldReview: boolean,
   newVersionAvailable: boolean,
   checking: boolean,
   checkUpdate: ()=>void,
+  setReviewed: ()=>void,
 };
 
 const github='https://github.com/getdatakick/revws';
@@ -34,6 +37,7 @@ const upgrade = 'https://store.getdatakick.com/en/modules/revws?utm_campaign=rev
 const krona = 'https://forum.thirtybees.com/topic/1505-1505/free-module-loyalty-points-genzo_krona';
 const originThread = 'https://forum.thirtybees.com/topic/1235-1235/i-m-going-to-create-a-free-module';
 const services = 'https://store.getdatakick.com/en/services?utm_campaign=revws&utm_medium=web&utm_source=support';
+const reviewUrl = 'https://store.getdatakick.com/en/revws-free?post_review&utm_campaign=revws&utm_medium=web&utm_source=support';
 
 class SupportPage extends React.PureComponent<Props> {
   static displayName = 'SupportPage';
@@ -43,6 +47,8 @@ class SupportPage extends React.PureComponent<Props> {
     const isThirtybees = data.platform === 'thirtybees';
     return (
       <div className={styles.root}>
+        {this.renderReviewRequest() }
+
         {this.renderWarnings()}
 
         <Section id="update" label={__('Update module')} indent={false}>
@@ -120,6 +126,32 @@ class SupportPage extends React.PureComponent<Props> {
     );
   }
 
+  renderReviewRequest = () => {
+    const { shouldReview } = this.props;
+    if (shouldReview) {
+      return (
+        <Section id="review-request" label={__('How do you like this module?')} indent={false}>
+          <div className={classnames(styles.note, styles.inline)}>
+            <RateIcon />
+            <div>
+              <TextWithTags
+                text={__('Thank you for using this [1]free[/1] module. We really hope it helped you increase trust, and sell more products.')}
+                tags={['strong']} />
+              <br />
+              <br />
+              <TextWithTags
+                text={__('We would like to ask you a [1]favor[/1]. If you like this module, could you please write [2]short review[/2] on our store? Thank you in advance!')}
+                tags={['strong', 'strong']} />
+            </div>
+          </div>
+          <Button raised color='accent' target="_blank" onClick={this.onReview} href={reviewUrl}>
+            { __('Write review') }
+          </Button>
+        </Section>
+      );
+    }
+  }
+
   renderWarnings = () => {
     const warnings = this.props.data.warnings;
     if (warnings && warnings.length) {
@@ -186,6 +218,10 @@ class SupportPage extends React.PureComponent<Props> {
 
       </div>
     );
+  }
+
+  onReview = () => {
+    this.props.setReviewed();
   }
 }
 

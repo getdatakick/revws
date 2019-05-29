@@ -34,5 +34,6 @@ export default {
   uploadYotpoCsv: 'UPLOAD_YOTPO_CSV',
   exportReviews: 'EXPORT_REVIEWS',
 
-  refreshData: 'REFRESH_DATA'
+  refreshData: 'REFRESH_DATA',
+  setReviewed: 'SET_REVIEWED',
 };

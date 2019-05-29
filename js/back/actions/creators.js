@@ -30,10 +30,12 @@ import type {
   MigrateDataAction,
   UploadYotpoCsvAction,
   ExportReviewsAction,
-  RefreshDataAction
+  RefreshDataAction,
+  SetReviewedAction,
 } from './index';
 import Types from './types';
 
+export const setReviewed = (): SetReviewedAction => ({ type: Types.setReviewed });
 export const checkModuleVersion = (): CheckModuleVersionAction => ({ type: Types.checkModuleVersion });
 export const checkModuleVersionFailed = (): CheckModuleVersionFailedAction => ({ type: Types.checkModuleVersionFailed });
 export const setLatestVersion = (version: string, ts: number, notes: string, paid: ?string): SetLatestVersionAction => ({ type: Types.setLatestVersion, version, ts, notes, paid });

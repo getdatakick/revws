@@ -64,6 +64,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
           'activated' => $settings->isActivated(),
           'version' => $this->module->version,
           'versionUrl' => $settings->getVersionUrl(),
+          'shouldReview' => $settings->shouldReview(),
           'api' => $this->context->link->getAdminLink('AdminRevwsBackend'),
           'shopName' => Configuration::get('PS_SHOP_NAME'),
           'baseUrl' => $this->getPath(''),
@@ -155,6 +156,8 @@ class AdminRevwsBackendController extends ModuleAdminController {
         return $this->export();
       case 'setLatestVersion':
         return $this->setLatestVersion($payload);
+      case 'setReviewed':
+        return $this->setReviewed();
       default:
         throw new Exception("Unknown command $cmd");
     }
@@ -401,6 +404,11 @@ class AdminRevwsBackendController extends ModuleAdminController {
     }
     $paid = isset($data['paid']) ? $data['paid'] : null;
     $this->module->getSettings()->setCheckModuleVersion($data['version'], $data['ts'], $data['notes'], $paid);
+    return true;
+  }
+
+  private function setReviewed() {
+    $this->module->getSettings()->setReviewed();
     return true;
   }
 

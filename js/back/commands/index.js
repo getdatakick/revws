@@ -20,12 +20,14 @@ import { migrateData } from './migrate-data';
 import { uploadYotpoCsv } from './upload-yopto';
 import { exportReviews } from './export-reviews';
 import { activateAccount } from './activate-account';
+import { setReviewed } from './set-reviewed';
 
 export default (data: GlobalDataType) => {
   const commands = {
     [ Types.checkModuleVersion ]: checkModuleVersion(data),
     [ Types.activateAccount ]: activateAccount(data),
     [ Types.setLatestVersion ]: setLatestVersion,
+    [ Types.setReviewed ]: setReviewed,
     [ Types.setSettings ]: saveSettings,
     [ Types.deleteCriterion ]: deleteCriterion,
     [ Types.saveCriterion ]: saveCriterion,

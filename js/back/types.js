@@ -106,6 +106,7 @@ export type GlobalDataType = {
   api: string,
   shopName: string,
   baseUrl: string,
+  shouldReview: boolean,
   shapes: {
     [ string ]: GradingShapeType
   },
@@ -186,6 +187,7 @@ export type VersionCheck = {
 
 export type AccountType = {
   activated: boolean,
+  shouldReview: boolean,
   version: string,
   versionCheck: VersionCheck
 }

@@ -5,7 +5,7 @@ import Snackbar from 'back/pages/snackbar';
 import styles from './app.less';
 import AppTheme from 'common/components/theme/theme';
 import { getRoutingState } from 'back/selectors/routing-state';
-import { isNewVersionAvailable } from 'back/selectors/account';
+import { isNewVersionAvailable, shouldReview } from 'back/selectors/account';
 import { render } from 'back/routing';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
@@ -16,6 +16,7 @@ import Registration from 'back/components/registration';
 type Props = {
   routingState: RoutingState,
   newVersionAvailable: boolean,
+  shouldReview: boolean,
   goTo: GoTo,
   data: GlobalDataType
 };
@@ -24,12 +25,12 @@ class BackApp extends React.PureComponent<Props> {
   static displayName = 'BackApp';
 
   render() {
-    const { data, newVersionAvailable, routingState, goTo } = this.props;
+    const { data, routingState, goTo } = this.props;
     const snackbarPosition = { vertical: 'bottom', horizontal: 'right' };
     return (
       <AppTheme>
         <div className={styles.app}>
-          { this.renderNavigation(routingState, newVersionAvailable) }
+          { this.renderNavigation(routingState) }
           { render(routingState, { ...routingState, data, goTo }) }
           <Snackbar anchorOrigin={snackbarPosition} />
           <Registration />
@@ -38,12 +39,14 @@ class BackApp extends React.PureComponent<Props> {
     );
   }
 
-  renderNavigation = (routingState: RoutingState, newVersionAvailable: boolean) => {
+  renderNavigation = (routingState: RoutingState) => {
     if (routingState.showNavigation) {
-      const warnings = this.props.data.warnings;
+      const { shouldReview, newVersionAvailable, data } = this.props;
+      const warnings = data.warnings;
       return (
         <Navigation
           newVersionAvailable={newVersionAvailable}
+          shouldReview={shouldReview}
           routingState={routingState}
           warnings={warnings ? warnings.length : 0}
           goTo={this.props.goTo}
@@ -55,7 +58,8 @@ class BackApp extends React.PureComponent<Props> {
 
 const mapStateToProps = mapObject({
   routingState: getRoutingState,
-  newVersionAvailable: isNewVersionAvailable
+  newVersionAvailable: isNewVersionAvailable,
+  shouldReview: shouldReview,
 });
 
 const actions = { goTo };

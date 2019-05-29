@@ -5,6 +5,7 @@ import Types from 'back/actions/types';
 
 export type State = {
   activated: boolean,
+  shouldReview: boolean,
   version: string,
   latestVersion: ?string,
   lastCheck: ?number,
@@ -17,6 +18,7 @@ const initialState = (account: AccountType): State => {
   const versionCheck = account.versionCheck;
   return {
     activated: account.activated,
+    shouldReview: account.shouldReview,
     version: account.version,
     latestVersion: versionCheck.version,
     lastCheck: versionCheck.ts,

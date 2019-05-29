@@ -3,8 +3,8 @@ import type { ComponentType } from 'react';
 import type { GlobalDataType } from 'back/types';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
-import { isNewVersionAvailable, getLatestVersion, checkingVersion, getLastCheck, getNotes, getPaidNotes } from 'back/selectors/account';
-import { checkModuleVersion } from 'back/actions/creators';
+import { isNewVersionAvailable, getLatestVersion, checkingVersion, getLastCheck, getNotes, getPaidNotes, shouldReview } from 'back/selectors/account';
+import { checkModuleVersion, setReviewed } from 'back/actions/creators';
 import SupportPage from './support';
 
 const mapStateToProps = mapObject({
@@ -13,11 +13,13 @@ const mapStateToProps = mapObject({
   latestVersion: getLatestVersion,
   checking: checkingVersion,
   notes: getNotes,
-  paidNotes: getPaidNotes
+  paidNotes: getPaidNotes,
+  shouldReview: shouldReview,
 });
 
 const actions = {
-  checkUpdate: checkModuleVersion
+  checkUpdate: checkModuleVersion,
+  setReviewed: setReviewed,
 };
 
 const connectRedux = connect(mapStateToProps, actions);

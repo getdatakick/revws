@@ -9,6 +9,10 @@ export type ActivateAccountAction = {
   emailPreferences: EmailPreferences
 }
 
+export type SetReviewedAction = {
+  type: 'SET_REVIEWED'
+}
+
 export type ActivateAccountFailedAction = {
   type: 'ACTIVATE_ACCOUNT_FAILED'
 }
@@ -144,6 +148,7 @@ export type RefreshDataAction = {
 };
 
 export type Action = (
+  SetReviewedAction |
   ActivateAccountAction |
   ActivateAccountFailedAction |
   CheckModuleVersionAction |

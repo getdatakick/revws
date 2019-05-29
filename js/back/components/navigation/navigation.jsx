@@ -16,6 +16,7 @@ type Props = {
   routingState: RoutingState,
   goTo: GoTo,
   newVersionAvailable: boolean,
+  shouldReview: boolean,
   warnings: number
 };
 
@@ -23,8 +24,9 @@ class Navigation extends React.PureComponent<Props> {
   static displayName = 'Navigation';
 
   render() {
-    const { routingState, newVersionAvailable, warnings } = this.props;
+    const { routingState, newVersionAvailable, warnings,shouldReview } = this.props;
     const selected = routingState.type;
+    const count = warnings + (newVersionAvailable ? 1 : 0) + (shouldReview ? 1 : 0);
     return (
       <div className={styles.root}>
         <div className={styles.left}>
@@ -32,7 +34,7 @@ class Navigation extends React.PureComponent<Props> {
             <Tab value='moderation' label={__("Moderation")} />
             <Tab value='reviews' label={__("Reviews")} />
             <Tab value='criteria' label={__("Criteria")} />
-            <Tab value='support' label={this.renderSupportLabel(newVersionAvailable, warnings)} />
+            <Tab value='support' label={this.renderSupportLabel(count)} />
           </Tabs>
         </div>
         <div className={styles.right}>
@@ -42,8 +44,7 @@ class Navigation extends React.PureComponent<Props> {
     );
   }
 
-  renderSupportLabel = (newVersionAvailable: boolean, warnings: number) => {
-    const count = warnings + (newVersionAvailable ? 1 : 0);
+  renderSupportLabel = (count: number) => {
     if (count) {
       return (
         <div className={styles.tab}>

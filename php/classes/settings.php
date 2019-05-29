@@ -21,6 +21,10 @@ namespace Revws;
 use \Configuration;
 use \Language;
 use \Exception;
+use \DateTime;
+use \DateInterval;
+use \Db;
+use \DbQuery;
 
 class Settings {
   const APP_URL = 'REVWS_APP_URL';
@@ -30,6 +34,7 @@ class Settings {
   const SETTINGS = 'REVWS_SETTINGS';
   const VERSION = 'REVWS_VERSION';
   const ACTIVATED = 'REVWS_ACTIVATED';
+  const REVIEWED = 'REVWS_REVIEWED';
   const CHECK_VERSION = 'REVWS_CHECK_VERSION';
 
   private $data;
@@ -146,6 +151,7 @@ class Settings {
   }
 
   public function init() {
+    static::getInstallationDate();
     return $this->set(self::getDefaultSettings());
   }
 
@@ -427,6 +433,29 @@ class Settings {
 
   public function setActivated() {
     Configuration::updateGlobalValue(self::ACTIVATED, 'free');
+  }
+
+  public function shouldReview() {
+    $reviewed = static::toBool(Configuration::getGlobalValue(self::REVIEWED));
+    if ($reviewed) {
+      return false;
+    }
+    $now = new DateTime();
+    $threshold = static::getInstallationDate()->add(DateInterval::createfromdatestring('+1 day'));
+    return $now > $threshold;
+  }
+
+  public function setReviewed() {
+    Configuration::updateGlobalValue(self::REVIEWED, '1');
+  }
+
+  public function getInstallationDate() {
+    $sql = (new DbQuery())
+      ->select('MIN(date_add)')
+      ->from('configuration')
+      ->where('name LIKE "REVWS_%"');
+    $date = Db::getInstance()->getValue($sql);
+    return new DateTime($date);
   }
 
   public function setCheckModuleVersion($version, $ts, $notes, $paid) {

@@ -84,6 +84,7 @@ window.startRevws = (init: any) => {
   const versionCheck: VersionCheck = init.versionCheck;
   const account: AccountType = {
     activated: data.activated,
+    shouldReview: data.shouldReview,
     version: data.version,
     versionCheck
   };
