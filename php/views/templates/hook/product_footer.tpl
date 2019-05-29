@@ -16,7 +16,7 @@
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
 <section id="revws-section" class="page-product-box">
-  <h3 class="page-product-heading">{l s='Reviews' mod='revws'}</h3>
+  <h3 class="page-product-heading">{l s='Reviews (%s)' sprintf=[$revwsTotal] mod='revws'}</h3>
   <div id="idTabRevws">
     {if $reviewsData.preferences.microdata && $reviewCount>0 && $avgGrade > 0}
     <div class="revws-hidden" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">

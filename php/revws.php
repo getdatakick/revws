@@ -334,6 +334,8 @@ class Revws extends Module {
 
   public function hookDisplayProductTab() {
     if ($this->getSettings()->getPlacement() === 'tab') {
+      $list = $this->getProductReviewList();
+      $this->context->smarty->assign('revwsTotal', $list->getTotal());
       return $this->display(__FILE__, 'product_tab_header.tpl');
     }
   }
@@ -353,6 +355,7 @@ class Revws extends Module {
     $set = $this->getSettings();
     if ($set->getPlacement() === 'block') {
       $list = $this->getProductReviewList();
+      $this->context->smarty->assign('revwsTotal', $list->getTotal());
       if ($list->isEmpty() && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
         return;
       }

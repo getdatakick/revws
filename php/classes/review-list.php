@@ -55,6 +55,11 @@ class ReviewList implements JsonSerializable {
     return $this->list['total'] == 0;
   }
 
+  public function getTotal() {
+    $this->ensureLoaded();
+    return (int)$this->list['total'];
+  }
+
   public function getReviews() {
     $this->ensureLoaded();
     return $this->list['reviews'];
