@@ -376,7 +376,7 @@ a .revws-grading {
 
 .revws-review-with-product img {
   max-width: 200px;
-  padding-right: 40px;
+  width: calc(100% - 40px);
   flex-shrink: 0;
   flex-grow: 0;
 }
