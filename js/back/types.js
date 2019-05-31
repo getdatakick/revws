@@ -113,6 +113,7 @@ export type GlobalDataType = {
   dateFormat: string,
   language: number,
   languages: LanguagesType,
+  isRtl: boolean,
   platform: 'thirtybees' | 'prestashop',
   platformVersion: string,
   environment: EnvironmentType,

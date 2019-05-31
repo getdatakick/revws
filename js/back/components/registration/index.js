@@ -9,7 +9,7 @@ import { activateAccount } from 'back/actions/creators';
 import { isActivated } from 'back/selectors/account';
 
 type OwnProps = {
-  show: boolean
+  show: boolean,
 }
 
 type Actions = {
@@ -17,10 +17,11 @@ type Actions = {
 }
 
 type PassedProps = {
+  isRtl: boolean,
 }
 
 const mapStateToProps = (state: State): OwnProps => ({
-  show: !isActivated(state)
+  show: !isActivated(state),
 });
 
 const actions = {

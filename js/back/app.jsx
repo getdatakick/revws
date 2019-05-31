@@ -33,7 +33,7 @@ class BackApp extends React.PureComponent<Props> {
           { this.renderNavigation(routingState) }
           { render(routingState, { ...routingState, data, goTo }) }
           <Snackbar anchorOrigin={snackbarPosition} />
-          <Registration />
+          <Registration isRtl={data.isRtl} />
         </div>
       </AppTheme>
     );

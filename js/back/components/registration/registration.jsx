@@ -6,6 +6,7 @@ import RegistrationView from './registration-view';
 
 export type Props = {
   show: boolean,
+  isRtl: boolean,
   activateAccount: (string, EmailPreferences) => void
 }
 
@@ -24,6 +25,7 @@ class Registration extends React.PureComponent<Props, State> {
     return (
       <RegistrationView
         {...this.state}
+        isRtl={this.props.isRtl}
         show={this.props.show}
         activateAccount={this.activateAccount}
         setEmail={this.setEmail}

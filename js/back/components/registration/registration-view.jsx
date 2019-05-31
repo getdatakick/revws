@@ -16,6 +16,7 @@ import TextField from 'material-ui/TextField';
 import TextWithTags from 'common/components/text-with-tags/text-with-tags';
 
 type Props = {
+  isRtl: boolean,
   show: boolean,
   step: number,
   email: string,
@@ -33,6 +34,11 @@ const styles = {
     width: '100%',
     height: '100%',
     position: 'relative'
+  },
+  wrapper: {
+    height: 320,
+    width: '100%',
+    overflow: 'hidden'
   },
   step: {
     width: '100%',
@@ -61,20 +67,27 @@ class Registration extends React.PureComponent<Props> {
   static displayName = 'RegistrationView';
 
   render() {
-    const { step, email, show } = this.props;
+    const { isRtl, step, email, show } = this.props;
     const labels = [ __('I understand'), __('You can contact me'), __('Start using module')];
     let valid = true;
     if (step == 1) {
       valid = isEmail(email);
     }
-    const marginLeft = (-step * 150) + '%';
+    const offset = (-step * 150) + '%';
+    const style = {
+      ...styles.root,
+      marginRight: isRtl ? offset : undefined,
+      marginLeft:  isRtl ? undefined : offset,
+    };
     return (
       <Dialog open={show} maxWidth='md'>
         <DialogContent style={{width: 720}}>
-          <div style={{...styles.root, marginLeft}}>
-            { this.renderStep(0, LegalIcon, this.step1()) }
-            { this.renderStep(1, EmailIcon, this.step2()) }
-            { this.renderStep(2, PlaylistAddCheck, this.step3()) }
+          <div style={{...styles.wrapper}}>
+            <div style={style}>
+              { this.renderStep(0, LegalIcon, this.step1()) }
+              { this.renderStep(1, EmailIcon, this.step2()) }
+              { this.renderStep(2, PlaylistAddCheck, this.step3()) }
+            </div>
           </div>
         </DialogContent>
         <DialogActions>

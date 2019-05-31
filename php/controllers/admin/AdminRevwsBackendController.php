@@ -71,6 +71,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
           'shapes' => Shapes::getAvailableShapes(),
           'languages' => $languages,
           'language' => $lang,
+          'isRtl' => !!$this->context->language->is_rtl,
           'platform' => $platform,
           'platformVersion' => $platformVersion,
           'dateFormat' => $this->context->language->date_format_lite,
