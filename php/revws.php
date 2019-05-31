@@ -120,7 +120,8 @@ class Revws extends Module {
       'displayRevwsAverageRating',
       'registerGDPRConsent',
       'actionDeleteGDPRCustomer',
-      'actionExportGDPRData'
+      'actionExportGDPRData',
+      'actionGetConseqsTriggers',
     ]);
   }
 
@@ -846,6 +847,16 @@ class Revws extends Module {
       Media::addJsDef([ 'revwsData' => $this->frontApp ]);
     }
     return $this->frontApp;
+  }
+
+  public function hookActionGetConseqsTriggers() {
+    require_once(__DIR__ . '/classes/integration/conseqs-trigger.php');
+    return [
+        'reviewCreated' => new \Revws\ConseqsTrigger($this->l('Revws: Review created'), $this->l('Executed when review is created'), 'actionRevwsReviewCreated'),
+        'reviewUpdated' => new \Revws\ConseqsTrigger($this->l('Revws: Review updated'), $this->l('Executed when review is updated'), 'actionRevwsReviewUpdated'),
+        'reviewDeleted' => new \Revws\ConseqsTrigger($this->l('Revws: Review deleted'), $this->l('Executed when review is deleted'), 'actionRevwsReviewDeleted'),
+        'reviewApproved' => new \Revws\ConseqsTrigger($this->l('Revws: Review approved'), $this->l('Executed when review is approved'), 'actionRevwsReviewApproved')
+    ];
   }
 
   private static function getProductId($product) {

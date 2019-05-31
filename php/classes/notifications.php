@@ -29,6 +29,7 @@ use \Validate;
 use \Mail;
 use \Exception;
 use \Logger;
+use \Hook;
 
 class Notifications {
   private static $instance;
@@ -87,8 +88,8 @@ class Notifications {
   }
 
   private function processReviewCreated($id, $actor, $settings, $krona) {
+    $review = $this->getReview($id);
     if ($actor === 'visitor') {
-      $review = $this->getReview($id);
 
       // send notification to administrator
       if ($settings->emailAdminReviewCreated()) {
@@ -114,30 +115,39 @@ class Notifications {
 
       $krona->reviewCreated($review);
     }
+    Hook::exec('actionRevwsReviewCreated', [
+      'actor' => $actor,
+      'review' => $review,
+    ]);
   }
 
   private function processReviewUpdated($id, $actor, $settings) {
+    $review = $this->getReview($id);
     if ($actor === 'visitor') {
       // send notification to administrator
       if ($settings->emailAdminReviewUpdated()) {
         $lang = $settings->getAdminEmailLanguage();
         $email = $settings->getAdminEmail();
-        $data = $this->getCommonData($this->getReview($id), $lang);
+        $data = $this->getCommonData($review, $lang);
         if (! Mail::Send($lang, 'revws-admin-review-updated', Mail::l('Review has been updated', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
           self::emailError('revws-admin-review-updated', $id, $lang, $email);
         }
       }
     }
+    Hook::exec('actionRevwsReviewUpdated', [
+      'actor' => $actor,
+      'review' => $review,
+    ]);
   }
 
   private function processReviewDeleted($id, $actor, $settings, $krona) {
+    $review = $this->getReview($id);
     if ($actor === 'visitor') {
       // send notification to administrator
-      $review = $this->getReview($id);
       if ($settings->emailAdminReviewDeleted()) {
         $lang = $settings->getAdminEmailLanguage();
         $email = $settings->getAdminEmail();
-        $data = $this->getCommonData($this->getReview($id), $lang);
+        $data = $this->getCommonData($review, $lang);
         if (! Mail::Send($lang, 'revws-admin-review-deleted', Mail::l('Review has been deleted', $lang), $data, $email, null, null, null, null, null, Utils::getMailsDirectory(), false)) {
           self::emailError('revws-admin-review-deleted', $id, $lang, $email);
         }
@@ -145,7 +155,6 @@ class Notifications {
       $krona->reviewDeleted($review);
     }
     if ($actor === 'employee') {
-      $review = $this->getReview($id);
       if ($settings->emailAuthorReviewDeleted()) {
         $email = $this->getReviewerEmail($review);
         if ($email) {
@@ -158,11 +167,15 @@ class Notifications {
       }
       $krona->reviewRejected($review);
     }
+    Hook::exec('actionRevwsReviewDeleted', [
+      'actor' => $actor,
+      'review' => $review,
+    ]);
   }
 
   private function processReviewApproved($id, $actor, $settings, $krona) {
+    $review = $this->getReview($id);
     if ($actor === 'employee') {
-      $review = $this->getReview($id);
       if ($settings->emailAuthorReviewApproved()) {
         $email = $this->getReviewerEmail($review);
         if ($email) {
@@ -175,6 +188,10 @@ class Notifications {
       }
       $krona->reviewApproved($review);
     }
+    Hook::exec('actionRevwsReviewApproved', [
+      'actor' => $actor,
+      'review' => $review,
+    ]);
   }
 
   private function processNeedsApproval($id, $actor, $settings) {
