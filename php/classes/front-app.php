@@ -273,7 +273,7 @@ class FrontApp implements JsonSerializable {
   }
 
   private function loadEntities($entities=null) {
-    $products = is_null($entities) ? [] : $entities['products'];
+    $products = is_null($entities) ? [] : $entities['product'];
     foreach ($this->lists as $list) {
       $products = $list->getProductEntities($products);
     }
