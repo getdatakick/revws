@@ -179,7 +179,7 @@ class Settings {
 
   public function getVersionUrl() {
     $url = Configuration::getGlobalValue(self::VERSION_URL);
-    return $url ? $url : 'https://version.getdatakick.com/version';
+    return $url ? $url : null;
   }
 
   public function getSalt() {

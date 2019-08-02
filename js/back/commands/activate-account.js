@@ -5,22 +5,36 @@ import type { ActivateAccountAction } from 'back/actions';
 import { activateAccountFailed, setSnackbar } from 'back/actions/creators';
 
 export const activateAccount = (data: GlobalDataType) => (action: ActivateAccountAction, store: any, api: Api) => {
-  const payload = {
-    module: 'revws',
-    version: data.version,
-    email: action.email,
-    domain: location.hostname,
-    emailPreferences: action.emailPreferences
-  };
-  const url = data.versionUrl.replace(/\/version$/, '/activate-module');
+  const url = data.storeUrl || 'https://store.getdatakick.com/en/module/datakickweb/api';
   window.$.ajax({
     url,
     type: 'POST',
     dataType: 'json',
-    data: JSON.stringify(payload),
+    data: {
+      json: JSON.stringify({
+        module: 'revws',
+        command: 'activate',
+        payload: {
+          domain: location.hostname,
+          version: data.version,
+          licenseType: 'free',
+          platform: data.platform,
+          platformVersion: data.platformVersion,
+          email: action.email,
+          emailPreferences: action.emailPreferences
+        }
+      })
+    },
     success: (data) => {
-      if (data && data.data) {
-        api('activate', {});
+      if (data) {
+        if (data.error) {
+          store.dispatch(setSnackbar(data.error));
+          store.dispatch(activateAccountFailed());
+        } else {
+          api('activate', {});
+        }
+      } else {
+        store.dispatch(activateAccountFailed());
       }
     },
     error: (res) => {

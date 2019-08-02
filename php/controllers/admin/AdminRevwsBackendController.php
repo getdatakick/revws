@@ -63,7 +63,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
         'data' => [
           'activated' => $settings->isActivated(),
           'version' => $this->module->version,
-          'versionUrl' => $settings->getVersionUrl(),
+          'storeUrl' => $settings->getVersionUrl(),
           'shouldReview' => $settings->shouldReview(),
           'api' => $this->context->link->getAdminLink('AdminRevwsBackend'),
           'shopName' => Configuration::get('PS_SHOP_NAME'),

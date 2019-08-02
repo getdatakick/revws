@@ -102,7 +102,7 @@ export type EnvironmentType = {
 export type GlobalDataType = {
   activated: boolean,
   version: string,
-  versionUrl: string,
+  storeUrl?: string,
   api: string,
   shopName: string,
   baseUrl: string,

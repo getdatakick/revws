@@ -3,27 +3,37 @@ import type { Api } from 'common/types';
 import type { GlobalDataType } from 'back/types';
 import type { CheckModuleVersionAction } from 'back/actions';
 import { setLatestVersion, setSnackbar, checkModuleVersionFailed } from 'back/actions/creators';
-import { validateVersion, isUrl } from 'common/utils/validation';
+import { validateVersion } from 'common/utils/validation';
 import { versionNum } from 'common/utils/version';
 
 export const checkModuleVersion = (data: GlobalDataType) => (action: CheckModuleVersionAction, store: any, api: Api) => {
-  const module = 'revws';
-  const { versionUrl, version, platform, platformVersion } = data;
+  const { version, platform, platformVersion } = data;
   const currentVersion = data.version;
   const domain = location.hostname;
-  if (! isUrl(versionUrl)) {
-    console.info('version check url not provided');
-    return;
-  }
+  const storeUrl = data.storeUrl || 'https://store.getdatakick.com/en/module/datakickweb/api';
+
   const error = err => {
     store.dispatch(checkModuleVersionFailed());
     console.info('Failed to check new version: ', err);
   };
+
   window.$.ajax({
-    url: versionUrl,
+    url: storeUrl,
     type: 'POST',
     dataType: 'json',
-    data: JSON.stringify({ module, version: version, platform, platformVersion, domain }),
+    data: {
+      json: JSON.stringify({
+        module: 'revws',
+        command: 'version',
+        payload: {
+          domain,
+          platform,
+          platformVersion,
+          licenseType: 'free',
+          version: version,
+        }
+      })
+    },
     success: (data) => {
       if (data && data.data && data.data.version) {
         const ver = data.data.version;
