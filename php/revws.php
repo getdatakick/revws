@@ -49,14 +49,46 @@ require_once __DIR__.'/model/criterion.php';
 require_once __DIR__.'/model/review.php';
 
 class Revws extends Module {
+
+  /**
+   * @var \Revws\Permissions
+   */
   private $permissions;
+
+  /**
+   * @var \Revws\Visitor
+   */
   private $visitor;
+
+  /**
+   * @var \Revws\Settings
+   */
   private $settings;
+
+  /**
+   * @var \Revws\KronaIntegration
+   */
   private $krona;
+
+  /**
+   * @var \Revws\CSRFToken
+   */
   private $csrfToken;
+
+  /**
+   * @var \Revws\GDPR
+   */
   private $gdpr;
+
+  /**
+   * @var \Revws\FrontApp
+   */
   private $frontApp;
 
+  /**
+   * Revws constructor.
+   * @throws PrestaShopException
+   */
   public function __construct() {
     $this->name = 'revws';
     $this->tab = 'administration';
@@ -72,6 +104,13 @@ class Revws extends Module {
     $this->controllers = array('MyReviews', 'AllReviews');
   }
 
+  /**
+   * @param bool $createTables
+   * @return bool
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws Adapter_Exception
+   */
   public function install($createTables=true) {
     return (
       parent::install() &&
@@ -82,6 +121,13 @@ class Revws extends Module {
     );
   }
 
+  /**
+   * @param bool $dropTables
+   * @return bool
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws Adapter_Exception
+   */
   public function uninstall($dropTables=true) {
     return (
       $this->uninstallDb($dropTables) &&
@@ -92,6 +138,12 @@ class Revws extends Module {
     );
   }
 
+  /**
+   * @return bool
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws Adapter_Exception
+   */
   public function reset() {
     return (
       $this->uninstall(false) &&
@@ -99,6 +151,11 @@ class Revws extends Module {
     );
   }
 
+  /**
+   * @return bool
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   public function registerHooks() {
     return $this->setupHooks([
       'displayHeader',
@@ -125,10 +182,21 @@ class Revws extends Module {
     ]);
   }
 
+  /**
+   * @return bool
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   public function unregisterHooks() {
     return $this->setupHooks([]);
   }
 
+  /**
+   * @param $hooks
+   * @return bool
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   private function setupHooks($hooks) {
     $id = $this->id;
     $install = [];
@@ -163,6 +231,12 @@ class Revws extends Module {
     return $ret;
   }
 
+  /**
+   * @param $create
+   * @return bool
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   private function installDb($create) {
     if (! $create) {
       return true;
@@ -170,6 +244,12 @@ class Revws extends Module {
     return $this->executeSqlScript('install');
   }
 
+  /**
+   * @param $drop
+   * @return bool
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   private function uninstallDb($drop) {
     if (! $drop) {
       return true;
@@ -177,6 +257,13 @@ class Revws extends Module {
     return $this->executeSqlScript('uninstall', false);
   }
 
+  /**
+   * @param $script
+   * @param bool $check
+   * @return bool
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   public function executeSqlScript($script, $check=true) {
     $file = dirname(__FILE__) . '/sql/' . $script . '.sql';
     if (! file_exists($file)) {
@@ -209,10 +296,19 @@ class Revws extends Module {
     return true;
   }
 
+  /**
+   * @throws PrestaShopException
+   */
   public function getContent() {
     Tools::redirectAdmin($this->context->link->getAdminLink('AdminRevwsBackend').'#/settings');
   }
 
+  /**
+   * @return int
+   * @throws Adapter_Exception
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   private function installTab() {
     $tab = new Tab();
     $tab->active = 1;
@@ -226,6 +322,12 @@ class Revws extends Module {
     return $tab->add();
   }
 
+  /**
+   * @return bool
+   * @throws Adapter_Exception
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   private function removeTab() {
     $tabId = Tab::getIdFromClassName('AdminRevwsBackend');
     if ($tabId) {
@@ -235,6 +337,11 @@ class Revws extends Module {
     return true;
   }
 
+  /**
+   * @return int
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   private function getTabParent() {
     $catalog = Tab::getIdFromClassName('AdminCatalog');
     if ($catalog !== false) {
@@ -243,6 +350,12 @@ class Revws extends Module {
     return 0;
   }
 
+  /**
+   * @param bool $check
+   * @return \Revws\Settings
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   public function getSettings($check=true) {
     if (! $this->settings) {
       $this->settings = new \Revws\Settings();
@@ -261,6 +374,11 @@ class Revws extends Module {
     return $this->settings;
   }
 
+  /**
+   * @param $version
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   private function migrate($version) {
     $utils = new \Revws\MigrationUtils(Db::getInstance());
     if (version_compare($version, '1.0.9', '<')) {
@@ -272,6 +390,11 @@ class Revws extends Module {
     }
   }
 
+  /**
+   * @return \Revws\Visitor
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   public function getVisitor() {
     if (! $this->visitor) {
       $this->visitor = new \Revws\Visitor($this->context, $this->getSettings(), $this->getKrona());
@@ -279,6 +402,11 @@ class Revws extends Module {
     return $this->visitor;
   }
 
+  /**
+   * @return \Revws\EmployeePermissions|\Revws\VisitorPermissions
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   public function getPermissions() {
     if (! $this->permissions) {
       if (isset($this->context->employee) && $this->context->employee->id > 0) {
@@ -290,6 +418,9 @@ class Revws extends Module {
     return $this->permissions;
   }
 
+  /**
+   * @return \Revws\KronaIntegration
+   */
   public function getKrona() {
     if (! $this->krona) {
       $this->krona = new \Revws\KronaIntegration();
@@ -297,6 +428,12 @@ class Revws extends Module {
     return $this->krona;
   }
 
+  /**
+   * @return mixed|null
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws Exception
+   */
   private function getProductReviewList() {
     $productId = (int)(Tools::getValue('id_product'));
     $frontApp = $this->getFrontApp();
@@ -311,7 +448,6 @@ class Revws extends Module {
     $settings = $this->getSettings();
     $widget = $frontApp->addEntityListWidget('product', $productId, $settings->emitRichSnippets());
     $list = $frontApp->getList($widget['listId']);
-    $visitor = $this->getVisitor();
     $this->context->smarty->assign([
       'widget' => $widget,
       'reviewList' => $list->getData(),
@@ -329,53 +465,104 @@ class Revws extends Module {
     return $list;
   }
 
+  /**
+   * @return mixed
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws Exception
+   */
   private function getShapeSettings() {
     return \Revws\Shapes::getShape($this->getSettings()->getShape());
   }
 
+  /**
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
   public function hookDisplayProductTab() {
     if ($this->getSettings()->getPlacement() === 'tab') {
       $list = $this->getProductReviewList();
       $this->context->smarty->assign('revwsTotal', $list->getTotal());
       return $this->display(__FILE__, 'product_tab_header.tpl');
     }
+    return null;
   }
 
+  /**
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
   public function hookDisplayProductTabContent() {
     $set = $this->getSettings();
     if ($this->getSettings()->getPlacement() === 'tab') {
       $list = $this->getProductReviewList();
       if ($list->isEmpty() && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
-        return;
+        return null;
       }
       return $this->display(__FILE__, 'product_tab_content.tpl');
     }
+    return null;
   }
 
+  /**
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
   public function hookDisplayFooterProduct() {
     $set = $this->getSettings();
     if ($set->getPlacement() === 'block') {
       $list = $this->getProductReviewList();
       $this->context->smarty->assign('revwsTotal', $list->getTotal());
       if ($list->isEmpty() && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
-        return;
+        return null;
       }
       return $this->display(__FILE__, 'product_footer.tpl');
     }
+    return null;
   }
 
+  /**
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
   public function hookDisplayHeader() {
     return $this->hookHeader();
   }
 
+  /**
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
   public function hookDisplayMobileHeader() {
     return $this->hookHeader();
   }
 
+  /**
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
   public function hookMobileHeader() {
     return $this->hookHeader();
   }
 
+  /**
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
   public function hookHeader() {
     $this->csrf();
     $this->includeCommonStyles($this->context->controller);
@@ -383,6 +570,11 @@ class Revws extends Module {
     return $this->addCanonicalTags($this->context->controller->php_self);
   }
 
+  /**
+   * @param $page
+   * @return string
+   * @throws PrestaShopException
+   */
   private function addCanonicalTags($page) {
     if (defined('_TB_VERSION_')) {
       // thirtybees already adds canonical tags automatically
@@ -392,22 +584,45 @@ class Revws extends Module {
       $canonical = $this->context->link->getPageLink($page);
       return '<link rel="canonical" href="'.$canonical.'">'."\n";
     }
+    return null;
   }
 
-  public function hookDisplayRightColumnProduct($params) {
+  /**
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
+  public function hookDisplayRightColumnProduct() {
     $set = $this->getSettings();
     if ($set->getAveragePlacement() == 'rightColumn') {
       return $this->hookDisplayRevwsAverageRating(['placement' => 'extra']);
     }
+    return null;
   }
 
-  public function hookDisplayProductButtons($params) {
+  /**
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
+  public function hookDisplayProductButtons() {
     $set = $this->getSettings();
     if ($set->getAveragePlacement() == 'buttons') {
       return $this->hookDisplayRevwsAverageRating(['placement' => 'buttons']);
     }
+    return null;
   }
 
+  /**
+   * @param $params
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   * @throws Exception
+   */
   public function hookDisplayRevwsAverageRating($params) {
     if (isset($params['product'])) {
       $product = $params['product'];
@@ -441,6 +656,13 @@ class Revws extends Module {
   }
 
 
+  /**
+   * @param $params
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
   public function hookDisplayProductListReviews($params) {
     $settings = $this->getSettings();
     if ($settings->showOnProductListing()) {
@@ -455,8 +677,16 @@ class Revws extends Module {
       $this->context->smarty->assign('reviewsUrl', $this->getProductReviewsLink($productId));
       return $this->display(__FILE__, 'product_list.tpl', $this->getCacheId() . '|' . $productId);
     }
+    return null;
   }
 
+  /**
+   * @param $params
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
   public function hookDisplayProductComparison($params) {
     $settings = $this->getSettings();
     if ($settings->showOnProductComparison()) {
@@ -471,9 +701,16 @@ class Revws extends Module {
       $this->context->smarty->assign('list_ids_product', $params['list_ids_product']);
       return $this->display(__FILE__, 'products_comparison.tpl');
     }
+    return null;
   }
 
-  public function hookDisplayCustomerAccount($params) {
+  /**
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
+  public function hookDisplayCustomerAccount() {
     if ($this->getSettings()->showOnCustomerAccount()) {
       $this->context->smarty->assign([
         'iconClass' => $this->getSettings()->getCustomerAccountIcon(),
@@ -481,27 +718,48 @@ class Revws extends Module {
       ]);
       return $this->display(__FILE__, 'my-account.tpl');
     }
+    return null;
   }
 
 
-  public function hookDisplayMyAccountBlock($params) {
-    return $this->hookDisplayCustomerAccount($params);
+  /**
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
+  public function hookDisplayMyAccountBlock() {
+    return $this->hookDisplayCustomerAccount();
   }
 
 
+  /**
+   * @return Context
+   */
   public function getContext() {
     return $this->context;
   }
 
+  /**
+   * @param $relative
+   * @return string
+   */
   public function getPath($relative) {
     $uri = rtrim($this->getPathUri(), '/');
     $rel = ltrim($relative, '/');
     return "$uri/$rel";
   }
 
+  /**
+   *
+   */
   public function hookRegisterGDPRConsent() {
   }
 
+  /**
+   * @param $customer
+   * @return string
+   */
   public function hookActionExportGDPRData($customer) {
     if (isset($customer['email']) && Validate::isEmail($customer['email'])) {
       $email = $customer['email'];
@@ -512,8 +770,14 @@ class Revws extends Module {
         return json_encode($list);
       }
     }
+    return null;
   }
 
+  /**
+   * @param $customer
+   * @return string
+   * @throws PrestaShopException
+   */
   public function hookActionDeleteGDPRCustomer($customer) {
     if (isset($customer['email']) && Validate::isEmail($customer['email'])) {
       $email = $customer['email'];
@@ -522,18 +786,35 @@ class Revws extends Module {
       $this->clearCache();
       return $ret;
     }
+    return null;
   }
 
+  /**
+   * @param $params
+   * @return array
+   */
   public function hookDataKickExtend($params) {
     return \Revws\DatakickIntegration::integrate($params);
   }
 
-  public function hookActionRegisterKronaAction($params) {
+  /**
+   * @return array
+   */
+  public function hookActionRegisterKronaAction() {
     return $this->getKrona()->getActions();
   }
 
+  /**
+   * @param $params
+   * @return string
+   * @throws Adapter_Exception
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
   public function hookDisplayRevwsReview($params) {
     if (isset($params['review'])) {
+      $review = null;
       if (is_object($params['review'])) {
         $review = $params['review'];
       } else if (is_numeric($params['review'])) {
@@ -563,15 +844,21 @@ class Revws extends Module {
         return $this->display(__FILE__, 'display-revws-review.tpl');
       }
     }
+    return null;
   }
 
+  /**
+   * @param $params
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
   public function hookDisplayRevwsReviewList($params) {
     $displayReply = true;
     if (isset($params['displayReply'])) {
       $displayReply = !!$params['displayReply'];
     }
-    $shopName = $displayReply ? Configuration::get('PS_SHOP_NAME') : null;
-
     $displayCriteria = $this->getSettings()->getDisplayCriteriaPreference();
     if (isset($params['displayCriteria'])) {
       $displayCriteria = $params['displayCriteria'];
@@ -632,6 +919,9 @@ class Revws extends Module {
     return $this->display(__FILE__, 'widget.tpl');
   }
 
+  /**
+   * @return array
+   */
   public function hookModuleRoutes() {
     $prefix = 'reviews';
     return [
@@ -678,10 +968,21 @@ class Revws extends Module {
     ];
   }
 
+  /**
+   * @param $controller
+   * @param array $params
+   * @return string
+   * @throws PrestaShopException
+   */
   public function getUrl($controller, $params=[]) {
     return $this->context->link->getModuleLink($this->name, $controller, $params);
   }
 
+  /**
+   * @param $list
+   * @param $increment
+   * @return string
+   */
   public static function getPageUrl($list, $increment) {
     $pages = (int)$list['pages'];
     $page = (int)$list['page'] + (int)$increment + 1;
@@ -701,6 +1002,9 @@ class Revws extends Module {
     return $current;
   }
 
+  /**
+   * @throws PrestaShopException
+   */
   public function clearCache() {
     if (version_compare(_PS_VERSION_, '1.6.1', '>=')) {
       $this->_clearCache('product-list.tpl');
@@ -710,16 +1014,28 @@ class Revws extends Module {
     }
   }
 
+  /**
+   * @return array
+   */
   public function getFrontTranslations() {
     $translations = new \Revws\AppTranslation($this);
     return $translations->getFrontTranslations();
   }
 
+  /**
+   * @return array
+   */
   public function getBackTranslations() {
     $translations = new \Revws\AppTranslation($this);
     return $translations->getBackTranslations();
   }
 
+  /**
+   * @param Controller $controller
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
   public function includeCommonStyles($controller) {
     $controller->addJquery();
     $controller->addJqueryPlugin('fancybox');
@@ -730,6 +1046,11 @@ class Revws extends Module {
     }
   }
 
+  /**
+   * @param $product
+   * @return string
+   * @throws PrestaShopException
+   */
   private function getProductReviewsLink($product) {
     $product = (int)$product;
     if (! $product) {
@@ -746,12 +1067,22 @@ class Revws extends Module {
     return $link;
   }
 
+  /**
+   * @param $productId
+   * @return string
+   * @throws PrestaShopException
+   */
   public function getLoginUrl($productId) {
     return $this->context->link->getPageLink('authentication', true, null, [
       'back' => $this->getProductReviewsLink($productId)
     ]);
   }
 
+  /**
+   * @return \Revws\CSRFToken
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   public function csrf() {
     if (! $this->csrfToken) {
       $this->csrfToken = new \Revws\CSRFToken($this->context->cookie, $this->getSettings());
@@ -759,6 +1090,9 @@ class Revws extends Module {
     return $this->csrfToken;
   }
 
+  /**
+   * @return \Revws\GDPR
+   */
   public function getGDPR() {
     if (! $this->gdpr) {
       $this->gdpr = new \Revws\GDPR($this);
@@ -766,6 +1100,12 @@ class Revws extends Module {
     return $this->gdpr;
   }
 
+  /**
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
   public function getCSSFile() {
     $set = $this->getSettings();
     $version = $this->getCSSVersion($set);
@@ -781,6 +1121,12 @@ class Revws extends Module {
     return $this->getPath($name);
   }
 
+  /**
+   * @param \Revws\Settings $set
+   * @return string
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   private function getCSSVersion($set) {
     static $version;
     if (is_null($version)) {
@@ -798,6 +1144,12 @@ class Revws extends Module {
     return $version;
   }
 
+  /**
+   * @param \Revws\Settings $set
+   * @return array
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   */
   private function getCSSSettings($set) {
     $colors = $set->getShapeColors();
     $colors['fillColorHigh'] = \Revws\Color::emphasize($colors['fillColor']);
@@ -822,6 +1174,13 @@ class Revws extends Module {
     ];
   }
 
+  /**
+   * @param $set
+   * @param $filename
+   * @throws PrestaShopDatabaseException
+   * @throws PrestaShopException
+   * @throws SmartyException
+   */
   private function generateCSS($set, $filename) {
     Tools::clearSmartyCache();
     Media::clearCache();
@@ -841,6 +1200,9 @@ class Revws extends Module {
     @file_put_contents($filename, $css);
   }
 
+  /**
+   * @return \Revws\FrontApp
+   */
   public function getFrontApp() {
     if (! $this->frontApp) {
       $this->frontApp = new \Revws\FrontApp($this);
@@ -849,6 +1211,9 @@ class Revws extends Module {
     return $this->frontApp;
   }
 
+  /**
+   * @return array
+   */
   public function hookActionGetConseqsTriggers() {
     require_once(__DIR__ . '/classes/integration/conseqs-trigger.php');
     return [
@@ -859,6 +1224,10 @@ class Revws extends Module {
     ];
   }
 
+  /**
+   * @param $product
+   * @return int|null
+   */
   private static function getProductId($product) {
     if (is_array($product) && isset($product['id_product'])) {
       return (int)$product['id_product'];

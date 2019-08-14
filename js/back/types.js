@@ -57,7 +57,8 @@ export type SettingsType = {
     allowReporting: boolean,
     allowDelete: boolean,
     allowEdit: boolean,
-    displayCriteria: DisplayCriteriaType
+    displayCriteria: DisplayCriteriaType,
+    allowMultipleReviews: boolean,
   },
   images: {
     enabled: boolean,

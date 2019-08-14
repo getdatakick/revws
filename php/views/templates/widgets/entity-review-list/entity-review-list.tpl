@@ -16,7 +16,7 @@
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
 {strip}
-{assign "hasReviewed" in_array($entityId, $visitor.reviewed[$entityType])}
+{assign "hasReviewed" !$reviewsData.preferences.allowMultipleReviews && in_array($entityId, $visitor.reviewed[$entityType])}
 {assign "canReview" !($visitor.type === 'guest' && !$reviewsData.preferences.allowGuestReviews) && !$hasReviewed}
 {if $reviewList.total > 0}
   {include

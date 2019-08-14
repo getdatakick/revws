@@ -402,6 +402,10 @@ class Settings extends React.PureComponent<Props, State> {
           label={__("Allow reviews by annonymous visitors")}
         />
         <FormControlLabel
+          control={this.renderSwitch(['review', 'allowMultipleReviews'])}
+          label={__("Visitor can review the same product more then once")}
+        />
+        <FormControlLabel
           control={this.renderSwitch(['review', 'allowDelete'])}
           label={__("Visitors can delete their reviews")}
         />

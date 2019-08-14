@@ -23,6 +23,7 @@ export type SettingsType = {
     allowImages: boolean,
     allowNewImages: boolean,
     allowReviewWithoutCriteria: boolean,
+    allowMultipleReviews: boolean,
     customerReviewsPerPage: number,
     customerMaxRequests: number,
     showSignInButton: boolean,

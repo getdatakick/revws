@@ -1,5 +1,5 @@
-
 // @flow
+
 import type { ComponentType } from 'react';
 import type { EntitiesType, ListConditions, ReviewsType, SettingsType, VisitorType } from 'front/types';
 import type { EntityType, ListOrder, ListOrderDirection, ReviewType } from 'common/types';
@@ -64,7 +64,7 @@ const merge = (props: OwnProps, actions: Actions, passed: PassedProps): Props =>
   const loading = list.loading;
   const reviewList = getReviewList(list, reviews);
   const forbidden = visitor.type === 'guest' && !settings.preferences.allowGuestReviews;
-  const hasReviewed = isReviewed(entityType, entityId);
+  const hasReviewed = settings.preferences.allowMultipleReviews ? false : isReviewed(entityType, entityId);
   const canReview = !forbidden && !hasReviewed;
   const loadPage = (page: number) => {
     return loadList(listId, list.conditions, page, list.pageSize, list.order, list.orderDir);

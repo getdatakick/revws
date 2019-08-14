@@ -18,26 +18,44 @@
 */
 
 namespace Revws;
-use \RevwsReview;
-use \RevwsCriterion;
+
+use RevwsReview;
+use RevwsCriterion;
 
 class VisitorPermissions implements Permissions {
+
+  /** @var Settings  */
   private $settings;
+
+  /** @var Visitor */
   private $visitor;
 
+  /**
+   * VisitorPermissions constructor.
+   * @param Settings $settings
+   * @param Visitor $visitor
+   */
   public function __construct(Settings $settings, Visitor $visitor) {
     $this->settings = $settings;
     $this->visitor = $visitor;
   }
 
+  /**
+   * @param $entityType
+   * @param $entityId
+   * @return bool
+   * @throws \Exception
+   */
   public function canCreateReview($entityType, $entityId) {
     $visitor = $this->visitor;
     if ($visitor->isGuest() && !$this->settings->allowGuestReviews()) {
       return false;
     }
 
-    if ($visitor->hasWrittenReview($entityType, $entityId)) {
-      return false;
+    if (! $this->settings->allowMultipleReviews()) {
+      if ($visitor->hasWrittenReview($entityType, $entityId)) {
+          return false;
+      }
     }
 
     if (! $this->settings->allowReviewWithoutCriteria()) {
@@ -49,6 +67,10 @@ class VisitorPermissions implements Permissions {
     return true;
   }
 
+  /**
+   * @param RevwsReview $review
+   * @return bool
+   */
   public function canReportAbuse(RevwsReview $review) {
     if (! $this->settings->isReportingAllowed()) {
       return false;
@@ -62,6 +84,10 @@ class VisitorPermissions implements Permissions {
     return true;
   }
 
+  /**
+   * @param RevwsReview $review
+   * @return bool
+   */
   public function canVote(RevwsReview $review) {
     if (! $this->settings->isVotingAllowed()) {
       return false;
@@ -75,6 +101,10 @@ class VisitorPermissions implements Permissions {
     return true;
   }
 
+  /**
+   * @param RevwsReview $review
+   * @return bool
+   */
   public function canDelete(RevwsReview $review) {
     if (! $this->settings->isDeleteAllowed()) {
       return false;
@@ -82,6 +112,10 @@ class VisitorPermissions implements Permissions {
     return $review->isOwner($this->visitor);
   }
 
+  /**
+   * @param RevwsReview $review
+   * @return bool
+   */
   public function canEdit(RevwsReview $review) {
     if (! $this->settings->isEditAllowed()) {
       return false;
@@ -89,10 +123,20 @@ class VisitorPermissions implements Permissions {
     return $review->isOwner($this->visitor);
   }
 
+  /**
+   * @param RevwsReview $review
+   * @param Visitor $visitor
+   * @return mixed
+   */
   private function reportedBy($review, $visitor) {
     return $visitor->hasReacted($review->id, 'report_abuse');
   }
 
+  /**
+   * @param RevwsReview $review
+   * @param Visitor $visitor
+   * @return bool
+   */
   private function hasVoted($review, $visitor) {
     return $visitor->hasReacted($review->id, 'vote_up') || $visitor->hasReacted($review->id, 'vote_down');
   }
