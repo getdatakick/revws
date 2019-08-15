@@ -27,6 +27,7 @@ import Paper from 'material-ui/Paper';
 import EnhancedTableHead from './table-head';
 import EnhancedTableToolbar from './table-toolbar';
 import Grading from 'common/components/grading/grading';
+import Images from './images';
 import { hasRatings, averageGrade } from 'common/utils/reviews';
 import { viewCustomerUrl, editEntityUrl } from 'back/utils/drilldown';
 import type { Filters, Column } from './types';
@@ -41,6 +42,9 @@ type InputProps = {
   deleteReview: (id: number) => void,
   undeleteReview: (id: number) => void,
   deletePermReview: (id: number) => void,
+
+  showImages: boolean,
+
   // filters
   filters: Filters,
   onChangeFilters: (Filters)=>void,
@@ -118,6 +122,23 @@ const styles = theme => ({
     maxWidth: 300,
     textOverflow: 'ellipsis',
     overflowX: 'hidden'
+  },
+  images: {
+    display: 'flex',
+    alignItems: 'center',
+    height: '100%',
+  },
+  bigImage: {
+    maxWidth: 960,
+  },
+  bigImageContainer: {
+    textAlign: 'center',
+  },
+  image: {
+    maxWidth: 35,
+    maxHeight: 35,
+    border: "1px solid #333",
+    marginRight: 5,
   }
 });
 
@@ -130,6 +151,7 @@ class EnhancedTable extends React.Component<Props> {
     } = this.props;
     const names = getEntityNames(entityTypes, filters.entityType);
     const multiple = names.length > 1;
+    const showImages = this.props.showImages ? hasImages(data) : false;
     const columnsData: Array<Column> = reject(isNil, [
       { id: 'id', sort: 'id', disablePadding: false, label: __('ID') },
       multiple ? { id: 'entityType', sort: 'entityType', disablePadding: false, label: __('Type') } : null,
@@ -138,6 +160,7 @@ class EnhancedTable extends React.Component<Props> {
       { id: 'grade', sort: 'grade', disablePadding: false, label: __('Ratings') },
       { id: 'title', sort: 'title', disablePadding: true, label: __('Review title') },
       { id: 'content', sort: 'content', disablePadding: true, label: __('Review content') },
+      showImages ? {id: 'images', disablePadding: true, label: __('Images')} : null,
       { id: 'actions', disablePadding: false, label: __('Actions') },
     ]);
     return (
@@ -159,7 +182,7 @@ class EnhancedTable extends React.Component<Props> {
             />
             <TableBody>
               {data.map((review: ReviewType) => {
-                const { id, entity, title, content, customer, displayName, authorType, authorId, verifiedBuyer, entityType, entityId } = review;
+                const { id, entity, title, content, customer, displayName, authorType, authorId, verifiedBuyer, entityType, entityId, images } = review;
                 const ratings = hasRatings(review) ;
                 const grade = averageGrade(review);
                 const { icon, type } = getAuthorInfo(classes, authorType, verifiedBuyer);
@@ -213,6 +236,13 @@ class EnhancedTable extends React.Component<Props> {
                     <TableCell padding="none" className={classes.text}>
                       { content }
                     </TableCell>
+                    { showImages && (
+                      <TableCell padding="none">
+                        <Images
+                          images={images}
+                          classes={classes} />
+                      </TableCell>
+                    )}
                     <TableCell padding="dense" numeric={true}>
                       { this.renderActions(review) }
                     </TableCell>
@@ -330,6 +360,15 @@ const getEntityNames = (entityTypes, entityTypeFilter): Array<string> => {
     return [ entityTypes[entityTypeFilter] ];
   }
   return values(entityTypes);
+};
+
+const hasImages = (data: Array<ReviewType>): boolean => {
+  for (let i = 0; i<data.length; i++) {
+    if (data[i].images.length) {
+      return true;
+    }
+  }
+  return false;
 };
 
 const stop = (e) => e.stopPropagation();

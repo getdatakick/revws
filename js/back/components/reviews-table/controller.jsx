@@ -15,6 +15,7 @@ export type InputProps = {
   criteria: CriteriaType,
   languages: LanguagesType,
   displayCriteria: DisplayCriteriaType,
+  showImages: boolean,
   shape: GradingShapeType,
   shapeSize: number,
   dateFormat: string,
@@ -122,7 +123,7 @@ class Controller extends React.PureComponent<Props, State> {
     const {
       languages, criteria, emptyLabel, title, shape, approveReview, deleteReview, undeleteReview,
       language, shapeSize, shopName, displayCriteria, deletePermReview, drilldownUrls, dateFormat,
-      entityTypes
+      entityTypes, showImages
     } = this.props;
     const { edit, page, pageSize, order, orderDir, filters } = this.state;
     const { total, reviews } = list;
@@ -133,6 +134,7 @@ class Controller extends React.PureComponent<Props, State> {
     return (
       <div>
         <ReviewsTable
+          showImages={showImages}
           title={title}
           shape={shape}
           data={filtered}

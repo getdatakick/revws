@@ -53,6 +53,7 @@ class ReviewsPage extends React.PureComponent<Props> {
           filters={{
             deleted: false
           }}
+          showImages={true}
           entityTypes={data.entityTypes}
           drilldownUrls={data.drilldownUrls}
           uniqueId='allReviews' />
