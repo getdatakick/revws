@@ -1,0 +1,18 @@
+Subject: Your review was rejected - {shop_name}
+
+Hello,
+
+Thank you for taking the time to submit your review. However, we feel it was not appropriate and thus we did not approve it.
+
+As a reminder, this was your review:
+
+Product: {product_name}
+Rating: {ratings}
+Title: {title}
+Content: {content}
+The name displayed: {display_name}
+
+Please feel free to write us if you think this was in error.
+
+Kind regards,
+{shop_name}

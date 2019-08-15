@@ -1,0 +1,21 @@
+Subject: Your review has been approved
+ - {shop_name}
+
+Hi!
+
+Thank you so much for your review! 
+
+It's been approved now. We are extremely thankful that you took the time to review our product.
+
+As a reminder, this is your review:
+
+Product: {product_name}
+Rating: {ratings} 
+Title: {title}
+Content: {content}
+The name displayed: {display_name}
+
+Thanks again! We really appreciate the review. 
+{shop_name}
+
+

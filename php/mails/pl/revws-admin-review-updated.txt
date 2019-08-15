@@ -1,0 +1,12 @@
+Subject: A review was updated - {shop_name}
+
+Hi!
+
+Review {review_id} for {product_name} was updated and now reads as follows:
+
+Rating: {ratings} 
+Title: {title}
+Content: {content}
+Review ID: {review_id} 
+
+Your DataKick Review Module

@@ -1,0 +1,15 @@
+Subject: A review has been deleted
+ - {shop_name}
+
+Hi!
+
+This is to let you know that review {review_id} with the rating {ratings} for {product_name} was deleted by the reviewer.
+
+If you'd like to ask the reviewer why, here are their details:
+
+Email: {author_email}
+Name: {author_name}
+Display name in the review: {display_name}
+
+Your DataKick Review Module
+

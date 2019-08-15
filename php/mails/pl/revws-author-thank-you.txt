@@ -1,0 +1,18 @@
+Subject: {shop_name} thanks you for your review
+
+Hi!
+
+Thank you so much for your review! We are extremely thankful that you took the time to submit a review.
+
+As a reminder, this was your review:
+
+Product: {product_name}
+Rating: {ratings} 
+Title: {title}
+Content: {content}
+The name displayed: {display_name}
+
+Thanks again! We really appreciate the review. 
+{shop_name}
+
+

@@ -1,0 +1,15 @@
+Subject: You got a new review - {shop_name}
+
+Hi!
+
+You got a new review!
+
+Here are the details:
+
+Product: {product_name}
+Rating: {ratings} 
+Title: {title}
+Content: {content}
+Review ID: {review_id} 
+
+Your DataKick Review Module
