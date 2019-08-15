@@ -35,7 +35,7 @@ class Settings {
   const SALT = 'REVWS_SALT';
   const SETTINGS = 'REVWS_SETTINGS';
   const VERSION = 'REVWS_VERSION';
-  const ACTIVATED = 'REVWS_ACTIVATED';
+  const ACTIVATED = 'REVWS_ACTIVE';
   const REVIEWED = 'REVWS_REVIEWED';
   const CHECK_VERSION = 'REVWS_CHECK_VERSION';
 
@@ -627,9 +627,6 @@ class Settings {
    * @return bool
    */
   public function isActivated() {
-    if (Configuration::getGlobalValue(self::VERSION_URL)) {
-      return true;
-    }
     return Configuration::getGlobalValue(self::ACTIVATED) == 'free';
   }
 
