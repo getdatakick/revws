@@ -41,7 +41,7 @@
     {else}
       {if $visitor.type === 'guest'}
       <div class="form-group">
-        <a class="btn btn-primary" href="{$reviewsData.loginUrl}">
+        <a class="btn btn-primary" href="{$reviewsData.loginUrl}" rel="nofollow">
           {l s='Sign in to write a review' mod='revws'}
         </a>
       </div>
@@ -59,7 +59,7 @@
     {else}
       {if $visitor.type === 'guest' && $reviewsData.preferences.showSignInButton}
         <div class="form-group">
-          <a class="btn btn-primary" href="{$reviewsData.loginUrl}">
+          <a class="btn btn-primary" href="{$reviewsData.loginUrl}" rel="nofollow">
             {l s='Sign in to write a review' mod='revws'}
           </a>
         </div>

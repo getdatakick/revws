@@ -37,7 +37,7 @@
       {if $hasReviewed}
         {l s="Your review hasn't been approved yet" mod='revws'}
       {elseif $isGuest && $showSignInButton}
-        <a class="revws-product-{$placement}-link" href="{$loginLink}">
+        <a class="revws-product-{$placement}-link" href="{$loginLink}" rel="nofollow">
           {l s='Sign in to write a review' mod='revws'}
         </a>
       {else}

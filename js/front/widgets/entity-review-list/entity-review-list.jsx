@@ -65,7 +65,7 @@ class EntityReviewList extends React.PureComponent<Props> {
     if (this.showSignInButton()) {
       return (
         <div className="form-group">
-          <a className="btn btn-primary" href={this.getLoginUrl()}>
+          <a className="btn btn-primary" href={this.getLoginUrl()} rel="nofollow">
             {__('Sign in to write a review')}
           </a>
         </div>
@@ -81,7 +81,7 @@ class EntityReviewList extends React.PureComponent<Props> {
     if (this.showSignInButton()) {
       return (
         <div className="form-group">
-          <a className="btn btn-primary" href={this.getLoginUrl()}>
+          <a className="btn btn-primary" href={this.getLoginUrl()} rel="nofollow">
             {__('Sign in to write a review')}
           </a>
         </div>
