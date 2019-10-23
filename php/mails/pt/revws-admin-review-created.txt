@@ -1,0 +1,15 @@
+Assunto: Você tem uma nova análise - {shop_name}
+
+Olá!
+
+Você tem uma nova análise!
+
+Aqui estão os detalhes:
+
+Produto: {product_name}
+Classificação: {ratings} 
+Título: {title}
+Conteúdo: {content}
+ID da análise: {review_id} 
+
+Your DataKick Review Module

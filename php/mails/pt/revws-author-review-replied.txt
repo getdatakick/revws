@@ -1,0 +1,24 @@
+Assunto: {shop_name} respondeu à sua análise
+
+Olá!
+
+Muito obrigado pela sua análise! 
+
+A nossa resposta foi a seguinte: 
+
+{reply}
+
+Estamos muito gratos pelo tempo que dedicou à análise.
+
+Como lembrete, esta foi a sua análise:
+
+Produto: {product_name}
+Classificação: {ratings}
+Título: {title}
+Conteúdo: {content}
+Nome disponibilizado: {display_name}
+
+Mais uma vez, muito obrigado! Ficámos muito gratos pela mesma. 
+{shop_name}
+
+

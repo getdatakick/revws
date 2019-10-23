@@ -1,0 +1,12 @@
+Assunto: Uma análise foi atualizada - {shop_name}
+
+Olá!
+
+A análise {review_id} para {product_name} foi atualizada e agora tem este aspecto:
+
+Classificação: {ratings} 
+Título: {title}
+Conteúdo: {content}
+ID da análise: {review_id} 
+
+Your DataKick Review Module

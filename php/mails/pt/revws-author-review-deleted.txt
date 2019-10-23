@@ -1,0 +1,18 @@
+Assunto: A sua análise foi rejeitada - {shop_name}
+
+Olá,
+
+Agradecemos o tempo que dedicou à sua análise. No entanto, sentimos que não é apropriada e resolvemos não aprová-la.
+
+Como lembrete, esta foi a sua análise:
+
+Produto: {product_name}
+Classificação: {ratings}
+Título: {title}
+Conteúdo: {content}
+Nome disponibilizado: {display_name}
+
+Por favor, sinta-se à vontade para nos escrever se não concordar.
+
+Melhores cumprimentos,
+{shop_name}

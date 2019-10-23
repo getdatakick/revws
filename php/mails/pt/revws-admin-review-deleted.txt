@@ -1,0 +1,15 @@
+Assunto: Uma análise foi eliminada
+ - {shop_name}
+
+Olá!
+
+Este email serve para avisá-lo que a análise {review_id} com classificação {ratings} para {product_name} foi eliminada pelo seu autor.
+
+Caso queira perguntar o porquê, aqui ficam os detalhes:
+
+Email: {author_email}
+Nome: {author_name}
+Nome na análise: {display_name}
+
+Your DataKick Review Module
+

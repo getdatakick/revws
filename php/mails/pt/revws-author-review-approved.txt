@@ -1,0 +1,21 @@
+Assunto: A sua análise foi aprovada
+ - {shop_name}
+
+Olá!
+
+Muito obrigado pela sua análise! 
+
+Acabou de ser aprovada. Estamos muito gratos pelo tempo que dedicou à análise.
+
+Como lembrete, esta foi a sua análise:
+
+Produto: {product_name}
+Classificação: {ratings} 
+Título: {title}
+Conteúdo: {content}
+O nome disponibilizado{display_name}
+
+Mais uma vez, muito obrigado! Ficamos muito grataos pela análise. 
+{shop_name}
+
+

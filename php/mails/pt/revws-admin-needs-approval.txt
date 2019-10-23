@@ -1,0 +1,12 @@
+Assunto: Uma análise necessita de aprovação
+ - {shop_name}
+
+Olá!
+
+Você tem uma análise para {product_name}. 
+
+A análise {review_id} com a classificação {ratings} está agora a necessitar da sua aprovação antes de ser publicada.
+
+Dê um salto ao seu site e verifique a análise!
+
+O seu módulo de Análises DataKick
