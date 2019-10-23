@@ -1,0 +1,15 @@
+Sujet: Vous avez un nouvel avis - {shop_name}
+
+Bonjour!
+
+Vous avez un nouvel avis!
+
+Voici les détails:
+
+Produit: {product_name}
+Evaluation: {ratings} 
+Titre: {title}
+Détail: {content}
+Avis ID: {review_id} 
+
+Votre module d'avis client DataKick

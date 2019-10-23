@@ -1,0 +1,20 @@
+Sujet: Votre avis a été approuvé - {shop_name}
+
+Bonjour!
+
+Merci beaucoup pour votre avis! 
+
+Il a été approuvé. Nous vous remercions d'avoir pris le temps d'écrire un avis sur notre produit.
+
+Pour rappel, voici votre avis :
+
+Produit: {product_name}
+Evaluation: {ratings} 
+Titre: {title}
+Détail: {content}
+Le nom publié: {display_name}
+
+Merci encore !Nous apprécions vraiment votre avis. 
+{shop_name}
+
+

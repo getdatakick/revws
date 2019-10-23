@@ -1,0 +1,12 @@
+Sujet: Un avis a été mis à jour - {shop_name}
+
+Bonjour!
+
+L'avis {review_id} pour {product_name} a été mis à jour et vous pouvez le lire ci-dessous :
+
+Evaluation : {ratings} 
+Titre: {title}
+Détail: {content}
+Avis ID: {review_id} 
+
+Votre module d'avis client DataKick

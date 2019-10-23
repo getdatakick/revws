@@ -1,0 +1,18 @@
+Sujet: Votre avis a été rejeté - {shop_name}
+
+Bonjour,
+
+Merci d'avoir pris le temps d'écrire un avis. Malgré cela, nous pensons qu'il n'est pas approprié et donc nous ne pouvons d'approuver.
+
+Pour rappel, voici votre avis :
+
+Produit: {product_name}
+Evaluation : {ratings}
+Titre: {title}
+Détail : {content}
+Le nom publié : {display_name}
+
+Soyez libre de nous contacter si vous pensez que c'est une erreur.
+
+Cordialement,
+{shop_name}

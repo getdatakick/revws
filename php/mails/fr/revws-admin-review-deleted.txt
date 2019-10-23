@@ -1,0 +1,15 @@
+Sujet: Un avis a été supprimé
+ - {shop_name}
+
+Bonjour!
+
+Veuillez noter que l'avis {review_id} avec l'évaluation {ratings} pour {product_name} a été supprimé par l'auteur.
+
+Si vous souhaitez demandé pourquoi à l'auteur, voici les details:
+
+Email: {author_email}
+Nom {author_name}
+Le nom inscrit dans l'avis: {display_name}
+
+Votre module d'avis client DataKick
+
