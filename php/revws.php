@@ -273,7 +273,7 @@ class Revws extends Module {
     if (! $sql) {
       return false;
     }
-    $sql = str_replace(['PREFIX_', 'ENGINE_TYPE', 'CHARSET_TYPE'], [_DB_PREFIX_, _MYSQL_ENGINE_, 'utf8'], $sql);
+    $sql = str_replace(['PREFIX_', 'ENGINE_TYPE', 'CHARSET_TYPE', 'COLLATE_TYPE'], [_DB_PREFIX_, _MYSQL_ENGINE_, 'utf8mb4', 'utf8mb4_unicode_ci'], $sql);
     $sql = preg_split("/;\s*[\r\n]+/", $sql);
     foreach ($sql as $statement) {
       $stmt = trim($statement);
@@ -388,7 +388,8 @@ class Revws extends Module {
     if (! $utils->columnExists(_DB_PREFIX_ . 'revws_criterion', 'entity_type')) {
       $this->executeSqlScript('add-entity-type', false);
     }
-  }
+    $this->executeSqlScript('fix-table-charset', false);
+}
 
   /**
    * @return \Revws\Visitor

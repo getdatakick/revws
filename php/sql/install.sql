@@ -22,26 +22,26 @@ CREATE TABLE IF NOT EXISTS `PREFIX_revws_criterion` (
   `active`          TINYINT(1) NOT NULL DEFAULT 1,
   `entity_type`     VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id_criterion`)
-) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE COLLATE=COLLATE_TYPE;
 
 CREATE TABLE IF NOT EXISTS `PREFIX_revws_criterion_lang` (
   `id_criterion`    INT(11) UNSIGNED NOT NULL,
   `id_lang`         INT(11) UNSIGNED NOT NULL,
   `label`           VARCHAR(128) NOT NULL,
   PRIMARY KEY (`id_criterion`, `id_lang`)
-) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE COLLATE=COLLATE_TYPE;
 
 CREATE TABLE IF NOT EXISTS `PREFIX_revws_criterion_category` (
   `id_criterion`    INT(11) UNSIGNED NOT NULL,
   `id_category`     INT(11) UNSIGNED NOT NULL,
   PRIMARY KEY (`id_criterion`, `id_category`)
-) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE COLLATE=COLLATE_TYPE;
 
 CREATE TABLE IF NOT EXISTS `PREFIX_revws_criterion_product` (
   `id_criterion`    INT(11) UNSIGNED NOT NULL,
   `id_product`      INT(11) UNSIGNED NOT NULL,
   PRIMARY KEY (`id_criterion`, `id_product`)
-) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE COLLATE=COLLATE_TYPE;;
 
 CREATE TABLE IF NOT EXISTS `PREFIX_revws_review` (
   `id_review`        INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_revws_review` (
   KEY `entity_key` (`entity_type`, `id_entity`),
   KEY `id_customer` (`id_customer`),
   KEY `id_guest` (`id_guest`)
-) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE COLLATE=COLLATE_TYPE;
 
 CREATE TABLE IF NOT EXISTS `PREFIX_revws_review_grade` (
   `id_review`    INT(11) UNSIGNED NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_revws_review_grade` (
   `grade`        DECIMAL(5,2) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_review`, `id_criterion`),
   KEY `id_review` (`id_review`)
-) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE COLLATE=COLLATE_TYPE;
 
 CREATE TABLE IF NOT EXISTS `PREFIX_revws_review_reaction` (
   `id_review`     INT(11) UNSIGNED NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_revws_review_reaction` (
   `reaction_type` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id_review`, `id_customer`, `id_guest`, `reaction_type`),
   KEY `id_review` (`id_review`)
-) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE COLLATE=COLLATE_TYPE;
 
 CREATE TABLE IF NOT EXISTS `PREFIX_revws_review_image` (
   `id_image`      INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_revws_review_image` (
   `pos`           INT(11) NOT NULL,
   PRIMARY KEY (`id_image`),
   KEY `id_review` (`id_review`)
-) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE;
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=CHARSET_TYPE COLLATE=COLLATE_TYPE;;
 
 INSERT IGNORE INTO `PREFIX_revws_criterion`(`id_criterion`, `global`, `entity_type`) VALUES (1, 1, 'product');
 INSERT IGNORE INTO `PREFIX_revws_criterion_lang`(`id_criterion`, `id_lang`, `label`) SELECT 1, `l`.`id_lang`, 'Quality' FROM `PREFIX_lang` `l`;
