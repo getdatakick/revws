@@ -87,7 +87,7 @@ class ReviewQuery {
     foreach ($fields as $alias => $expr) {
       $ret[] = "$expr AS `$alias`";
     }
-    return implode($ret, ", ");
+    return implode(", ", $ret);
   }
 
   private function getTables() {
@@ -182,7 +182,7 @@ class ReviewQuery {
       }
     }
     if ($cond) {
-      return implode($cond, ' AND ');
+      return implode(' AND ', $cond);
     }
     return '1';
   }

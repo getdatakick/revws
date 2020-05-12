@@ -188,7 +188,7 @@ class RevwsReview extends ObjectModel {
     $count = (int)$conn->getRow($query->getCountSql())['cnt'];
 
     if ($reviews) {
-      $keys = implode(array_keys($reviews), ', ');
+      $keys = implode(', ', array_keys($reviews));
 
       // load ratings
       $grade = _DB_PREFIX_ . 'revws_review_grade';
