@@ -53,6 +53,7 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
           criteria={settings.criteria}
           displayCriteria={settings.preferences.displayCriteria}
           displayReply={true}
+          displayMicrodata={false}
           onVote={F}
           allowPaging={true}
           loadPage={loadPage} />

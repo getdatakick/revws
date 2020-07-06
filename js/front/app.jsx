@@ -37,7 +37,7 @@ class FrontApp extends React.PureComponent<Props> {
   renderWidget = (widget: WidgetType, i: number) => {
     const { settings, visitor } = this.props;
     if (widget.type === 'entityList') {
-      const { listId, entityType, entityId, allowPaging } = widget;
+      const { listId, entityType, entityId, allowPaging, microdata } = widget;
       return (
         <Portal nodeId={`revws-portal-${listId}`} key={i}>
           <EntityReviewList
@@ -46,6 +46,7 @@ class FrontApp extends React.PureComponent<Props> {
             listId={listId}
             entityType={entityType}
             entityId={entityId}
+            displayMicrodata={microdata}
             allowPaging={allowPaging} />
         </Portal>
       );

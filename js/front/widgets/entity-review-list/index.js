@@ -22,6 +22,7 @@ type PassedProps = {
   entityType: EntityType,
   entityId: number,
   allowPaging: boolean,
+  displayMicrodata: boolean,
 };
 
 type OwnProps = {

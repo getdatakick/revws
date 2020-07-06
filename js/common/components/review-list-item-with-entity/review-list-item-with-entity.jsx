@@ -12,6 +12,7 @@ type Props = {
   dateFormat: string,
   criteria: CriteriaType,
   displayCriteria: DisplayCriteriaType,
+  displayMicrodata: boolean,
   review: ReviewType,
   onEdit: (ReviewType)=>void,
   onSaveReply?: (?string)=>void,
@@ -26,7 +27,7 @@ class ReviewListItemWithEntity extends React.PureComponent<Props> {
   static defaultProps = {};
 
   render() {
-    const { entity, shopName, shape, colors, shapeSize, criteria, displayCriteria, review, onEdit, onDelete, onVote, onReport, dateFormat } = this.props;
+    const { entity, shopName, shape, colors, shapeSize, criteria, displayCriteria, review, onEdit, onDelete, onVote, onReport, dateFormat, displayMicrodata } = this.props;
     return (
       <div>
         <h2 className="revws-review-entity-name">
@@ -45,6 +46,7 @@ class ReviewListItemWithEntity extends React.PureComponent<Props> {
               dateFormat={dateFormat}
               criteria={criteria}
               displayCriteria={displayCriteria}
+              displayMicrodata={displayMicrodata}
               review={review}
               onEdit={onEdit}
               onDelete={onDelete}

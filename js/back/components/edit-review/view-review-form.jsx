@@ -36,6 +36,7 @@ class EditReviewForm extends React.PureComponent<Props> {
         <ReviewListItem
           criteria={criteria}
           displayCriteria={displayCriteria}
+          displayMicrodata={false}
           shopName={shopName}
           shape={shape}
           shapeSize={shapeSize}

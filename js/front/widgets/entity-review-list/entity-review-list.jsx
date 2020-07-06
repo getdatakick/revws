@@ -16,6 +16,7 @@ export type Props = {
   loading: boolean,
   loadPage: (number)=>void,
   allowPaging: boolean,
+  displayMicrodata: boolean,
   onEdit: (ReviewType)=>void,
   onCreate: (EntityType, number)=>void,
   onDelete: (ReviewType)=>void,
@@ -27,7 +28,7 @@ class EntityReviewList extends React.PureComponent<Props> {
   static displayName = 'EntityReviewList';
 
   render() {
-    const { allowPaging, loadPage, settings, entities, reviewList, loading, onEdit, onDelete, onReport, onVote } = this.props;
+    const { allowPaging, loadPage, settings, entities, reviewList, loading, onEdit, onDelete, onReport, onVote, displayMicrodata } = this.props;
     const isEmpty = reviewList.total === 0;
     return isEmpty ? this.renderEmptyState() : (
       <div>
@@ -45,6 +46,7 @@ class EntityReviewList extends React.PureComponent<Props> {
           onReport={onReport}
           criteria={settings.criteria}
           displayCriteria={settings.preferences.displayCriteria}
+          displayMicrodata={displayMicrodata}
           displayReply={true}
           onVote={onVote}
           allowPaging={allowPaging}

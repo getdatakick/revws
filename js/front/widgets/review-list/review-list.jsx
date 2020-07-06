@@ -20,6 +20,7 @@ type Props = {
   criteria: CriteriaType,
   displayCriteria: DisplayCriteriaType,
   displayReply: boolean,
+  displayMicrodata: boolean,
   loading: boolean,
   allowPaging: boolean,
   loadPage: (number)=>void,
@@ -50,7 +51,7 @@ class ReviewList extends React.PureComponent<Props> {
   }
 
   renderReview = (review: ReviewType) => {
-    const { displayReply, shape, shapeSize, onReport, onVote, onEdit, onDelete, shopName, displayCriteria, criteria, dateFormat } = this.props;
+    const { displayReply, shape, shapeSize, onReport, onVote, onEdit, onDelete, shopName, displayCriteria, criteria, dateFormat, displayMicrodata } = this.props;
     return (
       <ReviewListItem
         key={review.id}
@@ -65,12 +66,13 @@ class ReviewList extends React.PureComponent<Props> {
         criteria={criteria}
         displayCriteria={displayCriteria}
         displayReply={displayReply}
+        displayMicrodata={displayMicrodata}
         review={review} />
     );
   }
 
   renderReviewWithEntity = (review: ReviewType) => {
-    const { entities, shape, shapeSize, onReport, onVote, onEdit, onDelete, shopName, displayCriteria, criteria, dateFormat } = this.props;
+    const { entities, shape, shapeSize, onReport, onVote, onEdit, onDelete, shopName, displayCriteria, criteria, dateFormat, displayMicrodata } = this.props;
     const entity = getEntity(entities, review.entityType, review.entityId);
     return (
       <ReviewListItemWithEntity
@@ -86,6 +88,7 @@ class ReviewList extends React.PureComponent<Props> {
         onReport={onReport}
         criteria={criteria}
         displayCriteria={displayCriteria}
+        displayMicrodata={displayMicrodata}
         review={review} />
     );
   }

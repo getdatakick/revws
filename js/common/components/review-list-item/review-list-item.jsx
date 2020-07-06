@@ -24,6 +24,7 @@ type Props = {
   criteria: CriteriaType,
   displayCriteria: DisplayCriteriaType,
   displayReply: boolean,
+  displayMicrodata: boolean,
   review: ReviewType,
   onEdit: (ReviewType)=>void,
   onSaveReply?: (?string)=>void,
@@ -67,21 +68,25 @@ class ReviewListItem extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { colors, shape, shapeSize, onReport, onEdit, onDelete, onVote, review, criteria, displayCriteria, dateFormat } = this.props;
+    const { colors, shape, shapeSize, onReport, onEdit, onDelete, onVote, review, criteria, displayCriteria, dateFormat, displayMicrodata } = this.props;
     const { displayName, date, title, underReview, verifiedBuyer, content, canVote, canReport, grades, canEdit, canDelete, loading } = review;
     const classes = classnames('revws-review', {
       'revws-review-under-review': underReview,
       'revws-verified-buyer': verifiedBuyer
     });
 
+    const microdata = bindMicrodata(displayMicrodata);
+
     const crits = displayCriteria == 'none' ? [] : getCriteriaToRender(criteria, grades);
     const showCriteria = crits.length > 1;
     let stars = undefined;
+    let grade = 0;
 
     if (hasRatings(review)) {
+      grade = averageGrade(review);
       stars = (
         <Grading
-          grade={averageGrade(review)}
+          grade={grade}
           shape={shape}
           type={'product'}
           size={shapeSize}
@@ -90,13 +95,20 @@ class ReviewListItem extends React.PureComponent<Props, State> {
     }
 
     return (
-      <div className={classes}>
+      <div className={classes} {...microdata({ itemProp: "review", itemScope: true, itemType: "http://schema.org/Review" })}>
         { loading  && <div className="revws-loading" /> }
         <div className="revws-review-author">
-          <div className="revws-review-author-name">{ displayName }</div>
+          <div className="revws-review-author-name" {...microdata({ itemProp: "author" })}>{ displayName }</div>
           {verifiedBuyer && <div className="revws-verified-buyer-badge">{__("Verified purchase")}</div>}
           {stars}
-          <div className="revws-review-date">{formatDate(dateFormat, date)}</div>
+          {stars && displayMicrodata && (
+            <div className="revws-hidden" itemProp="reviewRating" itemScope itemType="http://schema.org/Rating">
+              <meta itemProp="worstRating" content="1" />
+              <meta itemProp="ratingValue" content={grade} />
+              <meta itemProp="bestRating" content="5" />
+            </div>
+          )}
+          <div className="revws-review-date" {...microdata({ itemProp: "datePublished", content: formatDate("Y-m-d", date)})}>{formatDate(dateFormat, date)}</div>
         </div>
 
         <div className="revws-review-details">
@@ -111,13 +123,13 @@ class ReviewListItem extends React.PureComponent<Props, State> {
                   criteria={crits} />
               )}
               {title && (
-                <p className="revws-review-title">{ title }</p>
+                <p className="revws-review-title" {...microdata({ itemProp: "name" })}>{ title }</p>
               )}
               {underReview && (
                 <div className="revws-under-review">{__("This review hasn't been approved yet")}</div>
               )}
               {content && (
-                <p className="revws-review-content">{ this.renderContent(content) }</p>
+                <p className="revws-review-content" {...microdata({ itemProp: "content" })}>{ this.renderContent(content) }</p>
               )}
               {!title && !content && (
                 <p className="revws-review-content revws-review-without-details">
@@ -309,5 +321,6 @@ const getCriteriaToRender = (criteria, grades) => {
 
 const getThumbnail = (img: string) => img.replace(/.jpg$/, ".thumb.jpg");
 
+const bindMicrodata = (display) => (props) => display ? props : {};
 
 export default ReviewListItem;

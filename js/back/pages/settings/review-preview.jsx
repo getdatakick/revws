@@ -63,6 +63,7 @@ class ReviewPreview extends React.PureComponent<Props> {
           review={review}
           criteria={criteria}
           displayCriteria={displayCriteria}
+          displayMicrodata={false}
           colors={colors} />
       </Bootstrap>
     );
