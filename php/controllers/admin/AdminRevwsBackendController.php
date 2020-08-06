@@ -198,7 +198,7 @@ class AdminRevwsBackendController extends ModuleAdminController {
         continue;
       }
       if (! isset($products[$productId])) {
-        $errors[] = "Line $cnt: prouduct with id '$productId' not found";
+        $errors[] = "Line $cnt: product with id '$productId' not found";
         continue;
       }
       $review = new RevwsReview();
