@@ -9,19 +9,19 @@ import { getSettings } from 'back/selectors/settings';
 import { setSettings } from 'back/actions/creators';
 import Settings from './settings';
 
-type OwnProps = {
+type OwnProps = {|
   pageWidth: number,
   settings: SettingsType
-}
+|}
 
-type Actions = {
+type Actions = {|
   saveSettings: (SettingsType) => void
-}
+|}
 
-type PassedProps = {
+type PassedProps = {|
   data: GlobalDataType,
   goTo: GoTo,
-};
+|};
 
 const mapStateToProps = (state: State): OwnProps => ({
   pageWidth: getWidth(state),

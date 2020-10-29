@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import type { Node } from 'react';
 import type { GoTo, RoutingState } from 'back/types';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import { moderationPage, reviewsPage, supportPage, criteriaPage } from 'back/routing';
@@ -21,9 +22,8 @@ type Props = {
 };
 
 class Navigation extends React.PureComponent<Props> {
-  static displayName = 'Navigation';
 
-  render() {
+  render(): Node {
     const { routingState, newVersionAvailable, warnings,shouldReview } = this.props;
     const selected = routingState.type;
     const count = warnings + (newVersionAvailable ? 1 : 0) + (shouldReview ? 1 : 0);
@@ -44,7 +44,7 @@ class Navigation extends React.PureComponent<Props> {
     );
   }
 
-  renderSupportLabel = (count: number) => {
+  renderSupportLabel: (number) => Node = (count) => {
     if (count) {
       return (
         <div className={styles.tab}>
@@ -56,7 +56,7 @@ class Navigation extends React.PureComponent<Props> {
     return __("Support");
   }
 
-  renderActions = (routingState: RoutingState) => {
+  renderActions: (RoutingState) => Node = (routingState) => {
     const { goTo } = this.props;
     const ret = [];
     if (routingState.type === 'reviews') {
@@ -88,7 +88,7 @@ class Navigation extends React.PureComponent<Props> {
     return ret;
   }
 
-  onChangeTab = (e: any, value: string) => {
+  onChangeTab: (any, string)=> void = (e, value) => {
     const { goTo } = this.props;
     switch (value) {
       case 'moderation':

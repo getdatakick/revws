@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import type {Node, Element} from "React";import React from 'react';
 import type { DisplayCriteriaType, ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog';
@@ -34,12 +34,12 @@ type State = {
 
 class EditReviewDialog extends React.PureComponent<Props, State> {
 
-  state = {
+  state: State = {
     review: this.props.review,
     mode: 'view'
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (! equals(this.props.review, nextProps.review)) {
       this.setState({
         review: nextProps.review,
@@ -48,7 +48,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
     }
   }
 
-  render() {
+  render(): Node {
     const { onClose } = this.props;
     const review = this.state.review;
     return (
@@ -62,7 +62,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
     );
   }
 
-  renderDialog = (review: ReviewType) => {
+  renderDialog: ((review: ReviewType) => Element<"div">) = (review: ReviewType) => {
     const { allowEmptyTitle, allowEmptyReviews } = this.props;
     const errors = validateReview(allowEmptyTitle, allowEmptyReviews, review);
     const viewMode = this.state.mode === 'view';
@@ -81,7 +81,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
     );
   }
 
-  viewModeButtons = (review: ReviewType) => {
+  viewModeButtons: ((review: ReviewType) => Array<any | Node | Element<"div">>) = (review: ReviewType) => {
     const { onClose } = this.props;
     const actions = [];
     if (review.deleted) {
@@ -120,7 +120,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
     return actions;
   }
 
-  editModeButtons = (review: ReviewType, withErrors: boolean) => {
+  editModeButtons: ((review: ReviewType, withErrors: boolean) => Array<Node>) = (review: ReviewType, withErrors: boolean) => {
     const { onClose, onSave } = this.props;
     const same = equals(this.props.review, review);
     return [
@@ -133,7 +133,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
     ];
   }
 
-  renderEditMode = (review: ReviewType, errors: ReviewFormErrors) => {
+  renderEditMode: ((review: ReviewType, errors: ReviewFormErrors) => Node) = (review: ReviewType, errors: ReviewFormErrors) => {
     const { criteria, usedCriteria, language, shape, languages } = this.props;
     return (
       <EditReviewForm
@@ -148,7 +148,7 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
     );
   }
 
-  renderViewMode = (review: ReviewType) => {
+  renderViewMode: ((review: ReviewType) => Node) = (review: ReviewType) => {
     const { onSave, criteria, language, shape, shapeSize, shopName, displayCriteria, dateFormat } = this.props;
     return (
       <ViewReviewForm
@@ -167,23 +167,23 @@ class EditReviewDialog extends React.PureComponent<Props, State> {
     );
   }
 
-  onUpdateReview = (review: ReviewType) => {
+  onUpdateReview: ((review: ReviewType) => void) = (review: ReviewType) => {
     this.setState({ review });
   }
 
-  deleteReview = () => {
+  deleteReview: (() => void) = () => {
     const { review, onSave, onClose } = this.props;
     onSave(assoc('deleted', true, review));
     onClose();
   }
 
-  undeleteReview = () => {
+  undeleteReview: (() => void) = () => {
     const { review, onSave, onClose } = this.props;
     onSave(assoc('deleted', false, review));
     onClose();
   }
 
-  approveReview = () => {
+  approveReview: (() => void) = () => {
     const { review, onSave, onClose } = this.props;
     onSave(assoc('underReview', false, review));
     onClose();

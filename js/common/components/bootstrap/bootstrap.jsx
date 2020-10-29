@@ -1,18 +1,16 @@
 // @flow
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import classnames from 'classnames';
 
-type Props = {
-  className?:string,
+type Props = {|
+  className: ?string,
   children: any
-};
+|};
 
 class Bootstrap extends React.PureComponent<Props> {
-  static displayName = 'Bootstrap';
+  static displayName: ?string = 'Bootstrap';
 
-  static defaultProps = {};
-
-  render() {
+  render(): Element<"div"> {
     const { children, className, ...rest } = this.props;
     return (
       <div className={classnames('bootstrap', className)} {...rest}>

@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import { F } from 'ramda';
 import type { ReviewListType, ReviewType, EntityType } from 'common/types';
 import type { EntitiesType, SettingsType } from 'front/types';
@@ -21,9 +21,9 @@ type Props = {
 };
 
 class FrontAppCustomerReviewList extends React.PureComponent<Props> {
-  static displayName = 'FrontAppCustomerReviewList';
+  static displayName: ?string = 'FrontAppCustomerReviewList';
 
-  render() {
+  render(): Element<"div"> {
     return (
       <div>
         { this.renderRequests() }
@@ -33,7 +33,7 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
     );
   }
 
-  renderList = () => {
+  renderList: (() => Element<"div">) = () => {
     const { loadPage, settings, reviewList, loading, onEdit, onDelete, entities } = this.props;
     const isEmpty = reviewList.total === 0;
     return isEmpty ? this.renderEmptyState() : (
@@ -61,7 +61,7 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
     );
   }
 
-  renderRequests = () => {
+  renderRequests: (() => null | Element<"div">) = () => {
     const { productsToReview, settings } = this.props;
     if (productsToReview.length > 0) {
       const toReview = slice(0, settings.preferences.customerMaxRequests, productsToReview);
@@ -77,7 +77,7 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
     return null;
   }
 
-  renderRequest = (entityType: EntityType) => (entityId: number) => {
+  renderRequest: ((entityType: EntityType) => (entityId: number) => void | Element<"div">) = (entityType: EntityType) => (entityId: number) => {
     const { entities, onCreate } = this.props;
     const entity = getEntity(entities, entityType, entityId);
     if (entity) {
@@ -92,7 +92,7 @@ class FrontAppCustomerReviewList extends React.PureComponent<Props> {
     }
   }
 
-  renderEmptyState = () => {
+  renderEmptyState: (() => Element<"div">) = () => {
     return (
       <div className="form-group">
         {__("You haven't written any review yet")}

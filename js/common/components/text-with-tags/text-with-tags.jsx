@@ -1,17 +1,17 @@
 // @flow
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import type { Tag } from 'common/types';
 import { replaceTags } from 'common/utils/translation';
 
-type Props = {
+type Props = {|
   text: string,
   tags: Array<Tag>
-};
+|};
 
 class TextWithTags extends React.PureComponent<Props> {
-  static displayName = 'TextWithTags';
+  static displayName: ?string = 'TextWithTags';
 
-  render() {
+  render(): Element<"span"> {
     const { text, tags, ...rest } = this.props;
     const innerHTML = {
       __html:  replaceTags(text, tags)

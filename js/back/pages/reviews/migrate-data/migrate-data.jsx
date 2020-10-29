@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import type { EnvironmentType } from 'back/types';
 import List, {
   ListItem,
@@ -33,15 +33,15 @@ type State = {
 }
 
 class MigrateData extends React.PureComponent<Props, State> {
-  static displayName = 'MigrateData';
+  static displayName: ?string = 'MigrateData';
 
-  state = {
+  state: State = {
     type: null
   }
 
-  input = null;
+  input: any | null = null;
 
-  render() {
+  render(): Element<"div"> {
     const { environment, baseUrl } = this.props;
     const disabled = !environment.productcomments;
     const { type } = this.state;
@@ -98,11 +98,11 @@ class MigrateData extends React.PureComponent<Props, State> {
     );
   }
 
-  confirmInstall = (type: ?ImportType) => () => {
+  confirmInstall: ((type: ?ImportType) => () => void) = (type: ?ImportType) => () => {
     this.setState({ type });
   }
 
-  onMigrate = () => {
+  onMigrate: (() => void) = () => {
     const type = this.state.type;
     this.setState({ type: null });
     if (type === 'productcomments') {
@@ -112,7 +112,7 @@ class MigrateData extends React.PureComponent<Props, State> {
     }
   }
 
-  onUploadFile = (files: Array<File>) => {
+  onUploadFile: ((files: Array<File>) => void) = (files: Array<File>) => {
     if (files && files.length > 0) {
       this.props.onUploadYotpo(files[0]);
     }

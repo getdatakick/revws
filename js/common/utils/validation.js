@@ -20,7 +20,7 @@ export const validateVersion = (version: ?string): ?string => {
   return null;
 };
 
-export const validateImages = (images: Array<string>) => {
+export const validateImages = (images: Array<string>): null | string => {
   if (isNil(find(isEmpty, images))) {
     return null;
   }
@@ -37,34 +37,34 @@ export const validateReview = (allowEmptyTitle: boolean, allowEmptyReviews: bool
 
 
 const isError = (err: any) => isObject(err) ? hasErrors(err) : notNil(err);
-export const hasErrors = pipe(
+export const hasErrors: any = pipe(
   defaultTo({}),
   values,
   map(isError),
   reduce(or, false)
 );
 
-export const isEmail = (email: string) => validator.isEmail(email);
+export const isEmail = (email: string): any => validator.isEmail(email);
 
 const notEmpty = curry((errorMessage: string, value: ?string):?string => isEmpty(value) ? errorMessage : null);
 
-export const validateDisplayName = notEmpty(__("Please provide your name"));
+export const validateDisplayName: any = notEmpty(__("Please provide your name"));
 
-export const validateTitle = (allowEmptyTitle: boolean, title: ?string) => {
+export const validateTitle = (allowEmptyTitle: boolean, title: ?string): any | null => {
   if (allowEmptyTitle) {
     return null;
   }
   return notEmpty(__("Review title must be set"), title);
 };
 
-export const validateContent = (allowEmptyReviews: boolean, content: ?string) => {
+export const validateContent = (allowEmptyReviews: boolean, content: ?string): any | null => {
   if (allowEmptyReviews) {
     return null;
   }
   return notEmpty(__("Review content must be set"), content);
 };
 
-export const validateReviewEmail = (email: ?string) => {
+export const validateReviewEmail = (email: ?string): null | string => {
   if (isEmpty(email) || !validator.isEmail(email)) {
     return __("Please provide valid email address");
   }
@@ -81,7 +81,7 @@ export const validateIsNumber = (input: any): ?string => {
   return __("Invalid number");
 };
 
-export const isUrl = (input: string) => {
+export const isUrl = (input: string): any | boolean => {
   if (! input) {
     return false;
   }

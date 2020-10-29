@@ -1,13 +1,13 @@
 // @flow
 
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import { filter } from 'ramda';
 import CriteriaSection from './criteria-section';
 import Section from 'back/components/section/section';
 import type { EntityType, LanguagesType, KeyValue } from 'common/types';
 import type { Load, FullCriteria, FullCriterion } from 'back/types';
 
-export type Props = {
+export type Props = {|
   criteria: FullCriteria,
   products: ?KeyValue,
   categories: ?KeyValue,
@@ -18,12 +18,12 @@ export type Props = {
   }) => void,
   onSaveCriterion: (FullCriterion) => void,
   onDeleteCriterion: (number) => void,
-};
+|};
 
 class CriteriaPage extends React.PureComponent<Props> {
-  static displayName = 'CriteriaPage';
+  static displayName: ?string = 'CriteriaPage';
 
-  render() {
+  render(): Element<"div"> {
     const { criteria, ...rest  } = this.props;
     return (
       <div>

@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import classnames from 'classnames';
 import { clamp } from 'ramda';
 import ReactDOM from 'react-dom';
@@ -24,9 +24,9 @@ type Props = {
 }
 
 export default class extends React.PureComponent<Props> {
-  static displayName = 'ColorPicker/Board';
+  static displayName: ?string = 'ColorPicker/Board';
 
-  unloaded = false;
+  unloaded: boolean = false;
 
   componentWillUnmount() {
     this.unloaded = true;
@@ -34,7 +34,7 @@ export default class extends React.PureComponent<Props> {
     this.removeTouchListeners(false);
   }
 
-  onBoardMouseDown = (e: any) => {
+  onBoardMouseDown: ((e: any) => void) = (e: any) => {
     const x = e.clientX;
     const y = e.clientY;
     this.pointMoveTo({ x, y, });
@@ -44,7 +44,7 @@ export default class extends React.PureComponent<Props> {
     window.addEventListener('mouseup', this.onBoardDragEnd, false);
   };
 
-  onBoardTouchStart = (e: any) => {
+  onBoardTouchStart: ((e: any) => void) = (e: any) => {
     if (e.touches.length !== 1) {
       return;
     }
@@ -57,7 +57,7 @@ export default class extends React.PureComponent<Props> {
     window.addEventListener('touchend', this.onBoardTouchEnd, false);
   };
 
-  onBoardTouchMove = (e: any) => {
+  onBoardTouchMove: ((e: any) => void) = (e: any) => {
     if (e.preventDefault) {
       e.preventDefault();
     }
@@ -67,36 +67,36 @@ export default class extends React.PureComponent<Props> {
     this.pointMoveTo({ x, y, });
   };
 
-  onBoardTouchEnd = () => {
+  onBoardTouchEnd: (() => void) = () => {
     this.removeTouchListeners(true);
   };
 
-  onBoardDrag = (e: any) => {
+  onBoardDrag: ((e: any) => void) = (e: any) => {
     const x = e.clientX;
     const y = e.clientY;
     this.pointMoveTo({ x, y, });
   };
 
-  onBoardDragEnd = (e: any) => {
+  onBoardDragEnd: ((e: any) => void) = (e: any) => {
     const x = e.clientX;
     const y = e.clientY;
     this.pointMoveTo({ x, y, });
     this.removeListeners(true);
   };
 
-  removeTouchListeners = (trigger: boolean) => {
+  removeTouchListeners: ((trigger: boolean) => void) = (trigger: boolean) => {
     window.removeEventListener('touchmove', this.onBoardTouchMove, false);
     window.removeEventListener('touchend', this.onBoardTouchEnd, false);
     trigger && this.props.onDragEnd();
   };
 
-  removeListeners = (trigger: boolean) => {
+  removeListeners: ((trigger: boolean) => void) = (trigger: boolean) => {
     window.removeEventListener('mousemove', this.onBoardDrag, false);
     window.removeEventListener('mouseup', this.onBoardDragEnd, false);
     trigger && this.props.onDragEnd();
   };
 
-  pointMoveTo = (pos: Position) => {
+  pointMoveTo: ((pos: Position) => void) = (pos: Position) => {
     if (!this.unloaded) {
       const node = ReactDOM.findDOMNode(this);
       if (node && node instanceof HTMLElement) {
@@ -113,7 +113,7 @@ export default class extends React.PureComponent<Props> {
     }
   };
 
-  render() {
+  render(): Element<"div"> {
     const { hsv, className } = this.props;
     const hueHsv = [hsv.h, 100, 100];
     const hueColor = colr.fromHsvArray(hueHsv).toHex();

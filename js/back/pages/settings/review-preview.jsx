@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import type { Node } from 'react';
 import { map, indexBy, prop } from 'ramda';
 import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType } from 'common/types';
 import styles from './style.less';
@@ -18,9 +19,9 @@ type Props = {
 }
 
 class ReviewPreview extends React.PureComponent<Props> {
-  static displayName = 'ReviewPreview';
+  static displayName: ?string = 'ReviewPreview';
 
-  render() {
+  render(): Node {
     const { shape, size, colors, canVote, canReport, shopName, displayCriteria, dateFormat } = this.props;
     const criteria: CriteriaType = indexBy(prop('id'), [
       { id: 1, label: __('Quality'), value: 5},

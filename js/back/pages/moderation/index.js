@@ -10,17 +10,17 @@ import Moderation from './moderation';
 import { convertCriteria } from 'back/utils/criteria';
 
 
-type OwnProps = {
+type OwnProps = {|
   settings: SettingsType,
   fullCriteria: FullCriteria
-}
+|}
 
-type Actions = {
-}
+type Actions = {|
+|}
 
-type PassedProps = {
+type PassedProps = {|
   data: GlobalDataType
-}
+|}
 
 
 const mapStateToProps = (state: State): OwnProps => ({

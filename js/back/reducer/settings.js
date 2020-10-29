@@ -5,7 +5,7 @@ import Types from 'back/actions/types';
 
 export type State = SettingsType;
 
-export default (defaultConfig: SettingsType) => {
+export default (defaultConfig: SettingsType): ((state?: State, action: Action) => State) => {
   return (state?: State, action:Action): State => {
     state = state || defaultConfig;
 

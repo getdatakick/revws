@@ -39,7 +39,7 @@ const removeReview = (review: ReviewType) => (list: ListState) => {
 
 const markLoading = assoc('loading');
 
-export default (lists: ListsType) => {
+export default (lists: ListsType): ((state?: State, action: Action) => State) => {
   return (state?: State, action:Action): State => {
     state = state || defaultState(lists);
 

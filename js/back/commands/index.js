@@ -22,7 +22,7 @@ import { exportReviews } from './export-reviews';
 import { activateAccount } from './activate-account';
 import { setReviewed } from './set-reviewed';
 
-export default (data: GlobalDataType) => {
+export default (data: GlobalDataType): ((store: any) => (next: any) => (action: Action) => any) => {
   const commands = {
     [ Types.checkModuleVersion ]: checkModuleVersion(data),
     [ Types.activateAccount ]: activateAccount(data),

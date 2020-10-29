@@ -46,7 +46,7 @@ type State = {
 
 class FullWidthTabs extends React.PureComponent<Props, State> {
 
-  state = {
+  state: State = {
     tab: getInitialTab(this.props)
   };
 

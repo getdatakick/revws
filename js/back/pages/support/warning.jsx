@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Node} from "React";import React from 'react';
 import type { WarningMessageType } from 'back/types';
 import WarningIcon from 'material-ui-icons/Warning';
 import EmailIcon from 'material-ui-icons/Email';
@@ -14,13 +14,13 @@ type State = {
 }
 
 class Warning extends React.PureComponent<Props, State> {
-  static displayName = 'Warning';
+  static displayName: ?string = 'Warning';
 
-  state = {
+  state: State = {
     opened: false
   }
 
-  render() {
+  render(): Node {
     const { icon, message, hint } = this.props;
     const opened = this.state.opened;
     return (
@@ -36,7 +36,7 @@ class Warning extends React.PureComponent<Props, State> {
     );
   }
 
-  renderWarningIcon = (icon: string) => {
+  renderWarningIcon: ((icon: string) => Node) = (icon: string) => {
     const style = { color: '#8b0000' };
     switch (icon) {
       case 'email':

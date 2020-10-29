@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import type { EntityType, ReviewListType, ReviewType } from 'common/types';
 import type { SettingsType, VisitorType, EntitiesType } from 'front/types';
 import List from '../review-list/review-list';
@@ -25,9 +25,9 @@ export type Props = {
 };
 
 class EntityReviewList extends React.PureComponent<Props> {
-  static displayName = 'EntityReviewList';
+  static displayName: ?string = 'EntityReviewList';
 
-  render() {
+  render(): Element<"div"> {
     const { allowPaging, loadPage, settings, entities, reviewList, loading, onEdit, onDelete, onReport, onVote, displayMicrodata } = this.props;
     const isEmpty = reviewList.total === 0;
     return isEmpty ? this.renderEmptyState() : (
@@ -56,7 +56,7 @@ class EntityReviewList extends React.PureComponent<Props> {
     );
   }
 
-  renderWriteReview = () => {
+  renderWriteReview: (() => void | Element<"div">) = () => {
     const { canReview, hasReviewed } = this.props;
     if (hasReviewed) {
       return;
@@ -75,7 +75,7 @@ class EntityReviewList extends React.PureComponent<Props> {
     }
   }
 
-  renderEmptyState = () => {
+  renderEmptyState: (() => Element<"div">) = () => {
     const { canReview } = this.props;
     if (canReview) {
       return this.renderCreateButton(__('Be the first to write a review!'));
@@ -96,7 +96,7 @@ class EntityReviewList extends React.PureComponent<Props> {
     );
   }
 
-  renderCreateButton = (label: string) => {
+  renderCreateButton: ((label: string) => Element<"div">) = (label: string) => {
     const { entityType, entityId, onCreate } = this.props;
     return (
       <div className="form-group">
@@ -107,12 +107,12 @@ class EntityReviewList extends React.PureComponent<Props> {
     );
   }
 
-  showSignInButton = () => {
+  showSignInButton: (() => boolean) = () => {
     const { settings, visitor } = this.props;
     return visitor.type === 'guest' && settings.preferences.showSignInButton;
   }
 
-  getLoginUrl = () => this.props.settings.loginUrl + encodeURIComponent(window.location.href);
+  getLoginUrl: (() => string) = () => this.props.settings.loginUrl + encodeURIComponent(window.location.href);
 }
 
 export default EntityReviewList;

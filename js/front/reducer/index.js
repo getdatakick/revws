@@ -36,7 +36,7 @@ const createReducer = (
   reviews: ReviewsType,
   lists: ListsType,
   entities: EntitiesType
-) => combineReducers({
+): any => combineReducers({
   entities: createEntities(entities),
   reviews: createReviews(reviews),
   lists: createLists(lists),

@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Node, Element} from "React";import React from 'react';
 import type { GoTo, SettingsType, GlobalDataType } from 'back/types';
 import ScrollSpy from 'react-scrollspy';
 import { prop, toPairs, path, last, merge, range, map, curry, equals, assocPath } from 'ramda';
@@ -34,20 +34,20 @@ type State = {
 
 class Settings extends React.PureComponent<Props, State> {
 
-  state = {
+  state: State = {
     expanded: null,
     settings: this.props.settings
   };
 
-  handleChange = (panel: string) => (event: Event, expanded: boolean) => {
+  handleChange: ((panel: string) => (event: Event, expanded: boolean) => void) = (panel: string) => (event: Event, expanded: boolean) => {
     this.setState({
       expanded: expanded ? panel : null
     });
   };
 
-  isExpanded = (panel: string) => panel === this.state.expanded;
+  isExpanded: ((panel: string) => boolean) = (panel: string) => panel === this.state.expanded;
 
-  render() {
+  render(): Node {
     const errors = this.validate();
     const changed = !equals(this.state.settings , this.props.settings);
     return (
@@ -59,7 +59,7 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderContent = (errors: any) => {
+  renderContent: ((errors: any) => Node) = (errors: any) => {
     const { goTo } = this.props;
     const sections = [
       {
@@ -137,7 +137,7 @@ class Settings extends React.PureComponent<Props, State> {
             <ScrollSpy items={items} className={styles.sectionList} currentClassName={styles.activeSection}>
               { sections.map((section, i) => (
                 <li className={styles.sectionListItem} key={i}>
-                  <a href={'#'+sectionKey(section)}>{section.menuLabel || section.label}</a>
+                  <a href={'#'+sectionKey(section)}>{section.label}</a>
                 </li>
               )) }
             </ScrollSpy>
@@ -169,7 +169,7 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderFooter = (errors: any) => {
+  renderFooter: ((errors: any) => Element<"div">) = (errors: any) => {
     const invalid = hasErrors(errors);
     return (
       <div className={styles.footerContent}>
@@ -183,7 +183,7 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderTheme = () => {
+  renderTheme: (() => Element<"div">) = () => {
     const { shapes, shopName, dateFormat } = this.props.data;
     const { theme, review } = this.state.settings;
     const size = theme.shapeSize.product;
@@ -258,7 +258,7 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderModeration = () => {
+  renderModeration: (() => Node) = () => {
     const enabled = this.state.settings.moderation.enabled;
     const disabled = !enabled;
     return (
@@ -291,7 +291,7 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderAdminNotifications = (errors: any) => {
+  renderAdminNotifications: ((errors: any) => Node) = (errors: any) => {
     const settings = this.state.settings;
     const languages = toPairs(this.props.data.languages);
     const moderationDisabled = !settings.moderation.enabled;
@@ -338,7 +338,7 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderCustomerNotifications = () => {
+  renderCustomerNotifications: (() => Node) = () => {
     const settings = this.state.settings;
     const moderationDisabled = !settings.moderation.enabled;
     return (
@@ -364,14 +364,14 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderSwitch = (key: Array<string>) => (
+  renderSwitch: ((key: Array<string>) => Node) = (key: Array<string>) => (
     <Switch
       key={last(key)}
       checked={path(key, this.state.settings)}
       onChange={(event, checked) => this.set(key, checked)} />
   )
 
-  renderCheckbox = (key: Array<string>, indeterminate: boolean) => (
+  renderCheckbox: ((key: Array<string>, indeterminate: boolean) => Node) = (key: Array<string>, indeterminate: boolean) => (
     <Checkbox
       key={last(key)}
       indeterminate={indeterminate}
@@ -379,7 +379,7 @@ class Settings extends React.PureComponent<Props, State> {
       onChange={(event, checked) => this.set(key, checked)} />
   )
 
-  renderReview = () => {
+  renderReview: (() => Node) = () => {
     const settings = this.state.settings;
     const { krona } = this.props.data.environment;
     const func = "function revwsFormatName(firstname, lastname, pseudonym) {\n  // implement your custom logic\n  return 'fuzzy '+firstname;\n}";
@@ -448,7 +448,7 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderProductDetail = (errors: any) => {
+  renderProductDetail: ((errors: any) => Node) = (errors: any) => {
     const settings = this.state.settings;
     return (
       <FormGroup>
@@ -514,7 +514,7 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderProductList = () => {
+  renderProductList: (() => Node) = () => {
     const settings = this.state.settings;
     const noReviews = settings.display.productList.noReviews;
     return (
@@ -546,7 +546,7 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderRichSnippets = () => {
+  renderRichSnippets: (() => Element<"div">) = () => {
     return (
       <div>
         <FormGroup>
@@ -562,7 +562,7 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderImages = (errors: any) => {
+  renderImages: ((errors: any) => Element<"div">) = (errors: any) => {
     const { enabled, maxFileSize, width, height, thumbWidth, thumbHeight } = this.state.settings.images;
     const disabled = !enabled;
     return (
@@ -621,7 +621,7 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderCustomerAccount = (errors: any) => {
+  renderCustomerAccount: ((errors: any) => Node) = (errors: any) => {
     const settings = this.state.settings;
     const disabled = !settings.display.myReviews.show;
     return (
@@ -658,7 +658,7 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderAllReviewsPage = (errors: any) => {
+  renderAllReviewsPage: ((errors: any) => Node) = (errors: any) => {
     const settings = this.state.settings;
     return (
       <FormGroup>
@@ -674,7 +674,7 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderProductComparison = () => {
+  renderProductComparison: (() => Node) = () => {
     return (
       <FormGroup>
         <FormControlLabel
@@ -685,7 +685,7 @@ class Settings extends React.PureComponent<Props, State> {
     );
   }
 
-  renderGeneralSettings = () => {
+  renderGeneralSettings: (() => Node) = () => {
     const { psgdpr } = this.props.data.environment;
     const implementation = this.state.settings.gdpr.implementation || 'none';
     const useGDPR = implementation != 'none';
@@ -718,25 +718,25 @@ class Settings extends React.PureComponent<Props, State> {
   }
 
 
-  set = curry((path: Array<string>, value: any) => {
+  set: any = curry((path: Array<string>, value: any) => {
     const settings = assocPath(path, value, this.state.settings);
     this.setState({
       settings
     });
   })
 
-  onReset = () => {
+  onReset: (() => void) = () => {
     this.setState({
       settings: this.props.settings
     });
   }
 
-  onSaveSettings = () => {
+  onSaveSettings: (() => void) = () => {
     const settings = this.state.settings;
     this.props.saveSettings(settings);
   }
 
-  setSize = (e:any) => {
+  setSize: ((e: any) => void) = (e:any) => {
     const settings = this.state.settings;
     const size = e.target.value;
     const shapeSize = merge(settings.theme.shapeSize, {
@@ -746,7 +746,21 @@ class Settings extends React.PureComponent<Props, State> {
     this.set(['theme', 'shapeSize'], shapeSize);
   }
 
-  validate = () => {
+  validate: (() => {|
+  display: {|
+    allReviews: {|reviewsPerPage: ?string|},
+    myReviews: {|maxRequests: ?string, reviewsPerPage: ?string|},
+    product: {|reviewsPerPage: ?string|},
+  |},
+  images: {|
+    height: ?string,
+    maxFileSize: ?string,
+    thumbHeight: ?string,
+    thumbWidth: ?string,
+    width: ?string,
+  |},
+  notifications: {|admin: {|email: any|}|},
+  |}) = () => {
     const settings = this.state.settings;
     return {
       display: {

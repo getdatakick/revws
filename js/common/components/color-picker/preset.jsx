@@ -1,22 +1,23 @@
 // @flow
 
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import Circle from './circle';
 import styles from './color-picker.less';
-import type { PresetType } from './types';
 
-type Props = PresetType & {
-  onSelect: (string)=>void,
-}
+type Props = {|
+  label: string,
+  colors: Array<string>,
+  onSelect: string => void
+|}
 
 const COUNT = 10;
 const WIDTH = 300 / COUNT;
 const SIZE = WIDTH - 10;
 
 class Preset extends React.PureComponent<Props> {
-  static displayName = 'Preset';
+  static displayName: ?string = 'Preset';
 
-  renderCircle = (color:string, i: number) => {
+  renderCircle: ((color: string, i: number) => Element<"div">) = (color:string, i: number) => {
     return (
       <div key={i} className={styles.centered} style={{ width: WIDTH, height: WIDTH}}>
         <Circle
@@ -29,7 +30,7 @@ class Preset extends React.PureComponent<Props> {
     );
   };
 
-  render() {
+  render(): null | Element<"div"> {
     const { label, colors } = this.props;
     const toRender = colors.slice(0, 10);
     const width = toRender.length * WIDTH;

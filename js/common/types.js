@@ -55,7 +55,7 @@ export type GradingType = {
   [ number ]: number
 };
 
-export type ReviewType = {
+export type ReviewType = {|
   id: number,
   language: number,
   entityType: EntityType,
@@ -80,12 +80,12 @@ export type ReviewType = {
   canDelete: boolean,
   canReport: boolean,
   loading?: boolean
-}
+|}
 
 export type ListOrder = 'date' | 'usefulness' | 'author' | 'entityType' | 'entity' | 'title' | 'content' | 'grade' | 'id';
 export type ListOrderDirection = 'desc' | 'asc';
 
-export type ReviewListType = {
+export type ReviewListType = {|
   pageSize: number,
   page: number,
   pages: number,
@@ -93,20 +93,20 @@ export type ReviewListType = {
   order: ListOrder,
   orderDir: ListOrderDirection,
   reviews: Array<ReviewType>
-}
+|}
 
-export type ReviewFormErrors = {
+export type ReviewFormErrors = {|
   email: ?string,
   displayName: ?string,
   title: ?string,
   content: ?string,
   images: ?string
-}
+|}
 
-export type CriterionType = {
+export type CriterionType = {|
   id: number,
   label: string
-}
+|}
 
 export type CriteriaType = {
   [ number ] : CriterionType

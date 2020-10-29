@@ -3,7 +3,7 @@ import { merge, reduce, append, toPairs } from 'ramda';
 
 const getUrlComponent = (pair) => encodeURIComponent(pair[0]) + '=' + encodeURIComponent(pair[1]);
 
-export const getWebUrl = (campaign: string, path: string, params: {} = {}) => {
+export const getWebUrl = (campaign: string, path: string, params: {} = {}): string => {
   if (!path || path.length == 0) {
     path = '/';
   } else {

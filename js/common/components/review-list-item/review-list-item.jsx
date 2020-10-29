@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import debounce from 'debounce';
 import classnames from 'classnames';
 import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType } from 'common/types';
@@ -38,9 +38,15 @@ type State = {
 }
 
 class ReviewListItem extends React.PureComponent<Props, State> {
-  static displayName = 'ReviewListItem';
+  static displayName: ?string = 'ReviewListItem';
 
-  static defaultProps = {
+  static defaultProps: {|
+  displayReply: boolean,
+  onDelete: any,
+  onEdit: any,
+  onReport: any,
+  onVote: any,
+  |} = {
     displayReply: true,
     onEdit: F,
     onDelete: F,
@@ -48,11 +54,11 @@ class ReviewListItem extends React.PureComponent<Props, State> {
     onReport: F
   }
 
-  state = {
+  state: State = {
     editReply: null
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.state.editReply && this.props.review.reply != nextProps.review.reply) {
       this.stopEditReply();
     }
@@ -67,7 +73,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
     }
   }
 
-  render() {
+  render(): Element<"div"> {
     const { colors, shape, shapeSize, onReport, onEdit, onDelete, onVote, review, criteria, displayCriteria, dateFormat, displayMicrodata } = this.props;
     const { displayName, date, title, underReview, verifiedBuyer, content, canVote, canReport, grades, canEdit, canDelete, loading } = review;
     const classes = classnames('revws-review', {
@@ -187,7 +193,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
     );
   }
 
-  renderImages = () => {
+  renderImages: (() => null | Element<"div">) = () => {
     const { images } = this.props.review;
     if (!images || !images.length) {
       return null;
@@ -199,7 +205,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
     );
   }
 
-  renderImage = (image: string) => (
+  renderImage: ((image: string) => Element<"a">) = (image: string) => (
     <a key={image} data-revws-image-group={this.props.review.id} rel='1' href={image}>
       <div className="revws-image">
         <img src={getThumbnail(image)} />
@@ -207,7 +213,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
     </a>
   );
 
-  renderReplies = () => {
+  renderReplies: (() => null | Element<"div"> | boolean) = () => {
     const { displayReply, review, onSaveReply } = this.props;
     const { editReply } = this.state;
     if (! isNil(editReply)) {
@@ -222,7 +228,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
     return null;
   }
 
-  renderReply = (reply: string) => {
+  renderReply: ((reply: string) => Element<"div">) = (reply: string) => {
     const shopName = this.props.shopName;
     const canEdit = !!this.props.onSaveReply;
     const clazz = classnames("revws-reply", {
@@ -243,7 +249,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
     );
   }
 
-  renderEditReply = (reply: string) => {
+  renderEditReply: ((reply: string) => Element<"div">) = (reply: string) => {
     return (
       <div className="revws-replies">
         <Textarea
@@ -263,7 +269,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
     );
   }
 
-  renderReplyPlaceholder = () => {
+  renderReplyPlaceholder: (() => Element<"div">) = () => {
     return (
       <div className="revws-replies">
         <div className={styles.reply} onClick={this.startEditReply}>
@@ -274,16 +280,16 @@ class ReviewListItem extends React.PureComponent<Props, State> {
     );
   }
 
-  startEditReply = () => {
+  startEditReply: (() => void) = () => {
     const review = this.props.review;
     this.setState({ editReply: review.reply || '' });
   }
 
-  stopEditReply = () => {
+  stopEditReply: (() => void) = () => {
     this.setState({ editReply: null });
   }
 
-  saveReply = () => {
+  saveReply: (() => void) = () => {
     const { onSaveReply } = this.props;
     if (onSaveReply) {
       const reply = this.state.editReply || null;
@@ -292,7 +298,9 @@ class ReviewListItem extends React.PureComponent<Props, State> {
     }
   }
 
-  renderContent = (content: ?string) => {
+  renderContent: ((
+  content: ?string
+  ) => null | string | Array<any | Element<"br"> | Element<"span">>) = (content: ?string) => {
     if (! content) {
       return null;
     }

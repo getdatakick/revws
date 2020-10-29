@@ -28,7 +28,7 @@ const initialState = (account: AccountType): State => {
   };
 };
 
-export default (account: AccountType) => {
+export default (account: AccountType): ((state?: State, action: Action) => State) => {
   return (state?: State, action:Action): State => {
     state = state || initialState(account);
 

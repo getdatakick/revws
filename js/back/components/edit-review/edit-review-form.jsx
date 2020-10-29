@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Node, Element} from "React";import React from 'react';
 import type { LanguagesType, ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType, LanguageType } from 'common/types';
 import moment from 'moment';
 import { toPairs, pathOr, keys } from 'ramda';
@@ -28,9 +28,9 @@ type Props = {
 }
 
 class EditReviewForm extends React.PureComponent<Props> {
-  static displayName = 'EditReviewForm';
+  static displayName: ?string = 'EditReviewForm';
 
-  render() {
+  render(): Element<"div"> {
     const { review, errors, usedCriteria, languages } = this.props;
     const { title, content, language, date } = review;
     const criteria = usedCriteria || keys(review.grades);
@@ -112,7 +112,7 @@ class EditReviewForm extends React.PureComponent<Props> {
     );
   }
 
-  renderCriterion = (critKey: number) => {
+  renderCriterion: ((critKey: number) => void | Element<"div">) = (critKey: number) => {
     const { criteria, shape, language, review } = this.props;
     const grade = pathOr(0, ['grades', critKey], review);
     const criterion = criteria[critKey];
@@ -132,7 +132,7 @@ class EditReviewForm extends React.PureComponent<Props> {
     }
   }
 
-  renderLanguage = (pair: [string, LanguageType]) => {
+  renderLanguage: ((pair: [string, LanguageType]) => Node) = (pair: [string, LanguageType]) => {
     const key = parseInt(pair[0], 10);
     const name = pair[1].name;
     return (
@@ -140,12 +140,12 @@ class EditReviewForm extends React.PureComponent<Props> {
     );
   }
 
-  update = (key: string) => (e: any) => {
+  update: ((key: string) => (e: any) => void) = (key: string) => (e: any) => {
     const { review, onUpdateReview } = this.props;
     onUpdateReview({ ...review, [ key ]: e.target.value });
   }
 
-  setDate = (e: any) => {
+  setDate: ((e: any) => void) = (e: any) => {
     const value = e.target.value;
     if (value) {
       const m = moment(value, 'YYYY-MM-DD');
@@ -156,12 +156,12 @@ class EditReviewForm extends React.PureComponent<Props> {
     }
   }
 
-  toggleVerifiedBuyer = (e: any) => {
+  toggleVerifiedBuyer: ((e: any) => void) = (e: any) => {
     const { review, onUpdateReview } = this.props;
     onUpdateReview({ ...review, verifiedBuyer: !review.verifiedBuyer });
   }
 
-  onSetGrade = (criterion: number, grade: number) => {
+  onSetGrade: ((criterion: number, grade: number) => void) = (criterion: number, grade: number) => {
     const { review, onUpdateReview } = this.props;
     const grades = {
       ...review.grades,

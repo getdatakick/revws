@@ -64,7 +64,7 @@ export type ListConditions = {
   customer?: number
 }
 
-export type ListType = {
+export type ListType = {|
   id: string,
   pageSize: number,
   page: number,
@@ -74,7 +74,7 @@ export type ListType = {
   orderDir: ListOrderDirection,
   conditions: ListConditions,
   reviews: Array<number>
-}
+|}
 
 export type ListsType = {
   [ string ]: ListType

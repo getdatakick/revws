@@ -11,7 +11,7 @@ const defaultState: State = {
   agreed: false
 };
 
-export default (settings: SettingsType) => (state?: State, action:Action): State => {
+export default (settings: SettingsType): ((state?: State, action: Action) => State) => (state?: State, action:Action): State => {
   state = state || defaultState;
 
   if (action.type === Types.agreeGDPR) {

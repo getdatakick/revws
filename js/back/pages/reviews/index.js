@@ -12,21 +12,21 @@ import { exportReviews, saveReview } from 'back/actions/creators';
 import Reviews from './reviews';
 import { convertCriteria } from 'back/utils/criteria';
 
-type OwnProps = {
+type OwnProps = {|
   settings: SettingsType,
   fullCriteria: FullCriteria
-}
+|}
 
-type Actions = {
+type Actions = {|
   saveReview: (ReviewType) => void,
   exportReviews: ()=>void
-}
+|}
 
-type PassedProps = {
+type PassedProps = {|
   subpage: SubPage,
   goTo: GoTo,
   data: GlobalDataType
-}
+|}
 
 const mapStateToProps = (state: State): OwnProps => ({
   settings: getSettings(state),

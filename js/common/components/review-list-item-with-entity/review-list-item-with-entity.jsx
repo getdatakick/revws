@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType, EntityInfoType } from 'common/types';
 import ReviewListItem from 'common/components/review-list-item/review-list-item';
 
@@ -22,11 +22,11 @@ type Props = {
 };
 
 class ReviewListItemWithEntity extends React.PureComponent<Props> {
-  static displayName = 'ReviewListItemWithEntity';
+  static displayName: ?string = 'ReviewListItemWithEntity';
 
-  static defaultProps = {};
+  static defaultProps: {...} = {};
 
-  render() {
+  render(): Element<"div"> {
     const { entity, shopName, shape, colors, shapeSize, criteria, displayCriteria, review, onEdit, onDelete, onVote, onReport, dateFormat, displayMicrodata } = this.props;
     return (
       <div>

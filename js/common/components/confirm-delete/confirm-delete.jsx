@@ -21,7 +21,7 @@ type Props<T> = InputProps<T> & {
 }
 
 class DeleteReviewConfirm<T> extends React.PureComponent<Props<T>> {
-  static displayName = 'DeleteReviewConfirm';
+  static displayName: ?string = 'DeleteReviewConfirm';
 
   render() {
     const { onClose, payload, fullScreen, confirmation, deleteLabel } = this.props;

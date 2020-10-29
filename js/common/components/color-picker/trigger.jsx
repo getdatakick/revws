@@ -1,5 +1,5 @@
 // @flow
-import ReactDOM from 'react-dom';
+import type {Element} from "React";import ReactDOM from 'react-dom';
 import React from 'react';
 import Popover from 'material-ui/Popover';
 import {
@@ -26,22 +26,22 @@ type State = {
 }
 
 class ColorPickerTrigger extends React.PureComponent<Props, State> {
-  static displayName = 'ColorPickerTrigger';
+  static displayName: ?string = 'ColorPickerTrigger';
 
-  anchorEl = null;
+  anchorEl: any | null = null;
 
-  state = {
+  state: State = {
     open: false,
     color: this.props.color
   };
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_UNSAFE_componentWillReceiveProps(nextProps: Props) {
     this.setState({
       color: nextProps.color
     });
   }
 
-  render() {
+  render(): Element<"div"> {
     const { open } = this.state;
     const { presets, label } = this.props;
     const hasColor = this.state.color != 'transparent';
@@ -83,11 +83,11 @@ class ColorPickerTrigger extends React.PureComponent<Props, State> {
     );
   }
 
-  onChange = (color: string) => {
+  onChange: ((color: string) => void) = (color: string) => {
     this.setState({ color });
   };
 
-  handleClick = (e: any) => {
+  handleClick: ((e: any) => void) = (e: any) => {
     e.stopPropagation();
     e.preventDefault();
     this.setState({
@@ -96,17 +96,17 @@ class ColorPickerTrigger extends React.PureComponent<Props, State> {
     });
   };
 
-  setTransparent = () => {
+  setTransparent: (() => void) = () => {
     this.setState({ open: false });
     this.emit('transparent');
   }
 
-  handleRequestClose = () => {
+  handleRequestClose: (() => void) = () => {
     this.setState({ open: false });
     this.emit(this.state.color);
   };
 
-  emit = (newColor: string) => {
+  emit: ((newColor: string) => void) = (newColor: string) => {
     const { color, onChange } = this.props;
     if (onChange && color != newColor) {
       onChange(newColor);

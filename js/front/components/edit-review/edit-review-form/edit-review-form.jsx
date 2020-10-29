@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Node, Element} from "React";import React from 'react';
 import type { ReviewType, ReviewFormErrors } from 'common/types';
 import type { SettingsType, VisitorType } from 'front/types';
 import { map, propOr, assoc } from 'ramda';
@@ -30,13 +30,13 @@ type State = {
 }
 
 class EditReviewForm extends React.PureComponent<Props, State> {
-  static displayName = 'EditReviewForm';
+  static displayName: ?string = 'EditReviewForm';
 
-  state = {
+  state: State = {
     editAuthor: false
   }
 
-  render() {
+  render(): Element<"div"> {
     const { review, errors, usedCriteria } = this.props;
     const { title, content } = review;
     return (
@@ -66,7 +66,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
     );
   }
 
-  renderCriterion = (critKey: number) => {
+  renderCriterion: ((critKey: number) => void | Element<"div">) = (critKey: number) => {
     const { settings, review } = this.props;
     const criteria = settings.criteria;
     const grade = propOr(0, critKey, review.grades);
@@ -85,7 +85,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
     }
   }
 
-  renderAuthor = () => {
+  renderAuthor: (() => Element<"div"> | Array<Node | Element<"div">>) = () => {
     const { review, visitor } = this.props;
     const editing = review.id != -1;
     const editAuthor = this.state.editAuthor;
@@ -96,13 +96,13 @@ class EditReviewForm extends React.PureComponent<Props, State> {
     }
   }
 
-  renderAuthorShort = (review: ReviewType) => (
+  renderAuthorShort: ((review: ReviewType) => Element<"div">) = (review: ReviewType) => (
     <div className='revws-review-form-author'>
       {__('by')} <a onClick={this.editAuthor}>{review.displayName}</a>
     </div>
   );
 
-  renderAuthorInputs = () => {
+  renderAuthorInputs: (() => Array<Node | Element<"div">>) = () => {
     const { review, errors, visitor } = this.props;
     const ret = [
       <div key="space" className='revws-review-form-author-input' />,
@@ -134,7 +134,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
     return ret;
   }
 
-  renderImages = () => {
+  renderImages: (() => null | Element<"div"> | Element<"label">) = () => {
     const { review, settings } = this.props;
     const images = review.images;
     const { allowImages, allowNewImages } = settings.preferences;
@@ -163,7 +163,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
     }
   }
 
-  renderImage = (image: string, i: number) => {
+  renderImage: ((image: string, i: number) => Element<"div">) = (image: string, i: number) => {
     return (
       <div key={i} className="revws-image">
         { image === ''
@@ -174,7 +174,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
     );
   }
 
-  renderFileInput = () => (
+  renderFileInput: (() => Element<"input">) = () => (
     <input
       id='image-new'
       type="file"
@@ -183,7 +183,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
       style={{display:'none'}} />
   );
 
-  handleUploadFile = (e: any) => {
+  handleUploadFile: ((e: any) => void) = (e: any) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       const { review, onUploadFile } = this.props;
@@ -192,7 +192,7 @@ class EditReviewForm extends React.PureComponent<Props, State> {
     }
   }
 
-  renderConsent = () => {
+  renderConsent: (() => void | Node) = () => {
     const { review, settings, agreed, onAgree } = this.props;
     if (consentRequired(settings, review)) {
       const markup = {
@@ -212,18 +212,18 @@ class EditReviewForm extends React.PureComponent<Props, State> {
     }
   }
 
-  editAuthor = () => {
+  editAuthor: (() => void) = () => {
     this.setState({
       editAuthor: true
     });
   }
 
-  update = (key: string) => (e: any) => {
+  update: ((key: string) => (e: any) => void) = (key: string) => (e: any) => {
     const { review, onUpdateReview } = this.props;
     onUpdateReview({ ...review, [ key ]: e.target.value });
   }
 
-  onSetGrade = (criterion: number, grade: number) => {
+  onSetGrade: ((criterion: number, grade: number) => void) = (criterion: number, grade: number) => {
     const { review, onUpdateReview } = this.props;
     const grades = assoc(criterion, grade, review.grades);
     onUpdateReview({ ...review, grades });

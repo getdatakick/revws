@@ -6,7 +6,7 @@ import Types from 'front/actions/types';
 
 export type State = EntitiesType;
 
-export default (entities: EntitiesType) => {
+export default (entities: EntitiesType): ((state?: State, action: Action) => State) => {
   return (state?: State, action:Action): State => {
     state = state || entities;
 

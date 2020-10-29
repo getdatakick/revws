@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import classnames from 'classnames';
 import Circle from './circle';
 import styles from './color-picker.less';
@@ -18,21 +18,21 @@ type State = {
 const isValidColor = (col) => /(^#[0-9A-F]{6}$)/i.test(col);
 
 class Color extends React.PureComponent<Props, State> {
-  static displayName = 'Color';
+  static displayName: ?string = 'Color';
 
-  state = {
+  state: State = {
     color: this.props.color,
     valid: true
   };
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     this.setState({
       color: nextProps.color,
       valid: true
     });
   }
 
-  render() {
+  render(): Element<"div"> {
     const { color, valid } = this.state;
     const inputClazz = classnames(styles.input, {
       [ styles.invalid ]: !valid
@@ -50,7 +50,7 @@ class Color extends React.PureComponent<Props, State> {
     );
   }
 
-  changeText = (e: any) => {
+  changeText: ((e: any) => void) = (e: any) => {
     const color = e.target.value;
     const valid = isValidColor(color);
     this.setState({
@@ -62,7 +62,7 @@ class Color extends React.PureComponent<Props, State> {
     }
   };
 
-  fixText = () => {
+  fixText: (() => void) = () => {
     if (! this.state.valid) {
       this.setState({
         color: this.props.color,

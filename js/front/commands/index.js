@@ -22,7 +22,7 @@ const commands = {
   [ Types.uploadImage ]: uploadImage
 };
 
-export default (settings: SettingsType) => {
+export default (settings: SettingsType): ((store: any) => (next: any) => (action: Action) => any) => {
   let revwsToken = settings.csrf;
 
   const refreshToken = () => new Promise((resolve, reject) => {

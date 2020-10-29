@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import type {Node} from "React";import React from 'react';
 import type { EntityType, ReviewFormErrors, ReviewType, CriteriaType, GradingShapeType, CustomerInfoType, LanguagesType } from 'common/types';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog';
@@ -32,7 +32,7 @@ type Props = {
 }
 
 class CreateReviewDialog extends React.PureComponent<Props> {
-  render() {
+  render(): Node {
     const { review, onClose, allowEmptyReview, allowEmptyTitle, usedCriteria } = this.props;
     const errors = review ? validateReview(allowEmptyTitle, allowEmptyReview, review) : null;
     const grades = (review && usedCriteria ) ? criteriaEntered(usedCriteria,review.grades) : false;
@@ -59,7 +59,7 @@ class CreateReviewDialog extends React.PureComponent<Props> {
     );
   }
 
-  getLabel = () => {
+  getLabel: (() => string) = () => {
     const { review, entityId, entityType, entityTypes } = this.props;
     if (! entityType) {
       return __('Select review type');
@@ -74,7 +74,7 @@ class CreateReviewDialog extends React.PureComponent<Props> {
     return __('Create review');
   }
 
-  renderContent = (errors: ?ReviewFormErrors) => {
+  renderContent: ((errors: ?ReviewFormErrors) => Node) = (errors: ?ReviewFormErrors) => {
     const { onUpdateReview, entityTypes, entityType, entityId, review, shape, language, criteria, usedCriteria, languages, onSetEntity, onSetEntityType, onSetCustomer } = this.props;
     if (!entityType) {
       return (
@@ -110,7 +110,7 @@ class CreateReviewDialog extends React.PureComponent<Props> {
   }
 
 
-  onSave = () => {
+  onSave: (() => void) = () => {
     const { onSave, onClose, review } = this.props;
     if (review) {
       onSave(review);

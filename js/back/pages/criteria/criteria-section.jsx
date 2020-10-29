@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Node, Element} from "React";import React from 'react';
 import type { EntityType, LanguagesType, KeyValue } from 'common/types';
 import type { Load, FullCriteria, FullCriterion } from 'back/types';
 import { keys, map, always, values, sortBy, prop } from 'ramda';
@@ -41,9 +41,9 @@ type State = {
 }
 
 class CriteriaSection extends React.PureComponent<Props, State> {
-  static displayName = 'CriteriaSection';
+  static displayName: ?string = 'CriteriaSection';
 
-  state = {
+  state: State = {
     delete: null,
     edit: null
   }
@@ -67,7 +67,7 @@ class CriteriaSection extends React.PureComponent<Props, State> {
     }
   }
 
-  render() {
+  render(): Element<"div"> {
     const criteria = sortBy(prop('id'), values(this.props.criteria));
     return (
       <div className={styles.section}>
@@ -94,7 +94,7 @@ class CriteriaSection extends React.PureComponent<Props, State> {
     );
   }
 
-  renderCriterion = (crit: FullCriterion) => {
+  renderCriterion: ((crit: FullCriterion) => Node) = (crit: FullCriterion) => {
     const language = this.props.language;
     const { id, label, active, global, categories, products, entityType } = crit;
     return (
@@ -117,7 +117,7 @@ class CriteriaSection extends React.PureComponent<Props, State> {
     );
   }
 
-  renderEditForm = () => {
+  renderEditForm: (() => Node) = () => {
     const { onSaveCriterion, languages, selectProducts, products, selectCategories, categories } = this.props;
     const edit = this.state.edit;
     const criterion = this.getCriterion(edit);
@@ -138,7 +138,7 @@ class CriteriaSection extends React.PureComponent<Props, State> {
     );
   }
 
-  getCriterion = (id: ?number): ?FullCriterion => {
+  getCriterion: ((id: ?number) => ?FullCriterion) = (id: ?number): ?FullCriterion => {
     const { entityType, criteria, languages } = this.props;
     if (! id) {
       return null;
@@ -157,15 +157,15 @@ class CriteriaSection extends React.PureComponent<Props, State> {
     return criteria[id];
   }
 
-  closeEditForm = () => {
+  closeEditForm: (() => void) = () => {
     this.setEdit(null);
   }
 
-  setEdit = (id: ?number) => {
+  setEdit: ((id: ?number) => void) = (id: ?number) => {
     this.setState({ edit: id });
   }
 
-  triggerDeleteCriterion = (id: ?number) => {
+  triggerDeleteCriterion: ((id: ?number) => void) = (id: ?number) => {
     this.setState({ delete: id });
   }
 }

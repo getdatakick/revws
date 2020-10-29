@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import ReactDOM from 'react-dom';
 import styles from './color-picker.less';
 import type { Position } from './types';
@@ -12,20 +12,20 @@ type Props = {
 };
 
 export default class extends React.PureComponent<Props> {
-  static displayName = 'ColorPicker/Ribbon';
+  static displayName: ?string = 'ColorPicker/Ribbon';
 
-  static defaultProps = {
+  static defaultProps: {|height: number|} = {
     height: 14
   };
 
-  unloaded = false;
+  unloaded: boolean = false;
 
   componentWillUnmount() {
     this.unloaded = true;
     this.removeListeners();
   }
 
-  onMouseDown = (e: any) => {
+  onMouseDown: ((e: any) => void) = (e: any) => {
     const x = e.clientX;
     const y = e.clientY;
 
@@ -35,20 +35,20 @@ export default class extends React.PureComponent<Props> {
     window.addEventListener('mouseup', this.onDragEnd, false);
   };
 
-  onDrag = (e: any) => {
+  onDrag: ((e: any) => void) = (e: any) => {
     const x = e.clientX;
     const y = e.clientY;
     this.pointMoveTo({ x, y, });
   };
 
-  onDragEnd = (e: any) => {
+  onDragEnd: ((e: any) => void) = (e: any) => {
     const x = e.clientX;
     const y = e.clientY;
     this.pointMoveTo({ x, y, });
     this.removeListeners();
   };
 
-  pointMoveTo = (coords: Position) => {
+  pointMoveTo: ((coords: Position) => void) = (coords: Position) => {
     if (!this.unloaded) {
       const node = ReactDOM.findDOMNode(this);
       if (node && node instanceof HTMLElement) {
@@ -64,12 +64,12 @@ export default class extends React.PureComponent<Props> {
     }
   };
 
-  removeListeners = () => {
+  removeListeners: (() => void) = () => {
     window.removeEventListener('mousemove', this.onDrag, false);
     window.removeEventListener('mouseup', this.onDragEnd, false);
   };
 
-  render() {
+  render(): Element<"div"> {
     const { height, hue } = this.props;
     const per = hue / 360 * 100;
     return (

@@ -1,6 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
-var Visualizer = require('webpack-visualizer-plugin');
+var babelConfig = require('./babel.config.json');
 
 module.exports = function(prod, version) {
   var plugins = [
@@ -8,49 +8,53 @@ module.exports = function(prod, version) {
       '__': ['translations', 'getTranslation']
     }),
   ];
-  var front = [ "babel-polyfill", "front" ];
-  var back = [ "babel-polyfill", "back" ];
+  var front = [ "front" ];
+  var back = [ "back" ];
 
-  if (! prod) {
-    plugins.push(new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify("development"),
-    }));
-  } else {
-    plugins.push(new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify("production"),
-    }));
-    plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
-    plugins.push(new webpack.optimize.UglifyJsPlugin({ sourceMap: true, }));
-    plugins.push(new Visualizer());
-  }
+  var mode = prod ? "production" : "development";
+
+  plugins.push(new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify(mode),
+  }));
 
   const ver = version.replace(/\./g, '_');
   const frontName = prod ? 'front-'+ver : 'front_app';
   const backName = prod ? 'back-'+ver : 'back_app';
 
   return {
+    mode: mode,
     module: {
       rules: [
         {
           test: /\.jsx?$/,
-          loaders: ['babel-loader'],
+          loader: 'babel-loader',
+          options: babelConfig,
           exclude: [ /node_modules/]
         },
         {
           test: /\.less$/,
-          loaders: ['style-loader', 'css-loader?module', 'less-loader' ]
+          use: [
+            'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true
+              }
+            },
+            'less-loader'
+          ]
         },
         {
           test: /\.css$/,
-          loaders: ['style-loader', 'css-loader'],
+          use: ['style-loader', 'css-loader'],
         },
         {
           test: /\.svg$/,
-          loaders: ['svg-react-loader']
+          loader: 'svg-react-loader'
         },
         {
           test: /\.json$/,
-          loaders: ['json-loader']
+          loader: 'json-loader'
         }
       ]
     },
@@ -70,7 +74,10 @@ module.exports = function(prod, version) {
       path: path.resolve('./build/'),
       publicPath: '/'
     },
+
     plugins: plugins,
+
     devtool: 'source-map'
+
   };
 };

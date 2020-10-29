@@ -1,6 +1,6 @@
 // @flow
 
-import type { KeyValue } from 'common/types';
+import type {Node, Element} from "React";import type { KeyValue } from 'common/types';
 import { filter, indexOf, remove, append, contains, map, toPairs } from 'ramda';
 import React from 'react';
 import List, { ListItem, ListItemText, } from 'material-ui/List';
@@ -19,11 +19,11 @@ type State = {
 }
 
 class Tab extends React.PureComponent<Props, State> {
-  state = {
+  state: State = {
     search: ''
   };
 
-  render() {
+  render(): Element<"div"> {
     const { classes, values } = this.props;
     const { search } = this.state;
     return (
@@ -47,7 +47,7 @@ class Tab extends React.PureComponent<Props, State> {
     );
   }
 
-  renderItem = (item: [string, string]) => {
+  renderItem: ((item: [string, string]) => Node) = (item: [string, string]) => {
     const { selectedValues } = this.props;
     const key = parseInt(item[0], 10);
     const label = item[1];
@@ -64,7 +64,7 @@ class Tab extends React.PureComponent<Props, State> {
     );
   }
 
-  filter = (item: [string, string]) => {
+  filter: ((item: [string, string]) => any | boolean) = (item: [string, string]) => {
     if (this.state.search) {
       const searchLC = this.state.search.toLowerCase();
       return contains(searchLC, item[1].toLowerCase());
@@ -72,7 +72,7 @@ class Tab extends React.PureComponent<Props, State> {
     return true;
   }
 
-  toggle = (key: number) => {
+  toggle: ((key: number) => void) = (key: number) => {
     const { selectedValues, onChange } = this.props;
     const index = indexOf(key, selectedValues);
     const values = index == -1 ? append(key, selectedValues) : remove(index, 1, selectedValues);

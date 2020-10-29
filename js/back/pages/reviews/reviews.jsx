@@ -1,6 +1,6 @@
 // @flow
 
-import type { GoTo, SettingsType, GlobalDataType } from 'back/types';
+import type {Element} from "React";import type { GoTo, SettingsType, GlobalDataType } from 'back/types';
 import type { CriteriaType, ReviewType } from 'common/types';
 import type { SubPage } from 'back/routing/reviews';
 import React from 'react';
@@ -22,9 +22,9 @@ export type Props = {
 };
 
 class ReviewsPage extends React.PureComponent<Props> {
-  static displayName = 'ReviewsPage';
+  static displayName: ?string = 'ReviewsPage';
 
-  render() {
+  render(): Element<"div"> {
     const subpage = this.props.subpage;
     if (subpage === 'data') {
       return this.renderExportImport();
@@ -33,7 +33,7 @@ class ReviewsPage extends React.PureComponent<Props> {
     }
   }
 
-  renderReviewList = (createReview: boolean) => {
+  renderReviewList: ((createReview: boolean) => Element<"div">) = (createReview: boolean) => {
     const { settings, data, criteria, goTo, saveReview } = this.props;
     const shape = data.shapes[settings.theme.shape];
     const shapeSize = settings.theme.shapeSize.product;
@@ -76,7 +76,7 @@ class ReviewsPage extends React.PureComponent<Props> {
     );
   }
 
-  renderExportImport = () => {
+  renderExportImport: (() => Element<"div">) = () => {
     const { data, exportReviews } = this.props;
     const { baseUrl, environment } = data;
     return (

@@ -17,7 +17,7 @@ const defaultState = (criteria) => ({
 
 const fixCriteria = (crit: any): FullCriteria => asObject(crit);
 
-export default (criteria: FullCriteria) => {
+export default (criteria: FullCriteria): ((state?: State, action: Action) => State) => {
   return (state?: State, action:Action): State => {
     state = state || defaultState(fixCriteria(criteria));
     if (action.type === Types.saveCriterion || action.type === Types.migrateData) {

@@ -20,7 +20,7 @@ export const fixReview = (review: any): ReviewType => {
   return ret;
 };
 
-export const fixReviews = map(fixReview);
+export const fixReviews: any = map(fixReview);
 
 export const averageGrade = (review: ReviewType): number => {
   const vals = values(review.grades);
@@ -32,6 +32,6 @@ export const averageGrade = (review: ReviewType): number => {
   return 0;
 };
 
-export const hasRatings = (review: ReviewType) => {
+export const hasRatings = (review: ReviewType): boolean => {
   return values(review.grades).length > 0;
 };

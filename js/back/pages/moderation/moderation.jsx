@@ -1,6 +1,6 @@
 // @flow
 
-import type { SettingsType, GlobalDataType } from 'back/types';
+import type {Node} from "React";import type { SettingsType, GlobalDataType } from 'back/types';
 import type { CriteriaType } from 'common/types';
 import React from 'react';
 import ReviewsTable from 'back/components/reviews-table';
@@ -12,9 +12,9 @@ export type Props = {
 };
 
 class ModerationPage extends React.PureComponent<Props> {
-  static displayName = 'ModerationPage';
+  static displayName: ?string = 'ModerationPage';
 
-  render() {
+  render(): Node {
     const { settings, data, criteria } = this.props;
     const shape = data.shapes[settings.theme.shape];
     return (

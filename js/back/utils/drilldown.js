@@ -10,10 +10,10 @@ const getUrl = (type: string, urls: DrilldownUrls, id: number) => {
   return decodeURI(url).replace('{ID}', `${id}`);
 };
 
-export const editProductUrl = (urls: DrilldownUrls, productId: number) => getUrl('editProduct', urls, productId);
-export const viewCustomerUrl = (urls: DrilldownUrls, customerId: number) => getUrl('viewCustomer', urls, customerId);
-export const editCustomerUrl = (urls: DrilldownUrls, customerId: number) => getUrl('editCustomer', urls, customerId);
-export const viewOrderUrl = (urls: DrilldownUrls, orderId: number) => getUrl('viewOrder', urls, orderId);
+export const editProductUrl = (urls: DrilldownUrls, productId: number): string => getUrl('editProduct', urls, productId);
+export const viewCustomerUrl = (urls: DrilldownUrls, customerId: number): string => getUrl('viewCustomer', urls, customerId);
+export const editCustomerUrl = (urls: DrilldownUrls, customerId: number): string => getUrl('editCustomer', urls, customerId);
+export const viewOrderUrl = (urls: DrilldownUrls, orderId: number): string => getUrl('viewOrder', urls, orderId);
 
 const functions = {
   product: editProductUrl

@@ -4,7 +4,7 @@ import type { GlobalDataType } from 'back/types';
 import type { ActivateAccountAction } from 'back/actions';
 import { activateAccountFailed, setSnackbar } from 'back/actions/creators';
 
-export const activateAccount = (data: GlobalDataType) => (action: ActivateAccountAction, store: any, api: Api) => {
+export const activateAccount = (data: GlobalDataType): ((action: ActivateAccountAction, store: any, api: Api) => void) => (action: ActivateAccountAction, store: any, api: Api) => {
   const url = data.storeUrl || 'https://store.getdatakick.com/en/module/datakickweb/api';
   window.$.ajax({
     url,

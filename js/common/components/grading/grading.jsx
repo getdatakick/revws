@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import classnames from 'classnames';
 import { range, map } from 'ramda';
 import type { GradingShapeType, ShapeColorsType } from 'common/types';
@@ -21,13 +21,13 @@ type State = {
 };
 
 class Grading extends React.PureComponent<Props, State> {
-  static displayName = 'Grading';
+  static displayName: ?string = 'Grading';
 
-  state = {
+  state: State = {
     grade: null
   };
 
-  render() {
+  render(): Element<"div"> {
     const { onSetGrade, type, className } = this.props;
     const typeClass = type ? 'revws-grading-'+type : null;
     return (
@@ -41,7 +41,7 @@ class Grading extends React.PureComponent<Props, State> {
     );
   }
 
-  renderShape = (id: number) => {
+  renderShape: ((id: number) => Element<"div">) = (id: number) => {
     const { shape, size, onSetGrade, colors } = this.props;
     const grade = Math.round(this.state.grade || this.props.grade);
     const padding = size/8;
@@ -58,7 +58,7 @@ class Grading extends React.PureComponent<Props, State> {
           cursor: onSetGrade ? 'pointer' : 'default'
         }}>
         <GradingShape
-          data-grade-id={id}
+          id={id}
           shape={shape}
           size={size}
           highlighted={grade >= id && !!this.state.grade}
@@ -69,18 +69,18 @@ class Grading extends React.PureComponent<Props, State> {
     );
   }
 
-  onMouseOver = (id: number) => {
+  onMouseOver: ((id: number) => void) = (id: number) => {
     if (! this.state.grade && this.props.grade == id) {
       return;
     }
     this.setState({ grade: id });
   }
 
-  onMouseOut = (id: number) => {
+  onMouseOut: ((id: number) => void) = (id: number) => {
     this.setState({ grade: null });
   }
 
-  onClick = (id: number, e?:any) => {
+  onClick: ((id: number, e?: any) => void) = (id: number, e?:any) => {
     prevent(e);
     const { grade, onSetGrade } = this.props;
     this.setState({ grade: null });
@@ -89,7 +89,7 @@ class Grading extends React.PureComponent<Props, State> {
     }
   }
 
-  onTouchMove = (e: any) => {
+  onTouchMove: ((e: any) => void) = (e: any) => {
     prevent(e);
     if (e.changedTouches && e.changedTouches.length) {
       let node = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
@@ -103,7 +103,7 @@ class Grading extends React.PureComponent<Props, State> {
     }
   }
 
-  onTouchEnd = (e: any) => {
+  onTouchEnd: ((e: any) => void) = (e: any) => {
     prevent(e);
     if (this.state.grade) {
       this.onClick(this.state.grade);

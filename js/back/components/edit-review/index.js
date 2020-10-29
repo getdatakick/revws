@@ -10,7 +10,7 @@ import { getData } from 'back/selectors/data';
 import { loadData } from 'back/actions/creators';
 
 
-type InputProps = {
+type InputProps = {|
   shopName: string,
   allowEmptyTitle: boolean,
   allowEmptyReviews: boolean,
@@ -24,17 +24,17 @@ type InputProps = {
   shapeSize: number,
   onSave: (ReviewType)=>void,
   onClose: ()=>void
-}
+|}
 
-type Props = InputProps & {
+type Props = InputProps & {|
   data: any,
   loadData: ({
     [ string ]: Load
   }) => void,
-}
+|}
 
 class EditReviewDialogController extends React.PureComponent<Props> {
-  static displayName = 'EditReviewDialogController';
+  static displayName: ?string = 'EditReviewDialogController';
 
   componentDidMount() {
     const { data, loadData, review } = this.props;

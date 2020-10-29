@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import styles from './page-with-footer.less';
 import classnames from 'classnames';
 
@@ -10,9 +10,9 @@ type Props = {
 };
 
 class PageWithFooter extends React.PureComponent<Props> {
-  static displayName = 'PageWithFooter';
+  static displayName: ?string = 'PageWithFooter';
 
-  render() {
+  render(): Element<"div"> {
     const { content, footer, showFooter } = this.props;
     const clazz = classnames(styles.footer, {
       [ styles.open ]: showFooter

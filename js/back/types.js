@@ -199,11 +199,11 @@ export type WarningMessageIconType = (
   'warning'
 );
 
-export type WarningMessageType = {
+export type WarningMessageType = {|
   icon: WarningMessageIconType,
   message: string,
   hint: string
-};
+|};
 
 
 export type EmailPreferences = {

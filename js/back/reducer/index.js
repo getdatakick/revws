@@ -29,7 +29,7 @@ export type State = {
   account: StateAccount,
 }
 
-const createReducer = (route: RoutingState, defaultSettings: SettingsType, defaultCriteria: FullCriteria, accountData: AccountType) => {
+const createReducer = (route: RoutingState, defaultSettings: SettingsType, defaultCriteria: FullCriteria, accountData: AccountType): any => {
   const settings = createSettings(defaultSettings);
   const criteria = createCriteria(defaultCriteria);
   const routingState = createRouting(route);

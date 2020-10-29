@@ -11,7 +11,7 @@ const toParam = pair => {
   return key + "='" + value + "'";
 };
 
-export const replaceTags = (str: string, tags: Array<Tag>) => {
+export const replaceTags = (str: string, tags: Array<Tag>): string => {
   let output = str;
   for (var i=0; i<tags.length; i++) {
     const tag = tags[i];

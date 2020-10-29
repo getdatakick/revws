@@ -11,23 +11,23 @@ import CriteriaSection from './criteria';
 import type { Props } from './criteria';
 
 
-type OwnProps = {
+type OwnProps = {|
   criteria: FullCriteria,
   products: ?KeyValue,
   categories: ?KeyValue,
-}
+|}
 
-type Actions = {
+type Actions = {|
   loadData: ({
     [ string ]: Load
   }) => void,
   onSaveCriterion: (FullCriterion) => void,
   onDeleteCriterion: (number) => void
-}
+|}
 
-type PassedProps = {
+type PassedProps = {|
   data: GlobalDataType
-}
+|}
 
 const mapStateToProps = (state: State): OwnProps => ({
   criteria: getFullCriteria(state),

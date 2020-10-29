@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Node, Element} from "React";import React from 'react';
 import type { CustomerInfoType } from 'common/types';
 import type { Load } from 'back/types';
 import List, { ListItem, ListItemText } from 'material-ui/List';
@@ -28,9 +28,9 @@ type State = {
 }
 
 class SelectProduct extends React.PureComponent<Props, State> {
-  static displayName = 'SelectProduct';
+  static displayName: ?string = 'SelectProduct';
 
-  state = {
+  state: State = {
     customers: [],
     text: ''
   }
@@ -59,7 +59,7 @@ class SelectProduct extends React.PureComponent<Props, State> {
     }
   }
 
-  render() {
+  render(): Element<"div"> {
     const { text } = this.state;
     const hasCustomers = !!this.props.customers;
     return (
@@ -77,7 +77,7 @@ class SelectProduct extends React.PureComponent<Props, State> {
     );
   }
 
-  renderCustomers = () => {
+  renderCustomers: (() => Node | Element<"div">) = () => {
     const customers = this.state.customers;
     return customers.length == 0 ? (
       <div className={styles.center}>
@@ -92,11 +92,11 @@ class SelectProduct extends React.PureComponent<Props, State> {
     );
   }
 
-  renderPlaceholder = () => (
+  renderPlaceholder: (() => string) = () => (
     ''
   );
 
-  renderResult = (customer: CustomerInfoType) => {
+  renderResult: ((customer: CustomerInfoType) => Node) = (customer: CustomerInfoType) => {
     return (
       <ListItem key={customer.id} button onClick={() => this.props.onSelect(customer)}>
         <div className={styles.number}>{customer.id}</div>
@@ -106,7 +106,7 @@ class SelectProduct extends React.PureComponent<Props, State> {
     );
   }
 
-  filterCustomers = (text: string, input: CustomersType) => {
+  filterCustomers: ((text: string, input: CustomersType) => void) = (text: string, input: CustomersType) => {
     const customers: Array<CustomerInfoType> = [];
     text = text.toLowerCase();
     const isNumber = validator.isNumeric(text);

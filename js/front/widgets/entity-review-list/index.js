@@ -15,7 +15,7 @@ import { getReviewList } from 'front/utils/list';
 import { getEntities } from 'front/selectors/entities';
 import { loadList, triggerVoteReview, triggerReportReview, triggerEditReview, triggerCreateReview, triggerDeleteReview } from 'front/actions/creators';
 
-type PassedProps = {
+type PassedProps = {|
   settings: SettingsType,
   visitor: VisitorType,
   listId: string,
@@ -23,23 +23,23 @@ type PassedProps = {
   entityId: number,
   allowPaging: boolean,
   displayMicrodata: boolean,
-};
+|};
 
-type OwnProps = {
+type OwnProps = {|
   lists: Lists,
   entities: EntitiesType,
   reviews: ReviewsType,
   isReviewed: (EntityType, number) => bool
-}
+|}
 
-type Actions = {
+type Actions = {|
   onEdit: (ReviewType)=>void,
   onCreate: (EntityType, number)=>void,
   onDelete: (ReviewType)=>void,
   onReport: (ReviewType)=>void,
   onVote: (ReviewType, 'up' | 'down')=>void,
   loadList: (string, ListConditions, number, number, ListOrder, ListOrderDirection)=>void
-}
+|}
 
 const mapStateToProps = (state: State): OwnProps => ({
   lists: getLists(state),

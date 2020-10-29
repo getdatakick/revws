@@ -1,6 +1,6 @@
 //@flow
 
-import React from 'react';
+import type {Node} from "React";import React from 'react';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import { getFontSize } from 'common/utils/browser';
 
@@ -12,14 +12,14 @@ type Props = {
 };
 
 class AppTheme extends React.PureComponent<Props> {
-  static displayName = 'AppTheme';
+  static displayName: ?string = 'AppTheme';
 
-  static defaultProps = {
+  static defaultProps: {|htmlFontSize: any, zIndexBase: number|} = {
     htmlFontSize: getFontSize(),
     zIndexBase: 17000000,
   }
 
-  render() {
+  render(): Node {
     const { zIndexBase, children, htmlFontSize, fontFamily } = this.props;
     const theme = createMuiTheme({
       typography: {

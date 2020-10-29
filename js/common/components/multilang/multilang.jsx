@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Node, Element} from "React";import React from 'react';
 import classnames from 'classnames';
 import type { LanguagesType, LangString } from 'common/types';
 import { MenuItem } from 'material-ui/Menu';
@@ -23,13 +23,13 @@ type State = {
 }
 
 class MultiLangField extends React.PureComponent<Props, State> {
-  static displayName = 'MultiLangField';
+  static displayName: ?string = 'MultiLangField';
 
-  state = {
+  state: State = {
     language: this.props.language
   };
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.language != nextProps.language) {
       this.setState({
         language: nextProps.language
@@ -37,7 +37,7 @@ class MultiLangField extends React.PureComponent<Props, State> {
     }
   }
 
-  render() {
+  render(): Element<"div"> {
     const { label, values, languages, fullWidth, ...rest } = this.props;
     const { language } = this.state;
     const langs = toPairs(languages);
@@ -61,14 +61,14 @@ class MultiLangField extends React.PureComponent<Props, State> {
     );
   }
 
-  renderLang = (id: number) => {
+  renderLang: ((id: number) => string) = (id: number) => {
     if (id === -1) {
       return 'all';
     }
     return this.props.languages[id].code;
   }
 
-  renderLanguage = (pair: [string, any]) => {
+  renderLanguage: ((pair: [string, any]) => Node) = (pair: [string, any]) => {
     const key = parseInt(pair[0], 10);
     const name = pair[1].name;
     return (
@@ -76,7 +76,7 @@ class MultiLangField extends React.PureComponent<Props, State> {
     );
   }
 
-  onChange = (e: any) => {
+  onChange: ((e: any) => void) = (e: any) => {
     const { values, languages, onChange } = this.props;
     const { language } = this.state;
     const value = e.target.value;
@@ -85,7 +85,7 @@ class MultiLangField extends React.PureComponent<Props, State> {
     }
   }
 
-  changeLang = (e: any) => {
+  changeLang: ((e: any) => void) = (e: any) => {
     this.setState({
       language: e.target.value
     });

@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Node} from "React";import React from 'react';
 import type { EntityType } from 'common/types';
 import { sortBy, prop, toPairs } from 'ramda';
 import List, { ListItem, ListItemText } from 'material-ui/List';
@@ -10,9 +10,9 @@ export type Props = {
 }
 
 class SelectEntityType extends React.PureComponent<Props> {
-  static displayName = 'SelectEntityType';
+  static displayName:?string = 'SelectEntityType';
 
-  render = () => {
+  render: (() => Node) = () => {
     const { entityTypes } = this.props;
     const pairs = sortBy(prop(1), toPairs(entityTypes));
     return (
@@ -22,7 +22,7 @@ class SelectEntityType extends React.PureComponent<Props> {
     );
   }
 
-  renderEntityType = (pair: [EntityType, string]) => {
+  renderEntityType: ((pair: [EntityType, string]) => Node) = (pair: [EntityType, string]) => {
     const [ type, name ] = pair;
     return (
       <ListItem key={type} button onClick={() => this.props.onSelect(type)}>

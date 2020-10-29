@@ -8,7 +8,7 @@ const mapReviews = (reviews: Array<number>, allReviews: ReviewsType): Array<Revi
 const getReviewIds = map(prop('id'));
 
 export const getReviewList = (list: ListType, allReviews: ReviewsType): ReviewListType => {
-  const { reviews, ...rest } = list;
+  const { reviews, conditions, id, ...rest } = list;
   return {
     reviews: mapReviews(reviews, allReviews),
     ...rest

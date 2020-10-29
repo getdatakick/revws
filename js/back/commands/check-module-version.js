@@ -6,7 +6,7 @@ import { setLatestVersion, setSnackbar, checkModuleVersionFailed } from 'back/ac
 import { validateVersion } from 'common/utils/validation';
 import { versionNum } from 'common/utils/version';
 
-export const checkModuleVersion = (data: GlobalDataType) => (action: CheckModuleVersionAction, store: any, api: Api) => {
+export const checkModuleVersion = (data: GlobalDataType): ((action: CheckModuleVersionAction, store: any, api: Api) => void) => (action: CheckModuleVersionAction, store: any, api: Api) => {
   const { version, platform, platformVersion } = data;
   const currentVersion = data.version;
   const domain = location.hostname;

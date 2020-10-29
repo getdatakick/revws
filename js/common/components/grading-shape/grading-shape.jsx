@@ -1,22 +1,23 @@
 // @flow
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import { merge } from 'ramda';
 import classnames from 'classnames';
 import type { GradingShapeType, ShapeColorsType } from 'common/types';
 
-type Props = {
+type Props = {|
+  id: number,
   shape: GradingShapeType,
   size: number,
   on: boolean,
   highlighted?: boolean,
   colors?: ShapeColorsType,
-};
+|};
 
 class GradingShape extends React.PureComponent<Props> {
-  static displayName = 'GradingShape';
+  static displayName: ?string = 'GradingShape';
 
-  render() {
-    const { shape, size, on, highlighted, colors, ...rest } = this.props;
+  render(): Element<"svg"> {
+    const { shape, size, on, highlighted, colors, id, ...rest } = this.props;
     const { path, viewBox, strokeWidth } = shape;
     const className = classnames('revws-grade', {
       'revws-grade-on': on,
@@ -35,7 +36,7 @@ class GradingShape extends React.PureComponent<Props> {
       height: size
     };
     return (
-      <svg className={className} style={style} viewBox={viewBox} width={size} height={size} {...rest}>
+      <svg data-grade-id={id} className={className} style={style} viewBox={viewBox} width={size} height={size} {...rest}>
         <path d={path} style={pathStyle} />
       </svg>
     );

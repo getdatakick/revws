@@ -1,4 +1,4 @@
 // @flow
-import type { State } from 'front/reducer';
+import type {ReviewType} from "../../common/types";import type { State } from 'front/reducer';
 
-export const getReview = (state: State) => state.deleteReview.review;
+export const getReview = (state: State): ?ReviewType => state.deleteReview.review;

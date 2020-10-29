@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import { merge } from 'ramda';
 
 type Props = {
@@ -11,9 +11,9 @@ type Props = {
 };
 
 class Circle extends React.PureComponent<Props> {
-  static displayName = 'ColorPicker/Circle';
+  static displayName: ?string = 'ColorPicker/Circle';
 
-  render() {
+  render(): Element<"div"> {
     const { color, size, onClick, style={} } = this.props;
     const merged = merge({
       width: size,

@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Node, Element} from "React";import React from 'react';
 import type { EntityType, KeyValue } from 'common/types';
 import type { Load } from 'back/types';
 import List, { ListItem, ListItemText } from 'material-ui/List';
@@ -26,9 +26,9 @@ type State = {
 }
 
 class SelectEntity extends React.PureComponent<Props, State> {
-  static displayName = 'SelectEntity';
+  static displayName: ?string = 'SelectEntity';
 
-  state = {
+  state: State = {
     entities: [],
     text: ''
   }
@@ -58,7 +58,7 @@ class SelectEntity extends React.PureComponent<Props, State> {
     }
   }
 
-  render() {
+  render(): Element<"div"> {
     const { text } = this.state;
     const { entities, entityName } = this.props;
     const hasEntities = !!entities;
@@ -77,7 +77,7 @@ class SelectEntity extends React.PureComponent<Props, State> {
     );
   }
 
-  renderEntities = () => {
+  renderEntities: (() => Node | Element<"div">) = () => {
     const entities = this.state.entities;
     return entities.length == 0 ? (
       <div className={styles.center}>
@@ -92,11 +92,11 @@ class SelectEntity extends React.PureComponent<Props, State> {
     );
   }
 
-  renderPlaceholder = () => (
+  renderPlaceholder: (() => string) = () => (
     ''
   );
 
-  renderResult = (pair: [number, string]) => {
+  renderResult: ((pair: [number, string]) => Node) = (pair: [number, string]) => {
     const [ id, name ] = pair;
     return (
       <ListItem key={id} button onClick={() => this.props.onSelect(id)}>
@@ -106,7 +106,7 @@ class SelectEntity extends React.PureComponent<Props, State> {
     );
   }
 
-  filterEntities = (text: string, input: KeyValue) => {
+  filterEntities: ((text: string, input: KeyValue) => void) = (text: string, input: KeyValue) => {
     const entities: Array<[number, string]> = [];
     text = text.toLowerCase();
     const isNumber = validator.isNumeric(text);

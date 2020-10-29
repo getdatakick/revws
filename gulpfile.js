@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var gutil = require('gulp-util');
+var PluginError = require('plugin-error');
 var webpack = require('webpack');
 var webpackStream = require('webpack-stream');
 var WebpackDevServer = require("webpack-dev-server");
@@ -65,16 +65,24 @@ function readTranslations(path) {
 
 gulp.task("devel", function() {
   var compiler = webpack(config(false, getVersion()));
-  compiler.hot = true;
 
   new WebpackDevServer(compiler, {
     contentBase: "./build",
-    hot: true,
-    quiet: true,
-    stats: {colors: true}
+    disableHostCheck: true,
+    publicPath: '/',
+    public: 'thirtybees.local:8080',
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+    },
+    stats: {
+      colors: true
+    }
   }).listen(8080, "localhost", function(err) {
-    if (err)
-      throw new gutil.PluginError("webpack-dev-server", err);
+    if (err) {
+      throw new PluginError("webpack-dev-server", err);
+    }
   });
 });
 
@@ -83,12 +91,11 @@ gulp.task('clean', function(done) {
   done();
 });
 
-gulp.task('build-javascript', function(done) {
+gulp.task('build-javascript', function() {
   process.env.NODE_ENV = 'production';
-  gulp.src('js')
+  return gulp.src('js')
     .pipe(webpackStream(config(true, getVersion()), webpack))
-    .pipe(gulp.dest('./build'))
-    .on('end', done);
+    .pipe(gulp.dest('./build'));
 });
 
 gulp.task('copy-javascript', function(done) {

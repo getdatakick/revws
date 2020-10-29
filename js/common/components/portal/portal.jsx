@@ -8,7 +8,7 @@ type Props = {
 };
 
 class Portal extends React.PureComponent<Props> {
-  static displayName = 'Portal';
+  static displayName: ?string = 'Portal';
   domNode: ?any = null;
 
   componentWillMount() {
@@ -33,7 +33,7 @@ class Portal extends React.PureComponent<Props> {
     this.domNode = null;
   }
 
-  render() {
+  render(): any | null {
     return this.domNode ? ReactDOM.createPortal(this.props.children, this.domNode) : null;
   }
 }

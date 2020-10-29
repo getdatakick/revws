@@ -1,7 +1,7 @@
 // @flow
 
-import React from 'react';
-import { equals, memoize } from 'ramda';
+import type {Node} from "React";import React from 'react';
+import { equals, memoizeWith, identity } from 'ramda';
 import type { SettingsPage } from './settings';
 import { settingsRoute } from './settings';
 import type { SupportPage } from './support';
@@ -38,7 +38,7 @@ const routes = {
 
 
 // API
-export const transition = (from: ?RoutingState, to: RoutingState, store: any) => {
+export const transition = (from: ?RoutingState, to: RoutingState, store: any): boolean => {
   if (!equals(from, to)) {
     if (from && from.type === to.type) {
       const update = routes[to.type].update;
@@ -61,7 +61,7 @@ export const transition = (from: ?RoutingState, to: RoutingState, store: any) =>
   return false;
 };
 
-export const render = (state:RoutingState, props: {}) => {
+export const render = (state:RoutingState, props: mixed): Node => {
   const { type, ...rest } = state;
   const Component = routes[type].component;
   return (
@@ -77,13 +77,11 @@ export const toUrl = (state: RoutingState): string => {
   return fixUrl(handler(state));
 };
 
-export const toState = memoize((url:string): ?RoutingState => {
+export const toState: any = memoizeWith(identity, (url:string): ?RoutingState => {
   for (var k in routes) {
-    if (routes.hasOwnProperty(k)) {
-      const state = routes[k].toState(url);
-      if (state) {
-        return state;
-      }
+    const state = routes[k].toState(url);
+    if (state) {
+      return state;
     }
   }
 });

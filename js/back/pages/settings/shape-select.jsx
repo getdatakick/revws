@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Node} from "React";import React from 'react';
 import type { GradingShapeType, ShapeColorsType } from 'common/types';
 import { map, toPairs } from 'ramda';
 import { MenuItem } from 'material-ui/Menu';
@@ -19,11 +19,11 @@ type Props = {
 };
 
 class ShapeSelect extends React.PureComponent<Props> {
-  static displayName = 'ShapeSelect';
+  static displayName: ?string = 'ShapeSelect';
 
-  static defaultProps = {};
+  static defaultProps: Props = {};
 
-  render() {
+  render(): Node {
     const { shape, shapes, onChange } = this.props;
     return (
       <FormControl fullWidth>
@@ -37,7 +37,7 @@ class ShapeSelect extends React.PureComponent<Props> {
     );
   }
 
-  renderItem = (pair: [string, GradingShapeType]) => {
+  renderItem: ((pair: [string, GradingShapeType]) => Node) = (pair: [string, GradingShapeType]) => {
     const key = pair[0];
     const shape = pair[1];
     return (

@@ -1,11 +1,11 @@
 // @flow
-import React from 'react';
+import type {Node} from "React";import React from 'react';
 import SvgIcon from 'material-ui/SvgIcon';
 
 class LegalIcon extends React.PureComponent<{}> {
-  static displayName = 'XmlIcon';
+  static displayName: ?string = 'XmlIcon';
 
-  render() {
+  render(): Node {
     return (
       <SvgIcon {...this.props} viewBox="-100 -100 1100 1100">
         <g>

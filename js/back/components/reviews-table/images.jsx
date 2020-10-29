@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent } from 'common/components/dialog';
 
@@ -14,13 +14,13 @@ type State = {
 }
 
 class ImageDialog extends React.PureComponent<Props, State> {
-  static displayName = 'DeleteReviewConfirm';
+  static displayName: ?string = 'DeleteReviewConfirm';
 
-  state = {
+  state: State = {
     image: null
   }
 
-  render() {
+  render(): null | Element<"div"> {
     const { images, classes } = this.props;
     const { image } = this.state;
     if (images.length) {
@@ -56,7 +56,7 @@ class ImageDialog extends React.PureComponent<Props, State> {
     return null;
   }
 
-  displayImage = (image: ?string) => (e: Event) => {
+  displayImage: ((image: ?string) => (e: Event) => void) = (image: ?string) => (e: Event) => {
     prevent(e);
     this.setState({ image });
   }

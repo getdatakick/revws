@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import classnames from 'classnames';
 import { findIndex, assoc, has } from 'ramda';
 import type { CriterionType, EntityInfoType, GradingShapeType, GradingType } from 'common/types';
@@ -21,11 +21,11 @@ type State = {
 }
 
 class Grades extends React.PureComponent<Props, State> {
-  static displayName = 'Grades';
+  static displayName: ?string = 'Grades';
 
-  state = getInitialState(this.props);
+  state: State = getInitialState(this.props);
 
-  render() {
+  render(): Element<"div"> {
     const { entity, criteria } = this.props;
     const { slide } = this.state;
     const cnt = criteria.length;
@@ -50,7 +50,7 @@ class Grades extends React.PureComponent<Props, State> {
     );
   }
 
-  renderSlide = (criterion: CriterionType) => {
+  renderSlide: ((criterion: CriterionType) => Element<"div">) = (criterion: CriterionType) => {
     const { size, shape } = this.props;
     const { grades } = this.state;
     const grade = grades[criterion.id] || 0;
@@ -67,7 +67,7 @@ class Grades extends React.PureComponent<Props, State> {
     );
   }
 
-  renderDot = (criterion: CriterionType, index:number) => {
+  renderDot: ((criterion: CriterionType, index: number) => Element<"li">) = (criterion: CriterionType, index:number) => {
     const slide = this.state.slide;
     const id = criterion.id;
     const clazz = classnames('revws-dot', {
@@ -81,7 +81,7 @@ class Grades extends React.PureComponent<Props, State> {
     );
   }
 
-  onSetGrades = (criterionId: number) => (grade: number) => {
+  onSetGrades: ((criterionId: number) => (grade: number) => void) = (criterionId: number) => (grade: number) => {
     const { onSetGrades, criteria } = this.props;
     const grades = assoc(criterionId, grade, this.state.grades);
     const slide = getUnreviewdSlide(criteria, grades);
@@ -92,7 +92,7 @@ class Grades extends React.PureComponent<Props, State> {
     }
   }
 
-  setSlide = (slide: number) => (e: any) => {
+  setSlide: ((slide: number) => (e: any) => void) = (slide: number) => (e: any) => {
     this.setState({ slide });
   }
 }

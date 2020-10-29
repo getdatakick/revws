@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Node} from "React";import React from 'react';
 import type { ReviewType, CriteriaType, GradingShapeType, DisplayCriteriaType } from 'common/types';
 import { assoc, merge } from 'ramda';
 import Bootstrap from 'common/components/bootstrap/bootstrap';
@@ -27,9 +27,9 @@ const caps = {
 };
 
 class EditReviewForm extends React.PureComponent<Props> {
-  static displayName = 'EditReviewForm';
+  static displayName: ?string = 'EditReviewForm';
 
-  render() {
+  render(): Node {
     const { shopName, criteria, review, shape, shapeSize, displayCriteria, onUpdateReview, dateFormat } = this.props;
     return (
       <Bootstrap className={styles.preview}>

@@ -2,7 +2,7 @@
 import { has, assoc } from 'ramda';
 const item = 'revws-data';
 
-export const getItem = (key: string) => {
+export const getItem = (key: string): any | null => {
   const data = getData();
   if (has(key, data)) {
     return data[key];
@@ -10,7 +10,7 @@ export const getItem = (key: string) => {
   return null;
 };
 
-export const setItem = (key: string, value: any) => {
+export const setItem = (key: string, value: any): boolean => {
   return setData(assoc(key, value, getData()));
 };
 

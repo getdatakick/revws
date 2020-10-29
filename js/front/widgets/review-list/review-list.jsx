@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Node, Element} from "React";import React from 'react';
 import { map } from 'ramda';
 import type { EntitiesType, ReviewDisplayStyle } from 'front/types';
 import type { DisplayCriteriaType, GradingShapeType, ReviewType, ReviewListType, CriteriaType } from 'common/types';
@@ -31,9 +31,9 @@ type Props = {
 };
 
 class ReviewList extends React.PureComponent<Props> {
-  static displayName = 'ReviewList';
+  static displayName: ?string = 'ReviewList';
 
-  render() {
+  render(): Array<Element<"div">> {
     const { reviewStyle, loading, reviewList } = this.props;
     const func = reviewStyle === 'item' ? this.renderReview : this.renderReviewWithEntity;
     return [
@@ -50,7 +50,7 @@ class ReviewList extends React.PureComponent<Props> {
     ];
   }
 
-  renderReview = (review: ReviewType) => {
+  renderReview: ((review: ReviewType) => Node) = (review: ReviewType) => {
     const { displayReply, shape, shapeSize, onReport, onVote, onEdit, onDelete, shopName, displayCriteria, criteria, dateFormat, displayMicrodata } = this.props;
     return (
       <ReviewListItem
@@ -71,7 +71,7 @@ class ReviewList extends React.PureComponent<Props> {
     );
   }
 
-  renderReviewWithEntity = (review: ReviewType) => {
+  renderReviewWithEntity: ((review: ReviewType) => Node) = (review: ReviewType) => {
     const { entities, shape, shapeSize, onReport, onVote, onEdit, onDelete, shopName, displayCriteria, criteria, dateFormat, displayMicrodata } = this.props;
     const entity = getEntity(entities, review.entityType, review.entityId);
     return (
@@ -94,7 +94,7 @@ class ReviewList extends React.PureComponent<Props> {
   }
 
 
-  renderPaging = () => {
+  renderPaging: (() => null | Node) = () => {
     const { allowPaging, loading, loadPage } = this.props;
     const { page, pages } = this.props.reviewList;
     if (allowPaging && pages > 1) {

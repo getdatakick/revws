@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Node} from "React";import React from 'react';
 import Button from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 
@@ -13,16 +13,16 @@ type Props = {
 };
 
 class AppSnackbar extends React.PureComponent<Props> {
-  static displayName = 'AppSnackbar';
+  static displayName: ?string = 'AppSnackbar';
 
-  static defaultProps = {
+  static defaultProps: {|anchorOrigin: {|horizontal: string, vertical: string|}|} = {
     anchorOrigin: {
       vertical: 'bottom',
       horizontal: 'left'
     }
   }
 
-  render() {
+  render(): Node {
     const { anchorOrigin, message } = this.props;
     return (
       <Snackbar
@@ -39,7 +39,7 @@ class AppSnackbar extends React.PureComponent<Props> {
     );
   }
 
-  onClose = (e: Event, reason: ?string) => {
+  onClose: ((e: Event, reason: ?string) => void) = (e: Event, reason: ?string) => {
     if (reason != 'clickaway') {
       this.props.setSnackbar(null);
     }

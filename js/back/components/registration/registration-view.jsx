@@ -1,6 +1,6 @@
 // @flow
 
-import type { EmailPreferences } from 'back/types';
+import type {Node, Element} from "React";import type { EmailPreferences } from 'back/types';
 import React from 'react';
 import Dialog, { DialogContent, DialogActions } from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
@@ -64,9 +64,9 @@ const styles = {
 };
 
 class Registration extends React.PureComponent<Props> {
-  static displayName = 'RegistrationView';
+  static displayName: ?string = 'RegistrationView';
 
-  render() {
+  render(): Node {
     const { isRtl, step, email, show } = this.props;
     const labels = [ __('I understand'), __('You can contact me'), __('Start using module')];
     let valid = true;
@@ -99,7 +99,7 @@ class Registration extends React.PureComponent<Props> {
     );
   }
 
-  renderStep = (number: number, Icon: any, content: any) => {
+  renderStep: ((number: number, Icon: any, content: any) => Element<"div">) = (number: number, Icon: any, content: any) => {
     const left = (number * 150) + '%';
     return (
       <div key={number} style={{...styles.step, left}}>
@@ -115,7 +115,7 @@ class Registration extends React.PureComponent<Props> {
     );
   }
 
-  step1 = () => (
+  step1: (() => Element<"div">) = () => (
     <div>
       <h2>{__('Licensing information')}</h2>
       <div style={styles.text}>
@@ -141,7 +141,7 @@ class Registration extends React.PureComponent<Props> {
     </div>
   );
 
-  step2 = () => (
+  step2: (() => Element<"div">) = () => (
     <div>
       <h2>{__('Contact permission')}</h2>
       <div style={styles.text}>
@@ -181,7 +181,7 @@ class Registration extends React.PureComponent<Props> {
     </div>
   );
 
-  step3 = () => (
+  step3: (() => Element<"div">) = () => (
     <div>
       <h2>{__('What emails can we send you?')}</h2>
       <div style={styles.text}>
@@ -212,7 +212,7 @@ class Registration extends React.PureComponent<Props> {
     </div>
   );
 
-  nextStep= () => {
+  nextStep: (() => void)= () => {
     const { step, email, emailPreferences, activateAccount, nextStep } = this.props;
     if (step === 2 && isEmail(email)) {
       activateAccount(email, emailPreferences);
@@ -221,7 +221,7 @@ class Registration extends React.PureComponent<Props> {
     }
   }
 
-  renderCheckbox = (key: string) => {
+  renderCheckbox: ((key: string) => Node) = (key: string) => {
     const { emailPreferences } = this.props;
     const value = !!emailPreferences[key];
     return (
@@ -229,7 +229,7 @@ class Registration extends React.PureComponent<Props> {
     );
   }
 
-  togglePreference = (key: string) => () => {
+  togglePreference: ((key: string) => () => void) = (key: string) => () => {
     const { emailPreferences, setEmailPreferences } = this.props;
     const value = !emailPreferences[key];
     setEmailPreferences({ ...emailPreferences, [ key ]: value });

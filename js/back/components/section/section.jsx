@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Node} from "React";import React from 'react';
 import styles from './section.less';
 import Paper from 'material-ui/Paper';
 
@@ -13,11 +13,11 @@ type Props = {
 
 class SettingsSection extends React.PureComponent<Props> {
 
-  static defaultProps = {
+  static defaultProps: {|indent: boolean|} = {
     indent: true
   }
 
-  render() {
+  render(): Node {
     const { id, subheader, label, children, indent } = this.props;
     return (
       <Paper id={id} className={styles.section}>

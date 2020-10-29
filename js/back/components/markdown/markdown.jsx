@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import classnames from 'classnames';
 import styles from './markdown.less';
 import { toHTML } from 'back/utils/markdown';
@@ -11,9 +11,9 @@ type Props = {
 }
 
 class Markdown extends React.PureComponent<Props> {
-  static displayName = 'Markdown';
+  static displayName: ?string = 'Markdown';
 
-  render() {
+  render(): null | Element<"div"> {
     const { content, className, ...rest } = this.props;
     const __html = content ? toHTML(content) : null;
     return content ? (

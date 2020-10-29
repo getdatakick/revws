@@ -12,7 +12,7 @@ import { loadData } from 'back/actions/creators';
 import { formatName } from 'common/utils/format';
 
 
-type InputProps = {
+type InputProps = {|
   entityTypes: { [ EntityType ]: string },
   nameFormat: NameFormatType,
   allowEmptyTitle: boolean,
@@ -24,14 +24,14 @@ type InputProps = {
   criteria: CriteriaType,
   onSave: (ReviewType)=>void,
   onClose: ()=>void
-}
+|}
 
-type Props = InputProps & {
+type Props = InputProps & {|
   data: any,
   loadData: ({
     [ string ]: Load
   }) => void,
-}
+|}
 
 type State = {
   entityType: ?EntityType,
@@ -40,15 +40,15 @@ type State = {
 }
 
 class EditReviewDialogController extends React.PureComponent<Props, State> {
-  static displayName = 'EditReviewDialogController';
+  static displayName: ?string = 'EditReviewDialogController';
 
-  state = {
+  state: State = {
     entityType: getEntityType(this.props.entityTypes),
     entityId: null,
     review: null
   }
 
-  componentWillUpdate(nextProps: Props, nextState: State) {
+  UNSAFE_componentWillUpdate(nextProps: Props, nextState: State) {
     if (nextState.entityType && nextState.entityId) {
       const { entityType, entityId } = nextState;
       const { data, loadData } = this.props;

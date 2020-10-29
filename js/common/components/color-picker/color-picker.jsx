@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import { equals, assoc, reject, isEmpty } from 'ramda';
 import Colr from 'colr';
 import Board from './board';
@@ -10,11 +10,11 @@ import Preset from './preset';
 import styles from './color-picker.less';
 import type { HSV, PresetType } from './types';
 
-type Props = {
+type Props = {|
   color: string,
   onChange: (string)=>void,
-  presets?: Array<PresetType>
-};
+  presets: ?Array<PresetType>
+|};
 
 type State = {
   dragging: boolean,
@@ -37,9 +37,9 @@ const fromHex = (hex) => {
 };
 
 export default class extends React.PureComponent<Props, State> {
-  static displayName = 'ColorPicker';
+  static displayName: ?string = 'ColorPicker';
 
-  static defaultProps = {
+  static defaultProps: {|presets: Array<{|colors: Array<string>, label: string|}>|} = {
     presets: [
       {
         label: __('Basic colors'),
@@ -48,12 +48,12 @@ export default class extends React.PureComponent<Props, State> {
     ]
   };
 
-  state = {
+  state: State = {
     dragging: false,
     hsv: fromHex(this.props.color)
   };
 
-  onChange = (hsv: HSV) => {
+  onChange: ((hsv: HSV) => void) = (hsv: HSV) => {
     if (!equals(hsv, this.state.hsv)) {
       this.setState({ hsv });
       const hex = toHex(hsv);
@@ -61,17 +61,17 @@ export default class extends React.PureComponent<Props, State> {
     }
   };
 
-  changeHexColor = (hex: string) => {
+  changeHexColor: (string => void) = (hex: string) => {
     if (hex != this.props.color) {
       this.props.onChange(hex);
     }
   };
 
-  onHueChange = (hue: number) => {
+  onHueChange: ((hue: number) => void) = (hue: number) => {
     this.onChange(assoc('h', hue, this.state.hsv));
   };
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (! this.state.dragging && nextProps.color) {
       this.setState({
         hsv: fromHex(nextProps.color)
@@ -79,29 +79,30 @@ export default class extends React.PureComponent<Props, State> {
     }
   }
 
-  startDragging = () => {
+  startDragging: (() => void) = () => {
     this.setState({
       dragging: true
     });
   };
 
-  endDragging = () => {
+  endDragging: (() => void) = () => {
     this.setState({
       dragging: false
     });
   };
 
-  renderPreset = (preset: PresetType, i: number) => {
+  renderPreset: ((preset: PresetType, i: number) => Element<"div">) = (preset: PresetType, i: number) => {
     return (
       <div key={'preset-'+i} className={styles.wrapper}>
         <Preset
+          onSelect={this.changeHexColor}
           {...preset}
-          onSelect={this.changeHexColor} />
+        />
       </div>
     );
   };
 
-  render() {
+  render(): Element<"div"> {
     const color = this.props.color;
     const { hsv } = this.state;
     const presets = getPresets(this.props.presets);
@@ -131,7 +132,7 @@ export default class extends React.PureComponent<Props, State> {
     );
   }
 
-  initColor = () => {
+  initColor: (() => void) = () => {
     this.changeHexColor('#FFFFFF');
   };
 }

@@ -1,6 +1,6 @@
 // @flow
 
-export const getFontSize = () => {
+export const getFontSize = (): number => {
   const doc = document.documentElement;
   if (doc) {
     return parseFloat(getComputedStyle(doc).fontSize);

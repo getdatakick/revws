@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import KeyboardArrowLeft from 'material-ui-icons/KeyboardArrowLeft';
 import KeyboardArrowRight from 'material-ui-icons/KeyboardArrowRight';
 import IconButton from 'material-ui/IconButton';
@@ -12,9 +12,9 @@ type Props = {
 };
 
 class ReviewListPaging extends React.PureComponent<Props> {
-  static displayName = 'ReviewListPaging';
+  static displayName: ?string = 'ReviewListPaging';
 
-  render() {
+  render(): Element<"div"> {
     const { page, pages, loading, loadPage } = this.props;
     return (
       <div key="paging" className="revws-paging">

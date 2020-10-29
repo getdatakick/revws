@@ -1,4 +1,5 @@
 // @flow
+import type {Node, Element} from "React";
 import React from 'react';
 import classnames from 'classnames';
 import Section from 'back/components/section/section';
@@ -40,9 +41,9 @@ const services = 'https://store.getdatakick.com/en/services?utm_campaign=revws&u
 const reviewUrl = 'https://store.getdatakick.com/en/revws-free?post_review&utm_campaign=revws&utm_medium=web&utm_source=support';
 
 class SupportPage extends React.PureComponent<Props> {
-  static displayName = 'SupportPage';
+  static displayName: ?string = 'SupportPage';
 
-  render() {
+  render(): Element<"div"> {
     const { checking, checkUpdate, data, paidNotes } = this.props;
     const isThirtybees = data.platform === 'thirtybees';
     return (
@@ -126,7 +127,7 @@ class SupportPage extends React.PureComponent<Props> {
     );
   }
 
-  renderReviewRequest = () => {
+  renderReviewRequest: (() => void | Node) = () => {
     const { shouldReview } = this.props;
     if (shouldReview) {
       return (
@@ -152,7 +153,7 @@ class SupportPage extends React.PureComponent<Props> {
     }
   }
 
-  renderWarnings = () => {
+  renderWarnings: (() => void | Node) = () => {
     const warnings = this.props.data.warnings;
     if (warnings && warnings.length) {
       return (
@@ -169,14 +170,14 @@ class SupportPage extends React.PureComponent<Props> {
     }
   }
 
-  renderChecking = () => (
+  renderChecking: (() => Element<"div">) = () => (
     <div className={classnames(styles.note, styles.inline)}>
       <CheckIcon />
       { __('Checking for new version of this module') }
     </div>
   )
 
-  renderResult = () => {
+  renderResult: (() => Element<"div"> | Array<Element<"div">>) = () => {
     const { notes, latestVersion, lastCheck, newVersionAvailable, data } = this.props;
     if (! latestVersion) {
       return (
@@ -220,7 +221,7 @@ class SupportPage extends React.PureComponent<Props> {
     );
   }
 
-  onReview = () => {
+  onReview: (() => void) = () => {
     this.props.setReviewed();
   }
 }

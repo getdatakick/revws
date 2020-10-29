@@ -1,6 +1,6 @@
 // @flow
 
-import type { KeyValue } from 'common/types';
+import type {Node, Element} from "React";import type { KeyValue } from 'common/types';
 import React from 'react';
 import { equals } from 'ramda';
 import type { FullCriterion } from 'back/types';
@@ -29,13 +29,13 @@ type State = {
 }
 
 class CriterionForm extends React.PureComponent<Props, State> {
-  static displayName = 'CriterionForm';
+  static displayName: ?string = 'CriterionForm';
 
-  state = {
+  state: State = {
     criterion: this.props.criterion
   }
 
-  componentWillReceiveProps = (nextProps: Props) => {
+  UNSAFE_componentWillReceiveProps: ((nextProps: Props) => void) = (nextProps: Props) => {
     if (!equals(this.props.criterion, nextProps.criterion)) {
       this.setState({
         criterion: nextProps.criterion
@@ -44,7 +44,7 @@ class CriterionForm extends React.PureComponent<Props, State> {
   }
 
 
-  render() {
+  render(): null | Node {
     const { onClose } = this.props;
     const criterion = this.state.criterion;
     const isSame = equals(criterion, this.props.criterion);
@@ -72,7 +72,7 @@ class CriterionForm extends React.PureComponent<Props, State> {
     ) : null;
   }
 
-  renderContent(criterion: FullCriterion) {
+  renderContent(criterion: FullCriterion): Element<"div"> {
     const { languages, selectProducts, selectCategories } = this.props;
     const { label, global, active } = criterion;
     const hasDimensions = selectProducts || selectCategories;
@@ -114,7 +114,7 @@ class CriterionForm extends React.PureComponent<Props, State> {
     );
   }
 
-  renderAssociations = (criterion: FullCriterion) => {
+  renderAssociations: ((criterion: FullCriterion) => Node | boolean) = (criterion: FullCriterion) => {
     const { selectProducts, selectCategories, products, categories } = this.props;
     return (!criterion.global) && (
       <Tabs
@@ -130,11 +130,11 @@ class CriterionForm extends React.PureComponent<Props, State> {
     );
   }
 
-  setCriterion = (criterion: FullCriterion) => {
+  setCriterion: ((criterion: FullCriterion) => void) = (criterion: FullCriterion) => {
     this.setState({ criterion });
   }
 
-  submit = () => {
+  submit: (() => void) = () => {
     const criterion = this.state.criterion;
     if (criterion) {
       this.props.onSave(criterion);

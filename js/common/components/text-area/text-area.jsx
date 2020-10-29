@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import classnames from 'classnames';
 import { InputLabel } from 'material-ui/Input';
 import { FormHelperText } from 'material-ui/Form';
@@ -20,17 +20,17 @@ type State = {
 }
 
 class TextArea extends React.PureComponent<Props, State> {
-  static displayName = 'TextArea';
+  static displayName: ?string = 'TextArea';
 
-  static defaultProps = {
+  static defaultProps: {|rows: number|} = {
     rows: 5
   };
 
-  state = {
+  state: State = {
     focus: false
   };
 
-  render() {
+  render(): Element<"div"> {
     const { placeholder, label, value, onChange, error, helperText, ...rest } = this.props;
     const clazz = classnames(styles.textArea, {
       [ styles.invalid ]: !!error

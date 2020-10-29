@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import type {Element} from "React";import React from 'react';
 import styles from './badge.less';
 
 type Props = {
@@ -9,9 +9,9 @@ type Props = {
 };
 
 class Badge extends React.PureComponent<Props> {
-  static displayName = 'Badge';
+  static displayName: ?string = 'Badge';
 
-  render() {
+  render(): Element<"span"> {
     const { children, color, backgroundColor } = this.props;
     const style = {
       color,

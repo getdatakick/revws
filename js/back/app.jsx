@@ -22,7 +22,7 @@ type Props = {
 };
 
 class BackApp extends React.PureComponent<Props> {
-  static displayName = 'BackApp';
+  static displayName: ?string = 'BackApp';
 
   render() {
     const { data, routingState, goTo } = this.props;
@@ -65,6 +65,6 @@ const mapStateToProps = mapObject({
 const actions = { goTo };
 
 const connectRedux = connect(mapStateToProps, actions);
-const Connected = connectRedux(BackApp);
+const Connected: any = connectRedux(BackApp);
 
 export default Connected;

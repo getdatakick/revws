@@ -62,7 +62,7 @@ const removeImage = (id: number,review: ReviewType) => {
   return { ...rest, images: newImages };
 };
 
-export default (visitor: VisitorType) => {
+export default (visitor: VisitorType): ((state?: State, action: Action) => State) => {
   return (state?: State, action:Action): State => {
     state = state || defaultState;
 

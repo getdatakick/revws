@@ -11,7 +11,7 @@ export type HSV = {
   v: number
 };
 
-export type PresetType = {
+export type PresetType = {|
   label: string,
   colors: Array<string>
-};
+|};

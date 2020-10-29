@@ -13,7 +13,7 @@ const fixLinks = (m) => {
   }
 };
 
-export const toHTML = (text: string) => {
+export const toHTML = (text: string): any => {
   const tree = markdown.parse(text);
   fixLinks(tree);
   return markdown.renderJsonML(markdown.toHTMLTree(tree));

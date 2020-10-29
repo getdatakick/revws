@@ -14,7 +14,7 @@ const addReview = (state: State, review: ReviewType) => assoc(review.id, fixRevi
 const deleteReview = (state: State, review: ReviewType) => dissoc(review.id, state);
 const markDirty = (state: State, review: ReviewType) => assoc(review.id, markLoading(true, review), state);
 
-export default (initialReviews: ReviewsType) => {
+export default (initialReviews: ReviewsType): ((state?: State, action: Action) => State) => {
   return (state?: State, action:Action): State => {
     state = state || fixReviews(map(markLoading(false), initialReviews));
 

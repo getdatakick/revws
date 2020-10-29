@@ -8,17 +8,17 @@ import { connect } from 'react-redux';
 import { activateAccount } from 'back/actions/creators';
 import { isActivated } from 'back/selectors/account';
 
-type OwnProps = {
+type OwnProps = {|
   show: boolean,
-}
+|}
 
-type Actions = {
+type Actions = {|
   activateAccount: (string, EmailPreferences) => void
-}
+|}
 
-type PassedProps = {
+type PassedProps = {|
   isRtl: boolean,
-}
+|}
 
 const mapStateToProps = (state: State): OwnProps => ({
   show: !isActivated(state),

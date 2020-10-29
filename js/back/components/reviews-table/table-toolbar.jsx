@@ -60,9 +60,9 @@ type State = {
 }
 
 class EnahncedTableToolbar extends React.PureComponent<Props, State> {
-  static displayName = 'EnahncedTableToolbar';
+  static displayName: ?string = 'EnahncedTableToolbar';
 
-  state = {
+  state: State = {
     showFilters: false
   }
 

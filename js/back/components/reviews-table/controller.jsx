@@ -1,6 +1,6 @@
 // @flow
 
-import type { EntityType, ReviewListType, GradingShapeType, ReviewType, CriteriaType, DisplayCriteriaType, LanguagesType, ListOrder, ListOrderDirection } from 'common/types';
+import type {Element} from "React";import type { EntityType, ReviewListType, GradingShapeType, ReviewType, CriteriaType, DisplayCriteriaType, LanguagesType, ListOrder, ListOrderDirection } from 'common/types';
 import type { DrilldownUrls, LoadPagination } from 'back/types';
 import type { Filters } from './types';
 import { notNil } from 'common/utils/ramda';
@@ -49,9 +49,9 @@ type State = {
 }
 
 class Controller extends React.PureComponent<Props, State> {
-  static displayName = 'Controller';
+  static displayName: ?string = 'Controller';
 
-  state = {
+  state: State = {
     edit: null,
     page: 0,
     pageSize: 10,
@@ -80,7 +80,7 @@ class Controller extends React.PureComponent<Props, State> {
     }
   }
 
-  loadPage = (state: State) => {
+  loadPage: ((state: State) => void) = (state: State) => {
     const { uniqueId, loadData } = this.props;
     const { order, orderDir, pageSize, page, filters } = state;
     loadData(uniqueId, merge(filters, {
@@ -96,7 +96,7 @@ class Controller extends React.PureComponent<Props, State> {
     }));
   }
 
-  getList = (props: Props): ReviewListType => {
+  getList: ((props: Props) => ReviewListType) = (props: Props): ReviewListType => {
     const { data, uniqueId  } = props;
     const list = prop(uniqueId, data);
     const { order, orderDir, pageSize, page } = this.state;
@@ -111,7 +111,7 @@ class Controller extends React.PureComponent<Props, State> {
     };
   };
 
-  render() {
+  render(): null | Element<"div"> {
     const { data, uniqueId } = this.props;
     if (has(uniqueId, data)) {
       return this.renderList(data[uniqueId]);
@@ -119,7 +119,7 @@ class Controller extends React.PureComponent<Props, State> {
     return null;
   }
 
-  renderList(list: ReviewListType) {
+  renderList(list: ReviewListType): Element<"div"> {
     const {
       languages, criteria, emptyLabel, title, shape, approveReview, deleteReview, undeleteReview,
       language, shapeSize, shopName, displayCriteria, deletePermReview, drilldownUrls, dateFormat,
@@ -179,26 +179,26 @@ class Controller extends React.PureComponent<Props, State> {
     );
   }
 
-  onChangeFilters = (filters: Filters) => {
+  onChangeFilters: ((filters: Filters) => void) = (filters: Filters) => {
     this.setState({ filters });
   }
 
-  filter = (reviews: Array<ReviewType>) => {
+  filter: ((reviews: Array<ReviewType>) => any) = (reviews: Array<ReviewType>) => {
     return reject(this.hiddenReview, reviews);
   }
 
-  onAuthorClick = (authorType: 'guest' | 'customer', id: number) => {
+  onAuthorClick: ((authorType: "guest" | "customer", id: number) => void) = (authorType: 'guest' | 'customer', id: number) => {
   }
 
-  onSaveReview = (review: ReviewType) => {
+  onSaveReview: ((review: ReviewType) => void) = (review: ReviewType) => {
     this.props.saveReview(review);
   }
 
-  onReviewClick = (id: ?number) => {
+  onReviewClick: ((id: ?number) => void) = (id: ?number) => {
     this.setState({ edit: id });
   }
 
-  hiddenReview = (review: ReviewType) => {
+  hiddenReview: ((review: ReviewType) => boolean) = (review: ReviewType) => {
     const { deleted, underReview } = review;
     const filters = this.state.filters;
     if (notNil(filters.deleted) && deleted !== filters.deleted) {

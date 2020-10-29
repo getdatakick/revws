@@ -1,6 +1,6 @@
 // @flow
 
-import type { SettingsType, VisitorType, WidgetsType, WidgetType } from 'front/types';
+import type {Node} from "React";import type { SettingsType, VisitorType, WidgetsType, WidgetType } from 'front/types';
 import { values } from 'ramda';
 import React from 'react';
 import EntityReviewList from 'front/widgets/entity-review-list';
@@ -19,9 +19,9 @@ type Props = {
 };
 
 class FrontApp extends React.PureComponent<Props> {
-  static displayName = 'FrontApp';
+  static displayName: ?string = 'FrontApp';
 
-  render() {
+  render(): Node {
     const { settings, visitor, widgets } = this.props;
     const widgetList: Array<WidgetType> = values(widgets);
     return (
@@ -34,7 +34,7 @@ class FrontApp extends React.PureComponent<Props> {
     );
   }
 
-  renderWidget = (widget: WidgetType, i: number) => {
+  renderWidget: ((widget: WidgetType, i: number) => void | Node) = (widget: WidgetType, i: number) => {
     const { settings, visitor } = this.props;
     if (widget.type === 'entityList') {
       const { listId, entityType, entityId, allowPaging, microdata } = widget;
