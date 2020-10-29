@@ -485,8 +485,15 @@ class RevwsReview extends ObjectModel {
     return $review;
   }
 
-  public static function fromJson($json, $settings) {
-    $moderation = $settings->moderationEnabled();
+    /**
+     * @param $json
+     * @param Settings $settings
+     * @return RevwsReview
+     * @throws Adapter_Exception
+     * @throws PrestaShopDatabaseException
+     * @throws PrestaShopException
+     */
+  public static function fromJson($json, Settings $settings) {
     $id = (int)$json['id'];
     if ($id === -1) {
       $id = null;
@@ -495,7 +502,8 @@ class RevwsReview extends ObjectModel {
     $review->display_name = $json['displayName'];
     $review->title = $json['title'];
     $review->content = $json['content'];
-    $review->date_upd = new \DateTime();
+    $review->date_upd = date('Y-m-d H:i:s');
+    $review->date_add = $review->date_upd;
     $review->entity = isset($json['entity']) ? $json['entity'] : null;
     $review->customer = isset($json['customer']) ? $json['customer'] : null;
     $review->email = $json['email'];
@@ -508,8 +516,11 @@ class RevwsReview extends ObjectModel {
     foreach ($json['grades'] as $key => $value) {
       $review->grades[(int)$key] = (int)$value;
     }
-    if ($json['date']) {
-      $review->date_add = date($json['date']);
+    if (isset($json['date']) && $json['date']) {
+      $date = \DateTime::createFromFormat("Y-m-d", $json['date']);
+      if ($date) {
+        $review->date_add = $date->format("Y-m-d H:i:s");
+      }
     }
     if (! $id) {
       $review->entity_type  = $json['entityType'];
