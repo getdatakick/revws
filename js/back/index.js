@@ -107,7 +107,7 @@ window.startRevws = (init: any) => {
   const store = createStore(reducer, applyMiddleware(...middlewares));
 
   watchElementSize(node, store);
-  history.listen((location, action) => {
+  history.listen(({location, action}) => {
     const currentUrl = fixUrl(location.pathname);
     const routingState = toState(currentUrl);
     const currentState = getRoutingState(store.getState());
