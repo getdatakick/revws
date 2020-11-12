@@ -898,7 +898,7 @@ class Revws extends Module {
     ];
 
     $conditions = [];
-    foreach (['product', 'customer', 'guest', 'category', 'categoryTree', 'manufacturer'] as $param) {
+    foreach (['product', 'customer', 'guest', 'category', 'categoryTree', 'manufacturer', 'entityType'] as $param) {
       if (isset($params[$param])) {
         $conditions[$param] = (int)$params[$param];
       }
