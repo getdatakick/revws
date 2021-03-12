@@ -477,9 +477,7 @@ class RevwsReview extends ObjectModel {
       $review->images = [];
       $images = array_unique(array_values($images));
       foreach ($images as $image) {
-        if (file_exists(_PS_ROOT_DIR_.$image)) {
-          $review->images[] = $image;
-        }
+        $review->images[] = $image;
       }
     }
     return $review;
