@@ -19,7 +19,9 @@
 {strip}
 <div class="revws-review {if $review.underReview}revws-review-under-review {/if}{if $review.verifiedBuyer}revws-verified-buyer {/if}" {if $microdata}itemprop="review" itemscope itemtype="http://schema.org/Review"{/if}>
   <div class="revws-review-author">
-    <div class="revws-review-author-name" {if $microdata}itemprop="author"{/if}>{$review.displayName|escape:'html':'UTF-8'}</div>
+    <div class="revws-review-author-name" {if $microdata}itemprop="author" itemscope itemtype="http://schema.org/Person"{/if}>
+      <span {if $microdata}itemprop="name"{/if}>{$review.displayName|escape:'html':'UTF-8'}</span>
+    </div>
     {if $review.verifiedBuyer}
       <div class="revws-verified-buyer-badge">{l s="Verified purchase" mod='revws'}</div>
     {/if}

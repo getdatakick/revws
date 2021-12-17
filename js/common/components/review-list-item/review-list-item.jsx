@@ -104,7 +104,9 @@ class ReviewListItem extends React.PureComponent<Props, State> {
       <div className={classes} {...microdata({ itemProp: "review", itemScope: true, itemType: "http://schema.org/Review" })}>
         { loading  && <div className="revws-loading" /> }
         <div className="revws-review-author">
-          <div className="revws-review-author-name" {...microdata({ itemProp: "author" })}>{ displayName }</div>
+          <div className="revws-review-author-name" {...microdata({ itemProp: "author", itemScope: true, itemType: "http://schema.org/Person"})}>
+            <span {...microdata({ itemProp: "name" })}>{ displayName }</span>
+          </div>
           {verifiedBuyer && <div className="revws-verified-buyer-badge">{__("Verified purchase")}</div>}
           {stars}
           {stars && displayMicrodata && (
