@@ -5,12 +5,12 @@ import type { CheckModuleVersionAction } from 'back/actions';
 import { setLatestVersion, setSnackbar, checkModuleVersionFailed } from 'back/actions/creators';
 import { validateVersion } from 'common/utils/validation';
 import { versionNum } from 'common/utils/version';
+import { getApiUrl } from 'back/utils/common';
 
 export const checkModuleVersion = (data: GlobalDataType): ((action: CheckModuleVersionAction, store: any, api: Api) => void) => (action: CheckModuleVersionAction, store: any, api: Api) => {
   const { version, platform, platformVersion } = data;
   const currentVersion = data.version;
   const domain = location.hostname;
-  const storeUrl = data.storeUrl || 'https://store.getdatakick.com/en/module/datakickweb/api';
 
   const error = err => {
     store.dispatch(checkModuleVersionFailed());
@@ -18,7 +18,7 @@ export const checkModuleVersion = (data: GlobalDataType): ((action: CheckModuleV
   };
 
   window.$.ajax({
-    url: storeUrl,
+    url: getApiUrl(data),
     type: 'POST',
     dataType: 'json',
     data: {

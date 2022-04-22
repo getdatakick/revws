@@ -3,11 +3,11 @@ import type { Api } from 'common/types';
 import type { GlobalDataType } from 'back/types';
 import type { ActivateAccountAction } from 'back/actions';
 import { activateAccountFailed, setSnackbar } from 'back/actions/creators';
+import { getApiUrl } from 'back/utils/common';
 
 export const activateAccount = (data: GlobalDataType): ((action: ActivateAccountAction, store: any, api: Api) => void) => (action: ActivateAccountAction, store: any, api: Api) => {
-  const url = data.storeUrl || 'https://store.getdatakick.com/en/module/datakickweb/api';
   window.$.ajax({
-    url,
+    url: getApiUrl(data),
     type: 'POST',
     dataType: 'json',
     data: {
