@@ -193,7 +193,7 @@ gulp.task('extract-front-translations', function(done) {
     .pipe(webpackStream(translateConfig('front'), webpack))
     .pipe(gulp.dest('./build'))
     .on('end', () => {
-      del.sync(['./build/transl.js'], { force: true });
+      del.sync(['./build/transl.js', './build/transl.js.LICENSE.txt'], { force: true });
       done();
     });
 });
@@ -204,7 +204,7 @@ gulp.task('extract-back-translations', function(done) {
     .pipe(webpackStream(translateConfig('back'), webpack))
     .pipe(gulp.dest('./build'))
     .on('end', () => {
-      del.sync(['./build/transl.js'], { force: true });
+      del.sync(['./build/transl.js', './build/transl.js.LICENSE.txt'], { force: true });
       done();
     });
 });

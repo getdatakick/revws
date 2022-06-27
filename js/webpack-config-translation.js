@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
-var ExtractTranslationKeysPlugin = require('translations-keys');
+var ExtractTranslationKeysPlugin = require('webpack-extract-translation-keys-plugin');
+var babelConfig = require('./babel.config.json');
 
 module.exports = function(name) {
   var plugins = [
@@ -12,37 +13,47 @@ module.exports = function(name) {
       'process.env.NODE_ENV': JSON.stringify("production"),
     })
   ];
-  var app = [ "babel-polyfill", name ];
 
   return {
+    mode: 'production',
     module: {
       rules: [
         {
           test: /\.jsx?$/,
-          loaders: ['babel-loader'],
+          loader: 'babel-loader',
+          options: babelConfig,
           exclude: [ /node_modules/]
         },
         {
           test: /\.less$/,
-          loaders: ['style-loader', 'css-loader?module', 'less-loader' ]
+          use: [
+            'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true
+              }
+            },
+            'less-loader'
+          ]
         },
         {
           test: /\.css$/,
-          loaders: ['style-loader', 'css-loader'],
+          use: ['style-loader', 'css-loader'],
         },
         {
           test: /\.svg$/,
-          loaders: ['svg-react-loader']
+          loader: 'svg-react-loader'
         },
         {
           test: /\.json$/,
-          loaders: ['json-loader']
+          loader: 'json-loader'
         }
       ]
     },
 
     entry: {
-      'transl': app
+      'transl': [ name ]
     },
 
     resolve: {
@@ -55,6 +66,7 @@ module.exports = function(name) {
       path: path.resolve('./build/'),
       publicPath: '/'
     },
+
     plugins: plugins
   };
 };
