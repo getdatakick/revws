@@ -64,6 +64,6 @@
     "redux-logger": "^3.0.6",
     "translations": "github:getdatakick/translations",
     "util": "^0.12.4",
-    "validator": "^9.2.0"
+    "validator": "^13.7.0"
   }
 }
