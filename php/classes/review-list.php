@@ -46,6 +46,7 @@ class ReviewList implements JsonSerializable {
     return $this->id;
   }
 
+  #[\ReturnTypeWillChange]
   public function jsonSerialize() {
     return $this->getData();
   }

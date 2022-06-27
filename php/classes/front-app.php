@@ -180,6 +180,7 @@ class FrontApp implements JsonSerializable {
    * @throws PrestaShopDatabaseException
    * @throws PrestaShopException
    */
+  #[\ReturnTypeWillChange]
   public function jsonSerialize() {
     return [
       'visitor' => $this->getVisitorData(),
