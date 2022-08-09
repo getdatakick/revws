@@ -260,7 +260,7 @@ class RevwsReview extends ObjectModel {
     $this->validated = $validated;
   }
 
-  public function vote($up=true, Settings $settings, Visitor $visitor) {
+  public function vote($up, Settings $settings, Visitor $visitor) {
     $conn = Db::getInstance();
     return $conn->insert('revws_review_reaction',
       [
