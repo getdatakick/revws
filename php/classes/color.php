@@ -65,7 +65,7 @@ class Color {
   }
 
   private static function toColor($values) {
-    return '#' . dechex($values[0]) . dechex($values[1]) . dechex($values[2]);
+    return '#' . dechex((int)$values[0]) . dechex((int)$values[1]) . dechex((int)$values[2]);
   }
 
   public static function isTransparent($color) {
