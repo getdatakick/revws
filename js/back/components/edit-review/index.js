@@ -3,7 +3,7 @@ import React from 'react';
 import type { EntityInfoType, ReviewType, DisplayCriteriaType, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
 import type { Load } from 'back/types';
 import EditReviewDialog from './edit-review-dialog';
-import type { ComponentType } from 'react';
+import type { ComponentType, Node } from 'react';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
 import { getData } from 'back/selectors/data';
@@ -51,7 +51,7 @@ class EditReviewDialogController extends React.PureComponent<Props> {
     }
   }
 
-  render() {
+  render():Node {
     const { data, review, ...rest} = this.props;
     const entityKey = getEntityKey(review);
     const entity: ?EntityInfoType = data[entityKey];

@@ -1,6 +1,7 @@
 // @flow
 
-import type {Element} from "React";import type { EntityType, ReviewListType, GradingShapeType, ReviewType, CriteriaType, DisplayCriteriaType, LanguagesType, ListOrder, ListOrderDirection } from 'common/types';
+import type {Element} from 'react';
+import type { EntityType, ReviewListType, GradingShapeType, ReviewType, CriteriaType, DisplayCriteriaType, LanguagesType, ListOrder, ListOrderDirection } from 'common/types';
 import type { DrilldownUrls, LoadPagination } from 'back/types';
 import type { Filters } from './types';
 import { notNil } from 'common/utils/ramda';

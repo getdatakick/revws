@@ -1,7 +1,7 @@
 
 // @flow
 import type { ComponentType } from 'react';
-import type { SettingsType } from 'front/types';
+import type {ListType, SettingsType} from 'front/types';
 import type { State } from 'front/reducer';
 import ReviewList from './my-reviews';
 import { connect } from 'react-redux';
@@ -18,6 +18,11 @@ type PassedProps = {
   customerId: number
 };
 
+type OwnProps = {
+  lists: Array<ListType>,
+
+};
+
 const mapStateToProps = (state: State) => ({
   lists: getLists(state),
   reviews: getReviews(state),
@@ -32,7 +37,7 @@ const actions = {
   loadList: loadList,
 };
 
-const merge = (props, actions, passed: PassedProps) => {
+const merge = (props: any, actions: any, passed: PassedProps) => {
   const { lists, reviews, ...restProps  } = props;
   const { listId } = passed;
   const { loadList, ...restActions } = actions;

@@ -1,5 +1,6 @@
 // @flow
-import type {Node} from "React";import React from 'react';
+import type {Node} from 'react';
+import React from 'react';
 import type { EntityType } from 'common/types';
 import { sortBy, prop, toPairs } from 'ramda';
 import List, { ListItem, ListItemText } from 'material-ui/List';

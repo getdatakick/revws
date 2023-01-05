@@ -1,5 +1,6 @@
 // @flow
-import type {Element} from "React";import React from 'react';
+import type {Element} from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import { range, map } from 'ramda';
 import type { GradingShapeType, ShapeColorsType } from 'common/types';
@@ -92,7 +93,7 @@ class Grading extends React.PureComponent<Props, State> {
   onTouchMove: ((e: any) => void) = (e: any) => {
     prevent(e);
     if (e.changedTouches && e.changedTouches.length) {
-      let node = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+      let node:any = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
       while (node) {
         if (node.dataset && node.dataset.gradeId) {
           const grade = parseInt(node.dataset.gradeId);

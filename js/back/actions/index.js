@@ -1,5 +1,5 @@
 // @flow
-import type { Load, SettingsType, FullCriterion, FullCriteria, EmailPreferences } from 'back/types';
+import type { LoadTypes, SettingsType, FullCriterion, FullCriteria, EmailPreferences } from 'back/types';
 import type { ReviewType } from 'common/types';
 import type { RoutingState } from 'back/routing';
 
@@ -66,9 +66,7 @@ export type CriterionDeletedAction = {
 
 export type LoadDataAction = {
   type: 'LOAD_DATA',
-  types: {
-    [ string ]: Load
-  }
+  types: LoadTypes,
 }
 
 export type SetDataAction = {

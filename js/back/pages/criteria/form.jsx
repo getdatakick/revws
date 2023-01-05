@@ -1,6 +1,7 @@
 // @flow
 
-import type {Node, Element} from "React";import type { KeyValue } from 'common/types';
+import type {Node, Element} from 'react';
+import type { KeyValue } from 'common/types';
 import React from 'react';
 import { equals } from 'ramda';
 import type { FullCriterion } from 'back/types';

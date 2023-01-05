@@ -11,7 +11,7 @@ import { getList } from 'front/utils/list';
 
 const getPayload = pick(['conditions', 'listId', 'page', 'pageSize', 'order', 'orderDir']);
 
-const updateUrl = (id, list) => {
+const updateUrl = (id:string, list:ReviewListType) => {
   if (window.history) {
     const location = window.location;
     const pageSizeParam = 'revws-' + id + '-page-size';

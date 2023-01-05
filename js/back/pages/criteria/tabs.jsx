@@ -3,12 +3,13 @@
 import type { KeyValue } from 'common/types';
 import type { ComponentType } from 'react';
 import React from 'react';
+import type { Node } from 'react';
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import SingleTab from './tab';
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   root: {
     flexGrow: 1,
     marginTop: theme.spacing.unit * 3,
@@ -50,11 +51,11 @@ class FullWidthTabs extends React.PureComponent<Props, State> {
     tab: getInitialTab(this.props)
   };
 
-  handleChange = (event, tab) => {
+  handleChange = (event: Event, tab: "products" | "categories") => {
     this.setState({ tab });
   };
 
-  render() {
+  render(): Node {
     const { classes, selectProducts, selectCategories, selectedProducts, selectedCategories, products, categories, onSetProducts, onSetCategories } = this.props;
     const tab = this.state.tab;
 
@@ -76,7 +77,7 @@ class FullWidthTabs extends React.PureComponent<Props, State> {
     );
   }
 
-  renderTab = (values: ?KeyValue, selectedValues: Array<number>, action: (Array<number>)=>void) => {
+  renderTab = (values: ?KeyValue, selectedValues: Array<number>, action: (Array<number>)=>void):Node => {
     return (
       <SingleTab
         classes={this.props.classes}

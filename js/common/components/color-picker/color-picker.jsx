@@ -1,6 +1,7 @@
 // @flow
 
-import type {Element} from "React";import React from 'react';
+import type {Element} from 'react';
+import React from 'react';
 import { equals, assoc, reject, isEmpty } from 'ramda';
 import Colr from 'colr';
 import Board from './board';
@@ -22,14 +23,14 @@ type State = {
 }
 
 const colr = new Colr();
-const toHex = (hsv) => {
+const toHex = (hsv:Object) => {
   if (hsv) {
     return colr.fromHsvObject(hsv).toHex();
   }
   throw new Error('Invalid HSV object');
 };
 
-const fromHex = (hex) => {
+const fromHex = (hex:string) => {
   if (hex) {
     return colr.fromHex(hex).toHsvObject();
   }
@@ -137,5 +138,5 @@ export default class extends React.PureComponent<Props, State> {
   };
 }
 
-const emptyPreset = (preset) => isEmpty(preset.colors);
-const getPresets = (presets=[]) => reject(emptyPreset, presets);
+const emptyPreset = (preset:PresetType) => isEmpty(preset.colors);
+const getPresets = (presets:?Array<PresetType> = []) => reject(emptyPreset, presets);

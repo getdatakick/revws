@@ -2,7 +2,7 @@
 
 import React from 'react';
 import debounce from 'debounce';
-import type { ComponentType } from 'react';
+import type { Node, ComponentType } from 'react';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, withMobileDialog } from 'common/components/dialog';
 import Question from 'material-ui-icons/HelpOutline';
@@ -23,7 +23,7 @@ type Props<T> = InputProps<T> & {
 class DeleteReviewConfirm<T> extends React.PureComponent<Props<T>> {
   static displayName: ?string = 'DeleteReviewConfirm';
 
-  render() {
+  render():Node {
     const { onClose, payload, fullScreen, confirmation, deleteLabel } = this.props;
     return (
       <Dialog

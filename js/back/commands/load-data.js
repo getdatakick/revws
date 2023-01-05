@@ -5,10 +5,11 @@ import type { LoadDataAction } from 'back/actions';
 import { assoc } from 'ramda';
 import { setSnackbar, setData } from 'back/actions/creators';
 import { fixReviews } from 'common/utils/reviews';
+import type { LoadTypes } from "back/types";
 
-const fixReviewPayload = (payload) => assoc('reviews', fixReviews(payload.reviews), payload);
+const fixReviewPayload = (payload: any) => assoc('reviews', fixReviews(payload.reviews), payload);
 
-const fixData = (load, data) => {
+const fixData = (load: LoadTypes, data: any) => {
   for (let k in load) {
     const def = load[k];
     if (def.record === 'reviews') {

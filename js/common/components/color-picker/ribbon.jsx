@@ -1,6 +1,7 @@
 // @flow
 
-import type {Element} from "React";import React from 'react';
+import type {Element} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import styles from './color-picker.less';
 import type { Position } from './types';

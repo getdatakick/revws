@@ -1,5 +1,6 @@
 // @flow
-import type {Node, Element} from "React";import React from 'react';
+import type {Node, Element} from 'react';
+import React from 'react';
 import type { GoTo, SettingsType, GlobalDataType } from 'back/types';
 import ScrollSpy from 'react-scrollspy';
 import { prop, toPairs, path, last, merge, range, map, curry, equals, assocPath } from 'ramda';
@@ -792,6 +793,6 @@ class Settings extends React.PureComponent<Props, State> {
 
 }
 
-const sectionKey = (section) => "section-"+section.key;
+const sectionKey = (section:any) => "section-"+section.key;
 
 export default Settings;

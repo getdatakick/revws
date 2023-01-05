@@ -1,7 +1,17 @@
 // @flow
 
-import type {Node} from "React";import React from 'react';
-import type { EntityType, ReviewFormErrors, ReviewType, CriteriaType, GradingShapeType, CustomerInfoType, LanguagesType } from 'common/types';
+import type {Node} from 'react';
+import React from 'react';
+import type {
+  EntityType,
+  ReviewFormErrors,
+  ReviewType,
+  CriteriaType,
+  GradingShapeType,
+  CustomerInfoType,
+  LanguagesType,
+  GradingType
+} from 'common/types';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog';
 import SelectEntityType from 'back/components/select-entity-type/select-entity-type';
@@ -119,8 +129,8 @@ class CreateReviewDialog extends React.PureComponent<Props> {
   }
 }
 
-const criteriaEntered = (used, grades) => {
-  for (var i = 0; i < used.length; i++) {
+const criteriaEntered = (used:Array<number>, grades: GradingType) => {
+  for (let i = 0; i < used.length; i++) {
     const crit = used[i];
     if (! grades[crit]) {
       return false;

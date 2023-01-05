@@ -1,5 +1,6 @@
 // @flow
-import type {Element} from "React";import React from 'react';
+import type {Element} from 'react';
+import React from 'react';
 import type { GradingType, CriterionType, GradingShapeType, ShapeColorsType } from 'common/types';
 import Grading from 'common/components/grading/grading';
 

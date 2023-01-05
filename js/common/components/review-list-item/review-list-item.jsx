@@ -1,6 +1,7 @@
 // @flow
 
-import type {Element} from "React";import React from 'react';
+import type {Element, Node} from 'react';
+import React from 'react';
 import debounce from 'debounce';
 import classnames from 'classnames';
 import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType } from 'common/types';
@@ -85,7 +86,7 @@ class ReviewListItem extends React.PureComponent<Props, State> {
 
     const crits = displayCriteria == 'none' ? [] : getCriteriaToRender(criteria, grades);
     const showCriteria = crits.length > 1;
-    let stars = undefined;
+    let stars:Node = undefined;
     let grade = 0;
 
     if (hasRatings(review)) {
@@ -324,13 +325,13 @@ class ReviewListItem extends React.PureComponent<Props, State> {
 
 }
 
-const getCriteriaToRender = (criteria, grades) => {
+const getCriteriaToRender = (criteria:any, grades:any) => {
   const list = sortBy(prop('id'), values(criteria));
   return filter(crit => has(crit.id, grades), list);
 };
 
 const getThumbnail = (img: string) => img.replace(/.jpg$/, ".thumb.jpg");
 
-const bindMicrodata = (display) => (props) => display ? props : {};
+const bindMicrodata = (display:boolean) => (props:any):any => display ? props : {};
 
 export default ReviewListItem;

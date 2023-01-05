@@ -1,5 +1,6 @@
 // @flow
-import type {Element} from "React";import React from 'react';
+import type {Element} from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import { findIndex, assoc, has } from 'ramda';
 import type { CriterionType, EntityInfoType, GradingShapeType, GradingType } from 'common/types';
@@ -102,7 +103,7 @@ const getInitialState = (props: Props) => ({
   grades: props.grades
 });
 
-const getUnreviewdSlide = (criteria, grades) => {
+const getUnreviewdSlide = (criteria:Array<CriterionType>, grades:GradingType) => {
   if (criteria.length) {
     return findIndex(crit => !has(crit.id, grades), criteria);
   }

@@ -1,9 +1,9 @@
 // @flow
 import React from 'react';
-import type { EntityType, EntityInfoType, NameFormatType, CustomerInfoType, ReviewType, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
+import type { EntityType, EntityTypes, EntityInfoType, NameFormatType, CustomerInfoType, ReviewType, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
 import type { Load } from 'back/types';
 import CreateReviewDialog from './create-review-dialog';
-import type { ComponentType } from 'react';
+import type { ComponentType, Node } from 'react';
 import { keys } from 'ramda';
 import { connect } from 'react-redux';
 import { mapObject } from 'common/utils/redux';
@@ -11,9 +11,8 @@ import { getData } from 'back/selectors/data';
 import { loadData } from 'back/actions/creators';
 import { formatName } from 'common/utils/format';
 
-
 type InputProps = {|
-  entityTypes: { [ EntityType ]: string },
+  entityTypes: EntityTypes,
   nameFormat: NameFormatType,
   allowEmptyTitle: boolean,
   allowEmptyReview: boolean,
@@ -64,7 +63,7 @@ class EditReviewDialogController extends React.PureComponent<Props, State> {
     }
   }
 
-  render() {
+  render(): Node {
     const { data, entityTypes, ...rest} = this.props;
     const { entityType, entityId, review } = this.state;
     let entity: ?EntityInfoType = null;
@@ -120,7 +119,7 @@ class EditReviewDialogController extends React.PureComponent<Props, State> {
   }
 }
 
-const getEntityType = (entityTypes) => {
+const getEntityType = (entityTypes: EntityTypes) => {
   const k = keys(entityTypes);
   if (k.length === 1) {
     return k[0];

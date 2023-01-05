@@ -52,7 +52,7 @@ const updateLists = (visitor: VisitorType, review: ReviewType, toAdd: boolean, s
 
 export default (visitor: VisitorType): ((state?: State, action: Action) => State) => {
   return (state?: State, action:Action): State => {
-    state = state || {
+    let currentState: State = state || {
       toReview: visitor.toReview,
       reviewed: visitor.reviewed
     };
@@ -61,19 +61,19 @@ export default (visitor: VisitorType): ((state?: State, action: Action) => State
       const reviews: Array<ReviewType> = action.reviews;
       for (var i=0; i<reviews.length; i++) {
         const review = reviews[i];
-        state = updateLists(visitor, review, true, state);
+        state = updateLists(visitor, review, true, currentState);
       }
-      return state;
+      return currentState;
     }
 
     if (action.type === Types.setReview) {
-      return updateLists(visitor, action.review, true, state);
+      return updateLists(visitor, action.review, true, currentState);
     }
 
     if (action.type === Types.reviewRemoved && isCustomerReview(visitor, action.review)) {
-      return updateLists(visitor, action.review, false, state);
+      return updateLists(visitor, action.review, false, currentState);
     }
 
-    return state;
+    return currentState;
   };
 };

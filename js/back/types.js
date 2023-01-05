@@ -180,6 +180,10 @@ export type LoadEntity = {
 
 export type Load = LoadCategories | LoadCustomers | LoadReviews | LoadEntities | LoadEntity;
 
+export type LoadTypes = {
+  [ string ]: Load
+}
+
 export type VersionCheck = {
   version: ?string,
   ts: ?number,

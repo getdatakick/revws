@@ -1,5 +1,5 @@
 // @flow
-import type {Node, Element} from "React";
+import type {Node, Element} from 'react';
 import React from 'react';
 import classnames from 'classnames';
 import Section from 'back/components/section/section';

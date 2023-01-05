@@ -1,6 +1,7 @@
 // @flow
 
-import type {Element} from "React";import type { GoTo, SettingsType, GlobalDataType } from 'back/types';
+import type {Element} from 'react';
+import type { GoTo, SettingsType, GlobalDataType } from 'back/types';
 import type { CriteriaType, ReviewType } from 'common/types';
 import type { SubPage } from 'back/routing/reviews';
 import React from 'react';

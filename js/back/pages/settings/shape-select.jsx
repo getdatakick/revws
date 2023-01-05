@@ -1,5 +1,6 @@
 // @flow
-import type {Node} from "React";import React from 'react';
+import type {Node} from 'react';
+import React from 'react';
 import type { GradingShapeType, ShapeColorsType } from 'common/types';
 import { map, toPairs } from 'ramda';
 import { MenuItem } from 'material-ui/Menu';
@@ -20,8 +21,6 @@ type Props = {
 
 class ShapeSelect extends React.PureComponent<Props> {
   static displayName: ?string = 'ShapeSelect';
-
-  static defaultProps: Props = {};
 
   render(): Node {
     const { shape, shapes, onChange } = this.props;

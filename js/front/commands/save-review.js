@@ -8,11 +8,11 @@ import { fixReview } from 'common/utils/reviews';
 import { getLists } from 'front/selectors/lists';
 import { forEach, values } from 'ramda';
 
-const closeDialog = (store) => setTimeout(() => store.dispatch(closeEditReview()), 1600);
+const closeDialog = (store:any) => setTimeout(() => store.dispatch(closeEditReview()), 1600);
 
 const refreshList = (list: ListType) => loadList( list.id, list.conditions, list.page, list.pageSize, list.order, list.orderDir);
 
-const refreshLists = (store) => {
+const refreshLists = (store:any) => {
   const lists = values(getLists(store.getState()));
   forEach(list => store.dispatch(refreshList(list)), lists);
 };

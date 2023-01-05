@@ -1,6 +1,7 @@
 // @flow
 
-import type {Node, Element} from "React";import type { EmailPreferences } from 'back/types';
+import type {Node, Element} from 'react';
+import type { EmailPreferences } from 'back/types';
 import React from 'react';
 import Dialog, { DialogContent, DialogActions } from 'material-ui/Dialog';
 import Button from 'material-ui/Button';

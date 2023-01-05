@@ -65,14 +65,14 @@ export default (settings: SettingsType): ((store: any) => (next: any) => (action
           resolve({ type: 'failed', error });
         }
       };
-      const success = (data) => {
+      const success = (data:any) => {
         if (data.success) {
           resolve({ type: 'success', data: data.result });
         } else {
           failure(data.error, data.errorCode);
         }
       };
-      const error = (xhr, error) => failure(error, -1);
+      const error = (xhr:any, error:any) => failure(error, -1);
       const callApi = () => {
         if (payload.file) {
           const data = new FormData();

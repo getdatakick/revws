@@ -1,5 +1,6 @@
 // @flow
-import type {Element} from "React";import React from 'react';
+import type {Element} from 'react';
+import React from 'react';
 import { merge } from 'ramda';
 import classnames from 'classnames';
 import type { GradingShapeType, ShapeColorsType } from 'common/types';

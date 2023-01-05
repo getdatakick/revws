@@ -1,5 +1,6 @@
 // @flow
-import type {Node, Element} from "React";import React from 'react';
+import type {Node, Element} from 'react';
+import React from 'react';
 import type { LanguagesType, ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType, LanguageType } from 'common/types';
 import moment from 'moment';
 import { toPairs, pathOr, keys } from 'ramda';

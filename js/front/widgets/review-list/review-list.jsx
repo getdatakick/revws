@@ -1,5 +1,6 @@
 // @flow
-import type {Node, Element} from "React";import React from 'react';
+import type {Node, Element} from 'react';
+import React from 'react';
 import { map } from 'ramda';
 import type { EntitiesType, ReviewDisplayStyle } from 'front/types';
 import type { DisplayCriteriaType, GradingShapeType, ReviewType, ReviewListType, CriteriaType } from 'common/types';

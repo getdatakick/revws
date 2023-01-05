@@ -1,6 +1,7 @@
 // @flow
 
-import type {Node} from "React";import React from 'react';
+import type {Node} from 'react';
+import React from 'react';
 import MUIDialog from 'material-ui/Dialog';
 export { DialogActions, DialogContent, DialogTitle, DialogContentText, withMobileDialog } from 'material-ui/Dialog';
 

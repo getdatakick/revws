@@ -1,6 +1,7 @@
 // @flow
 
-import type {Node, Element} from "React";import type { KeyValue } from 'common/types';
+import type {Node, Element} from 'react';
+import type { KeyValue } from 'common/types';
 import { filter, indexOf, remove, append, contains, map, toPairs } from 'ramda';
 import React from 'react';
 import List, { ListItem, ListItemText, } from 'material-ui/List';

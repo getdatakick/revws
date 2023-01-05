@@ -2,6 +2,10 @@
 
 export type EntityType = 'product';
 
+export type EntityTypes = {
+  [ EntityType ]: string
+}
+
 export type EntityTypeDescription = {
   type: EntityType,
   name: string,

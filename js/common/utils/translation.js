@@ -2,7 +2,7 @@
 import type { Tag } from 'common/types';
 import { toPairs, map } from 'ramda';
 
-const toParam = pair => {
+const toParam = (pair:Array<string>) => {
   const key = pair[0];
   let value = pair[1];
   if (value.indexOf("'") > -1) {
@@ -13,7 +13,7 @@ const toParam = pair => {
 
 export const replaceTags = (str: string, tags: Array<Tag>): string => {
   let output = str;
-  for (var i=0; i<tags.length; i++) {
+  for (let i=0; i<tags.length; i++) {
     const tag = tags[i];
     const placeholder = i+1;
     const open = new RegExp('\\['+placeholder+'\\]', 'g');

@@ -1,5 +1,6 @@
 // @flow
-import type {Node} from "React";import React from 'react';
+import type {Node} from 'react';
+import React from 'react';
 import type { ReviewType, CriteriaType, GradingShapeType, DisplayCriteriaType } from 'common/types';
 import { assoc, merge } from 'ramda';
 import Bootstrap from 'common/components/bootstrap/bootstrap';

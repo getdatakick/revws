@@ -1,7 +1,7 @@
 // @flow
 
-import type { ComponentType } from 'react';
-import type { EntityType, GradingShapeType, ReviewType, ListOrder, ListOrderDirection } from 'common/types';
+import type { ComponentType, Node } from 'react';
+import type { EntityType, EntityTypes, GradingShapeType, ReviewType, ListOrder, ListOrderDirection } from 'common/types';
 import type { DrilldownUrls } from 'back/types';
 import { values, reject, isNil } from 'ramda';
 import React from 'react';
@@ -60,9 +60,7 @@ type InputProps = {
   total: number,
   // page data
   drilldownUrls: DrilldownUrls,
-  entityTypes: {
-    [ EntityType ]: string
-  },
+  entityTypes: EntityTypes,
   data: Array<ReviewType>,
 }
 
@@ -70,7 +68,7 @@ type Props = InputProps & {
   classes: any
 }
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 2,
@@ -144,7 +142,7 @@ const styles = theme => ({
 
 class EnhancedTable extends React.Component<Props> {
 
-  render() {
+  render():Node {
     const {
       shape, emptyLabel, title, classes, total, data, order, orderDir, rowsPerPage, page, onChangePage, onChangeRowsPerPage,
       onAuthorClick, onReviewClick, filters, onChangeFilters, drilldownUrls, entityTypes
@@ -186,7 +184,7 @@ class EnhancedTable extends React.Component<Props> {
                 const ratings = hasRatings(review) ;
                 const grade = averageGrade(review);
                 const { icon, type } = getAuthorInfo(classes, authorType, verifiedBuyer);
-                let author = customer || displayName;
+                let author:any = customer || displayName;
                 if (authorType === 'customer') {
                   author = (
                     <a className={classes.drilldown} href={viewCustomerUrl(drilldownUrls, authorId)} target="_blank" onClick={stop}>
@@ -277,11 +275,11 @@ class EnhancedTable extends React.Component<Props> {
     );
   }
 
-  renderActions = (review: ReviewType) => {
+  renderActions = (review: ReviewType):Node => {
     const { classes, approveReview, deleteReview, deletePermReview, undeleteReview } = this.props;
     const iconClass = classes.icon;
     const actions = [];
-    const action = (func: (number)=>void) => e => {
+    const action = (func: (number)=>void) => (e: Event) => {
       e.stopPropagation();
       func(review.id);
     };
@@ -326,7 +324,7 @@ class EnhancedTable extends React.Component<Props> {
     onSetOrder(order, orderDir === 'desc' ? 'asc' : 'desc');
   };
 
-  getReviewRowClass = (review: ReviewType) => {
+  getReviewRowClass = (review: ReviewType):Node  => {
     const classes = this.props.classes;
     if (review.deleted) {
       return classes.deleted;
@@ -355,7 +353,7 @@ const getAuthorInfo = (css: any, authorType: string, verified: boolean) => {
   return { icon, type };
 };
 
-const getEntityNames = (entityTypes, entityTypeFilter): Array<string> => {
+const getEntityNames = (entityTypes: EntityTypes, entityTypeFilter: ?EntityType): Array<string> => {
   if (entityTypeFilter) {
     return [ entityTypes[entityTypeFilter] ];
   }
@@ -371,7 +369,7 @@ const hasImages = (data: Array<ReviewType>): boolean => {
   return false;
 };
 
-const stop = (e) => e.stopPropagation();
+const stop = (e:Event) => e.stopPropagation();
 
 const Component: ComponentType<InputProps> = withStyles(styles)(EnhancedTable);
 export default Component;

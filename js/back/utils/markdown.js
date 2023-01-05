@@ -5,7 +5,7 @@ import { is, forEach } from 'ramda';
 
 const isArray = is(Array);
 
-const fixLinks = (m) => {
+const fixLinks = (m:any) => {
   if (m[0] === "link") {
     m[1].target = '_blank';
   } else {

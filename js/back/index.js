@@ -19,14 +19,15 @@ import { asObject } from 'common/utils/input';
 import Types from 'back/actions/types';
 import App from 'back/app';
 import moment from 'moment';
+import type {Action} from "back/actions";
 
-const watchElementSize = (node, store) => {
+const watchElementSize = (node:HTMLElement, store:any) => {
   let lastWidth = null;
   let lastHeight = null;
-  const updateSize = (element) => {
+  const updateSize = (element:HTMLElement) => {
     const width = Math.round(element.offsetWidth);
     const height = Math.round(element.offsetHeight);
-    if (width != lastWidth || height != lastHeight) {
+    if (width !== lastWidth || height !== lastHeight) {
       lastWidth = width;
       lastHeight = height;
       store.dispatch(setSize(width, height));
@@ -41,7 +42,7 @@ const watchElementSize = (node, store) => {
 };
 
 
-const syncHistory = history => store => next => action => {
+const syncHistory = (history:any) => (store:any) => (next:any) => (action:Action) => {
   let currentState = null;
   if (action.type === Types.goTo) {
     currentState = getRoutingState(store.getState());
@@ -52,7 +53,7 @@ const syncHistory = history => store => next => action => {
 
     if (action.updateHistory) {
       const newUrl = toUrl(action.routingState);
-      if (newUrl != fixUrl(history.location.pathname)) {
+      if (newUrl !== fixUrl(history.location.pathname)) {
         history.push(newUrl);
       }
     }
@@ -107,13 +108,13 @@ window.startRevws = (init: any) => {
   const store = createStore(reducer, applyMiddleware(...middlewares));
 
   watchElementSize(node, store);
-  history.listen(({location, action}) => {
+  history.listen(({location}) => {
     const currentUrl = fixUrl(location.pathname);
     const routingState = toState(currentUrl);
     const currentState = getRoutingState(store.getState());
     if (! routingState) {
       const newUrl = toUrl(currentState);
-      if (newUrl != currentUrl) {
+      if (newUrl !== currentUrl) {
         history.replace(newUrl);
       } else {
         console.error("Failed to map '" + currentUrl + "' to state");

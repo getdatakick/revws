@@ -2,7 +2,7 @@
 
 import React from 'react';
 import debounce from 'debounce';
-import type { ComponentType } from 'react';
+import type { ComponentType, Node } from 'react';
 import type { EditStage, CriterionType, ReviewType, ReviewFormErrors, EntityInfoType, GradingType } from 'common/types';
 import type { SettingsType, EntitiesType, VisitorType } from 'front/types';
 import Button from 'material-ui/Button';
@@ -39,7 +39,7 @@ type Props = InputProps & {
 }
 
 class EditReviewDialog extends React.PureComponent<Props> {
-  render() {
+  render():Node {
     const { entities, onClose, review, fullScreen } = this.props;
     return (
       <Dialog
@@ -54,7 +54,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
     );
   }
 
-  renderDialog = (entity: EntityInfoType, review: ReviewType) => {
+  renderDialog = (entity: EntityInfoType, review: ReviewType):Node => {
     const { onClose, onSave, settings, stage, agreed } = this.props;
     const { name } = entity;
     const { allowEmptyReviews, allowEmptyTitle } = settings.preferences;
@@ -93,7 +93,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
     );
   }
 
-  renderContent = (entity: EntityInfoType, review: ReviewType, errors: ReviewFormErrors) => {
+  renderContent = (entity: EntityInfoType, review: ReviewType, errors: ReviewFormErrors):Node => {
     const { id, grades } = review;
     const { stage } = this.props;
     const isNew = id === -1;
@@ -113,10 +113,10 @@ class EditReviewDialog extends React.PureComponent<Props> {
     return !!find(k => !grades[k], criteria);
   }
 
-  renderGrading = (review: ReviewType, entity: EntityInfoType) => {
+  renderGrading = (review: ReviewType, entity: EntityInfoType):Node => {
     const { width, settings, onUpdateReview } = this.props;
     const grades = review.grades;
-    const smallDevice = width === 'sm' || width == 'xs';
+    const smallDevice = width === 'sm' || width === 'xs';
     const size = settings.shapeSize.create / (smallDevice ? 2 : 1);
     const criteria = reject(isNil, map(key => prop(key, settings.criteria), entity.criteria));
     return (
@@ -130,15 +130,15 @@ class EditReviewDialog extends React.PureComponent<Props> {
     );
   }
 
-  ProductImage = (entity: EntityInfoType) => {
+  ProductImage = (entity: EntityInfoType):Node => {
     return (
       <img className='revws-entity-image' src={fixUrl(entity.image)} alt={entity.name} />
     );
   }
 
-  renderForm = (review: ReviewType, entity: EntityInfoType, errors: ReviewFormErrors) => {
+  renderForm = (review: ReviewType, entity: EntityInfoType, errors: ReviewFormErrors):Node => {
     const { width, settings, onUpdateReview, onUploadFile, agreed, onAgree, visitor } = this.props;
-    const smallDevice = width === 'sm' || width == 'xs';
+    const smallDevice = width === 'sm' || width === 'xs';
     const image = entity.image;
     const form = (
       <EditReviewForm
@@ -164,7 +164,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
     );
   }
 
-  renderSaving = () => {
+  renderSaving = (): Node => {
     return (
       <div className='revws-dialog'>
         <CircularProgress size={100} />
@@ -172,7 +172,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
     );
   }
 
-  renderSaved = (isNew: boolean, success: boolean) => {
+  renderSaved = (isNew: boolean, success: boolean):Node => {
     const Icon = success ? Check: ErrorOutline;
     const message = getSaveMessage(isNew, success);
     const color = success ? 'primary' : 'error';
@@ -189,7 +189,7 @@ class EditReviewDialog extends React.PureComponent<Props> {
 }
 
 
-const getSaveMessage = (isNew, success) => {
+const getSaveMessage = (isNew: boolean, success: boolean) => {
   if (isNew) {
     return success ? __('Review has been created') : __('Failed to create review');
   }

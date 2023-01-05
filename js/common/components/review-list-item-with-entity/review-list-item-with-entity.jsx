@@ -1,5 +1,6 @@
 // @flow
-import type {Element} from "React";import React from 'react';
+import type {Element} from 'react';
+import React from 'react';
 import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType, EntityInfoType } from 'common/types';
 import ReviewListItem from 'common/components/review-list-item/review-list-item';
 

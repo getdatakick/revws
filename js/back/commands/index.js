@@ -48,14 +48,14 @@ export default (data: GlobalDataType): ((store: any) => (next: any) => (action: 
         console.error("API call error: "+cmd+": "+error);
         resolve({ type: 'failed', error });
       };
-      const success = (data) => {
+      const success = (data:any) => {
         if (data.success) {
           resolve({ type: 'success', data: data.result });
         } else {
           failure(data.error);
         }
       };
-      const error = (xhr, error) => failure(error);
+      const error = (xhr:any, error:any) => failure(error);
       if (payload.file) {
         const data = new FormData();
         data.append('ajax', '1');

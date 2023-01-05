@@ -1,5 +1,6 @@
 // @flow
-import type {Node, Element} from "React";import React from 'react';
+import type {Node, Element} from 'react';
+import React from 'react';
 import type { CustomerInfoType } from 'common/types';
 import type { Load } from 'back/types';
 import List, { ListItem, ListItemText } from 'material-ui/List';

@@ -1,5 +1,6 @@
 // @flow
-import type {Element} from "React";import React from 'react';
+import type {Element} from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import { InputLabel } from 'material-ui/Input';
 import { FormHelperText } from 'material-ui/Form';

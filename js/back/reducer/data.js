@@ -2,6 +2,7 @@
 import type { Action } from 'back/actions';
 import Types from 'back/actions/types';
 import { reject, has, always, map, assoc, update, findIndex, propEq, merge } from 'ramda';
+import type {ReviewType} from "common/types";
 
 export type State = {
   [ string ]: ?any
@@ -10,7 +11,7 @@ export type State = {
 const defaultState = {
 };
 
-const updateReviews = (reviewId, func, state) => map(data => {
+const updateReviews = (reviewId: number, func: (ReviewType)=>any, state: State) => map(data => {
   if (data.reviews) {
     const index = findIndex(propEq('id', reviewId), data.reviews);
     if (index > -1) {
@@ -21,7 +22,7 @@ const updateReviews = (reviewId, func, state) => map(data => {
   return data;
 }, state);
 
-const deleteReview = (reviewId, state) => map(data => {
+const deleteReview = (reviewId: number, state: State) => map(data => {
   if (data.reviews) {
     const index = findIndex(propEq('id', reviewId), data.reviews);
     if (index > -1) {

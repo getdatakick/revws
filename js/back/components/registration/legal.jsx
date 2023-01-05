@@ -1,5 +1,6 @@
 // @flow
-import type {Node} from "React";import React from 'react';
+import type {Node} from 'react';
+import React from 'react';
 import SvgIcon from 'material-ui/SvgIcon';
 
 class LegalIcon extends React.PureComponent<{}> {

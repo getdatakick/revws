@@ -31,7 +31,7 @@ const actions = {
   loadList: loadList,
 };
 
-const merge = (props, actions, passed: PassedProps) => {
+const merge = (props:any, actions:any, passed: PassedProps) => {
   const { lists, reviews, entities  } = props;
   const { widget, settings, listId } = passed;
   const { loadList, ...restActions } = actions;

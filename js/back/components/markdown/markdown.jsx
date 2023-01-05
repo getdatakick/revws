@@ -1,6 +1,7 @@
 // @flow
 
-import type {Element} from "React";import React from 'react';
+import type {Element} from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import styles from './markdown.less';
 import { toHTML } from 'back/utils/markdown';

@@ -61,7 +61,7 @@ const getEntities = (input: any): EntitiesType => asObject(input);
 
 const getInitActions = (input: any): Array<any> => isArray(input) ? input : [];
 
-const get = (key, validator, obj) => {
+const get = (key:string, validator:(any)=>bool, obj:Object) => {
   if (has(key, obj)) {
     const ret = prop(key, obj);
     if (validator(ret)) {

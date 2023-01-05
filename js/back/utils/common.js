@@ -5,7 +5,7 @@ import { merge, reduce, append, toPairs } from 'ramda';
 
 const storeBase = 'https://store.getdatakick.com';
 
-const getUrlComponent = (pair) => encodeURIComponent(pair[0]) + '=' + encodeURIComponent(pair[1]);
+const getUrlComponent = (pair: Array<string>) => encodeURIComponent(pair[0]) + '=' + encodeURIComponent(pair[1]);
 
 export const getApiUrl = (data: GlobalDataType): string => {
   return data.storeUrl || (storeBase + '/en/module/datakickweb/api');

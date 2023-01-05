@@ -1,5 +1,6 @@
 // @flow
-import type {Element} from "React";import React from 'react';
+import type {Element} from 'react';
+import React from 'react';
 import { F } from 'ramda';
 import type { ReviewListType, ReviewType, EntityType } from 'common/types';
 import type { EntitiesType, SettingsType } from 'front/types';

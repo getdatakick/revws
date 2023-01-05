@@ -1,5 +1,5 @@
 // @flow
-import type { ComponentType } from 'react';
+import type { ComponentType, Node } from 'react';
 import { toPairs, isNil, assoc, dissoc } from 'ramda';
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
@@ -16,7 +16,7 @@ import { FormGroup } from 'material-ui/Form';
 import type { Filters } from './types';
 import type { EntityType } from 'common/types';
 
-const toolbarStyles = theme => ({
+const toolbarStyles = (theme: any) => ({
   root: {
     paddingRight: 2,
   },
@@ -66,7 +66,7 @@ class EnahncedTableToolbar extends React.PureComponent<Props, State> {
     showFilters: false
   }
 
-  render() {
+  render():Node {
     const { title, total, classes } = this.props;
     const ret = [
       <Toolbar key='toolbar' className={classes.root} >
@@ -89,12 +89,12 @@ class EnahncedTableToolbar extends React.PureComponent<Props, State> {
     return ret;
   }
 
-  renderFilters = () => {
+  renderFilters = ():Node => {
     const { classes, filters, onChangeFilters, entityTypes } = this.props;
     const types = toPairs(entityTypes);
-    const set = key => e => {
+    const set = (key: string) => (e: any) => {
       const value = e.target.value;
-      if (value == 'all') {
+      if (value === 'all') {
         onChangeFilters(dissoc(key, filters));
       } else {
         onChangeFilters(assoc(key, value, filters));

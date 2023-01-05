@@ -12,7 +12,7 @@ export const checkModuleVersion = (data: GlobalDataType): ((action: CheckModuleV
   const currentVersion = data.version;
   const domain = location.hostname;
 
-  const error = err => {
+  const error = (err: any) => {
     store.dispatch(checkModuleVersionFailed());
     console.info('Failed to check new version: ', err);
   };

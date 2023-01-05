@@ -1,5 +1,6 @@
 // @flow
-import type {Element} from "React";import ReactDOM from 'react-dom';
+import type {Element} from 'react';
+import ReactDOM from 'react-dom';
 import React from 'react';
 import Popover from 'material-ui/Popover';
 import {

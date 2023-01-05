@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import type { Node } from 'react';
 import type { GoTo, RoutingState, GlobalDataType } from 'back/types';
 import Snackbar from 'back/pages/snackbar';
 import styles from './app.less';
@@ -24,7 +25,7 @@ type Props = {
 class BackApp extends React.PureComponent<Props> {
   static displayName: ?string = 'BackApp';
 
-  render() {
+  render(): Node {
     const { data, routingState, goTo } = this.props;
     const snackbarPosition = { vertical: 'bottom', horizontal: 'right' };
     return (
@@ -39,7 +40,7 @@ class BackApp extends React.PureComponent<Props> {
     );
   }
 
-  renderNavigation = (routingState: RoutingState) => {
+  renderNavigation = (routingState: RoutingState): Node => {
     if (routingState.showNavigation) {
       const { shouldReview, newVersionAvailable, data } = this.props;
       const warnings = data.warnings;

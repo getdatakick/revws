@@ -1,5 +1,6 @@
 // @flow
-import type {Node, Element} from "React";import React from 'react';
+import type {Node, Element} from 'react';
+import React from 'react';
 import type { EntityType, LanguagesType, KeyValue } from 'common/types';
 import type { Load, FullCriteria, FullCriterion } from 'back/types';
 import { keys, map, always, values, sortBy, prop } from 'ramda';
@@ -50,7 +51,7 @@ class CriteriaSection extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     const { selectProducts, products, selectCategories, categories, loadData } = this.props;
-    const load = {};
+    const load:any = {};
     if (selectProducts && !products) {
       load.products = {
         record: 'entities',
@@ -170,7 +171,7 @@ class CriteriaSection extends React.PureComponent<Props, State> {
   }
 }
 
-const describeCriterion = (active, entityType, global, categories, products) => {
+const describeCriterion = (active:boolean, entityType:EntityType, global:boolean, categories:Array<number>, products:Array<number>):string|Node => {
   if (! active) {
     return (
       <span>
@@ -201,7 +202,7 @@ const describeCriterion = (active, entityType, global, categories, products) => 
   }
 };
 
-const count = (val) => {
+const count = (val:Array<any>):number => {
   if (val) {
     return values(val).length;
   }

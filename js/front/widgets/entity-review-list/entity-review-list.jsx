@@ -1,5 +1,6 @@
 // @flow
-import type {Element} from "React";import React from 'react';
+import type {Element} from 'react';
+import React from 'react';
 import type { EntityType, ReviewListType, ReviewType } from 'common/types';
 import type { SettingsType, VisitorType, EntitiesType } from 'front/types';
 import List from '../review-list/review-list';

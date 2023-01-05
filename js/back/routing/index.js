@@ -1,6 +1,7 @@
 // @flow
 
-import type {Node} from "React";import React from 'react';
+import type {Node} from 'react';
+import React from 'react';
 import { equals, memoizeWith, identity } from 'ramda';
 import type { SettingsPage } from './settings';
 import { settingsRoute } from './settings';

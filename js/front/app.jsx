@@ -1,6 +1,7 @@
 // @flow
 
-import type {Node} from "React";import type { SettingsType, VisitorType, WidgetsType, WidgetType } from 'front/types';
+import type {Node} from 'react';
+import type { SettingsType, VisitorType, WidgetsType, WidgetType } from 'front/types';
 import { values } from 'ramda';
 import React from 'react';
 import EntityReviewList from 'front/widgets/entity-review-list';

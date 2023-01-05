@@ -1,6 +1,7 @@
 // @flow
 
-import type {Node} from "React";import type { SettingsType, GlobalDataType } from 'back/types';
+import type {Node} from 'react';
+import type { SettingsType, GlobalDataType } from 'back/types';
 import type { CriteriaType } from 'common/types';
 import React from 'react';
 import ReviewsTable from 'back/components/reviews-table';

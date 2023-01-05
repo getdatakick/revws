@@ -1,5 +1,6 @@
 // @flow
-import type {Node} from "React";import React from 'react';
+import type {Node} from 'react';
+import React from 'react';
 import styles from './section.less';
 import Paper from 'material-ui/Paper';
 

@@ -1,5 +1,6 @@
 // @flow
-import type {Node, Element} from "React";import React from 'react';
+import type {Node, Element} from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import type { LanguagesType, LangString } from 'common/types';
 import { MenuItem } from 'material-ui/Menu';
@@ -92,7 +93,7 @@ class MultiLangField extends React.PureComponent<Props, State> {
   }
 }
 
-const getValues = (value, language, values, languages) => {
+const getValues = (value:string, language:number, values:LangString, languages:LanguagesType) => {
   if (language === -1) {
     return map(always(value), languages);
   }

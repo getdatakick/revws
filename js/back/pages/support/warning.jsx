@@ -1,5 +1,6 @@
 // @flow
-import type {Node} from "React";import React from 'react';
+import type {Node} from 'react';
+import React from 'react';
 import type { WarningMessageType } from 'back/types';
 import WarningIcon from 'material-ui-icons/Warning';
 import EmailIcon from 'material-ui-icons/Email';

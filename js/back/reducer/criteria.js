@@ -10,7 +10,7 @@ export type State = {
   criteria: FullCriteria,
 }
 
-const defaultState = (criteria) => ({
+const defaultState = (criteria:FullCriteria):State => ({
   loading: false,
   criteria
 });

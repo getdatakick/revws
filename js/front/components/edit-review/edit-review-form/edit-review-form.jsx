@@ -1,5 +1,6 @@
 // @flow
-import type {Node, Element} from "React";import React from 'react';
+import type {Node, Element} from 'react';
+import React from 'react';
 import type { ReviewType, ReviewFormErrors } from 'common/types';
 import type { SettingsType, VisitorType } from 'front/types';
 import { map, propOr, assoc } from 'ramda';

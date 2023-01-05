@@ -1,6 +1,7 @@
 // @flow
 
-import type {Element} from "React";import React from 'react';
+import type {Element} from 'react';
+import React from 'react';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent } from 'common/components/dialog';
 
@@ -63,7 +64,7 @@ class ImageDialog extends React.PureComponent<Props, State> {
 }
 
 const prevent = (e: Event) => {
-  if (e && e.preventDefault) {
+  if (e) {
     e.preventDefault();
     e.stopPropagation();
   }
