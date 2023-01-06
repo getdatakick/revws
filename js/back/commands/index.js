@@ -1,26 +1,26 @@
 // @flow
 
 import { forEach, keys, prop } from 'ramda';
-import type { GlobalDataType } from 'back/types';
-import type { Command } from 'common/types';
-import type { Action } from 'back/actions';
-import { fixUrl } from 'common/utils/url';
-import Types from 'back/actions/types';
-import { checkModuleVersion } from './check-module-version';
-import { setLatestVersion } from './set-latest-version';
-import { saveSettings } from './save-settings';
-import { deleteCriterion } from './delete-criterion';
-import { saveCriterion } from './save-criterion';
-import { saveReview } from './save-review';
-import { loadData } from './load-data';
-import { approveReview } from './approve-review';
-import { deleteReview } from './delete-review';
-import { undeleteReview } from './undelete-review';
-import { migrateData } from './migrate-data';
-import { uploadYotpoCsv } from './upload-yopto';
-import { exportReviews } from './export-reviews';
-import { activateAccount } from './activate-account';
-import { setReviewed } from './set-reviewed';
+import type { GlobalDataType } from 'back/types.js';
+import type { Command } from 'common/types.js';
+import type { Action } from 'back/actions/index.js';
+import { fixUrl } from 'common/utils/url.js';
+import Types from 'back/actions/types.js';
+import { checkModuleVersion } from './check-module-version.js';
+import { setLatestVersion } from './set-latest-version.js';
+import { saveSettings } from './save-settings.js';
+import { deleteCriterion } from './delete-criterion.js';
+import { saveCriterion } from './save-criterion.js';
+import { saveReview } from './save-review.js';
+import { loadData } from './load-data.js';
+import { approveReview } from './approve-review.js';
+import { deleteReview } from './delete-review.js';
+import { undeleteReview } from './undelete-review.js';
+import { migrateData } from './migrate-data.js';
+import { uploadYotpoCsv } from './upload-yopto.js';
+import { exportReviews } from './export-reviews.js';
+import { activateAccount } from './activate-account.js';
+import { setReviewed } from './set-reviewed.js';
 
 export default (data: GlobalDataType): ((store: any) => (next: any) => (action: Action) => any) => {
   const commands = {

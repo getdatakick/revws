@@ -1,22 +1,19 @@
-var gulp = require('gulp');
-var PluginError = require('plugin-error');
-var webpack = require('webpack');
-var webpackStream = require('webpack-stream');
-var WebpackDevServer = require("webpack-dev-server");
-var config = require('./js/webpack-config');
-var translateConfig = require('./js/webpack-config-translation');
-var del = require('del');
-var eslint = require('gulp-eslint');
-var zip = require('gulp-zip');
-var ramda = require('ramda');
-var fs = require('fs');
-var path = require('path');
-var merge = require('merge-stream');
-var replace = require('gulp-replace');
-var exec = require('child_process').exec;
-var rename = require('gulp-rename');
-var license = require('gulp-license-check');
-var { find, sortBy, identity, values, mapObjIndexed, append, prepend, map, flatten } = ramda;
+import gulp from 'gulp';
+import webpack from "webpack";
+import webpackStream from "webpack-stream";
+import WebpackDevServer from "webpack-dev-server";
+import config from "./js/webpack-config.js";
+import translateConfig from "./js/webpack-config-translation.js";
+import {deleteSync} from "del";
+import zip from "gulp-zip";
+import {find, sortBy, identity, values, mapObjIndexed, append, prepend, map, flatten} from "ramda";
+import fs from "fs";
+import path from "path";
+import merge from "merge-stream";
+import replace from "gulp-replace";
+import {exec} from "child_process";
+import rename from "gulp-rename";
+import license from "gulp-license-check";
 
 function getFolders(dir) {
   return flatten(fs
@@ -64,30 +61,16 @@ function readTranslations(path) {
 }
 
 gulp.task("devel", function() {
-  var compiler = webpack(config(false, getVersion()));
-
-  new WebpackDevServer(compiler, {
-    contentBase: "./build",
-    disableHostCheck: true,
-    publicPath: '/',
-    public: 'thirtybees.local:8080',
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
-    },
-    stats: {
-      colors: true
-    }
-  }).listen(8080, "localhost", function(err) {
-    if (err) {
-      throw new PluginError("webpack-dev-server", err);
-    }
-  });
+  const compiler = webpack(config(false, getVersion()));
+  return new WebpackDevServer( {
+    hot: true,
+    port: 8080,
+    allowedHosts: "all"
+  }, compiler).start();
 });
 
 gulp.task('clean', function(done) {
-  del.sync(['./build'], { force: true });
+  deleteSync(['./build'], { force: true });
   done();
 });
 
@@ -118,8 +101,8 @@ gulp.task('copy-text-files', function(done) {
     const bootstrapJs = getBootstrapJs();
     const ext = ['php', 'tpl', 'js', 'sql', 'html', 'md', 'txt'];
     let sources = map(e => 'php/**/*.'+e, ext);
-    sources = append('php/**/back.css', sources);
-    sources = append('php/**/fallback.css', sources);
+    sources = append('php/**/css/back.*css', sources);
+    sources = append('php/**/css/fallback.*css', sources);
     sources = append('php/**/css/themes/*.css', sources);
     sources = append('!php/license-header.*', sources);
     sources = append('!php/**/revws_bootstrap.js', sources);
@@ -193,7 +176,7 @@ gulp.task('extract-front-translations', function(done) {
     .pipe(webpackStream(translateConfig('front'), webpack))
     .pipe(gulp.dest('./build'))
     .on('end', () => {
-      del.sync(['./build/transl.js', './build/transl.js.LICENSE.txt'], { force: true });
+      deleteSync(['./build/transl.js', './build/transl.js.LICENSE.txt'], { force: true });
       done();
     });
 });
@@ -204,7 +187,7 @@ gulp.task('extract-back-translations', function(done) {
     .pipe(webpackStream(translateConfig('back'), webpack))
     .pipe(gulp.dest('./build'))
     .on('end', () => {
-      del.sync(['./build/transl.js', './build/transl.js.LICENSE.txt'], { force: true });
+      deleteSync(['./build/transl.js', './build/transl.js.LICENSE.txt'], { force: true });
       done();
     });
 });

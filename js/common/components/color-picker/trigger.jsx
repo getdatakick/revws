@@ -9,10 +9,10 @@ import {
   ListItemText,
 } from 'material-ui/List';
 import Button from 'material-ui/Button';
-import ColorPicker from './color-picker';
-import Circle from './circle';
+import ColorPicker from './color-picker.jsx';
+import Circle from './circle.jsx';
 import styles from './color-picker.less';
-import type { PresetType } from './types';
+import type { PresetType } from './types.js';
 
 type Props = {
   label: string,

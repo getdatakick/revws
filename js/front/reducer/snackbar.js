@@ -1,6 +1,6 @@
 // @flow
-import type { Action } from 'front/actions';
-import Types from 'front/actions/types';
+import type { Action } from 'front/actions/index.js';
+import Types from 'front/actions/types.js';
 
 export type State = {
   message: ?string

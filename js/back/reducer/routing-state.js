@@ -1,8 +1,8 @@
 // @flow
 
-import type { Action } from 'back/actions';
-import type { RoutingState } from 'back/routing';
-import Types from 'back/actions/types';
+import type { Action } from 'back/actions/index.js';
+import type { RoutingState } from 'back/routing/index.js';
+import Types from 'back/actions/types.js';
 
 type reducerType = (?RoutingState, Action) => RoutingState;
 

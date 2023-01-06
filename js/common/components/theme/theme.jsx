@@ -3,7 +3,7 @@
 import type {Node} from 'react';
 import React from 'react';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import { getFontSize } from 'common/utils/browser';
+import { getFontSize } from 'common/utils/browser.js';
 
 type Props = {
   htmlFontSize: number,

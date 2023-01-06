@@ -2,8 +2,8 @@
 
 import type {Node} from 'react';
 import React from 'react';
-import type { EmailPreferences } from 'back/types';
-import RegistrationView from './registration-view';
+import type { EmailPreferences } from 'back/types.js';
+import RegistrationView from './registration-view.jsx';
 
 export type Props = {
   show: boolean,

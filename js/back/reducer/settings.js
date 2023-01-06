@@ -1,7 +1,7 @@
 // @flow
-import type { Action } from 'back/actions';
-import type { SettingsType } from 'back/types';
-import Types from 'back/actions/types';
+import type { Action } from 'back/actions/index.js';
+import type { SettingsType } from 'back/types.js';
+import Types from 'back/actions/types.js';
 
 export type State = SettingsType;
 

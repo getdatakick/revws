@@ -1,8 +1,8 @@
 // @flow
 import type {Element} from 'react';
 import React from 'react';
-import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType, EntityInfoType } from 'common/types';
-import ReviewListItem from 'common/components/review-list-item/review-list-item';
+import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType, EntityInfoType } from 'common/types.js';
+import ReviewListItem from 'common/components/review-list-item/review-list-item.jsx';
 
 type Props = {
   shopName: string,

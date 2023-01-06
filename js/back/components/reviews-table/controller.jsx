@@ -1,14 +1,14 @@
 // @flow
 
 import type {Element} from 'react';
-import type { EntityType, ReviewListType, GradingShapeType, ReviewType, CriteriaType, DisplayCriteriaType, LanguagesType, ListOrder, ListOrderDirection } from 'common/types';
-import type { DrilldownUrls, LoadPagination } from 'back/types';
-import type { Filters } from './types';
-import { notNil } from 'common/utils/ramda';
-import { prop, find, propEq, reject, merge, equals, has } from 'ramda';
+import type { EntityType, ReviewListType, GradingShapeType, ReviewType, CriteriaType, DisplayCriteriaType, LanguagesType, ListOrder, ListOrderDirection } from 'common/types.js';
+import type { DrilldownUrls, LoadPagination } from 'back/types.js';
+import type { Filters } from './types.js';
+import { notNil } from 'common/utils/ramda.js';
+import { prop, find, propEq, reject, mergeRight, equals, has } from 'ramda';
 import React from 'react';
-import ReviewsTable from 'back/components/reviews-table/reviews-table';
-import EditReviewDialog from 'back/components/edit-review';
+import ReviewsTable from 'back/components/reviews-table/reviews-table.jsx';
+import EditReviewDialog from 'back/components/edit-review/index.js';
 
 export type InputProps = {
   shopName: string,
@@ -84,7 +84,7 @@ class Controller extends React.PureComponent<Props, State> {
   loadPage: ((state: State) => void) = (state: State) => {
     const { uniqueId, loadData } = this.props;
     const { order, orderDir, pageSize, page, filters } = state;
-    loadData(uniqueId, merge(filters, {
+    loadData(uniqueId, mergeRight(filters, {
       entityInfo: true,
       customerInfo: true,
       allLanguages: true,

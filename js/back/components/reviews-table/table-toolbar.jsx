@@ -13,8 +13,8 @@ import { MenuItem } from 'material-ui/Menu';
 import { FormControl } from 'material-ui/Form';
 import { InputLabel } from 'material-ui/Input';
 import { FormGroup } from 'material-ui/Form';
-import type { Filters } from './types';
-import type { EntityType } from 'common/types';
+import type { Filters } from './types.js';
+import type { EntityType } from 'common/types.js';
 
 const toolbarStyles = (theme: any) => ({
   root: {

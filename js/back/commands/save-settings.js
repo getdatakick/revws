@@ -1,8 +1,8 @@
 // @flow
 
-import type { Api } from 'common/types';
-import type { SetSettingsAction } from 'back/actions';
-import { setSnackbar } from 'back/actions/creators';
+import type { Api } from 'common/types.js';
+import type { SetSettingsAction } from 'back/actions/index.js';
+import { setSnackbar } from 'back/actions/creators.js';
 
 export const saveSettings = (action: SetSettingsAction, store: any, api: Api) => {
   api('saveSettings', action.settings).then(result => {

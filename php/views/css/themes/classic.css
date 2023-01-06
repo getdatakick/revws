@@ -1,0 +1,24 @@
+#products .thumbnail-container,
+.featured-products .thumbnail-container,
+.product-accessories .thumbnail-container,
+.product-miniature .thumbnail-container {
+  min-height: 338px;
+}
+
+#products .thumbnail-container .product-description,
+.featured-products .thumbnail-container .product-description,
+.product-accessories .thumbnail-container .product-description,
+.product-miniature .thumbnail-container .product-description {
+  min-height: 90px;
+}
+
+#products .highlighted-informations,
+.featured-products .highlighted-informations,
+.product-accessories .highlighted-informations,
+.product-miniature .highlighted-informations {
+  min-height: 70px;
+}
+
+#module-revws-AllReviews h1 {
+  margin-bottom: 2rem;
+}

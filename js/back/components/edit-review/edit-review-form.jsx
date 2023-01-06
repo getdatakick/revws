@@ -1,14 +1,14 @@
 // @flow
 import type {Node, Element} from 'react';
 import React from 'react';
-import type { LanguagesType, ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType, LanguageType } from 'common/types';
+import type { LanguagesType, ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType, LanguageType } from 'common/types.js';
 import moment from 'moment';
 import { toPairs, pathOr, keys } from 'ramda';
-import { isArray } from 'common/utils/ramda';
+import { isArray } from 'common/utils/ramda.js';
 import TextField from 'material-ui/TextField';
 import Grid from 'material-ui/Grid';
-import Grading from 'common/components/grading/grading';
-import TextArea from 'common/components/text-area/text-area';
+import Grading from 'common/components/grading/grading.jsx';
+import TextArea from 'common/components/text-area/text-area.jsx';
 import Checkbox from 'material-ui/Checkbox';
 import styles from './edit-review-form.less';
 import { FormControlLabel } from 'material-ui/Form';

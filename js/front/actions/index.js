@@ -1,6 +1,6 @@
 // @flow
-import type { EntityType, ReviewType, ListOrder, ListOrderDirection } from 'common/types';
-import type { ListConditions, ListType, EntitiesType } from 'front/types';
+import type { EntityType, ReviewType, ListOrder, ListOrderDirection } from 'common/types.js';
+import type { ListConditions, ListType, EntitiesType } from 'front/types.js';
 
 export type SetReviewAction = {
   type: 'SET_REVIEW',

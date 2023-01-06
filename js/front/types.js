@@ -1,6 +1,6 @@
 // @flow
 
-import type { EntityType, ReviewType, CriteriaType, DisplayCriteriaType, GradingShapeType, NameFormatType, EntityInfoType, ListOrder, ListOrderDirection } from 'common/types';
+import type { EntityType, ReviewType, CriteriaType, DisplayCriteriaType, GradingShapeType, NameFormatType, EntityInfoType, ListOrder, ListOrderDirection } from 'common/types.js';
 
 export type ReviewDisplayStyle = 'item' | 'item-with-entity';
 

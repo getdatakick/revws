@@ -1,13 +1,13 @@
-var path = require('path');
-var webpack = require('webpack');
-var ExtractTranslationKeysPlugin = require('webpack-extract-translation-keys-plugin');
-var babelConfig = require('./babel.config.json');
+import path from "path";
+import webpack from "webpack";
+import ExtractTranslationKeysPlugin from "webpack-extract-translation-keys-plugin";
 
-module.exports = function(name) {
-  var plugins = [
+// noinspection JSUnusedGlobalSymbols
+export default name => {
+  const plugins = [
     new ExtractTranslationKeysPlugin({
       functionName: '__',
-      output: path.resolve('./build/'+name+'-translation-keys.json')
+      output: path.resolve('./build/' + name + '-translation-keys.json')
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify("production"),
@@ -20,9 +20,10 @@ module.exports = function(name) {
       rules: [
         {
           test: /\.jsx?$/,
-          loader: 'babel-loader',
-          options: babelConfig,
-          exclude: [ /node_modules/]
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader",
+          }
         },
         {
           test: /\.less$/,

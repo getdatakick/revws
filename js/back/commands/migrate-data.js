@@ -1,8 +1,8 @@
 // @flow
 
-import type { Api } from 'common/types';
-import type { MigrateDataAction } from 'back/actions';
-import { setSnackbar, setCriteria, refreshData } from 'back/actions/creators';
+import type { Api } from 'common/types.js';
+import type { MigrateDataAction } from 'back/actions/index.js';
+import { setSnackbar, setCriteria, refreshData } from 'back/actions/creators.js';
 
 export const migrateData = (action: MigrateDataAction, store: any, api: Api) => {
   const { source, payload } = action;

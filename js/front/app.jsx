@@ -1,17 +1,17 @@
 // @flow
 
 import type {Node} from 'react';
-import type { SettingsType, VisitorType, WidgetsType, WidgetType } from 'front/types';
+import type { SettingsType, VisitorType, WidgetsType, WidgetType } from 'front/types.js';
 import { values } from 'ramda';
 import React from 'react';
-import EntityReviewList from 'front/widgets/entity-review-list';
+import EntityReviewList from 'front/widgets/entity-review-list/index.js';
 import MyReviews from 'front/widgets/my-reviews';
-import ReviewList from 'front/widgets/review-list';
-import EditReview from 'front/components/edit-review';
-import Portal from 'common/components/portal/portal';
-import DeleteReview from 'front/components/delete-review';
-import Snackbar from 'front/components/snackbar';
-import AppTheme from 'common/components/theme/theme';
+import ReviewList from 'front/widgets/review-list/index.js';
+import EditReview from 'front/components/edit-review/index.js';
+import Portal from 'common/components/portal/portal.jsx';
+import DeleteReview from 'front/components/delete-review/index.js';
+import Snackbar from 'front/components/snackbar/index.js';
+import AppTheme from 'common/components/theme/theme.jsx';
 
 type Props = {
   settings: SettingsType,
@@ -20,7 +20,7 @@ type Props = {
 };
 
 class FrontApp extends React.PureComponent<Props> {
-  static displayName: ?string = 'FrontApp';
+  static displayName: ?string = 'FrontApp.js';
 
   render(): Node {
     const { settings, visitor, widgets } = this.props;

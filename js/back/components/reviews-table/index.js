@@ -1,11 +1,11 @@
 // @flow
 import type { ComponentType } from 'react';
-import type { State } from 'back/reducer';
-import type { LoadPagination } from 'back/types';
-import type { InputProps } from './controller';
+import type { State } from 'back/reducer/index.js';
+import type { LoadPagination } from 'back/types.js';
+import type { InputProps } from './controller.jsx';
 import { connect } from 'react-redux';
-import { saveReview, loadData, approveReview, deleteReview, deletePermReview, undeleteReview } from 'back/actions/creators';
-import Controller from './controller';
+import { saveReview, loadData, approveReview, deleteReview, deletePermReview, undeleteReview } from 'back/actions/creators.js';
+import Controller from './controller.jsx';
 
 const mapStateToProps = (state: State) => ({
   data: state.data

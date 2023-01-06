@@ -3,7 +3,7 @@
 import type {Element} from 'react';
 import React from 'react';
 import Button from 'material-ui/Button';
-import Dialog, { DialogActions, DialogContent } from 'common/components/dialog';
+import Dialog, { DialogActions, DialogContent } from 'common/components/dialog/index.jsx';
 
 type Props = {
   images: Array<string>,

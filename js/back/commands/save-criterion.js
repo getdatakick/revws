@@ -1,8 +1,8 @@
 // @flow
 
-import type { Api } from 'common/types';
-import type { SaveCriterionAction } from 'back/actions';
-import { setSnackbar, criterionSaved } from 'back/actions/creators';
+import type { Api } from 'common/types.js';
+import type { SaveCriterionAction } from 'back/actions/index.js';
+import { setSnackbar, criterionSaved } from 'back/actions/creators.js';
 
 export const saveCriterion = (action: SaveCriterionAction, store: any, api: Api) => {
   api('saveCriterion', action.criterion).then(result => {

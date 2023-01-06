@@ -1,16 +1,16 @@
 // @flow
 import type { ComponentType } from 'react';
-import type { GlobalDataType, SettingsType, GoTo, FullCriteria } from 'back/types';
-import type { ReviewType } from 'common/types';
-import type { State } from 'back/reducer';
-import type { Props } from './reviews';
-import type { SubPage } from 'back/routing/reviews';
+import type { GlobalDataType, SettingsType, GoTo, FullCriteria } from 'back/types.js';
+import type { ReviewType } from 'common/types.js';
+import type { State } from 'back/reducer/index.js';
+import type { Props } from './reviews.jsx';
+import type { SubPage } from 'back/routing/reviews.js';
 import { connect } from 'react-redux';
-import { getSettings } from 'back/selectors/settings';
-import { getFullCriteria } from 'back/selectors/criteria';
-import { exportReviews, saveReview } from 'back/actions/creators';
-import Reviews from './reviews';
-import { convertCriteria } from 'back/utils/criteria';
+import { getSettings } from 'back/selectors/settings.js';
+import { getFullCriteria } from 'back/selectors/criteria.js';
+import { exportReviews, saveReview } from 'back/actions/creators.js';
+import Reviews from './reviews.jsx';
+import { convertCriteria } from 'back/utils/criteria.js';
 
 type OwnProps = {|
   settings: SettingsType,

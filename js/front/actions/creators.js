@@ -1,7 +1,7 @@
 // @flow
 
-import type { ReviewType, ListOrder, ListOrderDirection, EntityType } from 'common/types';
-import type { ListConditions, ListType, EntitiesType } from 'front/types';
+import type { ReviewType, ListOrder, ListOrderDirection, EntityType } from 'common/types.js';
+import type { ListConditions, ListType, EntitiesType } from 'front/types.js';
 import type {
   CloseEditReviewAction,
   SaveReviewAction,
@@ -26,8 +26,8 @@ import type {
   UploadImageAction,
   UploadImageFailedAction,
   SetImageAction,
-} from './index';
-import Types from './types';
+} from './index.js';
+import Types from './types.js';
 
 export const setSnackbar = (message: ?string): SetSnackbarAction => ({ type: Types.setSnackbar, message });
 

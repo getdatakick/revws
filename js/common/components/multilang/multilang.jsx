@@ -2,7 +2,7 @@
 import type {Node, Element} from 'react';
 import React from 'react';
 import classnames from 'classnames';
-import type { LanguagesType, LangString } from 'common/types';
+import type { LanguagesType, LangString } from 'common/types.js';
 import { MenuItem } from 'material-ui/Menu';
 import { assoc, map, always, propOr, toPairs } from 'ramda';
 import Select from 'material-ui/Select';

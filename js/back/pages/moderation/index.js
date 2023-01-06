@@ -1,13 +1,13 @@
 // @flow
 import type { ComponentType } from 'react';
-import type { GlobalDataType, SettingsType, FullCriteria } from 'back/types';
-import type { State } from 'back/reducer';
-import type { Props } from './moderation';
+import type { GlobalDataType, SettingsType, FullCriteria } from 'back/types.js';
+import type { State } from 'back/reducer/index.js';
+import type { Props } from './moderation.jsx';
 import { connect } from 'react-redux';
-import { getSettings } from 'back/selectors/settings';
-import { getFullCriteria } from 'back/selectors/criteria';
-import Moderation from './moderation';
-import { convertCriteria } from 'back/utils/criteria';
+import { getSettings } from 'back/selectors/settings.js';
+import { getFullCriteria } from 'back/selectors/criteria.js';
+import Moderation from './moderation.jsx';
+import { convertCriteria } from 'back/utils/criteria.js';
 
 
 type OwnProps = {|

@@ -1,9 +1,9 @@
 // @flow
-import type { Action } from 'front/actions';
-import type { VisitorType } from 'front/types';
-import type { EntityType, ReviewType } from 'common/types';
-import { append, contains, reject, equals } from 'ramda';
-import Types from 'front/actions/types';
+import type { Action } from 'front/actions/index.js';
+import type { VisitorType } from 'front/types.js';
+import type { EntityType, ReviewType } from 'common/types.js';
+import { append, includes, reject, equals } from 'ramda';
+import Types from 'front/actions/types.js';
 
 export type State = {
   reviewed: {
@@ -25,7 +25,7 @@ const isCustomerReview = (visitor: VisitorType, review: ReviewType) => {
 const remove = (entityId: number, list: Array<number>): Array<number> => reject(equals(entityId), list);
 
 const add = (entityId: number, list: Array<number>): Array<number> => {
-  if (contains(entityId, list)) {
+  if (includes(entityId, list)) {
     return list;
   }
   return append(entityId, list);

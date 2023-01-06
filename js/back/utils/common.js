@@ -1,7 +1,7 @@
 // @flow
 
-import type { GlobalDataType } from 'back/types';
-import { merge, reduce, append, toPairs } from 'ramda';
+import type { GlobalDataType } from 'back/types.js';
+import { mergeRight, reduce, append, toPairs } from 'ramda';
 
 const storeBase = 'https://store.getdatakick.com';
 
@@ -20,7 +20,7 @@ export const getWebUrl = (campaign: string, path: string, params: {} = {}): stri
     if (path[path.length - 1] != '/')
       path = path + '/';
   }
-  params = merge({ 'utm_campaign': campaign, 'utm_source': 'chex', 'utm_medium': 'web' }, params);
+  params = mergeRight({ 'utm_campaign': campaign, 'utm_source': 'chex', 'utm_medium': 'web' }, params);
   const pars = reduce((ret, pair) => append(getUrlComponent(pair), ret), [], toPairs(params)).join('&');
   return storeBase + path + '?' + pars;
 };

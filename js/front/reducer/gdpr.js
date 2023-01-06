@@ -1,7 +1,7 @@
 // @flow
-import type { Action } from 'front/actions';
-import Types from 'front/actions/types';
-import type { SettingsType } from 'front/types';
+import type { Action } from 'front/actions/index.js';
+import Types from 'front/actions/types.js';
+import type { SettingsType } from 'front/types.js';
 
 export type State = {
   agreed: boolean

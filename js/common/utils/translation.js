@@ -1,5 +1,5 @@
 // @flow
-import type { Tag } from 'common/types';
+import type { Tag } from 'common/types.js';
 import { toPairs, map } from 'ramda';
 
 const toParam = (pair:Array<string>) => {

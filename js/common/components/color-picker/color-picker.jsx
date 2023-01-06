@@ -4,12 +4,12 @@ import type {Element} from 'react';
 import React from 'react';
 import { equals, assoc, reject, isEmpty } from 'ramda';
 import Colr from 'colr';
-import Board from './board';
-import Ribbon from './ribbon';
-import Color from './color';
-import Preset from './preset';
+import Board from './board.jsx';
+import Ribbon from './ribbon.jsx';
+import Color from './color.jsx';
+import Preset from './preset.jsx';
 import styles from './color-picker.less';
-import type { HSV, PresetType } from './types';
+import type { HSV, PresetType } from './types.js';
 
 type Props = {|
   color: string,

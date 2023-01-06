@@ -1,13 +1,13 @@
 // @flow
 import React from 'react';
-import type { EntityInfoType, ReviewType, DisplayCriteriaType, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
-import type { Load } from 'back/types';
-import EditReviewDialog from './edit-review-dialog';
+import type { EntityInfoType, ReviewType, DisplayCriteriaType, CriteriaType, GradingShapeType, LanguagesType } from 'common/types.js';
+import type { Load } from 'back/types.js';
+import EditReviewDialog from './edit-review-dialog.jsx';
 import type { ComponentType, Node } from 'react';
 import { connect } from 'react-redux';
-import { mapObject } from 'common/utils/redux';
-import { getData } from 'back/selectors/data';
-import { loadData } from 'back/actions/creators';
+import { mapObject } from 'common/utils/redux.js';
+import { getData } from 'back/selectors/data.js';
+import { loadData } from 'back/actions/creators.js';
 
 
 type InputProps = {|

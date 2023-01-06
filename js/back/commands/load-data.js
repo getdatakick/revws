@@ -1,11 +1,11 @@
 // @flow
 
-import type { Api } from 'common/types';
-import type { LoadDataAction } from 'back/actions';
+import type { Api } from 'common/types.js';
+import type { LoadDataAction } from 'back/actions/index.js';
 import { assoc } from 'ramda';
-import { setSnackbar, setData } from 'back/actions/creators';
-import { fixReviews } from 'common/utils/reviews';
-import type { LoadTypes } from "back/types";
+import { setSnackbar, setData } from 'back/actions/creators.js';
+import { fixReviews } from 'common/utils/reviews.js';
+import type { LoadTypes } from 'back/types.js';
 
 const fixReviewPayload = (payload: any) => assoc('reviews', fixReviews(payload.reviews), payload);
 

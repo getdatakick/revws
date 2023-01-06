@@ -1,7 +1,7 @@
 // @flow
-import type { Action } from 'back/actions';
-import Types from 'back/actions/types';
-import { reject, has, always, map, assoc, update, findIndex, propEq, merge } from 'ramda';
+import type { Action } from 'back/actions/index.js';
+import Types from 'back/actions/types.js';
+import { reject, has, always, map, assoc, update, findIndex, propEq, mergeRight } from 'ramda';
 import type {ReviewType} from "common/types";
 
 export type State = {
@@ -47,7 +47,7 @@ export default (state?: State, action:Action): State => {
     return defaultState;
   }
   if (action.type === Types.setData) {
-    return merge(state, action.payload);
+    return mergeRight(state, action.payload);
   }
   if (action.type === Types.reviewUpdated) {
     return updateReviews(action.review.id, always(action.review), state);

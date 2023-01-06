@@ -1,8 +1,8 @@
 // @flow
 
-import type { Api } from 'common/types';
-import type { SetReviewedAction } from 'back/actions';
-import { setSnackbar } from 'back/actions/creators';
+import type { Api } from 'common/types.js';
+import type { SetReviewedAction } from 'back/actions/index.js';
+import { setSnackbar } from 'back/actions/creators.js';
 
 export const setReviewed = (action: SetReviewedAction, store: any, api: Api) => {
   api('setReviewed', {})

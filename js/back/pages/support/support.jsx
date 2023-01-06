@@ -2,17 +2,17 @@
 import type {Node, Element} from 'react';
 import React from 'react';
 import classnames from 'classnames';
-import Section from 'back/components/section/section';
-import Markdown from 'back/components/markdown/markdown';
+import Section from 'back/components/section/section.jsx';
+import Markdown from 'back/components/markdown/markdown.jsx';
 import Button from 'material-ui/Button';
 import styles from './support.less';
-import type { GlobalDataType } from 'back/types';
+import type { GlobalDataType } from 'back/types.js';
 import CheckIcon from 'material-ui-icons/Cached';
 import RateIcon from 'material-ui-icons/Star';
 import List from 'material-ui/List';
 import UpToDateIcon from 'material-ui-icons/Done';
 import NewVersionIcon from 'material-ui-icons/InfoOutline';
-import Warning from './warning';
+import Warning from './warning.jsx';
 import moment from 'moment';
 import TextWithTags from 'common/components/text-with-tags/text-with-tags';
 

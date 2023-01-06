@@ -1,9 +1,9 @@
 // @flow
-import type { Action } from 'back/actions';
-import type { FullCriteria } from 'back/types';
+import type { Action } from 'back/actions/index.js';
+import type { FullCriteria } from 'back/types.js';
 import { dissoc, assoc } from 'ramda';
-import { asObject } from 'common/utils/input';
-import Types from 'back/actions/types';
+import { asObject } from 'common/utils/input.js';
+import Types from 'back/actions/types.js';
 
 export type State = {
   loading: boolean,

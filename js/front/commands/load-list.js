@@ -1,12 +1,12 @@
 // @flow
 
 import { pick } from 'ramda';
-import type { Api, ReviewListType } from 'common/types';
+import type { Api, ReviewListType } from 'common/types.js';
 import { reject, sortBy, identity } from 'ramda';
-import type { EntitiesType } from 'front/types';
-import type { LoadListAction } from 'front/actions';
-import { setSnackbar, setReviews, setList, loadListFailed, mergeEntities } from 'front/actions/creators';
-import { getList } from 'front/utils/list';
+import type { EntitiesType } from 'front/types.js';
+import type { LoadListAction } from 'front/actions/index.js';
+import { setSnackbar, setReviews, setList, loadListFailed, mergeEntities } from 'front/actions/creators.js';
+import { getList } from 'front/utils/list.js';
 
 
 const getPayload = pick(['conditions', 'listId', 'page', 'pageSize', 'order', 'orderDir']);

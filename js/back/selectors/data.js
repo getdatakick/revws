@@ -1,6 +1,6 @@
 // @flow
 import type { State as StateData } from "back/reducer/data";
-import type { State } from 'back/reducer';
+import type { State } from 'back/reducer/index.js';
 
 export const getEntities = (state: State): ?any => state.data.entities;
 export const getProducts = (state: State): ?any => state.data.products;

@@ -1,0 +1,34 @@
+.app-content {
+  padding: 100px 30px;
+}
+
+.page-sidebar:not(.page-sidebar-closed) #content {
+  margin-left: 210px !important;
+}
+
+.lang-rtl.page-sidebar:not(.page-sidebar-closed) #content {
+  margin-right: 210px !important;
+  margin-left: 0px !important;
+}
+
+.revws-space {
+  height: 15px;
+}
+
+.revws-space-small {
+  height: 5px;
+}
+
+.revws-space-large {
+  height: 30px;
+}
+
+.fancybox-overlay {
+  z-index: 19008010 !important;
+}
+.fancybox-wrap {
+	z-index: 19008020 !important;
+}
+.fancybox-opened {
+  z-index: 19008030 !important;
+}

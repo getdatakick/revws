@@ -2,10 +2,10 @@
 import React from 'react';
 import type { Node } from 'react';
 import { map, indexBy, prop } from 'ramda';
-import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType } from 'common/types';
+import type { DisplayCriteriaType, GradingShapeType, ReviewType, ShapeColorsType, CriteriaType } from 'common/types.js';
 import styles from './style.less';
-import Bootstrap from 'common/components/bootstrap/bootstrap';
-import ReviewListItem from 'common/components/review-list-item/review-list-item';
+import Bootstrap from 'common/components/bootstrap/bootstrap.jsx';
+import ReviewListItem from 'common/components/review-list-item/review-list-item.jsx';
 
 type Props = {
   shopName: string,

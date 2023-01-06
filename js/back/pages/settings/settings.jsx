@@ -1,24 +1,24 @@
 // @flow
 import type {Node, Element} from 'react';
 import React from 'react';
-import type { GoTo, SettingsType, GlobalDataType } from 'back/types';
+import type { GoTo, SettingsType, GlobalDataType } from 'back/types.js';
 import ScrollSpy from 'react-scrollspy';
-import { prop, toPairs, path, last, merge, range, map, curry, equals, assocPath } from 'ramda';
-import Section from 'back/components/section/section';
-import { reviewsPage, criteriaPage, supportPage } from 'back/routing';
-import ShapeSelect from './shape-select';
+import { prop, toPairs, path, last, mergeRight, range, map, curry, equals, assocPath } from 'ramda';
+import Section from 'back/components/section/section.jsx';
+import { reviewsPage, criteriaPage, supportPage } from 'back/routing/index.js';
+import ShapeSelect from './shape-select.jsx';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
-import PageWithFooter from 'common/components/page-with-footer/page-with-footer';
+import PageWithFooter from 'common/components/page-with-footer/page-with-footer.jsx';
 import { FormControlLabel, FormGroup } from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
 import Checkbox from 'material-ui/Checkbox';
-import Preview from './review-preview';
+import Preview from './review-preview.jsx';
 import MenuItem from 'material-ui/Menu/MenuItem';
 import TextField from 'material-ui/TextField';
-import { hasErrors, validateIsNumber, validateReviewEmail } from 'common/utils/validation';
+import { hasErrors, validateIsNumber, validateReviewEmail } from 'common/utils/validation.js';
 import styles from './style.less';
-import ColorPicker from 'common/components/color-picker/trigger';
+import ColorPicker from 'common/components/color-picker/trigger.jsx';
 
 export type Props = {
   goTo: GoTo,
@@ -740,7 +740,7 @@ class Settings extends React.PureComponent<Props, State> {
   setSize: ((e: any) => void) = (e:any) => {
     const settings = this.state.settings;
     const size = e.target.value;
-    const shapeSize = merge(settings.theme.shapeSize, {
+    const shapeSize = mergeRight(settings.theme.shapeSize, {
       product: size,
       list: size
     });

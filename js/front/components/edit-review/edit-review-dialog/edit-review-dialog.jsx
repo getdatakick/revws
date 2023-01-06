@@ -3,21 +3,21 @@
 import React from 'react';
 import debounce from 'debounce';
 import type { ComponentType, Node } from 'react';
-import type { EditStage, CriterionType, ReviewType, ReviewFormErrors, EntityInfoType, GradingType } from 'common/types';
-import type { SettingsType, EntitiesType, VisitorType } from 'front/types';
+import type { EditStage, CriterionType, ReviewType, ReviewFormErrors, EntityInfoType, GradingType } from 'common/types.js';
+import type { SettingsType, EntitiesType, VisitorType } from 'front/types.js';
 import Button from 'material-ui/Button';
-import Dialog, { DialogActions, DialogContent, DialogTitle, withMobileDialog } from 'common/components/dialog';
-import EditReviewForm from '../edit-review-form/edit-review-form';
+import Dialog, { DialogActions, DialogContent, DialogTitle, withMobileDialog } from 'common/components/dialog/index.jsx';
+import EditReviewForm from '../edit-review-form/edit-review-form.jsx';
 import Grid from 'material-ui/Grid';
 import Check from 'material-ui-icons/Check';
 import ErrorOutline from 'material-ui-icons/ErrorOutline';
 import { CircularProgress } from 'material-ui/Progress';
-import { fixUrl } from 'common/utils/url';
-import { validateReview, hasErrors } from 'common/utils/validation';
+import { fixUrl } from 'common/utils/url.js';
+import { validateReview, hasErrors } from 'common/utils/validation.js';
 import { reject, isNil, find, prop, map } from 'ramda';
 import { getEntity } from 'front/utils/entities';
 import Grades from './grades';
-import { consentRequired } from 'front/utils/gdpr';
+import { consentRequired } from 'front/utils/gdpr.js';
 
 type InputProps = {
   stage: EditStage,

@@ -1,23 +1,23 @@
 // @flow
 
-import type { SettingsType, ReviewsType, ListsType, VisitorType, EntitiesType } from 'front/types';
+import type { SettingsType, ReviewsType, ListsType, VisitorType, EntitiesType } from 'front/types.js';
 import { combineReducers } from 'redux';
-import createEditReview from './edit-review';
-import type { State as EditReviewState } from './edit-review';
-import snackbar from './snackbar';
-import type { State as SnackbarState } from './snackbar';
-import deleteReview from './delete-review';
-import type { State as DeleteReviewState } from './delete-review';
-import createVisitorReviews from './visitor-reviews';
-import type { State as VisitorsReviewsState } from './visitor-reviews';
-import createEntities from './entities';
-import type { State as EntitiesState } from './entities';
-import createGDPR from './gdpr';
-import type { State as GDPRState } from './gdpr';
-import createLists from './lists';
-import type { State as ListsState } from './lists';
-import createReviews from './reviews';
-import type { State as ReviewsState } from './reviews';
+import createEditReview from './edit-review.js';
+import type { State as EditReviewState } from './edit-review.js';
+import snackbar from './snackbar.js';
+import type { State as SnackbarState } from './snackbar.js';
+import deleteReview from './delete-review.js';
+import type { State as DeleteReviewState } from './delete-review.js';
+import createVisitorReviews from './visitor-reviews.js';
+import type { State as VisitorsReviewsState } from './visitor-reviews.js';
+import createEntities from './entities.js';
+import type { State as EntitiesState } from './entities.js';
+import createGDPR from './gdpr.js';
+import type { State as GDPRState } from './gdpr.js';
+import createLists from './lists.js';
+import type { State as ListsState } from './lists.js';
+import createReviews from './reviews.js';
+import type { State as ReviewsState } from './reviews.js';
 
 export type State = {
     entities: EntitiesState,

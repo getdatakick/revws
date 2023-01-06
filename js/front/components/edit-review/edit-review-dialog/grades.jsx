@@ -3,9 +3,9 @@ import type {Element} from 'react';
 import React from 'react';
 import classnames from 'classnames';
 import { findIndex, assoc, has } from 'ramda';
-import type { CriterionType, EntityInfoType, GradingShapeType, GradingType } from 'common/types';
-import { fixUrl } from 'common/utils/url';
-import Grading from 'common/components/grading/grading';
+import type { CriterionType, EntityInfoType, GradingShapeType, GradingType } from 'common/types.js';
+import { fixUrl } from 'common/utils/url.js';
+import Grading from 'common/components/grading/grading.jsx';
 
 type Props = {
   shape: GradingShapeType,

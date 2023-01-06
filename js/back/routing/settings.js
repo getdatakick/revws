@@ -1,6 +1,6 @@
 // @flow
-import type { RouteDefinition } from 'back/types';
-import Settings from 'back/pages/settings';
+import type { RouteDefinition } from 'back/types.js';
+import Settings from 'back/pages/settings/index.js';
 
 export type SettingsPage = {
   type: 'settings',

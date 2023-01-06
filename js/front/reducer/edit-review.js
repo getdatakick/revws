@@ -1,10 +1,10 @@
 // @flow
-import type { Action } from 'front/actions';
-import type { EntityType, EditStage, ReviewType } from 'common/types';
-import type { VisitorType } from 'front/types';
+import type { Action } from 'front/actions/index.js';
+import type { EntityType, EditStage, ReviewType } from 'common/types.js';
+import type { VisitorType } from 'front/types.js';
 import { remove, update, append } from 'ramda';
-import { formatName } from 'common/utils/format';
-import Types from 'front/actions/types';
+import { formatName } from 'common/utils/format.js';
+import Types from 'front/actions/types.js';
 
 export type State = {
   review: ?ReviewType,

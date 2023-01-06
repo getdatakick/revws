@@ -1,7 +1,7 @@
 // @flow
-import type { LoadTypes, SettingsType, FullCriterion, FullCriteria, EmailPreferences } from 'back/types';
-import type { ReviewType } from 'common/types';
-import type { RoutingState } from 'back/routing';
+import type { LoadTypes, SettingsType, FullCriterion, FullCriteria, EmailPreferences } from 'back/types.js';
+import type { ReviewType } from 'common/types.js';
+import type { RoutingState } from 'back/routing/index.js';
 
 export type ActivateAccountAction = {
   type: 'ACTIVATE_ACCOUNT',

@@ -1,18 +1,18 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import type { GoTo, RoutingState, GlobalDataType } from 'back/types';
-import Snackbar from 'back/pages/snackbar';
+import type { GoTo, RoutingState, GlobalDataType } from 'back/types.js';
+import Snackbar from 'back/pages/snackbar/index.js';
 import styles from './app.less';
-import AppTheme from 'common/components/theme/theme';
-import { getRoutingState } from 'back/selectors/routing-state';
-import { isNewVersionAvailable, shouldReview } from 'back/selectors/account';
-import { render } from 'back/routing';
+import AppTheme from 'common/components/theme/theme.jsx';
+import { getRoutingState } from 'back/selectors/routing-state.js';
+import { isNewVersionAvailable, shouldReview } from 'back/selectors/account.js';
+import { render } from 'back/routing/index.js';
 import { connect } from 'react-redux';
-import { mapObject } from 'common/utils/redux';
-import { goTo } from 'back/actions/creators';
-import Navigation from 'back/components/navigation/navigation';
-import Registration from 'back/components/registration';
+import { mapObject } from 'common/utils/redux.js';
+import { goTo } from 'back/actions/creators.js';
+import Navigation from 'back/components/navigation/navigation.jsx';
+import Registration from 'back/components/registration/index.js';
 
 type Props = {
   routingState: RoutingState,
@@ -23,7 +23,7 @@ type Props = {
 };
 
 class BackApp extends React.PureComponent<Props> {
-  static displayName: ?string = 'BackApp';
+  static displayName: ?string = 'BackApp.js';
 
   render(): Node {
     const { data, routingState, goTo } = this.props;

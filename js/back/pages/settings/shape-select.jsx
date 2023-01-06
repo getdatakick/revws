@@ -1,13 +1,13 @@
 // @flow
 import type {Node} from 'react';
 import React from 'react';
-import type { GradingShapeType, ShapeColorsType } from 'common/types';
+import type { GradingShapeType, ShapeColorsType } from 'common/types.js';
 import { map, toPairs } from 'ramda';
 import { MenuItem } from 'material-ui/Menu';
 import { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
-import Grading from 'common/components/grading/grading';
+import Grading from 'common/components/grading/grading.jsx';
 import styles from './style.less';
 
 type Props = {

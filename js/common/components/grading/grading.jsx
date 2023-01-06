@@ -3,9 +3,9 @@ import type {Element} from 'react';
 import React from 'react';
 import classnames from 'classnames';
 import { range, map } from 'ramda';
-import type { GradingShapeType, ShapeColorsType } from 'common/types';
-import GradingShape from 'common/components/grading-shape/grading-shape';
-import { prevent } from 'common/utils/input';
+import type { GradingShapeType, ShapeColorsType } from 'common/types.js';
+import GradingShape from 'common/components/grading-shape/grading-shape.jsx';
+import { prevent } from 'common/utils/input.js';
 
 type Props = {
   className?: string,

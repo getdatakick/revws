@@ -1,13 +1,13 @@
 // @flow
-import type { DrilldownUrls } from 'back/types';
-import type { EntityType } from 'common/types';
+import type { DrilldownUrls } from 'back/types.js';
+import type { EntityType } from 'common/types.js';
 
 const getUrl = (type: string, urls: DrilldownUrls, id: number) => {
   const url = urls[type];
   if (! url) {
     throw new Error('Invalid url type '+type);
   }
-  return decodeURI(url).replace('{ID}', `${id}`);
+  return decodeURI(url).replace('999', `${id}`);
 };
 
 export const editProductUrl = (urls: DrilldownUrls, productId: number): string => getUrl('editProduct', urls, productId);

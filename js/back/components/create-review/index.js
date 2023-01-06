@@ -1,15 +1,15 @@
 // @flow
 import React from 'react';
-import type { EntityType, EntityTypes, EntityInfoType, NameFormatType, CustomerInfoType, ReviewType, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
-import type { Load } from 'back/types';
-import CreateReviewDialog from './create-review-dialog';
+import type { EntityType, EntityTypes, EntityInfoType, NameFormatType, CustomerInfoType, ReviewType, CriteriaType, GradingShapeType, LanguagesType } from 'common/types.js';
+import type { Load } from 'back/types.js';
+import CreateReviewDialog from './create-review-dialog.jsx';
 import type { ComponentType, Node } from 'react';
 import { keys } from 'ramda';
 import { connect } from 'react-redux';
-import { mapObject } from 'common/utils/redux';
-import { getData } from 'back/selectors/data';
-import { loadData } from 'back/actions/creators';
-import { formatName } from 'common/utils/format';
+import { mapObject } from 'common/utils/redux.js';
+import { getData } from 'back/selectors/data.js';
+import { loadData } from 'back/actions/creators.js';
+import { formatName } from 'common/utils/format.js';
 
 type InputProps = {|
   entityTypes: EntityTypes,

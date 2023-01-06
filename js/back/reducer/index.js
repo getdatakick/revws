@@ -1,23 +1,23 @@
 // @flow
 
 import { combineReducers } from 'redux';
-import type { RoutingState } from 'back/routing';
-import type { FullCriteria, SettingsType, AccountType } from 'back/types';
-import snackbar from './snackbar';
-import createSettings from './settings';
-import createCriteria from './criteria';
-import createRouting from './routing-state';
-import ui from './ui';
-import data from './data';
-import createAccount from './account';
+import type { RoutingState } from 'back/routing/index.js';
+import type { FullCriteria, SettingsType, AccountType } from 'back/types.js';
+import snackbar from './snackbar.js';
+import createSettings from './settings.js';
+import createCriteria from './criteria.js';
+import createRouting from './routing-state.js';
+import ui from './ui.js';
+import data from './data.js';
+import createAccount from './account.js';
 
-import type { State as StateSnackbar } from './snackbar';
-import type { State as StateSettings } from './settings';
-import type { State as StateCriteria } from './criteria';
-import type { State as StateRouting } from './routing-state';
-import type { State as StateUi } from './ui';
-import type { State as StateData } from './data';
-import type { State as StateAccount } from './account';
+import type { State as StateSnackbar } from './snackbar.js';
+import type { State as StateSettings } from './settings.js';
+import type { State as StateCriteria } from './criteria.js';
+import type { State as StateRouting } from './routing-state.js';
+import type { State as StateUi } from './ui.js';
+import type { State as StateData } from './data.js';
+import type { State as StateAccount } from './account.js';
 
 export type State = {
   routingState: StateRouting,

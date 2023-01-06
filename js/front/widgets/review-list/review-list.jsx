@@ -2,13 +2,13 @@
 import type {Node, Element} from 'react';
 import React from 'react';
 import { map } from 'ramda';
-import type { EntitiesType, ReviewDisplayStyle } from 'front/types';
-import type { DisplayCriteriaType, GradingShapeType, ReviewType, ReviewListType, CriteriaType } from 'common/types';
-import ReviewListItem from 'common/components/review-list-item/review-list-item';
-import ReviewListItemWithEntity from 'common/components/review-list-item-with-entity/review-list-item-with-entity';
-import { getEntity } from 'front/utils/entities';
+import type { EntitiesType, ReviewDisplayStyle } from 'front/types.js';
+import type { DisplayCriteriaType, GradingShapeType, ReviewType, ReviewListType, CriteriaType } from 'common/types.js';
+import ReviewListItem from 'common/components/review-list-item/review-list-item.jsx';
+import ReviewListItemWithEntity from 'common/components/review-list-item-with-entity/review-list-item-with-entity.jsx';
+import { getEntity } from 'front/utils/entities.js';
 import { CircularProgress } from 'material-ui/Progress';
-import Paging from 'common/components/review-list-paging/review-list-paging';
+import Paging from 'common/components/review-list-paging/review-list-paging.jsx';
 
 type Props = {
   reviewStyle: ReviewDisplayStyle,

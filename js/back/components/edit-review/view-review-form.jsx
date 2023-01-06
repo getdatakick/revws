@@ -1,10 +1,10 @@
 // @flow
 import type {Node} from 'react';
 import React from 'react';
-import type { ReviewType, CriteriaType, GradingShapeType, DisplayCriteriaType } from 'common/types';
-import { assoc, merge } from 'ramda';
-import Bootstrap from 'common/components/bootstrap/bootstrap';
-import ReviewListItem from 'common/components/review-list-item/review-list-item';
+import type { ReviewType, CriteriaType, GradingShapeType, DisplayCriteriaType } from 'common/types.js';
+import { assoc, mergeRight } from 'ramda';
+import Bootstrap from 'common/components/bootstrap/bootstrap.jsx';
+import ReviewListItem from 'common/components/review-list-item/review-list-item.jsx';
 import styles from './edit-review-form.less';
 
 
@@ -42,7 +42,7 @@ class EditReviewForm extends React.PureComponent<Props> {
           shape={shape}
           shapeSize={shapeSize}
           dateFormat={dateFormat}
-          review={merge(review, caps)}
+          review={mergeRight(review, caps)}
           onSaveReply={reply => onUpdateReview(assoc('reply', reply, review))}
         />
       </Bootstrap>

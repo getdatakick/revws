@@ -1,8 +1,8 @@
 // @flow
 
-import type { Api } from 'common/types';
-import type { UploadYotpoCsvAction } from 'back/actions';
-import { setSnackbar, setCriteria } from 'back/actions/creators';
+import type { Api } from 'common/types.js';
+import type { UploadYotpoCsvAction } from 'back/actions/index.js';
+import { setSnackbar, setCriteria } from 'back/actions/creators.js';
 
 export const uploadYotpoCsv = (action: UploadYotpoCsvAction, store: any, api: Api) => {
   api('importYotpo', { file: action.file }).then(result => {

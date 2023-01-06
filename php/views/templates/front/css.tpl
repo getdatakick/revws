@@ -1,5 +1,5 @@
 {*
-* Copyright (C) 2017-2018 Petr Hucik <petr@getdatakick.com>
+* Copyright (C) 2017-2023 Petr Hucik <petr@getdatakick.com>
 *
 * NOTICE OF LICENSE
 *
@@ -12,7 +12,7 @@
 * to license@getdatakick.com so we can send you a copy immediately.
 *
 * @author    Petr Hucik <petr@getdatakick.com>
-* @copyright 2017-2018 Petr Hucik
+* @copyright 2017-2023 Petr Hucik
 * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
 .revws-hidden {
@@ -609,6 +609,11 @@ a .revws-grading {
   cursor: pointer;
   font-weight: normal;
 }
+
+.revws-review-form-image-text svg {
+  display:none;
+}
+
 .revws-review-form-image-text:before {
   content: "\f0c6";
   font-size: 1.5rem;

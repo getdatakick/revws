@@ -1,11 +1,11 @@
 
 // @flow
 import type { ComponentType } from 'react';
-import type { State } from 'front/reducer';
-import DeleteReviewConfirm from 'common/components/confirm-delete/confirm-delete';
+import type { State } from 'front/reducer/index.js';
+import DeleteReviewConfirm from 'common/components/confirm-delete/confirm-delete.jsx';
 import { connect } from 'react-redux';
-import { getReview } from 'front/selectors/delete-review';
-import { closeDeleteReview, deleteReview } from 'front/actions/creators';
+import { getReview } from 'front/selectors/delete-review.js';
+import { closeDeleteReview, deleteReview } from 'front/actions/creators.js';
 
 const mapStateToProps = (state: State) => ({
   deleteLabel: __('Delete review'),

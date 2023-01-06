@@ -1,9 +1,9 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import type { GoTo, RoutingState } from 'back/types';
+import type { GoTo, RoutingState } from 'back/types.js';
 import Tabs, { Tab } from 'material-ui/Tabs';
-import { moderationPage, reviewsPage, supportPage, criteriaPage } from 'back/routing';
+import { moderationPage, reviewsPage, supportPage, criteriaPage } from 'back/routing/index.js';
 import styles from './navigation.less';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
@@ -11,7 +11,7 @@ import AddIcon from 'material-ui-icons/Add';
 import ListIcon from 'material-ui-icons/List';
 import ImportExportIcon from 'material-ui-icons/ImportExport';
 import Tooltip from 'material-ui/Tooltip';
-import Badge from 'common/components/badge/badge';
+import Badge from 'common/components/badge/badge.jsx';
 
 type Props = {
   routingState: RoutingState,

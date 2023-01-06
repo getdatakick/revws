@@ -1,6 +1,6 @@
 // @flow
-import type { NameFormatType, LangString, LanguagesType, GradingShapeType, ShapeColorsType, DisplayCriteriaType, EntityType } from 'common/types';
-export type { RoutingState, GoTo } from 'back/routing';
+import type { NameFormatType, LangString, LanguagesType, GradingShapeType, ShapeColorsType, DisplayCriteriaType, EntityType } from 'common/types.js';
+export type { RoutingState, GoTo } from 'back/routing/index.js';
 
 export type SettingsType = {
   general: {

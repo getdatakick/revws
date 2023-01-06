@@ -1,16 +1,16 @@
 // @flow
 import type {Node, Element} from 'react';
 import React from 'react';
-import type { ReviewType, ReviewFormErrors } from 'common/types';
-import type { SettingsType, VisitorType } from 'front/types';
+import type { ReviewType, ReviewFormErrors } from 'common/types.js';
+import type { SettingsType, VisitorType } from 'front/types.js';
 import { map, propOr, assoc } from 'ramda';
 import TextField from 'material-ui/TextField';
-import Grading from 'common/components/grading/grading';
-import TextArea from 'common/components/text-area/text-area';
+import Grading from 'common/components/grading/grading.jsx';
+import TextArea from 'common/components/text-area/text-area.jsx';
 import Checkbox from 'material-ui/Checkbox';
 import { FormControlLabel } from 'material-ui/Form';
-import { isLoggedIn, isGuest } from 'front/utils/visitor';
-import { consentRequired } from 'front/utils/gdpr';
+import { isLoggedIn, isGuest } from 'front/utils/visitor.js';
+import { consentRequired } from 'front/utils/gdpr.js';
 import { CircularProgress } from 'material-ui/Progress';
 import AddIcon from 'material-ui-icons/Add';
 
@@ -145,6 +145,9 @@ class EditReviewForm extends React.PureComponent<Props, State> {
     if (images.length == 0) {
       return allowNewImages ? (
         <label htmlFor='image-new' className='revws-review-form-image-text'>
+          <svg width="18" height="18" viewBox="0 0 18 18">
+            <path d="M13 14c0 2.21-1.79 4-4 4s-4-1.79-4-4V3c0-1.66 1.34-3 3-3s3 1.34 3 3v9c0 1.1-.9 2-2 2s-2-.9-2-2V4h1v8c0 .55.45 1 1 1s1-.45 1-1V3c0-1.1-.9-2-2-2s-2 .9-2 2v11c0 1.66 1.34 3 3 3s3-1.34 3-3V4h1v10z"/>
+          </svg>
           { __('Attach images') }
           {this.renderFileInput()}
         </label>

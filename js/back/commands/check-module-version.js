@@ -1,11 +1,11 @@
 // @flow
-import type { Api } from 'common/types';
-import type { GlobalDataType } from 'back/types';
-import type { CheckModuleVersionAction } from 'back/actions';
-import { setLatestVersion, setSnackbar, checkModuleVersionFailed } from 'back/actions/creators';
-import { validateVersion } from 'common/utils/validation';
-import { versionNum } from 'common/utils/version';
-import { getApiUrl } from 'back/utils/common';
+import type { Api } from 'common/types.js';
+import type { GlobalDataType } from 'back/types.js';
+import type { CheckModuleVersionAction } from 'back/actions/index.js';
+import { setLatestVersion, setSnackbar, checkModuleVersionFailed } from 'back/actions/creators.js';
+import { validateVersion } from 'common/utils/validation.js';
+import { versionNum } from 'common/utils/version.js';
+import { getApiUrl } from 'back/utils/common.js';
 
 export const checkModuleVersion = (data: GlobalDataType): ((action: CheckModuleVersionAction, store: any, api: Api) => void) => (action: CheckModuleVersionAction, store: any, api: Api) => {
   const { version, platform, platformVersion } = data;

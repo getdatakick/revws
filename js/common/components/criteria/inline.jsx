@@ -1,8 +1,8 @@
 // @flow
 import type {Element} from 'react';
 import React from 'react';
-import type { GradingType, CriterionType, GradingShapeType, ShapeColorsType } from 'common/types';
-import Grading from 'common/components/grading/grading';
+import type { GradingType, CriterionType, GradingShapeType, ShapeColorsType } from 'common/types.js';
+import Grading from 'common/components/grading/grading.jsx';
 
 type Props = {
   grades: GradingType,

@@ -1,7 +1,7 @@
 // @flow
 
-import { versionNum } from 'common/utils/version';
-import type { State } from 'back/reducer';
+import { versionNum } from 'common/utils/version.js';
+import type { State } from 'back/reducer/index.js';
 
 export const isActivated: ((State) => boolean) = state => state.account.activated;
 export const getLatestVersion = (state: State): ?string => state.account.latestVersion;

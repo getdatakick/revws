@@ -1,12 +1,12 @@
 // @flow
 import type { ComponentType } from 'react';
-import type { State } from 'back/reducer';
-import type { EmailPreferences } from 'back/types';
-import type { Props } from './registration';
-import Component from './registration';
+import type { State } from 'back/reducer/index.js';
+import type { EmailPreferences } from 'back/types.js';
+import type { Props } from './registration.jsx';
+import Component from './registration.jsx';
 import { connect } from 'react-redux';
-import { activateAccount } from 'back/actions/creators';
-import { isActivated } from 'back/selectors/account';
+import { activateAccount } from 'back/actions/creators.js';
+import { isActivated } from 'back/selectors/account.js';
 
 type OwnProps = {|
   show: boolean,

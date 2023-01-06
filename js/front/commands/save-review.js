@@ -1,11 +1,11 @@
 // @flow
 
-import type { Api } from 'common/types';
-import type { SaveReviewAction } from 'front/actions';
-import type { ListType } from 'front/types';
-import { saveReviewCompleted, setSnackbar, closeEditReview, setReview, loadList } from 'front/actions/creators';
-import { fixReview } from 'common/utils/reviews';
-import { getLists } from 'front/selectors/lists';
+import type { Api } from 'common/types.js';
+import type { SaveReviewAction } from 'front/actions/index.js';
+import type { ListType } from 'front/types.js';
+import { saveReviewCompleted, setSnackbar, closeEditReview, setReview, loadList } from 'front/actions/creators.js';
+import { fixReview } from 'common/utils/reviews.js';
+import { getLists } from 'front/selectors/lists.js';
 import { forEach, values } from 'ramda';
 
 const closeDialog = (store:any) => setTimeout(() => store.dispatch(closeEditReview()), 1600);

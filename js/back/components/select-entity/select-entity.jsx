@@ -1,8 +1,8 @@
 // @flow
 import type {Node, Element} from 'react';
 import React from 'react';
-import type { EntityType, KeyValue } from 'common/types';
-import type { Load } from 'back/types';
+import type { EntityType, KeyValue } from 'common/types.js';
+import type { Load } from 'back/types.js';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import validator from 'validator';

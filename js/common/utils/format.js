@@ -1,8 +1,8 @@
 // @flow
 
-import type { NameFormatType } from 'common/types';
+import type { NameFormatType } from 'common/types.js';
 import { has } from 'ramda';
-import { isFunction } from 'common/utils/ramda';
+import { isFunction } from 'common/utils/ramda.js';
 
 const firstCharUpperCase = (str: string) => {
   if (str.length > 0) {

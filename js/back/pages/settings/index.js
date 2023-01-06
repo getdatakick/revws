@@ -1,13 +1,13 @@
 // @flow
 import type { ComponentType } from 'react';
-import type { GlobalDataType, SettingsType, GoTo } from 'back/types';
-import type { State } from 'back/reducer';
-import type { Props } from './settings';
+import type { GlobalDataType, SettingsType, GoTo } from 'back/types.js';
+import type { State } from 'back/reducer/index.js';
+import type { Props } from './settings.jsx';
 import { connect } from 'react-redux';
-import { getWidth } from 'back/selectors/ui';
-import { getSettings } from 'back/selectors/settings';
-import { setSettings } from 'back/actions/creators';
-import Settings from './settings';
+import { getWidth } from 'back/selectors/ui.js';
+import { getSettings } from 'back/selectors/settings.js';
+import { setSettings } from 'back/actions/creators.js';
+import Settings from './settings.jsx';
 
 type OwnProps = {|
   pageWidth: number,

@@ -1,9 +1,9 @@
 // @flow
-import type { Action } from 'front/actions';
-import type { ListType, ListsType } from 'front/types';
-import type { ReviewType } from 'common/types';
-import { map, always, assoc, reject, merge, equals } from 'ramda';
-import Types from 'front/actions/types';
+import type { Action } from 'front/actions/index.js';
+import type { ListType, ListsType } from 'front/types.js';
+import type { ReviewType } from 'common/types.js';
+import { map, always, assoc, reject, mergeRight, equals } from 'ramda';
+import Types from 'front/actions/types.js';
 
 type Modifier = (ListState) => ListState;
 
@@ -31,7 +31,7 @@ const updateList = (func: Modifier, id: string, state: State) => {
 const removeReview = (review: ReviewType) => (list: ListState) => {
   const reviews = reject(equals(review.id), list.reviews);
   const diff = reviews.length - list.reviews.length;
-  return diff == 0 ? list : merge(list, {
+  return diff == 0 ? list : mergeRight(list, {
     reviews,
     total: list.total + diff
   });

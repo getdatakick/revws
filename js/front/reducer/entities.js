@@ -1,8 +1,8 @@
 // @flow
 
-import type { Action } from 'front/actions';
-import type { EntitiesType } from 'front/types';
-import Types from 'front/actions/types';
+import type { Action } from 'front/actions/index.js';
+import type { EntitiesType } from 'front/types.js';
+import Types from 'front/actions/types.js';
 
 export type State = EntitiesType;
 

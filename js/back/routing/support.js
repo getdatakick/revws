@@ -1,6 +1,6 @@
 // @flow
-import type { RouteDefinition } from 'back/types';
-import Support from 'back/pages/support';
+import type { RouteDefinition } from 'back/types.js';
+import Support from 'back/pages/support/index.js';
 
 export type SupportPage = {
   type: 'support',

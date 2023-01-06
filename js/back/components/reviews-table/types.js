@@ -1,5 +1,5 @@
 // @flow
-import type { ListOrder, EntityType } from 'common/types';
+import type { ListOrder, EntityType } from 'common/types.js';
 
 export type Filters = {
   deleted?: boolean,

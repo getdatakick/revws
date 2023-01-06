@@ -1,7 +1,7 @@
 // @flow
 import type {Element} from 'react';
 import React from 'react';
-import type { EnvironmentType } from 'back/types';
+import type { EnvironmentType } from 'back/types.js';
 import List, {
   ListItem,
   ListItemAvatar,
@@ -12,7 +12,7 @@ import Dialog, {
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from 'common/components/dialog';
+} from 'common/components/dialog/index.jsx';
 import Avatar from 'material-ui/Avatar';
 import Button from 'material-ui/Button';
 import Dropzone from 'react-dropzone';

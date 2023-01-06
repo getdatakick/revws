@@ -1,7 +1,7 @@
 // @flow
-import type { AccountType } from 'back/types';
-import type { Action } from 'back/actions';
-import Types from 'back/actions/types';
+import type { AccountType } from 'back/types.js';
+import type { Action } from 'back/actions/index.js';
+import Types from 'back/actions/types.js';
 
 export type State = {
   activated: boolean,

@@ -1,8 +1,8 @@
 // @flow
 
-import type { Api } from 'common/types';
-import type { TriggerReportReviewAction } from 'front/actions';
-import { setSnackbar, reviewRemoved, setReview } from 'front/actions/creators';
+import type { Api } from 'common/types.js';
+import type { TriggerReportReviewAction } from 'front/actions/index.js';
+import { setSnackbar, reviewRemoved, setReview } from 'front/actions/creators.js';
 import { assoc } from 'ramda';
 
 export const reportAbuse = (action: TriggerReportReviewAction, store: any, api: Api) => {

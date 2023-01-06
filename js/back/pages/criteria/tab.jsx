@@ -1,8 +1,8 @@
 // @flow
 
 import type {Node, Element} from 'react';
-import type { KeyValue } from 'common/types';
-import { filter, indexOf, remove, append, contains, map, toPairs } from 'ramda';
+import type { KeyValue } from 'common/types.js';
+import { filter, indexOf, remove, append, includes, map, toPairs } from 'ramda';
 import React from 'react';
 import List, { ListItem, ListItemText, } from 'material-ui/List';
 import Checkbox from 'material-ui/Checkbox';
@@ -52,7 +52,7 @@ class Tab extends React.PureComponent<Props, State> {
     const { selectedValues } = this.props;
     const key = parseInt(item[0], 10);
     const label = item[1];
-    const checked = contains(key, selectedValues);
+    const checked = includes(key, selectedValues);
     return (
       <ListItem key={key} button onClick={e => this.toggle(key)}>
         <Checkbox
@@ -68,7 +68,7 @@ class Tab extends React.PureComponent<Props, State> {
   filter: ((item: [string, string]) => any | boolean) = (item: [string, string]) => {
     if (this.state.search) {
       const searchLC = this.state.search.toLowerCase();
-      return contains(searchLC, item[1].toLowerCase());
+      return includes(searchLC, item[1].toLowerCase());
     }
     return true;
   }

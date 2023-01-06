@@ -1,19 +1,19 @@
 // @flow
 
 import type { ComponentType } from 'react';
-import type { EntitiesType, ListConditions, ReviewsType, SettingsType, VisitorType } from 'front/types';
-import type { EntityType, ListOrder, ListOrderDirection, ReviewType } from 'common/types';
-import type { State } from 'front/reducer';
+import type { EntitiesType, ListConditions, ReviewsType, SettingsType, VisitorType } from 'front/types.js';
+import type { EntityType, ListOrder, ListOrderDirection, ReviewType } from 'common/types.js';
+import type { State } from 'front/reducer/index.js';
 import type { State as Lists } from 'front/reducer/lists';
-import type { Props } from './entity-review-list';
-import ReviewList from './entity-review-list';
+import type { Props } from './entity-review-list.jsx';
+import ReviewList from './entity-review-list.jsx';
 import { connect } from 'react-redux';
-import { getLists } from 'front/selectors/lists';
-import { getReviews } from 'front/selectors/reviews';
-import { getIsReviewed } from 'front/selectors/visitor-reviews';
-import { getReviewList } from 'front/utils/list';
-import { getEntities } from 'front/selectors/entities';
-import { loadList, triggerVoteReview, triggerReportReview, triggerEditReview, triggerCreateReview, triggerDeleteReview } from 'front/actions/creators';
+import { getLists } from 'front/selectors/lists.js';
+import { getReviews } from 'front/selectors/reviews.js';
+import { getIsReviewed } from 'front/selectors/visitor-reviews.js';
+import { getReviewList } from 'front/utils/list.js';
+import { getEntities } from 'front/selectors/entities.js';
+import { loadList, triggerVoteReview, triggerReportReview, triggerEditReview, triggerCreateReview, triggerDeleteReview } from 'front/actions/creators.js';
 
 type PassedProps = {|
   settings: SettingsType,

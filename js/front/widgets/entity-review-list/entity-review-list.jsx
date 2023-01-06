@@ -1,9 +1,9 @@
 // @flow
 import type {Element} from 'react';
 import React from 'react';
-import type { EntityType, ReviewListType, ReviewType } from 'common/types';
-import type { SettingsType, VisitorType, EntitiesType } from 'front/types';
-import List from '../review-list/review-list';
+import type { EntityType, ReviewListType, ReviewType } from 'common/types.js';
+import type { SettingsType, VisitorType, EntitiesType } from 'front/types.js';
+import List from '../review-list/review-list.jsx';
 
 export type Props = {
   hasReviewed: boolean,

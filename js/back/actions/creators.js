@@ -1,8 +1,8 @@
 // @flow
 
-import type { Load, SettingsType, FullCriterion, FullCriteria, EmailPreferences } from 'back/types';
-import type { ReviewType } from 'common/types';
-import type { RoutingState } from 'back/routing';
+import type { Load, SettingsType, FullCriterion, FullCriteria, EmailPreferences } from 'back/types.js';
+import type { ReviewType } from 'common/types.js';
+import type { RoutingState } from 'back/routing/index.js';
 import type {
   ActivateAccountAction,
   ActivateAccountFailedAction,
@@ -33,7 +33,7 @@ import type {
   RefreshDataAction,
   SetReviewedAction,
 } from './index';
-import Types from './types';
+import Types from './types.js';
 
 export const setReviewed = (): SetReviewedAction => ({ type: Types.setReviewed });
 export const checkModuleVersion = (): CheckModuleVersionAction => ({ type: Types.checkModuleVersion });

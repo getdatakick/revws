@@ -1,25 +1,25 @@
 // @flow
-import type { FullCriteria, SettingsType, GlobalDataType, VersionCheck, AccountType } from 'back/types';
+import type { FullCriteria, SettingsType, GlobalDataType, VersionCheck, AccountType } from 'back/types.js';
 import React from 'react';
 import { equals } from 'ramda';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import logger from 'redux-logger';
-import createReducer from 'back/reducer';
-import createCommands from 'back/commands';
+import {createLogger} from 'redux-logger';
+import createReducer from 'back/reducer/index.js';
+import createCommands from 'back/commands/index.js';
 import elementResizeDetectorMaker from 'element-resize-detector';
-import { setSize, goTo, checkModuleVersion } from 'back/actions/creators';
-import { transition, toState, fixUrl, toUrl } from 'back/routing';
-import { moderationPage } from 'back/routing/moderation';
-import { getRoutingState } from 'back/selectors/routing-state';
+import { setSize, goTo, checkModuleVersion } from 'back/actions/creators.js';
+import { transition, toState, fixUrl, toUrl } from 'back/routing/index.js';
+import { moderationPage } from 'back/routing/moderation.js';
+import { getRoutingState } from 'back/selectors/routing-state.js';
 import { createHashHistory } from 'history';
 import { setTranslation } from 'translations';
-import { asObject } from 'common/utils/input';
-import Types from 'back/actions/types';
-import App from 'back/app';
+import { asObject } from 'common/utils/input.js';
+import Types from 'back/actions/types.js';
+import App from 'back/app.jsx';
 import moment from 'moment';
-import type {Action} from "back/actions";
+import type {Action} from "back/actions/index.js";
 
 const watchElementSize = (node:HTMLElement, store:any) => {
   let lastWidth = null;
@@ -96,7 +96,7 @@ window.startRevws = (init: any) => {
     syncHistory(history)
   ];
   if (dev) {
-    middlewares.push(logger);
+    middlewares.push(createLogger());
   }
 
   let routingState = toState(fixUrl(history.location.pathname));

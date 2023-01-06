@@ -11,14 +11,14 @@ import type {
   CustomerInfoType,
   LanguagesType,
   GradingType
-} from 'common/types';
+} from 'common/types.js';
 import Button from 'material-ui/Button';
-import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog';
-import SelectEntityType from 'back/components/select-entity-type/select-entity-type';
-import SelectEntity from 'back/components/select-entity';
-import SelectCustomer from 'back/components/select-customer';
-import EditReviewForm from 'back/components/edit-review/edit-review-form';
-import { validateReview, hasErrors } from 'common/utils/validation';
+import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog/index.jsx';
+import SelectEntityType from 'back/components/select-entity-type/select-entity-type.jsx';
+import SelectEntity from 'back/components/select-entity/index.jsx';
+import SelectCustomer from 'back/components/select-customer/index.jsx';
+import EditReviewForm from 'back/components/edit-review/edit-review-form.jsx';
+import { validateReview, hasErrors } from 'common/utils/validation.js';
 
 type Props = {
   entityTypes: { [ EntityType ]: string },

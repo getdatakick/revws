@@ -1,9 +1,9 @@
 // @flow
-import type { InitDataType, WidgetsType, TranslationsType, SettingsType, VisitorType, EntitiesType, ListsType, ReviewsType } from 'front/types';
+import type { InitDataType, WidgetsType, TranslationsType, SettingsType, VisitorType, EntitiesType, ListsType, ReviewsType } from 'front/types.js';
 import {  has, prop } from 'ramda';
-import { isObject, isArray, isString } from 'common/utils/ramda';
-import { asObject } from 'common/utils/input';
-import { fixReviews } from 'common/utils/reviews';
+import { isObject, isArray, isString } from 'common/utils/ramda.js';
+import { asObject } from 'common/utils/input.js';
+import { fixReviews } from 'common/utils/reviews.js';
 
 export const parseInitData = (input: any): InitDataType => ({
   settings: getSettings(input.settings),

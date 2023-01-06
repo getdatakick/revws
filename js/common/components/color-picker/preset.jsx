@@ -2,7 +2,7 @@
 
 import type {Element} from 'react';
 import React from 'react';
-import Circle from './circle';
+import Circle from './circle.jsx';
 import styles from './color-picker.less';
 
 type Props = {|

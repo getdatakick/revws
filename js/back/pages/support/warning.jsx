@@ -1,7 +1,7 @@
 // @flow
 import type {Node} from 'react';
 import React from 'react';
-import type { WarningMessageType } from 'back/types';
+import type { WarningMessageType } from 'back/types.js';
 import WarningIcon from 'material-ui-icons/Warning';
 import EmailIcon from 'material-ui-icons/Email';
 import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';

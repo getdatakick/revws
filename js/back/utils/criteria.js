@@ -1,7 +1,7 @@
 // @flow
 import { map } from 'ramda';
-import type { FullCriteria, FullCriterion } from 'back/types';
-import type { CriteriaType, CriterionType } from 'common/types';
+import type { FullCriteria, FullCriterion } from 'back/types.js';
+import type { CriteriaType, CriterionType } from 'common/types.js';
 
 const toCriterion = (language: number) => (crit: FullCriterion): CriterionType => ({
   id: crit.id,

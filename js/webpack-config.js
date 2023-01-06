@@ -1,17 +1,17 @@
-var path = require('path');
-var webpack = require('webpack');
-var babelConfig = require('./babel.config.json');
+import path from "path";
+import webpack from "webpack";
 
-module.exports = function(prod, version) {
-  var plugins = [
+// noinspection JSUnusedGlobalSymbols
+export default function(prod, version) {
+  const plugins = [
     new webpack.ProvidePlugin({
       '__': ['translations', 'getTranslation']
     }),
   ];
-  var front = [ "front" ];
-  var back = [ "back" ];
+  const front = ["front"];
+  const back = ["back"];
 
-  var mode = prod ? "production" : "development";
+  const mode = prod ? "production" : "development";
 
   plugins.push(new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify(mode),
@@ -21,15 +21,16 @@ module.exports = function(prod, version) {
   const frontName = prod ? 'front-'+ver : 'front_app';
   const backName = prod ? 'back-'+ver : 'back_app';
 
-  return {
+  const data = {
     mode: mode,
     module: {
       rules: [
         {
           test: /\.jsx?$/,
-          loader: 'babel-loader',
-          options: babelConfig,
-          exclude: [ /node_modules/]
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader",
+          }
         },
         {
           test: /\.less$/,
@@ -76,8 +77,11 @@ module.exports = function(prod, version) {
     },
 
     plugins: plugins,
-
-    devtool: 'source-map'
-
   };
+
+  if (! prod) {
+    data.devtool = 'source-map';
+  }
+
+  return data;
 };

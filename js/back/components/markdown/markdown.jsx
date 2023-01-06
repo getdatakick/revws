@@ -4,7 +4,7 @@ import type {Element} from 'react';
 import React from 'react';
 import classnames from 'classnames';
 import styles from './markdown.less';
-import { toHTML } from 'back/utils/markdown';
+import { toHTML } from 'back/utils/markdown.js';
 
 type Props = {
   content: string,

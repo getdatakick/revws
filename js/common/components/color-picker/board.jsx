@@ -7,7 +7,7 @@ import { clamp } from 'ramda';
 import ReactDOM from 'react-dom';
 import Colr from 'colr';
 import styles from './color-picker.less';
-import type { HSV, Position } from './types';
+import type { HSV, Position } from './types.js';
 
 const colr = new Colr();
 

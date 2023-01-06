@@ -1,9 +1,9 @@
 // @flow
 
-import type { Api } from 'common/types';
-import type { DeleteReviewAction } from 'back/actions';
-import { setSnackbar, reviewUpdated, reviewDeleted } from 'back/actions/creators';
-import { fixReview } from 'common/utils/reviews';
+import type { Api } from 'common/types.js';
+import type { DeleteReviewAction } from 'back/actions/index.js';
+import { setSnackbar, reviewUpdated, reviewDeleted } from 'back/actions/creators.js';
+import { fixReview } from 'common/utils/reviews.js';
 
 export const deleteReview = (action: DeleteReviewAction, store: any, api: Api) => {
   const { id, permanently } = action;

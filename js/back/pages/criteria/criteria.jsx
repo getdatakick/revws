@@ -3,10 +3,10 @@
 import type {Element} from 'react';
 import React from 'react';
 import { filter } from 'ramda';
-import CriteriaSection from './criteria-section';
-import Section from 'back/components/section/section';
-import type { EntityType, LanguagesType, KeyValue } from 'common/types';
-import type { Load, FullCriteria, FullCriterion } from 'back/types';
+import CriteriaSection from './criteria-section.jsx';
+import Section from 'back/components/section/section.jsx';
+import type { EntityType, LanguagesType, KeyValue } from 'common/types.js';
+import type { Load, FullCriteria, FullCriterion } from 'back/types.js';
 
 export type Props = {|
   criteria: FullCriteria,

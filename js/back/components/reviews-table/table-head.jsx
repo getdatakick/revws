@@ -3,9 +3,9 @@
 import type {Node} from 'react';
 import React from 'react';
 import { TableHead, TableRow, TableSortLabel, TableCell } from 'material-ui/Table';
-import type { ListOrder, ListOrderDirection } from 'common/types';
+import type { ListOrder, ListOrderDirection } from 'common/types.js';
 import Tooltip from 'material-ui/Tooltip';
-import type { Column } from './types';
+import type { Column } from './types.js';
 
 type Props = {
   columns: Array<Column>,

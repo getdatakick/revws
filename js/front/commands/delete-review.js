@@ -1,8 +1,8 @@
 // @flow
 
-import type { Api } from 'common/types';
-import type { DeleteReviewAction } from 'front/actions';
-import { setSnackbar, reviewRemoved, setReview } from 'front/actions/creators';
+import type { Api } from 'common/types.js';
+import type { DeleteReviewAction } from 'front/actions/index.js';
+import { setSnackbar, reviewRemoved, setReview } from 'front/actions/creators.js';
 
 export const deleteReview = (action: DeleteReviewAction, store: any, api: Api) => {
   const review = action.review;

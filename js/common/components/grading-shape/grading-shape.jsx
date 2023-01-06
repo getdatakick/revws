@@ -1,9 +1,9 @@
 // @flow
 import type {Element} from 'react';
 import React from 'react';
-import { merge } from 'ramda';
+import { mergeRight } from 'ramda';
 import classnames from 'classnames';
-import type { GradingShapeType, ShapeColorsType } from 'common/types';
+import type { GradingShapeType, ShapeColorsType } from 'common/types.js';
 
 type Props = {|
   id: number,
@@ -27,7 +27,7 @@ class GradingShape extends React.PureComponent<Props> {
     });
     let pathStyle = { strokeWidth };
     if (colors) {
-      pathStyle = merge(pathStyle, {
+      pathStyle = mergeRight(pathStyle, {
         stroke: on ? colors.borderColor : colors.borderColorOff,
         fill:  on ? colors.fillColor : colors.fillColorOff
       });

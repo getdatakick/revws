@@ -1,15 +1,15 @@
 // @flow
 
 import type {Element} from 'react';
-import type { GoTo, SettingsType, GlobalDataType } from 'back/types';
-import type { CriteriaType, ReviewType } from 'common/types';
+import type { GoTo, SettingsType, GlobalDataType } from 'back/types.js';
+import type { CriteriaType, ReviewType } from 'common/types.js';
 import type { SubPage } from 'back/routing/reviews';
 import React from 'react';
-import ReviewsTable from 'back/components/reviews-table';
-import CreateReview from 'back/components/create-review';
-import MigrateData from './migrate-data';
-import { reviewsPage } from 'back/routing';
-import Section from 'back/components/section/section';
+import ReviewsTable from 'back/components/reviews-table/index.js';
+import CreateReview from 'back/components/create-review/index.js';
+import MigrateData from './migrate-data/index.jsx';
+import { reviewsPage } from 'back/routing/index.js';
+import Section from 'back/components/section/section.jsx';
 import Button from 'material-ui/Button';
 
 export type Props = {

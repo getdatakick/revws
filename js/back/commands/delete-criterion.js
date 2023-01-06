@@ -1,8 +1,8 @@
 // @flow
 
-import type { Api } from 'common/types';
-import type { DeleteCriterionAction } from 'back/actions';
-import { setSnackbar, criterionDeleted } from 'back/actions/creators';
+import type { Api } from 'common/types.js';
+import type { DeleteCriterionAction } from 'back/actions/index.js';
+import { setSnackbar, criterionDeleted } from 'back/actions/creators.js';
 
 export const deleteCriterion = (action: DeleteCriterionAction, store: any, api: Api) => {
   const id = action.id;

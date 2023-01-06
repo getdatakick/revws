@@ -1,15 +1,15 @@
 
 // @flow
 import type { ComponentType } from 'react';
-import type { SettingsType, CustomListWidgetType } from 'front/types';
-import ReviewList from './review-list';
+import type { SettingsType, CustomListWidgetType } from 'front/types.js';
+import ReviewList from './review-list.jsx';
 import { connect } from 'react-redux';
-import { mapObject } from 'common/utils/redux';
-import { getLists } from 'front/selectors/lists';
-import { getReviews } from 'front/selectors/reviews';
-import { getReviewList } from 'front/utils/list';
-import { getEntities } from 'front/selectors/entities';
-import { loadList, triggerVoteReview, triggerReportReview, triggerEditReview, triggerDeleteReview } from 'front/actions/creators';
+import { mapObject } from 'common/utils/redux.js';
+import { getLists } from 'front/selectors/lists.js';
+import { getReviews } from 'front/selectors/reviews.js';
+import { getReviewList } from 'front/utils/list.js';
+import { getEntities } from 'front/selectors/entities.js';
+import { loadList, triggerVoteReview, triggerReportReview, triggerEditReview, triggerDeleteReview } from 'front/actions/creators.js';
 
 type PassedProps = {
   settings: SettingsType,

@@ -2,7 +2,7 @@
 
 import type {Element} from 'react';
 import React from 'react';
-import { merge } from 'ramda';
+import { mergeRight } from 'ramda';
 
 type Props = {
   color: string,
@@ -16,7 +16,7 @@ class Circle extends React.PureComponent<Props> {
 
   render(): Element<"div"> {
     const { color, size, onClick, style={} } = this.props;
-    const merged = merge({
+    const merged = mergeRight({
       width: size,
       height: size,
       border: '1px solid #ddd',

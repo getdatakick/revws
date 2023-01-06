@@ -1,6 +1,6 @@
 // @flow
-import type { RouteDefinition } from 'back/types';
-import Reviews from 'back/pages/reviews';
+import type { RouteDefinition } from 'back/types.js';
+import Reviews from 'back/pages/reviews/index.js';
 
 export type SubPage = 'list' | 'create' | 'data';
 

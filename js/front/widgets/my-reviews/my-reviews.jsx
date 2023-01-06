@@ -2,11 +2,11 @@
 import type {Element} from 'react';
 import React from 'react';
 import { F } from 'ramda';
-import type { ReviewListType, ReviewType, EntityType } from 'common/types';
-import type { EntitiesType, SettingsType } from 'front/types';
+import type { ReviewListType, ReviewType, EntityType } from 'common/types.js';
+import type { EntitiesType, SettingsType } from 'front/types.js';
 import { slice } from 'ramda';
 import { getEntity } from 'front/utils/entities';
-import List from '../review-list/review-list';
+import List from '../review-list/review-list.jsx';
 
 type Props = {
   entities: EntitiesType,
@@ -22,7 +22,7 @@ type Props = {
 };
 
 class FrontAppCustomerReviewList extends React.PureComponent<Props> {
-  static displayName: ?string = 'FrontAppCustomerReviewList';
+  static displayName: ?string = 'FrontAppCustomerReviewList.js';
 
   render(): Element<"div"> {
     return (

@@ -1,17 +1,17 @@
 // @flow
 
-import type { Command } from 'common/types';
-import type { SettingsType } from 'front/types';
-import type { Action } from 'front/actions';
-import { keys, forEach, merge, prop } from 'ramda';
-import { fixUrl } from 'common/utils/url';
-import Types from 'front/actions/types';
-import { saveReview } from './save-review';
-import { deleteReview } from './delete-review';
-import { voteReview } from './vote-review';
-import { reportAbuse } from './report-review';
-import { loadList } from './load-list';
-import { uploadImage } from './upload-image';
+import type { Command } from 'common/types.js';
+import type { SettingsType } from 'front/types.js';
+import type { Action } from 'front/actions/index.js';
+import { keys, forEach, mergeRight, prop } from 'ramda';
+import { fixUrl } from 'common/utils/url.js';
+import Types from 'front/actions/types.js';
+import { saveReview } from './save-review.js';
+import { deleteReview } from './delete-review.js';
+import { voteReview } from './vote-review.js';
+import { reportAbuse } from './report-review.js';
+import { loadList } from './load-list.js';
+import { uploadImage } from './upload-image.js';
 
 const commands = {
   [ Types.saveReview ]: saveReview,
@@ -97,7 +97,7 @@ export default (settings: SettingsType): ((store: any) => (next: any) => (action
             url: fixUrl(settings.api),
             type: 'POST',
             dataType: 'json',
-            data: merge(payload, {
+            data: mergeRight(payload, {
               action: 'command',
               cmd: cmd,
               revwsToken

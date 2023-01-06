@@ -1,6 +1,6 @@
 // @flow
-import type { ListType, ReviewsType, ListConditions } from 'front/types';
-import type { ReviewListType, ReviewType } from 'common/types';
+import type { ListType, ReviewsType, ListConditions } from 'front/types.js';
+import type { ReviewListType, ReviewType } from 'common/types.js';
 import { map, prop } from 'ramda';
 
 const mapReviews = (reviews: Array<number>, allReviews: ReviewsType): Array<ReviewType> => map(id => allReviews[id], reviews);

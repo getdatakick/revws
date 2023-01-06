@@ -1,6 +1,6 @@
 // @flow
-import type { RouteDefinition } from 'back/types';
-import Criteria from 'back/pages/criteria';
+import type { RouteDefinition } from 'back/types.js';
+import Criteria from 'back/pages/criteria/index.js';
 
 export type CriteriaPage = {
   type: 'criteria',

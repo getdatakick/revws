@@ -1,11 +1,11 @@
 // @flow
 import type { ComponentType } from 'react';
 import { connect } from 'react-redux';
-import { mapObject } from 'common/utils/redux';
-import { getEntities } from 'back/selectors/data';
-import { loadData } from 'back/actions/creators';
-import SelectEntity from './select-entity';
-import type { InputProps } from './select-entity';
+import { mapObject } from 'common/utils/redux.js';
+import { getEntities } from 'back/selectors/data.js';
+import { loadData } from 'back/actions/creators.js';
+import SelectEntity from './select-entity.jsx';
+import type { InputProps } from './select-entity.jsx';
 
 const mapStateToProps = mapObject({
   entities: getEntities,

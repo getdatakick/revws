@@ -2,12 +2,12 @@
 
 import type {Node, Element} from 'react';
 import React from 'react';
-import type { DisplayCriteriaType, ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType, LanguagesType } from 'common/types';
+import type { DisplayCriteriaType, ReviewType, ReviewFormErrors, CriteriaType, GradingShapeType, LanguagesType } from 'common/types.js';
 import Button from 'material-ui/Button';
-import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog';
-import EditReviewForm from './edit-review-form';
-import ViewReviewForm from './view-review-form';
-import { validateReview, hasErrors } from 'common/utils/validation';
+import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog/index.jsx';
+import EditReviewForm from './edit-review-form.jsx';
+import ViewReviewForm from './view-review-form.jsx';
+import { validateReview, hasErrors } from 'common/utils/validation.js';
 import { assoc, equals } from 'ramda';
 import styles from './edit-review-form.less';
 

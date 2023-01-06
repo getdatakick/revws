@@ -1,11 +1,11 @@
 // @flow
 import type { ComponentType } from 'react';
-import type { CustomerInfoType } from 'common/types';
+import type { CustomerInfoType } from 'common/types.js';
 import { connect } from 'react-redux';
-import { mapObject } from 'common/utils/redux';
-import { getCustomers } from 'back/selectors/data';
-import { loadData } from 'back/actions/creators';
-import SelectCustomer from './select-customer';
+import { mapObject } from 'common/utils/redux.js';
+import { getCustomers } from 'back/selectors/data.js';
+import { loadData } from 'back/actions/creators.js';
+import SelectCustomer from './select-customer.jsx';
 
 const mapStateToProps = mapObject({
   customers: getCustomers,

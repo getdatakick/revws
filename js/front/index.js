@@ -1,17 +1,17 @@
 // @flow
 import React from 'react';
-import type { InitDataType } from 'front/types';
-import { forEach, values, has, contains } from 'ramda';
+import type { InitDataType } from 'front/types.js';
+import { forEach, values, has, includes } from 'ramda';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import logger from 'redux-logger';
-import createReducer from 'front/reducer';
-import createCommands from 'front/commands';
-import App from 'front/app';
-import { parseInitData } from 'front/utils/init';
-import { isObject } from 'common/utils/ramda';
-import Types from 'front/actions/types';
+import {createLogger} from 'redux-logger';
+import createReducer from 'front/reducer/index.js';
+import createCommands from 'front/commands/index.js';
+import App from 'front/app.jsx';
+import { parseInitData } from 'front/utils/init.js';
+import { isObject } from 'common/utils/ramda.js';
+import Types from 'front/actions/types.js';
 import { setTranslation } from 'translations';
 
 const getDomNode = () => {
@@ -42,13 +42,13 @@ const startRevws = (init: InitDataType) => {
   const commandsMiddleware = createCommands(settings);
   const middlewares = [ commandsMiddleware ];
   if (dev) {
-    middlewares.push(logger);
+    middlewares.push(createLogger());
   }
 
   const reducer = createReducer(settings, visitor, reviews, lists, entities);
   const store = createStore(reducer, applyMiddleware(...middlewares));
   const isAction = (action: any) => {
-    return (action && isObject(action) && has('type', action) && contains(action.type, values(Types)));
+    return (action && isObject(action) && has('type', action) && includes(action.type, values(Types)));
   };
 
   render((

@@ -1,20 +1,20 @@
 // @flow
 
 import type {Node, Element} from 'react';
-import type { EmailPreferences } from 'back/types';
+import type { EmailPreferences } from 'back/types.js';
 import React from 'react';
 import Dialog, { DialogContent, DialogActions } from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
 import Checkbox from 'material-ui/Checkbox';
 import List, { ListItem, ListItemText } from 'material-ui/List';
-import LegalIcon from './legal';
-import { isEmail } from 'common/utils/validation';
-import { getWebUrl } from 'back/utils/common';
-import Space from 'common/components/space/space';
+import LegalIcon from './legal.jsx';
+import { isEmail } from 'common/utils/validation.js';
+import { getWebUrl } from 'back/utils/common.js';
+import Space from 'common/components/space/space.jsx';
 import EmailIcon from 'material-ui-icons/Email';
 import PlaylistAddCheck from 'material-ui-icons/PlaylistAddCheck';
 import TextField from 'material-ui/TextField';
-import TextWithTags from 'common/components/text-with-tags/text-with-tags';
+import TextWithTags from 'common/components/text-with-tags/text-with-tags.jsx';
 
 type Props = {
   isRtl: boolean,
@@ -74,11 +74,10 @@ class Registration extends React.PureComponent<Props> {
     if (step == 1) {
       valid = isEmail(email);
     }
-    const offset = (-step * 150) + '%';
     const style = {
       ...styles.root,
-      marginRight: isRtl ? offset : undefined,
-      marginLeft:  isRtl ? undefined : offset,
+      marginRight: isRtl ? (step * 150) + '%' : undefined,
+      marginLeft:  isRtl ? undefined : (-step * 150) + '%'
     };
     return (
       <Dialog open={show} maxWidth='md'>

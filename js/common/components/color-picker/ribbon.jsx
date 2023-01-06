@@ -4,7 +4,7 @@ import type {Element} from 'react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styles from './color-picker.less';
-import type { Position } from './types';
+import type { Position } from './types.js';
 
 type Props = {
   hue: number,

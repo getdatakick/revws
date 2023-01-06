@@ -1,15 +1,15 @@
 // @flow
 
 import type {Node, Element} from 'react';
-import type { KeyValue } from 'common/types';
+import type { KeyValue } from 'common/types.js';
 import React from 'react';
 import { equals } from 'ramda';
-import type { FullCriterion } from 'back/types';
-import type { LanguagesType } from 'common/types';
-import MultiLangField from 'common/components/multilang/multilang';
+import type { FullCriterion } from 'back/types.js';
+import type { LanguagesType } from 'common/types.js';
+import MultiLangField from 'common/components/multilang/multilang.jsx';
 import { FormControlLabel } from 'material-ui/Form';
 import Button from 'material-ui/Button';
-import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog';
+import Dialog, { DialogActions, DialogContent, DialogTitle } from 'common/components/dialog/index.jsx';
 import Switch from 'material-ui/Switch';
 import styles from './criteria.less';
 import Tabs from './tabs';

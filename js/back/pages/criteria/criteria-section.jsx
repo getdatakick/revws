@@ -1,8 +1,8 @@
 // @flow
 import type {Node, Element} from 'react';
 import React from 'react';
-import type { EntityType, LanguagesType, KeyValue } from 'common/types';
-import type { Load, FullCriteria, FullCriterion } from 'back/types';
+import type { EntityType, LanguagesType, KeyValue } from 'common/types.js';
+import type { Load, FullCriteria, FullCriterion } from 'back/types.js';
 import { keys, map, always, values, sortBy, prop } from 'ramda';
 import List, {
   ListItem,
@@ -15,9 +15,9 @@ import IconButton from 'material-ui/IconButton';
 import ActiveIcon from 'material-ui-icons/Check';
 import InactiveIcon from 'material-ui-icons/DoNotDisturb';
 import DeleteIcon from 'material-ui-icons/Delete';
-import AddAvatar from 'common/components/add-avatar/add-avatar';
-import ConfirmDelete from 'common/components/confirm-delete/confirm-delete';
-import Form from './form';
+import AddAvatar from 'common/components/add-avatar/add-avatar.jsx';
+import ConfirmDelete from 'common/components/confirm-delete/confirm-delete.jsx';
+import Form from './form.jsx';
 import styles from './criteria.less';
 
 type Props = {

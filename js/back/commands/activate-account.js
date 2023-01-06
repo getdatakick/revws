@@ -1,9 +1,9 @@
 // @flow
-import type { Api } from 'common/types';
-import type { GlobalDataType } from 'back/types';
-import type { ActivateAccountAction } from 'back/actions';
-import { activateAccountFailed, setSnackbar } from 'back/actions/creators';
-import { getApiUrl } from 'back/utils/common';
+import type { Api } from 'common/types.js';
+import type { GlobalDataType } from 'back/types.js';
+import type { ActivateAccountAction } from 'back/actions/index.js';
+import { activateAccountFailed, setSnackbar } from 'back/actions/creators.js';
+import { getApiUrl } from 'back/utils/common.js';
 
 export const activateAccount = (data: GlobalDataType): ((action: ActivateAccountAction, store: any, api: Api) => void) => (action: ActivateAccountAction, store: any, api: Api) => {
   window.$.ajax({

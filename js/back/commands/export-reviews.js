@@ -1,8 +1,8 @@
 // @flow
 
-import type { Api } from 'common/types';
-import type { ExportReviewsAction } from 'back/actions';
-import { setSnackbar } from 'back/actions/creators';
+import type { Api } from 'common/types.js';
+import type { ExportReviewsAction } from 'back/actions/index.js';
+import { setSnackbar } from 'back/actions/creators.js';
 
 export const exportReviews = (action: ExportReviewsAction, store: any, api: Api) => {
   api('export', {}).then(result => {

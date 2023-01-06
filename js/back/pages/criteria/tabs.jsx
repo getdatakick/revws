@@ -1,13 +1,13 @@
 // @flow
 
-import type { KeyValue } from 'common/types';
+import type { KeyValue } from 'common/types.js';
 import type { ComponentType } from 'react';
 import React from 'react';
 import type { Node } from 'react';
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
-import SingleTab from './tab';
+import SingleTab from './tab.jsx';
 
 const styles = (theme: any) => ({
   root: {

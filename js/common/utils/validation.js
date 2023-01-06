@@ -1,6 +1,6 @@
 // @flow
-import type { ReviewType, ReviewFormErrors } from 'common/types';
-import { isEmpty, isObject, notNil, isString, isNumber } from 'common/utils/ramda';
+import type { ReviewType, ReviewFormErrors } from 'common/types.js';
+import { isEmpty, isObject, notNil, isString, isNumber } from 'common/utils/ramda.js';
 import { isNil, find, curry, pipe, defaultTo, values, map, reduce, or } from 'ramda';
 import validator from 'validator';
 

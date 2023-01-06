@@ -1,6 +1,6 @@
 // @flow
-import type { RouteDefinition } from 'back/types';
-import Moderation from 'back/pages/moderation';
+import type { RouteDefinition } from 'back/types.js';
+import Moderation from 'back/pages/moderation/index.js';
 
 export type ModerationPage = {
   type: 'moderation',

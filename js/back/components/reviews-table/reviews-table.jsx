@@ -1,8 +1,8 @@
 // @flow
 
 import type { ComponentType, Node } from 'react';
-import type { EntityType, EntityTypes, GradingShapeType, ReviewType, ListOrder, ListOrderDirection } from 'common/types';
-import type { DrilldownUrls } from 'back/types';
+import type { EntityType, EntityTypes, GradingShapeType, ReviewType, ListOrder, ListOrderDirection } from 'common/types.js';
+import type { DrilldownUrls } from 'back/types.js';
 import { values, reject, isNil } from 'ramda';
 import React from 'react';
 import classnames from 'classnames';
@@ -24,13 +24,13 @@ import ApproveIcon from 'material-ui-icons/Check';
 import RejectButton from 'material-ui-icons/Delete';
 import UndeleteButton from 'material-ui-icons/Refresh';
 import Paper from 'material-ui/Paper';
-import EnhancedTableHead from './table-head';
-import EnhancedTableToolbar from './table-toolbar';
-import Grading from 'common/components/grading/grading';
-import Images from './images';
-import { hasRatings, averageGrade } from 'common/utils/reviews';
-import { viewCustomerUrl, editEntityUrl } from 'back/utils/drilldown';
-import type { Filters, Column } from './types';
+import EnhancedTableHead from './table-head.jsx';
+import EnhancedTableToolbar from './table-toolbar.jsx';
+import Grading from 'common/components/grading/grading.jsx';
+import Images from './images.jsx';
+import { hasRatings, averageGrade } from 'common/utils/reviews.js';
+import { viewCustomerUrl, editEntityUrl } from 'back/utils/drilldown.js';
+import type { Filters, Column } from './types.js';
 
 type InputProps = {
   onSetOrder: (ListOrder, ListOrderDirection) => void,

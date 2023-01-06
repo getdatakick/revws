@@ -1,7 +1,7 @@
 // @flow
-import type { ReviewType } from 'common/types';
+import type { ReviewType } from 'common/types.js';
 import { reduce, add, values, assoc, map  } from 'ramda';
-import { isArray } from 'common/utils/ramda';
+import { isArray } from 'common/utils/ramda.js';
 
 const getDate = (str: string): Date => {
   var date = new Date(str);

@@ -1,9 +1,9 @@
 // @flow
 
-import type { Api } from 'common/types';
-import type { ApproveReviewAction } from 'back/actions';
-import { setSnackbar, reviewUpdated } from 'back/actions/creators';
-import { fixReview } from 'common/utils/reviews';
+import type { Api } from 'common/types.js';
+import type { ApproveReviewAction } from 'back/actions/index.js';
+import { setSnackbar, reviewUpdated } from 'back/actions/creators.js';
+import { fixReview } from 'common/utils/reviews.js';
 
 
 export const approveReview = (action: ApproveReviewAction, store: any, api: Api) => {

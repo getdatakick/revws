@@ -1,10 +1,10 @@
 // @flow
 
 import type {Node} from 'react';
-import type { SettingsType, GlobalDataType } from 'back/types';
-import type { CriteriaType } from 'common/types';
+import type { SettingsType, GlobalDataType } from 'back/types.js';
+import type { CriteriaType } from 'common/types.js';
 import React from 'react';
-import ReviewsTable from 'back/components/reviews-table';
+import ReviewsTable from 'back/components/reviews-table/index.js';
 
 export type Props = {
   data: GlobalDataType,

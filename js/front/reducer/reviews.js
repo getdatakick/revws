@@ -1,10 +1,10 @@
 // @flow
 
-import type { Action } from 'front/actions';
-import type { ReviewsType } from 'front/types';
-import type { ReviewType } from 'common/types';
-import Types from 'front/actions/types';
-import { fixReviews, fixReview } from 'common/utils/reviews';
+import type { Action } from 'front/actions/index.js';
+import type { ReviewsType } from 'front/types.js';
+import type { ReviewType } from 'common/types.js';
+import Types from 'front/actions/types.js';
+import { fixReviews, fixReview } from 'common/utils/reviews.js';
 import { map, reduce, assoc, dissoc, curry } from 'ramda';
 
 export type State = ReviewsType;

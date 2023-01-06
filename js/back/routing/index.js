@@ -3,20 +3,20 @@
 import type {Node} from 'react';
 import React from 'react';
 import { equals, memoizeWith, identity } from 'ramda';
-import type { SettingsPage } from './settings';
-import { settingsRoute } from './settings';
-import type { SupportPage } from './support';
-import { supportRoute } from './support';
-export { supportPage } from './support';
-import type { ModerationPage } from './moderation';
-import { moderationRoute } from './moderation';
-export { moderationPage } from './moderation';
-import type { ReviewsPage } from './reviews';
-import { reviewsRoute } from './reviews';
-export { reviewsPage } from './reviews';
-import type { CriteriaPage } from './criteria';
-import { criteriaRoute } from './criteria';
-export { criteriaPage } from './criteria';
+import type { SettingsPage } from './settings.js';
+import { settingsRoute } from './settings.js';
+import type { SupportPage } from './support.js';
+import { supportRoute } from './support.js';
+export { supportPage } from './support.js';
+import type { ModerationPage } from './moderation.js';
+import { moderationRoute } from './moderation.js';
+export { moderationPage } from './moderation.js';
+import type { ReviewsPage } from './reviews.js';
+import { reviewsRoute } from './reviews.js';
+export { reviewsPage } from './reviews.js';
+import type { CriteriaPage } from './criteria.js';
+import { criteriaRoute } from './criteria.js';
+export { criteriaPage } from './criteria.js';
 
 
 export type RoutingState = (

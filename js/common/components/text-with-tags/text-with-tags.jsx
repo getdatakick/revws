@@ -1,8 +1,8 @@
 // @flow
 import type {Element} from 'react';
 import React from 'react';
-import type { Tag } from 'common/types';
-import { replaceTags } from 'common/utils/translation';
+import type { Tag } from 'common/types.js';
+import { replaceTags } from 'common/utils/translation.js';
 
 type Props = {|
   text: string,

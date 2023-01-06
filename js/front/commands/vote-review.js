@@ -1,9 +1,9 @@
 // @flow
 
-import type { Api } from 'common/types';
-import type { TriggerVoteAction } from 'front/actions';
+import type { Api } from 'common/types.js';
+import type { TriggerVoteAction } from 'front/actions/index.js';
 import { assoc } from 'ramda';
-import { setReview, setSnackbar } from 'front/actions/creators';
+import { setReview, setSnackbar } from 'front/actions/creators.js';
 
 export const voteReview = (action: TriggerVoteAction, store: any, api: Api) => {
   const review = action.review;
