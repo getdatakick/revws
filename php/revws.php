@@ -94,7 +94,7 @@ class Revws extends Module
     {
         $this->name = 'revws';
         $this->tab = 'administration';
-        $this->version = '1.2.2';
+        $this->version = '1.3.0';
         $this->author = 'DataKick';
         $this->need_instance = 0;
         $this->bootstrap = true;
