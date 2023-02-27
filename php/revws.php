@@ -195,7 +195,12 @@ class Revws extends Module
         if (!$sql) {
             return false;
         }
-        $sql = str_replace(['PREFIX_', 'ENGINE_TYPE', 'CHARSET_TYPE', 'COLLATE_TYPE'], [_DB_PREFIX_, _MYSQL_ENGINE_, 'utf8mb4', 'utf8mb4_unicode_ci'], $sql);
+        $platform = $this->getPlatform();
+        $sql = str_replace(
+            ['PREFIX_', 'ENGINE_TYPE', 'CHARSET_TYPE', 'COLLATE_TYPE'],
+            [_DB_PREFIX_, _MYSQL_ENGINE_, $platform->getCharsetType(), $platform->getCollate()],
+            $sql
+        );
         $sql = preg_split("/;\s*[\r\n]+/", $sql);
         foreach ($sql as $statement) {
             $stmt = trim($statement);

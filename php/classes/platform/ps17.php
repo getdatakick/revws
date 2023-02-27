@@ -21,8 +21,10 @@ namespace Revws;
 
 use Context;
 use Controller;
+use Db;
 use FrontController;
 use ImageType;
+use PrestaShopException;
 use Tools;
 
 class PlatformPrestashop17 extends Platform
@@ -172,6 +174,25 @@ class PlatformPrestashop17 extends Platform
     {
         $link = Context::getContext()->link;
         return $link->getAdminLink($controller, true, $params, $params);
+    }
+
+    /**
+     * @return string
+     *
+     * @throws PrestaShopException
+     */
+    public function getCollate()
+    {
+        $allowed = ['utf8mb4_general_ci', 'utf8mb4_unicode_ci'];
+        $collation = Db::getInstance()->getValue('SELECT @@collation_database');
+        if (in_array($collation, $allowed)) {
+            return $collation;
+        }
+        $collation = Db::getInstance()->getValue('SELECT DEFAULT_COLLATE_NAME FROM INFORMATION_SCHEMA.CHARACTER_SETS WHERE CHARACTER_SET_NAME = "'.$this->getCharsetType().'"');
+        if ($collation) {
+            return $collation;
+        }
+        return parent::getCollate();
     }
 
 }

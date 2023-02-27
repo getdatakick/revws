@@ -205,6 +205,22 @@ abstract class Platform
     }
 
     /**
+     * @return string
+     */
+    public function getCharsetType()
+    {
+        return 'utf8mb4';
+    }
+
+    /**
+     * @return string
+     */
+    public function getCollate()
+    {
+        return 'utf8mb4_unicode_ci';
+    }
+
+    /**
      * @param string $controller
      * @param array $params
      *
