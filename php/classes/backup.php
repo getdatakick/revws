@@ -212,16 +212,17 @@ class Backup
         $created->value = \date(\DateTime::ATOM, \strtotime($rev->date_add));
         $node->appendChild($created);
 
-        if ($rev->entity_type === 'product') {
-            $product = $domtree->createElement('product');
-            $id = $domtree->createAttribute('id');
-            $id->value = $rev->id_entity;
-            $product->appendChild($id);
-            $name = $domtree->createAttribute('name');
-            $name->value = $rev->entity;
-            $product->appendChild($name);
-            $node->appendChild($product);
-        }
+        $entity = $domtree->createElement('entity');
+        $id = $domtree->createAttribute('id');
+        $id->value = (int)$rev->id_entity;
+        $entity->appendChild($id);
+        $type = $domtree->createAttribute("type");
+        $type->value = $rev->entity_type;
+        $entity->appendChild($type);
+        $name = $domtree->createAttribute('name');
+        $name->value = isset($rev->entity) ? $rev->entity : '';
+        $entity->appendChild($name);
+        $node->appendChild($entity);
 
         $author = $domtree->createElement('author');
         $id = $domtree->createAttribute('id');
