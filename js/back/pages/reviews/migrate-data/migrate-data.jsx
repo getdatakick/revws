@@ -34,7 +34,6 @@ type State = {
 }
 
 class MigrateData extends React.PureComponent<Props, State> {
-  static displayName: ?string = 'MigrateData';
 
   state: State = {
     type: null
@@ -91,10 +90,15 @@ class MigrateData extends React.PureComponent<Props, State> {
         </Dialog>
         <Dropzone
           ref={d => this.input = d}
-          accept='.csv'
+          accept={{ "text/csv": [".csv"] }}
           onDrop={this.onUploadFile}
-          style={{display: 'none'}} />
-
+        >
+          {({getRootProps, getInputProps}) => (
+            <div {...getRootProps()}>
+              <input {...getInputProps()} />
+            </div>
+          )}
+        </Dropzone>
       </div>
     );
   }
