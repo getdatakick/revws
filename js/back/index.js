@@ -2,7 +2,7 @@
 import type { FullCriteria, SettingsType, GlobalDataType, VersionCheck, AccountType } from 'back/types.js';
 import React from 'react';
 import { equals } from 'ramda';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import {createLogger} from 'redux-logger';
@@ -133,9 +133,11 @@ window.startRevws = (init: any) => {
     store.dispatch(checkModuleVersion());
   }
 
-  render((
+  const root = createRoot(node);
+
+  root.render(
     <Provider store={store}>
       <App data={data}/>
     </Provider>
-  ), node);
+  );
 };

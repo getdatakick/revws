@@ -2,7 +2,7 @@
 import React from 'react';
 import type { InitDataType } from 'front/types.js';
 import { forEach, values, has, includes } from 'ramda';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import {createLogger} from 'redux-logger';
@@ -51,11 +51,13 @@ const startRevws = (init: InitDataType) => {
     return (action && isObject(action) && has('type', action) && includes(action.type, values(Types)));
   };
 
-  render((
+  const root = createRoot(node);
+
+  root.render(
     <Provider store={store}>
       <App visitor={visitor} settings={settings} widgets={widgets} />
     </Provider>
-  ), node);
+  );
 
   window.revws = (action: any) => {
     if (isAction(action)) {
