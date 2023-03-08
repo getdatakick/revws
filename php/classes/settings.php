@@ -665,19 +665,19 @@ class Settings
     }
 
     /**
-     * @return array|mixed
+     * @return bool
      */
     public function showSignInButton()
     {
-        return $this->get(['display', 'product', 'showSignInButton']);
+        return (bool)$this->get(['display', 'product', 'showSignInButton']);
     }
 
     /**
-     * @return array|mixed
+     * @return bool
      */
     public function hideEmptyReviews()
     {
-        return $this->get(['display', 'product', 'hideEmptyReviews']);
+        return (bool)$this->get(['display', 'product', 'hideEmptyReviews']);
     }
 
     /**

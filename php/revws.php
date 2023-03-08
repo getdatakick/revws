@@ -444,23 +444,6 @@ class Revws extends Module
     }
 
     /**
-     * @return string
-     *
-     * @throws PrestaShopException
-     * @throws SmartyException
-     */
-    public function hookDisplayProductTab()
-    {
-        if ($this->getSettings()->getPlacement() === 'tab') {
-            $list = $this->getProductReviewList();
-            return $this->getPlatform()->displayTemplate('views/templates/hook/product_tab_header.tpl', [
-                'revwsTotal' => $list->getTotal()
-            ]);
-        }
-        return null;
-    }
-
-    /**
      * @return \Revws\ReviewList
      *
      * @throws PrestaShopException
@@ -582,17 +565,63 @@ class Revws extends Module
      * @throws PrestaShopException
      * @throws SmartyException
      */
+    public function hookDisplayProductTab()
+    {
+        $settings = $this->getSettings();
+        if ($settings->getPlacement() === 'tab') {
+            $list = $this->getProductReviewList();
+            if ($list->isEmpty() && !$this->shouldShowEmptyList(static::resolveProductId())) {
+                return null;
+            }
+            return $this->getPlatform()->displayTemplate('views/templates/hook/product_tab_header.tpl', [
+                'revwsTotal' => $list->getTotal()
+            ]);
+        }
+        return null;
+    }
+
+    /**
+     * @return string
+     *
+     * @throws PrestaShopException
+     * @throws SmartyException
+     */
     public function hookDisplayProductTabContent()
     {
-        $set = $this->getSettings();
-        if ($this->getSettings()->getPlacement() === 'tab') {
+        $settings = $this->getSettings();
+        if ($settings->getPlacement() === 'tab') {
             $list = $this->getProductReviewList();
-            if ($list->isEmpty() && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
+            if ($list->isEmpty() && !$this->shouldShowEmptyList(static::resolveProductId())) {
                 return null;
             }
             return $this->getPlatform()->displayTemplate('views/templates/hook/product_tab_content.tpl');
         }
         return null;
+    }
+
+    /**
+     * @param int $productId
+     *
+     * @return bool
+     * @throws PrestaShopException
+     */
+    protected function shouldShowEmptyList($productId)
+    {
+        $settings = $this->getSettings();
+        if (! $settings->hideEmptyReviews()) {
+            return true;
+        }
+
+        $canReview = $this->getPermissions()->canCreateReview('product', $productId);
+        if ($canReview) {
+            return true;
+        }
+
+        if ($settings->showSignInButton() && $this->getVisitor()->isGuest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -612,10 +641,10 @@ class Revws extends Module
      */
     public function hookDisplayProductExtraContent($params)
     {
-        $set = $this->getSettings();
-        if ($this->getSettings()->getPlacement() === 'tab') {
+        $settings = $this->getSettings();
+        if ($settings->getPlacement() === 'tab') {
             $list = $this->getProductReviewList();
-            if ($list->isEmpty() && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
+            if ($list->isEmpty() && !$this->shouldShowEmptyList(static::resolveProductId())) {
                 return null;
             }
             $content = $this->getPlatform()->displayTemplate('views/templates/hook/product_tab_content.tpl');
@@ -640,7 +669,7 @@ class Revws extends Module
         if ($set->getPlacement() === 'block') {
             $list = $this->getProductReviewList();
             $this->context->smarty->assign('revwsTotal', $list->getTotal());
-            if ($list->isEmpty() && $this->getVisitor()->isGuest() && $set->hideEmptyReviews()) {
+            if ($list->isEmpty() && !$this->shouldShowEmptyList(static::resolveProductId())) {
                 return null;
             }
             return $this->getPlatform()->displayTemplate('views/templates/hook/product_footer.tpl');
@@ -909,17 +938,7 @@ class Revws extends Module
      */
     public function hookDisplayRevwsAverageRating($params)
     {
-        if (isset($params['product'])) {
-            $product = $params['product'];
-        } else {
-            $product = (int)(Tools::getValue('id_product'));
-        }
-        if (is_object($product)) {
-            $product = $product->id;
-        }
-        if (!$product) {
-            throw new PrestaShopException('hook displayRevwsAverageRating called without product');
-        }
+        $product = static::resolveProductId($params);
         $placement = isset($params['placement']) ? $params['placement'] : 'custom-placement';
         $set = $this->getSettings();
         list($grade, $count) = RevwsReview::getAverageGrade($set, $product);
@@ -1058,6 +1077,30 @@ class Revws extends Module
             return (int)$product;
         }
         return null;
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return int
+     * @throws PrestaShopException
+     */
+    private static function resolveProductId($params = [])
+    {
+        if (isset($params['product'])) {
+            $product = $params['product'];
+        } else {
+            $product = (int)(Tools::getValue('id_product'));
+        }
+        if (is_object($product)) {
+            $product = (int)$product->id;
+        } else {
+            $product = (int)$product;
+        }
+        if (!$product) {
+            throw new PrestaShopException('Failed to resolve product id');
+        }
+        return $product;
     }
 
     /**
