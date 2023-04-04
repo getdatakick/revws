@@ -213,7 +213,7 @@ class Settings
         $ret = [];
         foreach ($left as $key => $value) {
             if (isset($right[$key])) {
-                if (is_array($value)) {
+                if (is_array($value) && static::isAssoc($value)) {
                     $value = self::mergeSettings($value, $right[$key]);
                 } else {
                     $value = $right[$key];
@@ -222,6 +222,18 @@ class Settings
             $ret[$key] = $value;
         }
         return $ret;
+    }
+
+    /**
+     * @param array $arr
+     * @return bool
+     */
+    private static function isAssoc(array $arr)
+    {
+        if ([] === $arr) {
+            return false;
+        }
+        return array_keys($arr) !== range(0, count($arr) - 1);
     }
 
     /**
