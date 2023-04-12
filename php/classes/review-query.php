@@ -173,11 +173,11 @@ class ReviewQuery
             $from .= ' LEFT JOIN ' . _DB_PREFIX_ . 'customer cust ON (r.id_customer = cust.id_customer)';
         }
         if ($this->hasOption('category')) {
-            $category = $this->getInt('category');
+            $category = $this->getPositiveInt('category');
             $from .= ' INNER JOIN ' . _DB_PREFIX_ . "category_product cp ON (r.entity_type = 'product' AND r.id_entity = cp.id_product AND cp.id_category = $category)";
         }
         if ($this->hasOption('categoryTree')) {
-            $category = $this->getInt('categoryTree');
+            $category = $this->getPositiveInt('categoryTree');
             $categories = Category::getChildren($category, $lang);
             $cats = [$category];
             if ($categories) {
@@ -189,7 +189,7 @@ class ReviewQuery
             $from .= ' INNER JOIN ' . _DB_PREFIX_ . "category_product cpr ON (r.entity_type = 'product' AND r.id_entity = cpr.id_product AND cpr.id_category in ($cats))";
         }
         if ($this->hasOption('manufacturer')) {
-            $manufacturer = $this->getInt('manufacturer');
+            $manufacturer = $this->getPositiveInt('manufacturer');
             $from .= ' INNER JOIN ' . _DB_PREFIX_ . "product p ON (r.entity_type = 'product' AND r.id_entity = p.id_product AND p.id_manufacturer = $manufacturer)";
         }
         return $from;
@@ -201,7 +201,7 @@ class ReviewQuery
     private function getShop()
     {
         if ($this->hasOption('shop')) {
-            return $this->getInt('shop');
+            return $this->getPositiveInt('shop');
         }
         return (int)Context::getContext()->shop->id;
     }
@@ -217,12 +217,22 @@ class ReviewQuery
     }
 
     /**
+     * @param string $name
+     *
+     * @return mixed
+     */
+    private function getPositiveInt($name)
+    {
+        return max($this->getInt($name), 0);
+    }
+
+    /**
      * @return int
      */
     private function getLanguage()
     {
         if ($this->hasOption('language')) {
-            return $this->getInt('language');
+            return $this->getPositiveInt('language');
         }
         return (int)Context::getContext()->language->id;
     }
@@ -235,13 +245,13 @@ class ReviewQuery
     {
         $cond = [];
         if ($this->hasOption('id')) {
-            $cond[] = "r.id_review = " . $this->getInt('id');
+            $cond[] = "r.id_review = " . $this->getPositiveInt('id');
         }
         if ($this->hasOption('shop')) {
             $cond[] = "ps.id_shop IS NOT NULL";
         }
         if ($this->hasOption('product')) {
-            $cond[] = "r.entity_type = 'product' AND r.id_entity = " . $this->getInt('product');
+            $cond[] = "r.entity_type = 'product' AND r.id_entity = " . $this->getPositiveInt('product');
         }
         if ($this->hasOption('entityType')) {
             $entityType = psql($this->getOption('entityType'));
@@ -254,16 +264,16 @@ class ReviewQuery
             $cond[] = "r.entity_type = '$entityType' AND r.id_entity = $entityId";
         }
         if ($this->hasOption('customer')) {
-            $cond[] = "r.id_customer = " . $this->getInt('customer');
+            $cond[] = "r.id_customer = " . $this->getPositiveInt('customer');
         }
         if ($this->hasOption('email')) {
             $cond[] = "r.email = '" . psql($this->getOption('email', '')) . "'";
         }
         if ($this->hasOption('guest')) {
-            $cond[] = "r.id_guest = " . $this->getInt('guest');
+            $cond[] = "r.id_guest = " . $this->getPositiveInt('guest');
         }
         if ($this->hasOption('grade')) {
-            $cond[] = $this->getAverageGradeSubselect() . " = " . $this->getInt('grade');
+            $cond[] = $this->getAverageGradeSubselect() . " = " . $this->getPositiveInt('grade');
         }
         if ($this->hasOption('deleted')) {
             $cond[] = "r.deleted = " . $this->getBool('deleted');
@@ -384,8 +394,8 @@ class ReviewQuery
     private function getLimit()
     {
         if ($this->hasOption('pageSize') && $this->hasOption('page')) {
-            $pageSize = $this->getInt('pageSize');
-            $page = $this->getInt('page');
+            $pageSize = $this->getPageSize();
+            $page = $this->getPage();
             $offset = $page * $pageSize;
             return " LIMIT $pageSize OFFSET $offset";
         }
@@ -425,7 +435,7 @@ class ReviewQuery
     public function getPage()
     {
         if ($this->hasOption('page')) {
-            return $this->getInt('page');
+            return $this->getPositiveInt('page');
         }
         return 0;
     }
@@ -436,7 +446,7 @@ class ReviewQuery
     public function getPageSize()
     {
         if ($this->hasOption('pageSize')) {
-            return $this->getInt('pageSize');
+            return $this->getPositiveInt('pageSize');
         }
         return -1;
     }
